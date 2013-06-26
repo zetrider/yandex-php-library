@@ -1,6 +1,6 @@
 {
     "name": "nixsolutions/yandex-sdk-php",
-    "description": "Yandex SDK for PHP",
+    "description": "Official Yandex SDK for PHP",
     "keywords":["yasdk","yandex","sdk"],
     "type":"library",
     "minimum-stability": "dev",
