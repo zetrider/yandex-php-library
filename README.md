@@ -1,4 +1,8 @@
-yandex-sdk-php
+Яндекс SDK PHP
 ==============
 
-Yandex SDK for PHP
+# Установка
+
+# Использование
+
+# Лицензия

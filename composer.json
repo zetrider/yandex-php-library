@@ -1,0 +1,29 @@
+{
+    "name": "NIXSolutionsLtd/yandex-sdk-php",
+    "description": "Yandex SDK for PHP",
+    "keywords":["yasdk","yandex","sdk"],
+    "type":"library",
+    "minimum-stability": "dev",
+    "require": {
+        "php": ">=5.3.3"
+    },
+    "require-dev": {
+        "phpunit/phpunit": "3.7.*"
+    },
+    "autoload": {
+        "psr-0": {
+            "Yandex": "src/",
+            "Yandex\\Tests": "tests/"
+        }
+    },
+    "authors": [
+        {
+            "name": "NIX Solutions Ltd",
+            "email": "github@nixsolutions.com"
+        }
+    ],
+    "support": {
+        "issues": "https://github.com/NIXSolutionsLtd/yandex-sdk-php/issues",
+        "wiki": "https://github.com/NIXSolutionsLtd/yandex-sdk-php/wiki"
+    }
+}
