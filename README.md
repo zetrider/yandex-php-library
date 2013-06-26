@@ -1,8 +1,17 @@
 Яндекс SDK PHP
 ==============
 
-# Установка
+[![Latest Stable Version](https://poser.pugx.org/nixsolutions/yandex-sdk-php/v/stable.png)](https://packagist.org/packages/nixsolutions/yandex-sdk-php)
+[![Total Downloads](https://poser.pugx.org/nixsolutions/yandex-sdk-php/downloads.png)](https://packagist.org/packages/nixsolutions/yandex-sdk-php)
 
-# Использование
+## Установка
 
-# Лицензия
+### composer
+
+### phar архив
+
+### zip архив
+
+## Использование
+
+## Лицензия
