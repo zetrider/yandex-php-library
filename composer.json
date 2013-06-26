@@ -1,5 +1,5 @@
 {
-    "name": "NIXSolutionsLtd/yandex-sdk-php",
+    "name": "nixsolutions/yandex-sdk-php",
     "description": "Yandex SDK for PHP",
     "keywords":["yasdk","yandex","sdk"],
     "type":"library",
@@ -23,7 +23,7 @@
         }
     ],
     "support": {
-        "issues": "https://github.com/NIXSolutionsLtd/yandex-sdk-php/issues",
-        "wiki": "https://github.com/NIXSolutionsLtd/yandex-sdk-php/wiki"
+        "issues": "https://github.com/nixsolutions/yandex-sdk-php/issues",
+        "wiki": "https://github.com/nixsolutions/yandex-sdk-php/wiki"
     }
 }
