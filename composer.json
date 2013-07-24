@@ -5,7 +5,8 @@
     "type":"library",
     "minimum-stability": "dev",
     "require": {
-        "php": ">=5.3.3"
+        "php": ">=5.3.3",
+        "guzzle/guzzle": "~3.7.0"
     },
     "require-dev": {
         "phpunit/phpunit": "3.7.*",
