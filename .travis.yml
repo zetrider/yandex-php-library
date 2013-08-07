@@ -10,7 +10,7 @@ before_script:
   - composer update --prefer-source
 script:
   # PHPUnit tests
-  #- php vendor/bin/phpunit --configuration tests/phpunit.xml.dist --coverage-text
+  - php vendor/bin/phpunit --configuration tests/phpunit.xml.dist --coverage-text
   - mkdir .reports
   # Code style
   - php vendor/bin/phpcs ./src/Yandex --standard=PSR1 --report=summary
