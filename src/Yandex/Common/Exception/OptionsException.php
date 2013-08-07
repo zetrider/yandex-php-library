@@ -2,17 +2,17 @@
 /**
  * @namespace
  */
-namespace Yandex;
+namespace Yandex\Common\Exception;
 
 /**
- * Parent Exception for all Yandex SDK packages
+ * Configuration Exception
  *
  * @category Yandex
- * @package  Exception
+ * @package  Common
  *
  * @author   Anton Shevchuk
  * @created  26.06.13 13:56
  */
-class Exception
+class OptionsException extends Exception
 {
 }

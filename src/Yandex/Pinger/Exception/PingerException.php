@@ -4,7 +4,7 @@
  */
 namespace Yandex\Pinger\Exception;
 
-use Yandex\Exception;
+use Yandex\Common\Exception\Exception;
 
 /**
  * Pinger Exception

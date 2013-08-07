@@ -4,7 +4,7 @@
  */
 namespace Yandex\SafeBrowsing\Exception;
 
-use Yandex\Exception;
+use Yandex\Common\Exception\Exception;
 
 /**
  * Safe Browsing Exception
