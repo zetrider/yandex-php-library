@@ -9,10 +9,34 @@
 
 ### composer
 
+Установка с использованием менеджера пакетов [Composer](http://getcomposer.org):
+
+```bash
+$ curl -s https://getcomposer.org/installer | php
+```
+
+Теперь вносим изменения в ваш `composer.json`:
+
+```yaml
+{
+    "require": {
+        "nixsolutions/yandex-sdk-php": "dev-master"
+    }
+}
+```
+
 ### phar архив
+
+TODO
 
 ### zip архив
 
+TODO
+
 ## Использование
 
+TODO
+
 ## Лицензия
+
+Пакет `yandex-sdk-php` распространяется под лицензией ____???? (текст лицензии вы найдёте в файле LICENSE)
