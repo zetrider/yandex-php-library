@@ -67,6 +67,7 @@ class Pinger extends AbstractPackage
     /**
      * Connection Errors
      */
+    const ERROR_ILLEGAL_PARAM_VALUE = 'ILLEGAL_PARAM_VALUE';
     const ERROR_ILLEGAL_VALUE_TYPE = 'ILLEGAL_VALUE_TYPE';
     const ERROR_NO_SUCH_USER_IN_PASSPORT = 'NO_SUCH_USER_IN_PASSPORT';
     const ERROR_SEARCH_NOT_OWNED_BY_USER = 'SEARCH_NOT_OWNED_BY_USER';
@@ -98,7 +99,7 @@ class Pinger extends AbstractPackage
      * ping
      *
      * @param string|array $urls
-     * @param integer $publishDate
+     * @param integer $publishDate seconds from now to publish urls
      *
      * @throws Exception\PingerException
      * @throws Exception\InvalidUrlException
@@ -115,8 +116,12 @@ class Pinger extends AbstractPackage
             $response = $this->doRequest($urls, $publishDate);
         } catch (ClientErrorResponseException $e) {
             $xml = $e->getResponse()->xml();
+
             if (isset($xml->error) && isset($xml->error->message)) {
                 $errorMessage = (string) $xml->error->message;
+                if (isset($xml->error->param) && isset($xml->error->value)) {
+                    $errorMessage .= " (".$xml->error->param." is ".$xml->error->value.")";
+                }
                 throw new InvalidArgumentException($errorMessage);
             }
             return false;
@@ -129,7 +134,7 @@ class Pinger extends AbstractPackage
             throw new InvalidUrlException("URL param is required");
         }
 
-        // check valid urls
+        // retrieve count of valid urls
         $addedCount = 0;
         if (isset($xml->added) && isset($xml->added['count'])) {
             $addedCount = $xml->added['count'];
