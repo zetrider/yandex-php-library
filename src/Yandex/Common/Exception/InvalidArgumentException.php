@@ -5,14 +5,14 @@
 namespace Yandex\Common\Exception;
 
 /**
- * Configuration Exception
+ * Arguments Exception
  *
  * @category Yandex
  * @package  Common
  *
  * @author   Anton Shevchuk
- * @created  26.06.13 13:56
+ * @created  08.08.13 10:49
  */
-class OptionsException extends Exception
+class InvalidArgumentException extends \InvalidArgumentException
 {
 }

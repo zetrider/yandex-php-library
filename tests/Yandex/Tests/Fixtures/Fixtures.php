@@ -48,7 +48,7 @@ class Fixtures extends AbstractPackage
      *
      * @return boolean
      */
-    protected function doCheckOptions()
+    protected function doCheckSettings()
     {
         return $this->foo && $this->bar;
     }

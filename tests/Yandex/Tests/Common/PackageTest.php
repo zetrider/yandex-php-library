@@ -41,9 +41,9 @@ class PackageTest extends TestCase
     }
 
     /**
-     * @todo Implement testSetOptions().
+     * @todo Implement testSetSettings().
      */
-    public function testSetOptions()
+    public function testSetSettings()
     {
         // Remove the following lines when you implement this test.
         $this->markTestIncomplete(
@@ -52,9 +52,9 @@ class PackageTest extends TestCase
     }
 
     /**
-     * @todo Implement testCheckOptions().
+     * @todo Implement testCheckSettings().
      */
-    public function testCheckOptions()
+    public function testCheckSettings()
     {
         // Remove the following lines when you implement this test.
         $this->markTestIncomplete(
