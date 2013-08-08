@@ -80,12 +80,18 @@ class Pinger extends AbstractPackage
     const INVALID_NOT_CONFIRMED_IN_WMC = 'NOT_CONFIRMED_IN_WMC';
     const INVALID_OUT_OF_SEARCH_AREA = 'OUT_OF_SEARCH_AREA';
 
+    /**
+     * @var array
+     */
     protected $invalid = array(
         self::INVALID_MALFORMED_URLS => "Invalid URL format",
         self::INVALID_NOT_CONFIRMED_IN_WMC => "Invalid site URL. Site is not confirmed on http://webmaster.yandex.ru/",
         self::INVALID_OUT_OF_SEARCH_AREA => "Invalid site URL. Site is not under your search area",
     );
 
+    /**
+     * @var array
+     */
     protected $invalidUrls = array();
 
     /**
@@ -132,7 +138,7 @@ class Pinger extends AbstractPackage
         // check invalid urls and fill errors stack
         $this->invalidUrls = array();
         if (isset($xml->invalid)) {
-            foreach($xml->invalid as $invalid) {
+            foreach ($xml->invalid as $invalid) {
                 foreach ($invalid as $url) {
                     $this->invalidUrls[(string)$url] = $this->invalid[(string) $invalid['reason']];
                 }
