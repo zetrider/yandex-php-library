@@ -4,7 +4,7 @@
  */
 namespace Yandex\Common;
 
-use Yandex\Common\Exception\OptionsException;
+use Yandex\Common\Exception\InvalidSettingsException;
 
 /**
  * Package
@@ -22,7 +22,7 @@ abstract class AbstractPackage
      *
      * @param string $key
      * @param mixed $value
-     * @throws Exception\OptionsException
+     * @throws Exception\InvalidSettingsException
      * @return self
      */
     public function __set($key, $value)
@@ -34,7 +34,7 @@ abstract class AbstractPackage
         } elseif (property_exists($this, $key)) {
             $this->$key = $value;
         } else {
-            throw new OptionsException("Configuration option '$key' is undefined");
+            throw new InvalidSettingsException("Configuration option '$key' is undefined");
         }
         return $this;
     }
@@ -43,7 +43,7 @@ abstract class AbstractPackage
      * __get
      *
      * @param string $key
-     * @throws Exception\OptionsException
+     * @throws Exception\InvalidSettingsException
      * @return self
      */
     public function __get($key)
@@ -55,7 +55,7 @@ abstract class AbstractPackage
         } elseif (property_exists($this, $key)) {
             return $this->$key;
         } else {
-            throw new OptionsException("Configuration option '$key' is undefined");
+            throw new InvalidSettingsException("Configuration option '$key' is undefined");
         }
     }
 
@@ -63,7 +63,7 @@ abstract class AbstractPackage
      * @param array $options
      * @return void
      */
-    public function setOptions(array $options)
+    public function setSettings(array $options)
     {
         // apply options
         foreach ($options as $key => $value) {
@@ -75,13 +75,13 @@ abstract class AbstractPackage
     /**
      * checkOptions
      *
-     * @throws Exception\OptionsException
+     * @throws Exception\InvalidSettingsException
      * @return void
      */
-    public function checkOptions()
+    public function checkSettings()
     {
-        if (!$this->doCheckOptions()) {
-            throw new OptionsException("Invalid configuration options of '".get_class($this)."' package");
+        if (!$this->doCheckSettings()) {
+            throw new InvalidSettingsException("Invalid configuration options of '".get_class($this)."' package");
         }
     }
 
@@ -90,7 +90,7 @@ abstract class AbstractPackage
      *
      * @return boolean
      */
-    abstract protected function doCheckOptions();
+    abstract protected function doCheckSettings();
 
     /**
      * @param $key

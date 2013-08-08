@@ -5,11 +5,13 @@
 namespace Yandex\Pinger;
 
 use Yandex\Common\AbstractPackage;
-use Guzzle\Http\Client;
+use Yandex\Common\Exception\InvalidArgumentException;
 use Yandex\Pinger\Exception\InvalidIpException;
 use Yandex\Pinger\Exception\InvalidSettingsException;
 use Yandex\Pinger\Exception\InvalidUrlException;
 use Yandex\Pinger\Exception\PingerException;
+use Guzzle\Http\Client;
+use Guzzle\Http\Exception\ClientErrorResponseException;
 
 /**
  * Pinger
@@ -20,6 +22,7 @@ use Yandex\Pinger\Exception\PingerException;
  * @property string $key
  * @property string $login
  * @property string $searchId
+ * @property array $invalidUrls
  *
  * @author   Anton Shevchuk
  * @created  06.08.13 17:30
@@ -61,80 +64,82 @@ class Pinger extends AbstractPackage
      */
     protected $version;
 
+    /**
+     * Connection Errors
+     */
     const ERROR_ILLEGAL_VALUE_TYPE = 'ILLEGAL_VALUE_TYPE';
-    const ERROR_MALFORMED_URLS = 'MALFORMED_URLS';
     const ERROR_NO_SUCH_USER_IN_PASSPORT = 'NO_SUCH_USER_IN_PASSPORT';
-    const ERROR_NOT_CONFIRMED_IN_WMC = 'NOT_CONFIRMED_IN_WMC';
-    const ERROR_OUT_OF_SEARCH_AREA = 'OUT_OF_SEARCH_AREA';
     const ERROR_SEARCH_NOT_OWNED_BY_USER = 'SEARCH_NOT_OWNED_BY_USER';
+    const ERROR_TOO_DELAYED_PUBLISH = 'TOO_DELAYED_PUBLISH';
     const ERROR_USER_NOT_PERMITTED = 'USER_NOT_PERMITTED';
+
+    /**
+     * URL Errors
+     */
+    const INVALID_MALFORMED_URLS = 'MALFORMED_URLS';
+    const INVALID_NOT_CONFIRMED_IN_WMC = 'NOT_CONFIRMED_IN_WMC';
+    const INVALID_OUT_OF_SEARCH_AREA = 'OUT_OF_SEARCH_AREA';
+
+    protected $invalid = array(
+        self::INVALID_MALFORMED_URLS => "Invalid URL format",
+        self::INVALID_NOT_CONFIRMED_IN_WMC => "Invalid site URL. Site is not confirmed on http://webmaster.yandex.ru/",
+        self::INVALID_OUT_OF_SEARCH_AREA => "Invalid site URL. Site is not under your search area",
+    );
+
+    protected $invalidUrls = array();
 
     /**
      * ping
      *
-     * @param $url
-     * @param $timestamp
+     * @param string|array $urls
+     * @param integer $publishDate
+     *
      * @throws Exception\PingerException
+     * @throws Exception\InvalidUrlException
+     * @throws \Yandex\Common\Exception\InvalidArgumentException
      * @return boolean
      */
-    public function ping($url, $timestamp)
+    public function ping($urls, $publishDate = 0)
     {
-        $this->checkOptions();
+        $this->checkSettings();
 
-        $response = $this->doRequest($url, $timestamp);
+        $urls = (array)$urls;
 
-        $xml = $response->xml();
-
-        if (isset($xml->error) && isset($xml->error->code)) {
-            $errorCode = (string) $xml->error->code;
-            switch ($errorCode) {
-                case self::ERROR_ILLEGAL_VALUE_TYPE:
-                case self::ERROR_NO_SUCH_USER_IN_PASSPORT:
-                case self::ERROR_SEARCH_NOT_OWNED_BY_USER:
-                    throw new InvalidSettingsException();
-                    break;
-                case self::ERROR_USER_NOT_PERMITTED:
-                    $errorParam = (string)$xml->error->param;
-                    $errorValue = (string)$xml->error->value;
-
-                    switch ($errorParam) {
-                        case 'key':
-                            throw new InvalidSettingsException(
-                                "Wrong `key` value ($errorValue). Please check settings"
-                            );
-                            break;
-                        case 'ip':
-                            throw new InvalidIpException();
-                            break;
-                        default:
-                            throw new InvalidSettingsException();
-                            break;
-                    }
-                    break;
-                default:
-                    throw new PingerException("Unknown error. Please, contact our support team", $errorCode);
-                    break;
+        try {
+            $response = $this->doRequest($urls, $publishDate);
+        } catch (ClientErrorResponseException $e) {
+            $xml = $e->getResponse()->xml();
+            if (isset($xml->error) && isset($xml->error->message)) {
+                $errorMessage = (string) $xml->error->message;
+                throw new InvalidArgumentException($errorMessage);
             }
-        } elseif (isset($xml->invalid)) {
-            $errorCode = (string)$xml->invalid["reason"];
-            switch ($errorCode) {
-                case self::ERROR_NOT_CONFIRMED_IN_WMC:
-                    throw new InvalidUrlException("Invalid site URL. Site is not confirmed on http://webmaster.yandex.ru/");
-                    break;
-                case self::ERROR_OUT_OF_SEARCH_AREA:
-                    throw new InvalidUrlException("Invalid site URL. Site is not under your search area");
-                    break;
-                case self::ERROR_MALFORMED_URLS:
-                    throw new InvalidUrlException("Invalid URL format");
-                    break;
-                default:
-                    throw new PingerException("Unknown error. Please, contact our support team", $errorCode);
-                    break;
-            }
-        } elseif (isset($xml->added) && isset($xml->added['count']) && $xml->added['count'] > 0) {
-            return true;
+            return false;
         }
-        return true;
+
+        if (!$xml = $response->xml()) {
+            throw new PingerException("Wrong server response format");
+        } elseif ($xml->getName() == 'empty-param') {
+            // workaround for invalid request, with empty `urls`
+            throw new InvalidUrlException("URL param is required");
+        }
+
+        // check valid urls
+        $addedCount = 0;
+        if (isset($xml->added) && isset($xml->added['count'])) {
+            $addedCount = $xml->added['count'];
+        }
+
+        // check invalid urls and fill errors stack
+        $this->invalidUrls = array();
+        if (isset($xml->invalid)) {
+            foreach($xml->invalid as $invalid) {
+                foreach ($invalid as $url) {
+                    $this->invalidUrls[(string)$url] = $this->invalid[(string) $invalid['reason']];
+                }
+            }
+        }
+
+        return $addedCount;
     }
 
 
@@ -143,17 +148,17 @@ class Pinger extends AbstractPackage
      *
      * @return boolean
      */
-    protected function doCheckOptions()
+    protected function doCheckSettings()
     {
         return $this->key && $this->login && $this->searchId;
     }
 
     /**
-     * @param $url
-     * @param $timestamp
+     * @param array $urls
+     * @param integer $publishDate
      * @return \Guzzle\Http\Message\Response
      */
-    protected function doRequest($url, $timestamp)
+    protected function doRequest($urls, $publishDate)
     {
         $client = new Client($this->host);
         $client->setDefaultOption('headers', array('Y-SDK' => 'Pinger'));
@@ -172,8 +177,8 @@ class Pinger extends AbstractPackage
          * @var \Guzzle\Http\Message\EntityEnclosingRequest $request
          */
         $request = $client->post($this->path);
-        $request->setPostField('urls', $url);
-        $request->setPostField('publishdate', $timestamp);
+        $request->setPostField('urls', join("\n", $urls));
+        $request->setPostField('publishdate', $publishDate);
         return $request->send();
     }
 }
