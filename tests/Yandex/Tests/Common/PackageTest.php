@@ -59,7 +59,7 @@ class PackageTest extends TestCase
     }
 
     /**
-     * @covers Yandex\Common\Package::checkSettings
+     * @covers Yandex\Common\AbstractPackage::checkSettings
      * @expectedException \Yandex\Common\Exception\InvalidSettingsException
      */
     public function testCheckSettings()
@@ -76,7 +76,7 @@ class PackageTest extends TestCase
     }
 
     /**
-     * @covers Yandex\Common\Package::__set
+     * @covers Yandex\Common\AbstractPackage::__set
      * @expectedException \Yandex\Common\Exception\RealizationException
      */
     public function testSetRealizationException()
@@ -85,7 +85,7 @@ class PackageTest extends TestCase
     }
 
     /**
-     * @covers Yandex\Common\Package::__get
+     * @covers Yandex\Common\AbstractPackage::__get
      * @expectedException \Yandex\Common\Exception\RealizationException
      */
     public function testGetRealizationException()
