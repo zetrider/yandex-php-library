@@ -59,6 +59,20 @@ class PackageTest extends TestCase
     }
 
     /**
+     * test CamelCase Settings
+     */
+    public function testCamelCaseSettings()
+    {
+        $this->fixture->setSettings(
+            array(
+                'foo_bar' => 42
+            )
+        );
+
+        $this->assertEquals($this->fixture->fooBar, 42);
+    }
+
+    /**
      * @covers Yandex\Common\AbstractPackage::checkSettings
      * @expectedException \Yandex\Common\Exception\InvalidSettingsException
      */
