@@ -18,47 +18,78 @@ use Yandex\Tests\Fixtures\Fixtures;
  */
 class PackageTest extends TestCase
 {
+
     /**
-     * @todo Implement testSet().
+     * @var \Yandex\Tests\Fixtures\Fixtures
      */
-    public function testSet()
+    protected $fixture;
+
+    /**
+     * Sets up the fixture, for example, opens a network connection.
+     * This method is called before a test is executed.
+     */
+    protected function setUp()
     {
-        // Remove the following lines when you implement this test.
-        $this->markTestIncomplete(
-            'This test has not been implemented yet.'
-        );
+        parent::setUp();
+        $this->fixture = new Fixtures();
     }
 
     /**
-     * @todo Implement testGet().
+     * Complex test for custom getter and setter functions
      */
-    public function testGet()
+    public function testSetGet()
     {
-        // Remove the following lines when you implement this test.
-        $this->markTestIncomplete(
-            'This test has not been implemented yet.'
-        );
+        $this->fixture->foo = 2;
+
+        $this->assertEquals($this->fixture->foo, 8);
     }
 
     /**
-     * @todo Implement testSetSettings().
+     *
      */
     public function testSetSettings()
     {
-        // Remove the following lines when you implement this test.
-        $this->markTestIncomplete(
-            'This test has not been implemented yet.'
+        $this->fixture->setSettings(
+            array(
+                'bar' => 42
+            )
         );
+
+        $this->assertEquals($this->fixture->bar, 42);
     }
 
     /**
-     * @todo Implement testCheckSettings().
+     * @covers Yandex\Common\AbstractPackage::checkSettings
+     * @expectedException \Yandex\Common\Exception\InvalidSettingsException
      */
     public function testCheckSettings()
     {
-        // Remove the following lines when you implement this test.
-        $this->markTestIncomplete(
-            'This test has not been implemented yet.'
+
+        $this->fixture->setSettings(
+            array(
+                'bar' => null,
+                'foo' => 42
+            )
         );
+
+        $this->fixture->checkSettings();
+    }
+
+    /**
+     * @covers Yandex\Common\AbstractPackage::__set
+     * @expectedException \Yandex\Common\Exception\RealizationException
+     */
+    public function testSetRealizationException()
+    {
+        $this->fixture->readOnly = "KO";
+    }
+
+    /**
+     * @covers Yandex\Common\AbstractPackage::__get
+     * @expectedException \Yandex\Common\Exception\RealizationException
+     */
+    public function testGetRealizationException()
+    {
+        $this->fixture->writeOnly;
     }
 }

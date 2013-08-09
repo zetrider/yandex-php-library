@@ -5,6 +5,7 @@
 namespace Yandex\Common;
 
 use Yandex\Common\Exception\InvalidSettingsException;
+use Yandex\Common\Exception\RealizationException;
 
 /**
  * Package
@@ -22,6 +23,7 @@ abstract class AbstractPackage
      *
      * @param string $key
      * @param mixed $value
+     * @throws Exception\RealizationException
      * @throws Exception\InvalidSettingsException
      * @return self
      */
@@ -32,9 +34,9 @@ abstract class AbstractPackage
         if (method_exists($this, $method)) {
             $this->$method($value);
         } elseif (property_exists($this, $key)) {
-            $this->$key = $value;
+            throw new RealizationException("Property `$key` required realization setter method `$method`");
         } else {
-            throw new InvalidSettingsException("Configuration option '$key' is undefined");
+            throw new InvalidSettingsException("Configuration option `$key`` is undefined");
         }
         return $this;
     }
@@ -43,6 +45,7 @@ abstract class AbstractPackage
      * __get
      *
      * @param string $key
+     * @throws Exception\RealizationException
      * @throws Exception\InvalidSettingsException
      * @return self
      */
@@ -53,7 +56,7 @@ abstract class AbstractPackage
         if (method_exists($this, $method)) {
             return $this->$method($key);
         } elseif (property_exists($this, $key)) {
-            return $this->$key;
+            throw new RealizationException("Property `$key` required realization getter method `$method`");
         } else {
             throw new InvalidSettingsException("Configuration option '$key' is undefined");
         }

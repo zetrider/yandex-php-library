@@ -6,8 +6,6 @@ namespace Yandex\Pinger;
 
 use Yandex\Common\AbstractPackage;
 use Yandex\Common\Exception\InvalidArgumentException;
-use Yandex\Pinger\Exception\InvalidIpException;
-use Yandex\Pinger\Exception\InvalidSettingsException;
 use Yandex\Pinger\Exception\InvalidUrlException;
 use Yandex\Pinger\Exception\PingerException;
 use Guzzle\Http\Client;
@@ -94,6 +92,52 @@ class Pinger extends AbstractPackage
      * @var array
      */
     protected $invalidUrls = array();
+
+    /**
+     * set search key
+     *
+     * @param $value
+     * @return self
+     */
+    public function setKey($value)
+    {
+        $this->key = $value;
+        return $this;
+    }
+
+    /**
+     * set search login
+     *
+     * @param $value
+     * @return self
+     */
+    public function setLogin($value)
+    {
+        $this->login = $value;
+        return $this;
+    }
+
+    /**
+     * set search id
+     *
+     * @param $value
+     * @return self
+     */
+    public function setSearchId($value)
+    {
+        $this->searchId = $value;
+        return $this;
+    }
+
+    /**
+     * get invalid Urls from request
+     *
+     * @return array
+     */
+    public function getInvalidUrls()
+    {
+        return $this->invalidUrls;
+    }
 
     /**
      * ping
