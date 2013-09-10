@@ -15,13 +15,14 @@ use Guzzle\Http\Exception\RequestException;
  * @author   Eugene Zabolotniy <realbaziak@gmail.com>
  * @created  29.08.13 12:07
  */
-class OAuthClient {
+class OAuthClient
+{
 
     /*
      * Authentication types constants
      *
-     * Code type means that the server will use intermediate code to obtain access token.
-     * Token type will result user is redirected to the server with access token in URL
+     * The "code" type means that the application will use an intermediate code to obtain an access token.
+     * The "token" type will result a user is redirected back to the application with an access token in a URL
      *
      */
     const CODE_AUTH_TYPE = 'code';
@@ -198,10 +199,10 @@ class OAuthClient {
     }
 
     /**
-     * Sends redirect to Yandex authentication page.
+     * Sends a redirect to the Yandex authentication page.
      *
-     * @param bool $exit    indicates whether to stop PHP script immediately or not
-     * @param string $type  type of authentication procedure
+     * @param bool $exit    indicates whether to stop the PHP script immediately or not
+     * @param string $type  a type of the authentication procedure
      */
     public function authRedirect($exit = true, $type = self::CODE_AUTH_TYPE)
     {
@@ -213,26 +214,30 @@ class OAuthClient {
     }
 
     /**
-     * Exchanges temporary code to access token.
+     * Exchanges a temporary code for an access token.
      *
      * @param $code
      *
      * @return self
      *
-     * @throws AuthRequestException on known request error
-     * @throws AuthResponseException on response format error
-     * @throws RequestException on unknown request error
+     * @throws AuthRequestException on a known request error
+     * @throws AuthResponseException on a response format error
+     * @throws RequestException on an unknown request error
      */
     public function requestAccessToken($code)
     {
         $client = new Client($this->getServiceUrl());
 
-        $request = $client->post('token', null, array(
-            'grant_type'    => 'authorization_code',
-            'code'          => $code,
-            'client_id'     => $this->clientId,
-            'client_secret' => $this->clientSecret
-        ));
+        $request = $client->post(
+            'token', // to relative path "/token"
+            null, // with no headers
+            array(
+                'grant_type'    => 'authorization_code',
+                'code'          => $code,
+                'client_id'     => $this->clientId,
+                'client_secret' => $this->clientSecret
+            )
+        );
 
         try {
 
@@ -243,7 +248,7 @@ class OAuthClient {
             $result = $request->getResponse()->json();
 
             if (is_array($result) && isset($result['error'])) {
-                // handle service error message
+                // handle a service error message
                 throw new AuthRequestException('Service responsed with error code "' . $result['error'] . '"');
             }
 
