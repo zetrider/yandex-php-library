@@ -35,8 +35,11 @@ TODO
 
 ## Использование
 
-TODO
+* [Yandex Site Search Pinger](https://github.com/nixsolutions/yandex-sdk-php/wiki/Yandex-Site-Search-Pinger)
 
 ## Лицензия
 
-Пакет `yandex-sdk-php` распространяется под лицензией ____???? (текст лицензии вы найдёте в файле LICENSE)
+Пакет `yandex-sdk-php` распространяется под лицензией MIT (текст лицензии вы найдёте в файле
+[LICENSE](https://raw.github.com/nixsolutions/yandex-sdk-php/master/LICENSE)), данная лицензия
+распространяется на код данной библиотеки и только на неё, использование сервисов Яндекс регулируются
+документами, которые вы сможете найти на странице [Правовые документы](http://legal.yandex.ru/)
