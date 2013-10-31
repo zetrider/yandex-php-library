@@ -1,13 +1,16 @@
 <?php
 /**
- * Example of usage Yandex\Pinger package
+ * Example of usage Yandex\SiteSearchPinger package
  * 
  * @author   Anton Shevchuk
  * @created  07.08.13 10:32
  */
+
+use Yandex\SiteSearchPinger\SiteSearchPinger;
+
 $settings = require_once '../settings.php';
 
-$pinger = new Yandex\Pinger\Pinger();
+$pinger = new SiteSearchPinger();
 
 $pinger->key = $settings["pinger"]["key"];
 $pinger->login = $settings["pinger"]["login"];
