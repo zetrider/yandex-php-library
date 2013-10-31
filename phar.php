@@ -2,9 +2,9 @@
 //Remove reposes
 exec("find . | grep .git | xargs rm -rf");
 
-$fileName = 'yandex-sdk.phar';
+$branchName = getenv('TRAVIS_BRANCH');
+$fileName = 'yandex-sdk_.phar';
 
-//Create PHAR
 $phar = new Phar($fileName, 0, $fileName);
 //Add files to Phar
 $phar->buildFromDirectory(dirname(__FILE__), '/vendor/');
@@ -18,15 +18,27 @@ use Yandex\Disk\DiskClient;
 
 $disk = new DiskClient();
 $disk->setAccessToken(getenv('ACCESS_TOKEN'));
-
 //Send to Yandex.DisK
-$disk->uploadFile('/', array('path' => $fileName, 'size' => filesize($fileName), 'name' => $fileName));
+$disk->uploadFile(
+    '/',
+    array(
+        'path' => $fileName,
+        'size' => filesize($fileName),
+        'name' => str_replace('.phar', $branchName . '.phar', $fileName)
+    )
+);
 
 //Compressing
 if (Phar::canCompress(Phar::BZ2)) {
-    $phar->compress(Phar::BZ2, '.phar.bz2');
-    $fileName .= '.bz2';
+    $phar->compress(Phar::BZ2, 'phar.bz2');
     //Send to Yandex.DisK
-    $disk->uploadFile('/', array('path' => $fileName, 'size' => filesize($fileName), 'name' => $fileName));
+    $fileName .= '.bz2';
+    $disk->uploadFile(
+        '/',
+        array(
+            'path' => $fileName,
+            'size' => filesize($fileName),
+            'name' => str_replace('.phar.bz2', $branchName . '.phar.bz2', $fileName)
+        )
+    );
 }
-
