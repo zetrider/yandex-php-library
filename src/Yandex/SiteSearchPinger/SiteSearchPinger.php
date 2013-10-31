@@ -2,20 +2,20 @@
 /**
  * @namespace
  */
-namespace Yandex\Pinger;
+namespace Yandex\SiteSearchPinger;
 
 use Yandex\Common\AbstractPackage;
 use Yandex\Common\Exception\InvalidArgumentException;
-use Yandex\Pinger\Exception\InvalidUrlException;
-use Yandex\Pinger\Exception\PingerException;
+use Yandex\SiteSearchPinger\Exception\InvalidUrlException;
+use Yandex\SiteSearchPinger\Exception\SiteSearchPingerException;
 use Guzzle\Http\Client;
 use Guzzle\Http\Exception\ClientErrorResponseException;
 
 /**
- * Pinger
+ * SiteSearchPinger
  *
  * @category Yandex
- * @package  Pinger
+ * @package  SiteSearchPinger
  *
  * @property string $key
  * @property string $login
@@ -25,7 +25,7 @@ use Guzzle\Http\Exception\ClientErrorResponseException;
  * @author   Anton Shevchuk
  * @created  06.08.13 17:30
  */
-class Pinger extends AbstractPackage
+class SiteSearchPinger extends AbstractPackage
 {
     /**
      * @var string
@@ -145,7 +145,7 @@ class Pinger extends AbstractPackage
      * @param string|array $urls
      * @param integer $publishDate seconds from now to publish urls
      *
-     * @throws Exception\PingerException
+     * @throws Exception\SiteSearchPingerException
      * @throws Exception\InvalidUrlException
      * @throws \Yandex\Common\Exception\InvalidArgumentException
      * @return boolean
@@ -172,7 +172,7 @@ class Pinger extends AbstractPackage
         }
 
         if (!$xml = $response->xml()) {
-            throw new PingerException("Wrong server response format");
+            throw new SiteSearchPingerException("Wrong server response format");
         } elseif ($xml->getName() == 'empty-param') {
             // workaround for invalid request, with empty `urls`
             throw new InvalidUrlException("URL param is required");

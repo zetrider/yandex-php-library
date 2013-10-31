@@ -2,7 +2,7 @@
 /**
  * @namespace
  */
-namespace Yandex\Pinger\Exception;
+namespace Yandex\SiteSearchPinger\Exception;
 
 
 /**
@@ -11,11 +11,11 @@ namespace Yandex\Pinger\Exception;
  * Check settings on page {@link http://site.yandex.ru/searches/}
  *
  * @category Yandex
- * @package  Pinger
+ * @package  SiteSearchPinger
  *
  * @author   Anton Shevchuk
  * @created  24.07.13 18:59
  */
-class InvalidUrlException extends PingerException
+class InvalidUrlException extends SiteSearchPingerException
 {
 }
