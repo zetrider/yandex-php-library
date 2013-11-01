@@ -20,7 +20,7 @@ $disk = new DiskClient();
 $disk->setAccessToken(getenv('ACCESS_TOKEN'));
 //Send to Yandex.DisK
 $disk->uploadFile(
-    '/',
+    '/builds/',
     array(
         'path' => $fileName,
         'size' => filesize($fileName),
@@ -34,7 +34,7 @@ if (Phar::canCompress(Phar::BZ2)) {
     //Send to Yandex.DisK
     $fileName .= '.bz2';
     $disk->uploadFile(
-        '/',
+        '/builds/',
         array(
             'path' => $fileName,
             'size' => filesize($fileName),
