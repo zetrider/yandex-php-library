@@ -25,7 +25,7 @@ $ curl -s https://getcomposer.org/installer | php
 }
 ```
 
-### phar архив
+### phar-архив
 
 Работа с [phar архивом](http://php.net/manual/en/book.phar.php):
 
@@ -45,7 +45,7 @@ $disk = new DiskClient();
 //Устанавливаем полученный токен
 $disk->setAccessToken(TOKEN);
 
-//Получаем список файлов из дериктории
+//Получаем список файлов из директории
 $files = $disk->directoryContents();
 ```
 
