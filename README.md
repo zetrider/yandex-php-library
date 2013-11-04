@@ -27,11 +27,27 @@ $ curl -s https://getcomposer.org/installer | php
 
 ### phar архив
 
-TODO
+Работа с [phar архивом](http://php.net/manual/en/book.phar.php):
 
-### zip архив
+1. Скачиваем по [ссылке](http://yadi.sk/d/26YmC3hRByBd7) phar-файл или bz2-архив с ним, последней или конкретной версии.
+2. Сохраняем в папку с проектом.
+3. Используем!
 
-TODO
+Пример подключения и работа с SDK из phar-архива:
+```php
+<?php
+//Подключаем autoload.php из phar-архива
+require_once 'phar://yandex-sdk_master.phar/vendor/autoload.php';
+
+use Yandex\Disk\DiskClient;
+
+$disk = new DiskClient();
+//Устанавливаем полученный токен
+$disk->setAccessToken(TOKEN);
+
+//Получаем список файлов из дериктории
+$files = $disk->directoryContents();
+```
 
 ## Использование
 
