@@ -1,6 +1,6 @@
 env:
   global:
-    - secure: "IyoXDHoN0r5B8q00h/QVmRrfm1Xx3ig0zSd9n3V5tCm8njzMU7YFliV1iKXFyh03Lf+fIMntoJxTGY0z3ym0eki+kvfwENXBuzIfWXC8XOysQ1Fj7hhu3WCR94zh0ciAl3jw97k7wzoLz5okJnyTgoaxbwZn/TQ0pDSC/o9Z5Zo="
+    - secure: "io4vx+/CLGnIG4NQP2F7qgDx/loVCnlejLnZLzlZJrcz8aJA2nsFMfqH+8qIEQak9NX9W1cF02zDnSqszr8OlBiUQw6yWW/OJkKokXtqpCTpobpkApI/ENW18Wgy69HkLV99SzMGr2MfPyY44fwr8k7uITjrtW3JelDbf3q1SCE="
 language: php
 php:
   - 5.3
