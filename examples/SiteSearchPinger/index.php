@@ -7,6 +7,8 @@
  */
 
 use Yandex\SiteSearchPinger\SiteSearchPinger;
+use Yandex\SiteSearchPinger\Exception\SiteSearchPingerException;
+use Yandex\Common\Exception\Exception;
 
 $settings = require_once '../settings.php';
 
@@ -36,6 +38,12 @@ try {
             echo $url ." - ".$reason."<br/>";
         }
     }
+} catch (SiteSearchPingerException $e) {
+    echo "Site Search Pinger Exception<br/>";
+    echo nl2br($e->getMessage());
+} catch (Exception $e) {
+    echo "Yandex SDK Exception<br/>";
+    echo nl2br($e->getMessage());
 } catch (\Exception $e) {
     echo get_class($e) . "<br/>";
     echo nl2br($e->getMessage());
