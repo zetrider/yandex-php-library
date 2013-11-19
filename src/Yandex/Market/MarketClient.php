@@ -103,7 +103,7 @@ class MarketClient extends AbstractServiceClient
      *
      * @var string
      */
-    protected $сampaignId;
+    protected $campaignId;
 
 
     /**
