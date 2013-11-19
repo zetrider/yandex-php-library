@@ -160,7 +160,7 @@ class MarketClient extends AbstractServiceClient
      */
     public function setCampaignId($campaignId)
     {
-        $this->сampaignId = $campaignId;
+        $this->campaignId = $campaignId;
     }
 
 
@@ -206,9 +206,6 @@ class MarketClient extends AbstractServiceClient
             throw new MarketRequestException(
                 'Service responded with error code: "' . $code . '" and message: "' . $message . '"'
             );
-
-            // unknown error
-            throw $ex;
         }
 
         return $response;
@@ -265,11 +262,11 @@ class MarketClient extends AbstractServiceClient
      *
      * @see http://api.yandex.ru/market/partner/doc/dg/reference/get-campaigns-id-orders.xml
      *
-     * @return array|bool|float|int|string
+     * @return array
      */
     public function getOrders($params = array())
     {
-        $this->resource = 'campaigns/' . $this->сampaignId . '/orders.json';
+        $this->resource = 'campaigns/' . $this->campaignId . '/orders.json';
         $this->resource .= '?' . http_build_query($params);
 
         $client = new Client($this->getServiceUrl());
@@ -287,13 +284,13 @@ class MarketClient extends AbstractServiceClient
      * Get order info
      *
      * @param int $orderId
-     * @return object
+     * @return array
      *
      * @link http://api.yandex.ru/market/partner/doc/dg/reference/get-campaigns-id-orders-id.xml
      */
     public function getOrder($orderId)
     {
-        $this->resource = 'campaigns/' . $this->сampaignId . '/orders/' . $orderId . '.json';
+        $this->resource = 'campaigns/' . $this->campaignId . '/orders/' . $orderId . '.json';
 
         $client = new Client($this->getServiceUrl());
         $request = $client->createRequest('GET');
@@ -312,13 +309,13 @@ class MarketClient extends AbstractServiceClient
      * @param int $orderId
      * @param string $status
      * @param null|string $subStatus
-     * @return object
+     * @return array
      *
      * @link http://api.yandex.ru/market/partner/doc/dg/reference/put-campaigns-id-orders-id-status.xml
      */
     public function setOrderStatus($orderId, $status, $subStatus = null)
     {
-        $this->resource = 'campaigns/' . $this->сampaignId . '/orders/' . $orderId . '/status.json';
+        $this->resource = 'campaigns/' . $this->campaignId . '/orders/' . $orderId . '/status.json';
 
         $data = array(
             "order" => array(
@@ -348,7 +345,7 @@ class MarketClient extends AbstractServiceClient
      *
      * @param int $orderId
      * @param array $data
-     * @return array|bool|float|int|string
+     * @return array
      *
      * Example:
      * PUT /v2/campaigns/10003/order/12345/delivery.json HTTP/1.1
@@ -357,7 +354,7 @@ class MarketClient extends AbstractServiceClient
      */
     public function updateDelivery($orderId, $data)
     {
-        $this->resource = 'campaigns/' . $this->сampaignId . '/orders/' . $orderId . '/delivery.json';
+        $this->resource = 'campaigns/' . $this->campaignId . '/orders/' . $orderId . '/delivery.json';
         $data = json_encode($data);
         $client = new Client($this->getServiceUrl());
         $request = $client->createRequest('PUT', null, null, $data);
