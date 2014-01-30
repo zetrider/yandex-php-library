@@ -232,6 +232,7 @@ class SiteSearchPinger extends AbstractPackage
          * @var \Guzzle\Http\Message\EntityEnclosingRequest $request
          */
         $request = $client->post($this->path);
+        $request->setProtocolVersion('1.0');
         $request->setPostField('urls', join("\n", $urls));
         $request->setPostField('publishdate', $publishDate);
         return $request->send();
