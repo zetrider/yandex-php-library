@@ -5,7 +5,7 @@ namespace Yandex\Common;
 use Guzzle\Http\Exception\ClientErrorResponseException;
 use Guzzle\Http\Message\Request;
 use Guzzle\Http\Message\Response;
-use Yandex\OAuth\AuthRequestException;
+use Yandex\Common\Exception\ResponseException;
 
 /**
  * Class AbstractServiceClient
@@ -164,7 +164,8 @@ abstract class AbstractServiceClient extends AbstractPackage
 
             if (is_array($result) && isset($result['error'])) {
                 // handle a service error message
-                throw new AuthRequestException('Service responsed with error code "' . $result['error'] . '"');
+                throw new ResponseException($result);
+                //throw new ResponseException('Service responsed with error code "' . $result['error'] . '"');
             }
 
             // unknown error

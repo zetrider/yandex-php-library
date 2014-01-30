@@ -1,10 +1,3 @@
-<?php
-
-if (!isset($_COOKIE['yaAccessToken'])) {
-    header('Location: ../OAuth/index.php?back=http://' . $_SERVER['HTTP_HOST'] . $_SERVER['REQUEST_URI']);
-}
-
-?>
 <!DOCTYPE html>
 <html lang="en-US">
 <head>
@@ -13,8 +6,36 @@ if (!isset($_COOKIE['yaAccessToken'])) {
     <link rel="stylesheet" href="//yandex.st/bootstrap/3.0.0/css/bootstrap.min.css">
     <link href="//netdna.bootstrapcdn.com/font-awesome/3.2.1/css/font-awesome.css" rel="stylesheet">
     <link rel="stylesheet" href="css/style.css">
-    <script src="js/require.js"></script>
-    <script src="js/index.js"></script>
+    <?php
+
+    if (isset($_COOKIE['yaAccessToken']) && isset($_COOKIE['yaClientId'])) {
+        ?>
+        <script src="js/require.js"></script>
+        <script src="js/index.js"></script>
+    <?php
+    }
+    ?>
+
 </head>
-<body></body>
+<body>
+<?php
+if (!isset($_COOKIE['yaAccessToken']) || !isset($_COOKIE['yaClientId'])) {
+    ?>
+    <div class="alert alert-info">
+        Для просмотра этой страници вам необходимо авторизироваться.
+        <a id="goToAuth" href="/examples/OAuth/" class="alert-link">Перейти на страницу авторизации</a>.
+    </div>
+    <script src="http://yandex.st/jquery/2.0.3/jquery.min.js"></script>
+    <script src="http://yandex.st/jquery/cookie/1.0/jquery.cookie.min.js"></script>
+    <script>
+        $(function () {
+            $('#goToAuth').click(function (e) {
+                $.cookie('back', location.href, { expires: 256, path: '/' });
+            });
+        });
+    </script>
+<?php
+}
+?>
+</body>
 </html>

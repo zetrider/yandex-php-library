@@ -6,6 +6,7 @@ use Guzzle\Service\Client;
 use Guzzle\Http\Message\Request;
 use Guzzle\Http\Message\Response;
 use Guzzle\Http\Exception\ClientErrorResponseException;
+use Yandex\Common\Exception\ForbiddenException;
 
 /**
  * Class MarketClient
@@ -75,14 +76,6 @@ class MarketClient extends AbstractServiceClient
 
 
     /**
-     * Resource name
-     *
-     * @var string
-     */
-    protected $resource = '';
-
-
-    /**
      * Application id
      *
      * @var string
@@ -117,14 +110,14 @@ class MarketClient extends AbstractServiceClient
     /**
      * Get url to service resource with parameters
      *
+     * @param string $resource
      * @see http://api.yandex.ru/market/partner/doc/dg/concepts/method-call.xml
-     *
      * @return string
      */
-    public function getServiceUrl()
+    public function getServiceUrl($resource = '')
     {
         return $this->serviceScheme . '://' . $this->serviceDomain . '/'
-        . $this->version . '/' . $this->resource;
+        . $this->version . '/' . $resource;
     }
 
 
@@ -186,10 +179,9 @@ class MarketClient extends AbstractServiceClient
      * Sends a request
      *
      * @param Request $request
-     *
-     * @throws \Exception|\Guzzle\Http\Exception\ClientErrorResponseException
      * @return Response
-     *
+     * @throws ForbiddenException
+     * @throws MarketRequestException
      */
     protected function sendRequest(Request $request)
     {
@@ -202,6 +194,10 @@ class MarketClient extends AbstractServiceClient
             $result = $request->getResponse();
             $code = $result->getStatusCode();
             $message = $result->getReasonPhrase();
+
+            if ($code === 403) {
+                throw new ForbiddenException($message);
+            }
 
             throw new MarketRequestException(
                 'Service responded with error code: "' . $code . '" and message: "' . $message . '"'
@@ -239,8 +235,8 @@ class MarketClient extends AbstractServiceClient
      */
     public function getCampaigns()
     {
-        $this->resource = 'campaigns.json';
-        $client = new Client($this->getServiceUrl());
+        $resource = 'campaigns.json';
+        $client = new Client($this->getServiceUrl($resource));
         $request = $client->createRequest('GET');
         $request->setProtocolVersion('1.1');
         $request->setHeader('Authorization', $this->getOauthData());
@@ -266,10 +262,10 @@ class MarketClient extends AbstractServiceClient
      */
     public function getOrders($params = array())
     {
-        $this->resource = 'campaigns/' . $this->campaignId . '/orders.json';
-        $this->resource .= '?' . http_build_query($params);
+        $resource = 'campaigns/' . $this->campaignId . '/orders.json';
+        $resource .= '?' . http_build_query($params);
 
-        $client = new Client($this->getServiceUrl());
+        $client = new Client($this->getServiceUrl($resource));
         $request = $client->createRequest('GET');
         $request->setProtocolVersion('1.1');
         $request->setHeader('Authorization', $this->getOauthData());
@@ -290,9 +286,9 @@ class MarketClient extends AbstractServiceClient
      */
     public function getOrder($orderId)
     {
-        $this->resource = 'campaigns/' . $this->campaignId . '/orders/' . $orderId . '.json';
+        $resource = 'campaigns/' . $this->campaignId . '/orders/' . $orderId . '.json';
 
-        $client = new Client($this->getServiceUrl());
+        $client = new Client($this->getServiceUrl($resource));
         $request = $client->createRequest('GET');
         $request->setProtocolVersion('1.1');
         $request->setHeader('Authorization', $this->getOauthData());
@@ -315,7 +311,7 @@ class MarketClient extends AbstractServiceClient
      */
     public function setOrderStatus($orderId, $status, $subStatus = null)
     {
-        $this->resource = 'campaigns/' . $this->campaignId . '/orders/' . $orderId . '/status.json';
+        $resource = 'campaigns/' . $this->campaignId . '/orders/' . $orderId . '/status.json';
 
         $data = array(
             "order" => array(
@@ -327,7 +323,7 @@ class MarketClient extends AbstractServiceClient
         }
 
         $data = json_encode($data);
-        $client = new Client($this->getServiceUrl());
+        $client = new Client($this->getServiceUrl($resource));
         $request = $client->createRequest('PUT', null, null, $data);
         $request->setProtocolVersion('1.1');
         $request->setHeader('Authorization', $this->getOauthData());
@@ -354,9 +350,9 @@ class MarketClient extends AbstractServiceClient
      */
     public function updateDelivery($orderId, $data)
     {
-        $this->resource = 'campaigns/' . $this->campaignId . '/orders/' . $orderId . '/delivery.json';
+        $resource = 'campaigns/' . $this->campaignId . '/orders/' . $orderId . '/delivery.json';
         $data = json_encode($data);
-        $client = new Client($this->getServiceUrl());
+        $client = new Client($this->getServiceUrl($resource));
         $request = $client->createRequest('PUT', null, null, $data);
         $request->setProtocolVersion('1.1');
         $request->setHeader('Authorization', $this->getOauthData());
