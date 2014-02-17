@@ -2,7 +2,7 @@
 /**
  * @namespace
  */
-namespace Yandex\SafeBrowsing\Exception;
+namespace Yandex\SafeBrowsing;
 
 use Yandex\Common\Exception\Exception;
 
