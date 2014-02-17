@@ -52,6 +52,7 @@ $files = $disk->directoryContents();
 ## Использование
 
 * [Yandex Site Search Pinger](https://github.com/nixsolutions/yandex-sdk-php/wiki/Yandex-Site-Search-Pinger)
+* [Yandex Safe Browsing](https://github.com/nixsolutions/yandex-sdk-php/wiki/Yandex-Safe-Browsing)
 
 ## Лицензия
 
