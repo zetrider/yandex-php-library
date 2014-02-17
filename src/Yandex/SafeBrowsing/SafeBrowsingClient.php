@@ -289,7 +289,9 @@ class SafeBrowsingClient extends AbstractServiceClient
             } elseif ($result['code'] == 204 && strlen($result['data']) == 0) {
                 //204 Means no match
             } else {
-                throw new SafeBrowsingException("ERROR: Invalid response returned from Safe Browsing ({$result['code']})");
+                throw new SafeBrowsingException(
+                    "ERROR: Invalid response returned from Safe Browsing ({$result['code']})"
+                );
             }
         }
         return false;
@@ -300,7 +302,7 @@ class SafeBrowsingClient extends AbstractServiceClient
      * @param string $responseData
      * @return array
      */
-    function getFullHashes($responseData)
+    public function getFullHashes($responseData)
     {
         $hashesData = array();
         while (strlen($responseData) > 0) {
@@ -537,7 +539,7 @@ class SafeBrowsingClient extends AbstractServiceClient
      * @return array
      * @throws SafeBrowsingException
      */
-    function parseChunk($data)
+    private function parseChunk($data)
     {
         $data = trim($data);
         if (strlen($data) === 0) {
