@@ -58,7 +58,7 @@ use Yandex\Common\Exception\Exception;
             <?php
             } else {
                 ?>
-                <div class="alert alert-success"><?= $url ?> - не найден в списке опасных сайтов</div>
+                <div class="alert alert-success"><?= htmlentities($url) ?> - не найден в списке опасных сайтов</div>
             <?php
             }
             /**

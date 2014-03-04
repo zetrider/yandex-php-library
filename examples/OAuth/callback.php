@@ -30,7 +30,7 @@ session_start();
         if (isset($_COOKIE['yaAccessToken'])) {
 
             $client->setAccessToken($_COOKIE['yaAccessToken']);
-            echo "<p>PHP: Access token from cookies is " . $client->getAccessToken() . '</p>';
+            echo '<p>PHP: Access token from cookies is: ' . htmlentities($client->getAccessToken()) . '</p>';
         }
 
         /**
@@ -56,11 +56,14 @@ session_start();
                 setcookie('yaClientId', $settings['global']['clientId'], 0, '/');
             }
 
-        } elseif (isset($_REQUEST['error'])) {
+        } elseif (isset($_GET['error'])) {
 
-            echo "<p>PHP: Server redirected with error '" . $_REQUEST['error']
-                . "' and message '" . $_REQUEST['error_description'] . "'</p>";
+            echo '<p>PHP: Server redirected with error "' . htmlentities($_GET['error']) . '"';
 
+            if (isset($_GET['error_description'])) {
+                echo ' and message "' . htmlentities($_GET['error_description']) . '"';
+            }
+            echo '</p>';
         }
 
         if ($client->getAccessToken() && isset($_SESSION['back'])) {

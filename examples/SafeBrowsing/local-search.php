@@ -96,11 +96,11 @@ function localSearchUrl($url, $key)
             //If exist local DB of prefixes
             if (localSearchUrl($url, $key)) {
                 ?>
-                <div class="alert alert-danger">Найден полный хеш для "<?= $url ?>" в списке опасных сайтов</div>
+                <div class="alert alert-danger">Найден полный хеш для "<?= htmlentities($url) ?>" в списке опасных сайтов</div>
             <?php
             } else {
                 ?>
-                <div class="alert alert-success"><?= $url ?> - не найден в списке опасных сайтов</div>
+                <div class="alert alert-success"><?= htmlentities($url) ?> - не найден в списке опасных сайтов</div>
             <?php
             }
         }
