@@ -9,5 +9,5 @@ namespace Yandex\Common;
 
 class Version
 {
-    static $version = '0.1';
+    public static $version = '0.1';
 }
