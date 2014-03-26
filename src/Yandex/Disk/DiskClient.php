@@ -86,6 +86,7 @@ class DiskClient extends AbstractServiceClient
     {
         try {
 
+            $request->setHeader('User-Agent', 'yandex-sdk-php');
             $response = $request->send();
 
         } catch (ClientErrorResponseException $ex) {
