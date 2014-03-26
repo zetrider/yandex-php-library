@@ -6,6 +6,7 @@ use Guzzle\Http\Exception\ClientErrorResponseException;
 use Guzzle\Http\Message\Request;
 use Guzzle\Http\Message\Response;
 use Yandex\Common\Exception\ResponseException;
+use Yandex\Common\Version;
 
 /**
  * Class AbstractServiceClient
@@ -42,6 +43,19 @@ abstract class AbstractServiceClient extends AbstractPackage
      * @var string
      */
     protected $accessToken = '';
+
+    /**
+     * @var string
+     */
+    protected $sdkName = 'yandex-sdk-php';
+
+    /**
+     * @return string
+     */
+    public function getUserAgent()
+    {
+        return $this->sdkName . '/' . Version::$version;
+    }
 
     /**
      * @param string $accessToken
@@ -156,7 +170,7 @@ abstract class AbstractServiceClient extends AbstractPackage
     {
         try {
 
-            $request->setHeader('User-Agent', 'yandex-sdk-php');
+            $request->setHeader('User-Agent', $this->getUserAgent());
             $response = $request->send();
 
         } catch (ClientErrorResponseException $ex) {
