@@ -4,7 +4,7 @@
  */
 namespace Yandex\SiteSearchPinger;
 
-use Yandex\Common\AbstractPackage;
+use Yandex\Common\AbstractServiceClient;
 use Yandex\Common\Exception\InvalidArgumentException;
 use Yandex\SiteSearchPinger\Exception\InvalidUrlException;
 use Yandex\SiteSearchPinger\Exception\SiteSearchPingerException;
@@ -25,7 +25,7 @@ use Guzzle\Http\Exception\ClientErrorResponseException;
  * @author   Anton Shevchuk
  * @created  06.08.13 17:30
  */
-class SiteSearchPinger extends AbstractPackage
+class SiteSearchPinger extends AbstractServiceClient
 {
     /**
      * @var string
@@ -51,16 +51,6 @@ class SiteSearchPinger extends AbstractPackage
      * @var string
      */
     protected $searchId;
-
-    /**
-     * @var string
-     */
-    protected $pluginId;
-
-    /**
-     * @var string
-     */
-    protected $version;
 
     /**
      * Connection Errors
@@ -222,9 +212,7 @@ class SiteSearchPinger extends AbstractPackage
             array(
                 'key' => $this->key,
                 'login' => $this->login,
-                'search_id' => $this->searchId,
-                'pluginid' => $this->pluginId,
-                'cmsver' => $this->version
+                'search_id' => $this->searchId
             )
         );
 
@@ -235,6 +223,7 @@ class SiteSearchPinger extends AbstractPackage
         $request->setProtocolVersion('1.0');
         $request->setPostField('urls', join("\n", $urls));
         $request->setPostField('publishdate', $publishDate);
+        $request->setHeader('User-Agent', $this->getUserAgent());
         return $request->send();
     }
 }
