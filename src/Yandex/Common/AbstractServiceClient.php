@@ -156,6 +156,7 @@ abstract class AbstractServiceClient extends AbstractPackage
     {
         try {
 
+            $request->setHeader('User-Agent', 'yandex-sdk-php');
             $response = $request->send();
 
         } catch (ClientErrorResponseException $ex) {
