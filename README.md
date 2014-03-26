@@ -51,6 +51,9 @@ $files = $disk->directoryContents();
 
 ## Использование
 
+* [Yandex Disk](https://github.com/nixsolutions/yandex-sdk-php/wiki/Yandex-Disk)
+* [Yandex Market for Partner](https://github.com/nixsolutions/yandex-sdk-php/wiki/Yandex-Market-for-Partner)
+* [Yandex OAuth](https://github.com/nixsolutions/yandex-sdk-php/wiki/Yandex-OAuth)
 * [Yandex Site Search Pinger](https://github.com/nixsolutions/yandex-sdk-php/wiki/Yandex-Site-Search-Pinger)
 * [Yandex Safe Browsing](https://github.com/nixsolutions/yandex-sdk-php/wiki/Yandex-Safe-Browsing)
 
