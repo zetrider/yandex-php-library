@@ -5,6 +5,9 @@
 <% var current = paths.getCurrent(); %>
 <% var contents = data.contents; %>
 <% var contentsLength = contents.length; %>
+<% var usedSpace = parseFloat(space.usedBytes / 1024 / 1024).toFixed(2); %>
+<% var availableSpace = parseFloat(space.availableBytes / 1024 / 1024).toFixed(2); %>
+
 <div class="container">
     <div class="col-md-8">
         <div>
@@ -17,8 +20,8 @@
                     <span class="sr-only"><%= avaliable %>% Complete</span>
                 </div>
             </div>
-            <p class="used-space"><span>Used space:</span><%= space.usedBytes %> bytes</p>
-            <p class="available-space"><span>Available space:</span><%= space.availableBytes %> bytes</p>
+            <p class="used-space"><span>Used space:</span><%= usedSpace %> MB</p>
+            <p class="available-space"><span>Available space:</span><%= availableSpace %> MB</p>
         </div>
         <div>
             <div class="elements-list">
