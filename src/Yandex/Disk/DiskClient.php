@@ -194,16 +194,15 @@ class DiskClient extends AbstractServiceClient
      * @param string $property
      * @param string $value
      * @param string $namespace
-     * @return void
+     * @return bool
      */
-    public function setProperty($path = '', $property = '', $value = '', $namespace = 'urn:yandex:disk:meta')
+    public function setProperty($path = '', $property = '', $value = '', $namespace = 'default:namespace')
     {
         if (!empty($property) && !empty($value)) {
             $client = new Client($this->getServiceUrl());
             $body = '<?xml version="1.0" encoding="utf-8" ?><propertyupdate xmlns="DAV:" xmlns:u="'
                 . $namespace . '"><set><prop><u:' . $property . '>' . $value . '</u:'
                 . $property . '></prop></set></propertyupdate>';
-
             $request = $client->createRequest(
                 'PROPPATCH',
                 $path,
@@ -216,20 +215,23 @@ class DiskClient extends AbstractServiceClient
                 ),
                 $body
             );
-            $this->sendRequest($request);
+            $response = $this->sendRequest($request)->xml()->children('DAV:')->response;
+            $resultStatus = $response->propstat->status;
+            if (strpos($resultStatus, '200 OK')) {
+                return true;
+            }
         }
+        return false;
     }
 
     /**
      * @param string $path
      * @param string $property
      * @param string $namespace
-     * @return array|bool
+     * @return string|bool
      */
-    public function getProperty($path = '', $property = '', $namespace = 'urn:yandex:disk:meta')
+    public function getProperty($path = '', $property = '', $namespace = 'default:namespace')
     {
-        $result = false;
-
         if (!empty($property)) {
             $client = new Client($this->getServiceUrl());
             $body = '<?xml version="1.0" encoding="utf-8" ?><propfind xmlns="DAV:"><prop><' . $property
@@ -249,10 +251,15 @@ class DiskClient extends AbstractServiceClient
                 $body
             );
 
-            $result = (array)$this->sendRequest($request)->xml()->children('DAV:')->response->propstat->prop;
+            $result = $this->sendRequest($request);
+            $response = $result->xml()->children('DAV:')->response;
+            $resultStatus = $response->propstat->status;
+            if (strpos($resultStatus, '200 OK')) {
+                return (string)$response->propstat->prop->children();
+            }
         }
 
-        return $result;
+        return false;
     }
 
     /**
