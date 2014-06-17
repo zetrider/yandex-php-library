@@ -47,7 +47,7 @@ abstract class AbstractServiceClient extends AbstractPackage
     /**
      * @var string
      */
-    protected $sdkName = 'yandex-sdk-php';
+    protected $sdkName = 'yandex-php-library';
 
     /**
      * @return string

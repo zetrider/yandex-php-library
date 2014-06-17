@@ -6,20 +6,23 @@ php:
   - 5.3
   - 5.4
   - 5.5
+  - 5.6
 before_script:
   # Composer
   - COMPOSER_ROOT_VERSION=dev-master composer --prefer-source --dev install
   - composer self-update
   - composer update --prefer-source
 script:
-  # PHPUnit tests
-  - php vendor/bin/phpunit --configuration tests/phpunit.xml.dist --coverage-text
   - mkdir .reports
   # Code style
-  - php vendor/bin/phpcs ./src/Yandex --standard=PSR1 --report=summary
-  - php vendor/bin/phpcs ./src/Yandex --standard=PSR2 --report=summary
-  # Duplicate code
-  - php vendor/bin/phpcpd --log-pmd .reports/pmd-cpd.xml src/Yandex
+  - php vendor/bin/phpcs ./src/Yandex --standard=PSR1 --encoding=utf-8 --report=summary
+  - php vendor/bin/phpcs ./src/Yandex --standard=PSR2 --encoding=utf-8 --report=summary
+  # PHPUnit tests
+  - php vendor/bin/phpunit --configuration tests/phpunit.xml.dist --coverage-clover=.reports/clover.xml
+after_script:
+  - php vendor/bin/coveralls -v
+  - wget https://scrutinizer-ci.com/ocular.phar
+  - php ocular.phar code-coverage:upload --format=php-clover .reports/clover.xml
 after_success:
   #Share build:
   - composer update --no-dev

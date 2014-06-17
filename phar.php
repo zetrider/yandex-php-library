@@ -3,7 +3,7 @@
 exec("find . | grep .git | xargs rm -rf");
 
 $branchName = getenv('TRAVIS_BRANCH');
-$fileName = 'yandex-sdk_.phar';
+$fileName = 'yandex-php-library_.phar';
 
 $phar = new Phar($fileName, 0, $fileName);
 //Add files to Phar
