@@ -1,7 +1,7 @@
 {
-    "name": "nixsolutions/yandex-sdk-php",
-    "description": "Official Yandex SDK for PHP",
-    "keywords":["yasdk","yandex","sdk"],
+    "name": "nixsolutions/yandex-php-library",
+    "description": "Official Yandex PHP library",
+    "keywords":["yandex","sdk"],
     "type":"library",
     "license": "MIT",
     "minimum-stability": "dev",
@@ -30,7 +30,7 @@
         }
     ],
     "support": {
-        "issues": "https://github.com/nixsolutions/yandex-sdk-php/issues",
-        "wiki": "https://github.com/nixsolutions/yandex-sdk-php/wiki"
+        "issues": "https://github.com/nixsolutions/yandex-sdk-library/issues",
+        "wiki": "https://github.com/nixsolutions/yandex-sdk-library/wiki"
     }
 }
