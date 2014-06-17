@@ -15,7 +15,7 @@ use Yandex\Common\Exception\Exception;
 <html lang="en-US">
 <head>
     <meta charset="UTF-8">
-    <title>Yandex.SDK: Pinger Demo</title>
+    <title>Yandex PHP Library: Pinger Demo</title>
 
     <link rel="stylesheet" href="//yandex.st/bootstrap/3.0.0/css/bootstrap.min.css">
     <link href="//netdna.bootstrapcdn.com/font-awesome/3.2.1/css/font-awesome.css" rel="stylesheet">

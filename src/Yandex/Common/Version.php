@@ -1,12 +1,20 @@
 <?php
 /**
- * User: naxel
- * Date: 26.03.14 15:12
+ * Yandex PHP Library
+ *
+ * @copyright NIX Solutions Ltd.
+ * @link https://github.com/nixsolutions/yandex-php-library
  */
 
+/**
+ * @namespace
+ */
 namespace Yandex\Common;
 
-
+/**
+ * Class Version
+ * @package Yandex\Common
+ */
 class Version
 {
     public static $version = '0.2.0';

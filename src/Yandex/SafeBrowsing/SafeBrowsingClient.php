@@ -1,5 +1,14 @@
 <?php
+/**
+ * Yandex PHP Library
+ *
+ * @copyright NIX Solutions Ltd.
+ * @link https://github.com/nixsolutions/yandex-php-library
+ */
 
+/**
+ * @namespace
+ */
 namespace Yandex\SafeBrowsing;
 
 use Yandex\Common\AbstractServiceClient;
@@ -20,22 +29,35 @@ use Yandex\Common\Exception\ForbiddenException;
  */
 class SafeBrowsingClient extends AbstractServiceClient
 {
-
+    /**
+     * @var string
+     */
     protected $serviceDomain = 'sba.yandex.net';
 
+    /**
+     * @var
+     */
     protected $apiKey;
 
+    /**
+     * @var string
+     */
     protected $appVer = '2.3';
 
+    /**
+     * @var string
+     */
     protected $pVer = '2.3';
 
+    /**
+     * @var array
+     */
     protected $malwareShavars = array(
         'ydx-malware-shavar',
         'ydx-phish-shavar',
         'goog-malware-shavar',
         'goog-phish-shavar'
     );
-
 
     /**
      * @param string $apiKey
@@ -45,7 +67,6 @@ class SafeBrowsingClient extends AbstractServiceClient
         $this->setApiKey($apiKey);
     }
 
-
     /**
      * @param string $apiKey
      */
@@ -54,7 +75,6 @@ class SafeBrowsingClient extends AbstractServiceClient
         $this->apiKey = $apiKey;
     }
 
-
     /**
      * @return string
      */
@@ -62,7 +82,6 @@ class SafeBrowsingClient extends AbstractServiceClient
     {
         return $this->apiKey;
     }
-
 
     /**
      * @param array $malwareShavars
@@ -92,7 +111,6 @@ class SafeBrowsingClient extends AbstractServiceClient
         . $resource . '?client=api&apikey=' . $this->apiKey . '&appver=' . $this->appVer . '&pver=' . $this->pVer;
     }
 
-
     /**
      * Get url to service Lookup resource with parameters
      *
@@ -105,7 +123,6 @@ class SafeBrowsingClient extends AbstractServiceClient
         return $this->serviceScheme . '://' . $this->serviceDomain . '/'
         . 'lookup?client=api&apikey=' . $this->apiKey . '&pver=' . $pVer . '&url=' . $url;
     }
-
 
     /**
      * Get url to service Check Adult  resource with parameters
@@ -172,7 +189,6 @@ class SafeBrowsingClient extends AbstractServiceClient
         );
     }
 
-
     /**
      * @param string $bodyString
      * @see https://developers.google.com/safe-browsing/developers_guide_v2#HTTPRequestForData
@@ -192,7 +208,6 @@ class SafeBrowsingClient extends AbstractServiceClient
         );
     }
 
-
     /**
      * @see https://developers.google.com/safe-browsing/developers_guide_v2#HTTPRequestForList
      * @return array
@@ -207,7 +222,6 @@ class SafeBrowsingClient extends AbstractServiceClient
         $response = $this->sendRequest($request);
         return explode("\n", trim($response->getBody(true)));
     }
-
 
     /**
      * @param string $url
@@ -228,10 +242,9 @@ class SafeBrowsingClient extends AbstractServiceClient
 
     }
 
-
     /**
      * @param string $url
-     * @return array
+     * @return bool
      */
     public function checkAdult($url)
     {
@@ -247,7 +260,6 @@ class SafeBrowsingClient extends AbstractServiceClient
         return false;
     }
 
-
     /**
      * @param string $url
      * @return array
@@ -260,7 +272,6 @@ class SafeBrowsingClient extends AbstractServiceClient
         $response = $this->sendRequest($request);
         return $response->getBody(true);
     }
-
 
     /**
      * @param string $url
@@ -298,7 +309,6 @@ class SafeBrowsingClient extends AbstractServiceClient
         return false;
     }
 
-
     /**
      * @param string $responseData
      * @return array
@@ -319,7 +329,6 @@ class SafeBrowsingClient extends AbstractServiceClient
         }
         return $hashesData;
     }
-
 
     /**
      * @param string $url
@@ -361,7 +370,6 @@ class SafeBrowsingClient extends AbstractServiceClient
         return $this->getHashesByHosts($hosts);
     }
 
-
     /**
      * @param array $hosts
      * @return array
@@ -375,7 +383,6 @@ class SafeBrowsingClient extends AbstractServiceClient
         return $hashes;
     }
 
-
     /**
      * @param string $host
      * @return array
@@ -386,7 +393,6 @@ class SafeBrowsingClient extends AbstractServiceClient
         $hash = hash('sha256', $host);
         return array("host" => $host, "prefix" => substr($hash, 0, 8), "full" => $hash);
     }
-
 
     /**
      * @param array $savedChunks
@@ -437,7 +443,6 @@ class SafeBrowsingClient extends AbstractServiceClient
         }
         return $body;
     }
-
 
     /**
      * Get malwares prefixes data
@@ -531,7 +536,6 @@ class SafeBrowsingClient extends AbstractServiceClient
 
         return $result;
     }
-
 
     /**
      * Parsing chunk

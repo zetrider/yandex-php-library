@@ -1,12 +1,20 @@
 <?php
+/**
+ * Yandex PHP Library
+ *
+ * @copyright NIX Solutions Ltd.
+ * @link https://github.com/nixsolutions/yandex-php-library
+ */
 
+/**
+ * @namespace
+ */
 namespace Yandex\Common;
 
 use Guzzle\Http\Exception\ClientErrorResponseException;
 use Guzzle\Http\Message\Request;
 use Guzzle\Http\Message\Response;
 use Yandex\Common\Exception\ResponseException;
-use Yandex\Common\Version;
 
 /**
  * Class AbstractServiceClient
@@ -180,7 +188,7 @@ abstract class AbstractServiceClient extends AbstractPackage
             if (is_array($result) && isset($result['error'])) {
                 // handle a service error message
                 throw new ResponseException($result);
-                //throw new ResponseException('Service responsed with error code "' . $result['error'] . '"');
+                //throw new ResponseException('Service response with error code "' . $result['error'] . '"');
             }
 
             // unknown error

@@ -1,5 +1,12 @@
 <?php
 /**
+ * Yandex PHP Library
+ *
+ * @copyright NIX Solutions Ltd.
+ * @link https://github.com/nixsolutions/yandex-php-library
+ */
+
+/**
  * @namespace
  */
 namespace Yandex\SiteSearchPinger;
@@ -186,7 +193,6 @@ class SiteSearchPinger extends AbstractServiceClient
 
         return $addedCount;
     }
-
 
     /**
      * doCheckOptions

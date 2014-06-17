@@ -6,7 +6,7 @@ session_start();
 <html lang="en-US">
 <head>
     <meta charset="UTF-8">
-    <title>Yandex.SDK: OAuth Demo Callback</title>
+    <title>Yandex PHP Library: OAuth Demo Callback</title>
 
     <link rel="stylesheet" href="//yandex.st/bootstrap/3.0.0/css/bootstrap.min.css">
     <link href="//netdna.bootstrapcdn.com/font-awesome/3.2.1/css/font-awesome.css" rel="stylesheet">

@@ -37,7 +37,7 @@ if (isset($_REQUEST['type'])) {
 <html lang="en-US">
 <head>
     <meta charset="UTF-8">
-    <title>Yandex.SDK: OAuth Demo</title>
+    <title>Yandex PHP Library: OAuth Demo</title>
 
     <link rel="stylesheet" href="//yandex.st/bootstrap/3.0.0/css/bootstrap.min.css">
     <link href="//netdna.bootstrapcdn.com/font-awesome/3.2.1/css/font-awesome.css" rel="stylesheet">
