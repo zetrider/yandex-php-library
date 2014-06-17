@@ -322,7 +322,7 @@ class DiskClient extends AbstractServiceClient
      * @param string $path
      * @param string $destination
      * @param string $name
-     * @return bool|false
+     * @return string|false
      */
     public function downloadFile($path = '', $destination = '', $name = '')
     {
