@@ -12,14 +12,13 @@
 namespace Yandex\Common\Exception;
 
 /**
- * Parent Exception for all Yandex SDK packages
+ * Parent Exception for all Yandex library packages
  *
- * @category Yandex
- * @package  Common
+ * @package  Yandex\Common\Exception
  *
  * @author   Anton Shevchuk
  * @created  26.06.13 13:56
  */
-class Exception extends \Exception
+class YandexException extends \Exception
 {
 }

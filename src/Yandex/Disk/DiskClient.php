@@ -16,6 +16,7 @@ use Guzzle\Service\Client;
 use Guzzle\Http\Message\Request;
 use Guzzle\Http\Message\Response;
 use Guzzle\Http\Exception\ClientErrorResponseException;
+use Yandex\Disk\Exception\DiskRequestException;
 
 /**
  * Class DiskClient
@@ -108,9 +109,6 @@ class DiskClient extends AbstractServiceClient
             throw new DiskRequestException(
                 'Service responded with error code: "' . $code . '" and message: "' . $message . '"'
             );
-
-            // unknown error
-            throw $ex;
         }
 
         return $response;

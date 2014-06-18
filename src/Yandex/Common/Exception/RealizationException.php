@@ -14,12 +14,11 @@ namespace Yandex\Common\Exception;
 /**
  * Realization Exception
  *
- * @category Yandex
- * @package  Common
+ * @package  Yandex\Common\Exception
  *
  * @author   Anton Shevchuk
  * @created  09.08.13 12:31
  */
-class RealizationException extends Exception
+class RealizationYandexException extends YandexException
 {
 }

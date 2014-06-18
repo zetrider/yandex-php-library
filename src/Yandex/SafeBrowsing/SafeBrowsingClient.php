@@ -448,7 +448,7 @@ class SafeBrowsingClient extends AbstractServiceClient
      * Get malwares prefixes data
      *
      * @param array $savedChunks
-     * @return array|string
+     * @return array
      * @throws SafeBrowsingException
      */
     public function getMalwaresData($savedChunks = array())

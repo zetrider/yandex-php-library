@@ -11,7 +11,7 @@
  */
 namespace Yandex\SafeBrowsing;
 
-use Yandex\Common\Exception\Exception;
+use Yandex\Common\Exception\YandexException;
 
 /**
  * Safe Browsing Exception
@@ -22,6 +22,6 @@ use Yandex\Common\Exception\Exception;
  * @author   Anton Shevchuk
  * @created  24.07.13 11:20
  */
-class SafeBrowsingException extends Exception
+class SafeBrowsingException extends YandexException
 {
 }

@@ -8,7 +8,7 @@
 
 use Yandex\SafeBrowsing\SafeBrowsingClient;
 use Yandex\SafeBrowsing\SafeBrowsingException;
-use Yandex\Common\Exception\Exception;
+use Yandex\Common\Exception\YandexException;
 
 ?>
 <!doctype html>
@@ -101,8 +101,8 @@ use Yandex\Common\Exception\Exception;
     } catch (SafeBrowsingException $e) {
         echo "Safe Browsing Exception:<br/>";
         echo nl2br($e->getMessage());
-    } catch (Exception $e) {
-        echo "Yandex SDK Exception:<br/>";
+    } catch (YandexException $e) {
+        echo "Yandex Library Exception:<br/>";
         echo nl2br($e->getMessage());
     } catch (\Exception $e) {
         echo get_class($e) . "<br/>";

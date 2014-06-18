@@ -9,18 +9,18 @@
 /**
  * @namespace
  */
-namespace Yandex\Disk;
+namespace Yandex\Disk\Exception;
+
+use Yandex\Common\Exception\YandexException;
 
 /**
  * Class DiskException
  *
- * @category Yandex
- * @package  Disk
+ * @package  Yandex\Disk\Exception
  *
  * @author   Alexander Mitsura <mitsuraa@gmail.com>
  * @created  07.10.13 18:25
  */
-class DiskException extends \Yandex\Common\Exception\Exception
+class DiskException extends YandexException
 {
-
 }

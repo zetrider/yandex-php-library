@@ -12,14 +12,14 @@
 namespace Yandex\Common\Exception;
 
 /**
- * Arguments Exception
+ * Invalid Arguments Exception
+ * should be implement InvalidArgumentException from SPL
  *
- * @category Yandex
- * @package  Common
+ * @package  Yandex\Common\Exception
  *
  * @author   Anton Shevchuk
  * @created  08.08.13 10:49
  */
-class InvalidArgumentException extends \InvalidArgumentException
+class InvalidArgumentException extends YandexException
 {
 }

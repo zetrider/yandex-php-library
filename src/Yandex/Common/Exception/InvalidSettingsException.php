@@ -14,12 +14,11 @@ namespace Yandex\Common\Exception;
 /**
  * Configuration Exception
  *
- * @category Yandex
- * @package  Common
+ * @package  Yandex\Common\Exception
  *
  * @author   Anton Shevchuk
  * @created  26.06.13 13:56
  */
-class InvalidSettingsException extends Exception
+class InvalidSettingsYandexException extends YandexException
 {
 }

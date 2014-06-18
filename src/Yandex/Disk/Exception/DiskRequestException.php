@@ -9,18 +9,16 @@
 /**
  * @namespace
  */
-namespace Yandex\Disk;
+namespace Yandex\Disk\Exception;
 
 /**
  * Class DiskRequestException
  *
- * @category Yandex
- * @package  Disk
+ * @package  Yandex\Disk\Exception
  *
  * @author   Alexander Mitsura <mitsuraa@gmail.com>
  * @created  08.10.13 10:57
  */
 class DiskRequestException extends DiskException
 {
-
 }

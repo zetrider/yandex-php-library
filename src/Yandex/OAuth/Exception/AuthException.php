@@ -9,18 +9,18 @@
 /**
  * @namespace
  */
-namespace Yandex\OAuth;
+namespace Yandex\OAuth\Exception;
+
+use Yandex\Common\Exception\YandexException;
 
 /**
  * Class AuthException
  *
- * @category Yandex
- * @package  OAuth
+ * @package  Yandex\OAuth\Exception
  *
  * @author   Eugene Zabolotniy <realbaziak@gmail.com>
  * @created  31.08.13 17:58
  */
-class AuthException extends \Yandex\Common\Exception\Exception
+class AuthException extends YandexException
 {
-
 }

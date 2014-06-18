@@ -8,7 +8,7 @@
 
 use Yandex\SafeBrowsing\SafeBrowsingClient;
 use Yandex\SafeBrowsing\SafeBrowsingException;
-use Yandex\Common\Exception\Exception;
+use Yandex\Common\Exception\YandexException;
 
 ?>
 <!doctype html>
@@ -64,10 +64,10 @@ use Yandex\Common\Exception\Exception;
 
         <form method="get">
             <div class="input-group">
-                <input name="url" placeholder="URL" type="text" class="form-control">
-                      <span class="input-group-btn">
-                          <input class="btn btn-primary" type="submit" value="Проверить URL"/>
-                      </span>
+                <input name="url" placeholder="URL" type="text" class="form-control"/>
+                <span class="input-group-btn">
+                    <input class="btn btn-primary" type="submit" value="Проверить URL"/>
+                </span>
             </div>
         </form>
         <p>
@@ -96,7 +96,7 @@ use Yandex\Common\Exception\Exception;
     } catch (SafeBrowsingException $e) {
         echo "Safe Browsing Exception:<br/>";
         echo nl2br($e->getMessage());
-    } catch (Exception $e) {
+    } catch (YandexException $e) {
         echo "Yandex SDK Exception:<br/>";
         echo nl2br($e->getMessage());
     } catch (\Exception $e) {

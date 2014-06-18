@@ -11,17 +11,16 @@
  */
 namespace Yandex\SiteSearchPinger\Exception;
 
-use Yandex\Common\Exception\Exception;
+use Yandex\Common\Exception\YandexException;
 
 /**
  * SiteSearchPinger Exception
  *
- * @category Yandex
- * @package  SiteSearchPinger
+ * @package  Yandex\SiteSearchPinger\Exception
  *
  * @author   Anton Shevchuk
  * @created  24.07.13 11:19
  */
-class SiteSearchPingerException extends Exception
+class SiteSearchPingerException extends YandexException
 {
 }

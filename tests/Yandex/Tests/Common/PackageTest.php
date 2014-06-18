@@ -18,7 +18,6 @@ use Yandex\Tests\Fixtures\Fixtures;
  */
 class PackageTest extends TestCase
 {
-
     /**
      * @var \Yandex\Tests\Fixtures\Fixtures
      */
@@ -74,7 +73,7 @@ class PackageTest extends TestCase
 
     /**
      * @covers Yandex\Common\AbstractPackage::checkSettings
-     * @expectedException \Yandex\Common\Exception\InvalidSettingsException
+     * @expectedException \Yandex\Common\Exception\InvalidSettingsYandexException
      */
     public function testCheckSettings()
     {
@@ -91,7 +90,7 @@ class PackageTest extends TestCase
 
     /**
      * @covers Yandex\Common\AbstractPackage::__set
-     * @expectedException \Yandex\Common\Exception\RealizationException
+     * @expectedException \Yandex\Common\Exception\RealizationYandexException
      */
     public function testSetRealizationException()
     {
@@ -100,7 +99,7 @@ class PackageTest extends TestCase
 
     /**
      * @covers Yandex\Common\AbstractPackage::__get
-     * @expectedException \Yandex\Common\Exception\RealizationException
+     * @expectedException \Yandex\Common\Exception\RealizationYandexException
      */
     public function testGetRealizationException()
     {

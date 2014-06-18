@@ -17,6 +17,7 @@ use Guzzle\Http\Message\Request;
 use Guzzle\Http\Message\Response;
 use Guzzle\Http\Exception\ClientErrorResponseException;
 use Yandex\Common\Exception\ForbiddenException;
+use Yandex\Market\Exception\MarketRequestException;
 
 /**
  * Class MarketClient

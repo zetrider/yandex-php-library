@@ -16,8 +16,7 @@ namespace Yandex\SiteSearchPinger\Exception;
  *
  * Check settings on page {@link http://site.yandex.ru/searches/}
  *
- * @category Yandex
- * @package  SiteSearchPinger
+ * @package  Yandex\SiteSearchPinger\Exception
  *
  * @author   Anton Shevchuk
  * @created  24.07.13 18:59
