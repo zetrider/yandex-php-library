@@ -6,7 +6,7 @@ PHP библиотека к API Яндекса
 [![Total Downloads](https://poser.pugx.org/nixsolutions/yandex-php-library/downloads.png)](https://packagist.org/packages/nixsolutions/yandex-php-library)
 
 [![Scrutinizer Code Quality](https://scrutinizer-ci.com/g/nixsolutions/yandex-php-library/badges/quality-score.png?b=master)](https://scrutinizer-ci.com/g/nixsolutions/yandex-php-library/?branch=master)
-[![Coverage Status](https://coveralls.io/repos/nixsolutions/yandex-php-library/badge.png)](https://coveralls.io/r/nixsolutions/yandex-php-library)
+[![Code Coverage](https://scrutinizer-ci.com/g/nixsolutions/yandex-php-library/badges/coverage.png?b=master)](https://scrutinizer-ci.com/g/nixsolutions/yandex-php-library/?branch=master)
 [![Dependency Status](https://www.versioneye.com/user/projects/53a1549983add72cb9000014/badge.svg?style=flat)](https://www.versioneye.com/user/projects/53a1549983add72cb9000014)
 
 ## Установка
