@@ -7,15 +7,13 @@
     "minimum-stability": "dev",
     "require": {
         "php": ">=5.3.3",
-        "guzzle/http": "~3.7.0",
-        "guzzle/service": "~3.7.0"
+        "guzzle/http": "~3.9.1",
+        "guzzle/service": "~3.9.1"
     },
     "require-dev": {
         "phpunit/phpunit": "3.7.*",
-        "squizlabs/php_codesniffer": "1.*",
-        "sebastian/phpcpd": "dev-master",
-        "pdepend/pdepend": "dev-master",
-        "phpmd/phpmd": "dev-master"
+        "satooshi/php-coveralls": "dev-master",
+        "squizlabs/php_codesniffer": "1.*"
     },
     "autoload": {
         "psr-0": {
@@ -27,10 +25,14 @@
         {
             "name": "NIX Solutions Ltd",
             "email": "github@nixsolutions.com"
+        },
+        {
+            "name": "Yandex PHP library Contributors",
+            "homepage": "https://github.com/nixsolutions/yandex-php-library/graphs/contributors"
         }
     ],
     "support": {
-        "issues": "https://github.com/nixsolutions/yandex-sdk-library/issues",
-        "wiki": "https://github.com/nixsolutions/yandex-sdk-library/wiki"
+        "issues": "https://github.com/nixsolutions/yandex-php-library/issues",
+        "wiki": "https://github.com/nixsolutions/yandex-php-library/wiki"
     }
 }

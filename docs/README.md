@@ -1,7 +1,7 @@
-Yandex SDK PHP
-==============
+Yandex PHP Library
+==================
 
-Documentation for the  [Yandex SDK PHP](https://github.com/NIXSolutionsLtd/yandex-sdk-php).
+Documentation for the  [Yandex SDK PHP](https://github.com/NIXSolutionsLtd/yandex-php-library).
 
 Building the documentation
 --------------------------

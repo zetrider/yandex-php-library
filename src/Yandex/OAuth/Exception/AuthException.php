@@ -9,19 +9,18 @@
 /**
  * @namespace
  */
-namespace Yandex\SafeBrowsing;
+namespace Yandex\OAuth\Exception;
 
 use Yandex\Common\Exception\YandexException;
 
 /**
- * Safe Browsing Exception
+ * Class AuthException
  *
- * @category Yandex
- * @package  SafeBrowsing
+ * @package  Yandex\OAuth\Exception
  *
- * @author   Anton Shevchuk
- * @created  24.07.13 11:20
+ * @author   Eugene Zabolotniy <realbaziak@gmail.com>
+ * @created  31.08.13 17:58
  */
-class SafeBrowsingException extends YandexException
+class AuthException extends YandexException
 {
 }

@@ -9,17 +9,16 @@
 /**
  * @namespace
  */
-namespace Yandex\Common\Exception;
+namespace Yandex\Market\Exception;
 
 /**
- * ProfileNotFoundException Exception
+ * Class MarketRequestException
  *
- * @package  Yandex\Common\Exception
+ * @package  Yandex\Market\Exception
  *
  * @author   Alexander Khaylo <naxel@land.ru>
- * @created  22.11.13 16:30
+ * @created  04.11.13 12:48
  */
-class ProfileNotFoundException extends YandexException
+class MarketRequestException extends MarketException
 {
-
 }

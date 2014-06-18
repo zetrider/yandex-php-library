@@ -8,14 +8,14 @@
 
 use Yandex\SafeBrowsing\SafeBrowsingClient;
 use Yandex\SafeBrowsing\SafeBrowsingException;
-use Yandex\Common\Exception\Exception;
+use Yandex\Common\Exception\YandexException;
 
 ?>
 <!doctype html>
 <html lang="en-US">
 <head>
     <meta charset="UTF-8">
-    <title>Yandex.SDK: Safe Browsing Demo</title>
+    <title>Yandex PHP Library: Safe Browsing Demo</title>
 
     <link rel="stylesheet" href="//yandex.st/bootstrap/3.0.0/css/bootstrap.min.css">
     <link href="//netdna.bootstrapcdn.com/font-awesome/3.2.1/css/font-awesome.css" rel="stylesheet">
@@ -78,10 +78,10 @@ use Yandex\Common\Exception\Exception;
 
         <form method="get">
             <div class="input-group">
-                <input name="url" placeholder="URL" type="text" class="form-control">
-                      <span class="input-group-btn">
-                          <input class="btn btn-primary" type="submit" value="Проверить URL"/>
-                      </span>
+                <input name="url" placeholder="URL" type="text" class="form-control"/>
+                <span class="input-group-btn">
+                    <input class="btn btn-primary" type="submit" value="Проверить URL"/>
+                </span>
             </div>
         </form>
         <p>
@@ -110,8 +110,8 @@ use Yandex\Common\Exception\Exception;
     } catch (SafeBrowsingException $e) {
         echo "Safe Browsing Exception:<br/>";
         echo nl2br($e->getMessage());
-    } catch (Exception $e) {
-        echo "Yandex SDK Exception:<br/>";
+    } catch (YandexException $e) {
+        echo "Yandex Library Exception:<br/>";
         echo nl2br($e->getMessage());
     } catch (\Exception $e) {
         echo get_class($e) . "<br/>";

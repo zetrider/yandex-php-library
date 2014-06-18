@@ -1,5 +1,12 @@
 <?php
 /**
+ * Yandex PHP Library
+ *
+ * @copyright NIX Solutions Ltd.
+ * @link https://github.com/nixsolutions/yandex-php-library
+ */
+
+/**
  * @namespace
  */
 namespace Yandex\Common;
@@ -96,8 +103,8 @@ abstract class AbstractPackage
     abstract protected function doCheckSettings();
 
     /**
-     * @param $key
-     * @return mixed
+     * @param string $key
+     * @return string
      */
     private function normalizeKey($key)
     {

@@ -1,10 +1,21 @@
 <?php
+/**
+ * Yandex PHP Library
+ *
+ * @copyright NIX Solutions Ltd.
+ * @link https://github.com/nixsolutions/yandex-php-library
+ */
 
+/**
+ * @namespace
+ */
 namespace Yandex\OAuth;
 
 use Guzzle\Http\Client;
 use Guzzle\Http\Exception\ClientErrorResponseException;
 use Guzzle\Http\Exception\RequestException;
+use Yandex\OAuth\Exception\AuthRequestException;
+use Yandex\OAuth\Exception\AuthResponseException;
 
 /**
  * Class OAuthClient implements Yandex OAuth protocol
@@ -17,7 +28,6 @@ use Guzzle\Http\Exception\RequestException;
  */
 class OAuthClient
 {
-
     /*
      * Authentication types constants
      *
@@ -193,6 +203,10 @@ class OAuthClient
         return $this->serviceScheme . '://' . $this->serviceDomain . '/' . rawurlencode($resource);
     }
 
+    /**
+     * @param string $type
+     * @return string
+     */
     public function getAuthUrl($type = self::CODE_AUTH_TYPE)
     {
         return $this->getServiceUrl('authorize') . '?response_type=' . $type . '&client_id=' . $this->clientId;

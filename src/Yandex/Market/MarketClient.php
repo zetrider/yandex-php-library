@@ -1,4 +1,14 @@
 <?php
+/**
+ * Yandex PHP Library
+ *
+ * @copyright NIX Solutions Ltd.
+ * @link https://github.com/nixsolutions/yandex-php-library
+ */
+
+/**
+ * @namespace
+ */
 namespace Yandex\Market;
 
 use Yandex\Common\AbstractServiceClient;
@@ -7,6 +17,7 @@ use Guzzle\Http\Message\Request;
 use Guzzle\Http\Message\Response;
 use Guzzle\Http\Exception\ClientErrorResponseException;
 use Yandex\Common\Exception\ForbiddenException;
+use Yandex\Market\Exception\MarketRequestException;
 
 /**
  * Class MarketClient

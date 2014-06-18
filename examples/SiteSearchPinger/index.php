@@ -8,24 +8,20 @@
 
 use Yandex\SiteSearchPinger\SiteSearchPinger;
 use Yandex\SiteSearchPinger\Exception\SiteSearchPingerException;
-use Yandex\Common\Exception\Exception;
+use Yandex\Common\Exception\YandexException as YandexException;
 
 ?>
 <!doctype html>
 <html lang="en-US">
 <head>
     <meta charset="UTF-8">
-    <title>Yandex.SDK: Pinger Demo</title>
-
+    <title>Yandex PHP Library: Pinger Demo</title>
     <link rel="stylesheet" href="//yandex.st/bootstrap/3.0.0/css/bootstrap.min.css">
     <link href="//netdna.bootstrapcdn.com/font-awesome/3.2.1/css/font-awesome.css" rel="stylesheet">
     <link rel="stylesheet" href="/examples/Disk/css/style.css">
-
 </head>
 <body>
-
 <div class="container">
-
     <div class="col-md-8">
         <?php
         try {
@@ -69,8 +65,8 @@ use Yandex\Common\Exception\Exception;
         } catch (SiteSearchPingerException $e) {
             echo "Site Search Pinger Exception:<br/>";
             echo nl2br($e->getMessage());
-        } catch (Exception $e) {
-            echo "Yandex SDK Exception:<br/>";
+        } catch (YandexException $e) {
+            echo "Yandex Library Exception:<br/>";
             echo nl2br($e->getMessage());
         } catch (\Exception $e) {
             echo get_class($e) . "<br/>";
@@ -81,4 +77,3 @@ use Yandex\Common\Exception\Exception;
 </div>
 </body>
 </html>
-

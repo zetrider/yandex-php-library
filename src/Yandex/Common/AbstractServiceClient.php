@@ -1,12 +1,22 @@
 <?php
+/**
+ * Yandex PHP Library
+ *
+ * @copyright NIX Solutions Ltd.
+ * @link https://github.com/nixsolutions/yandex-php-library
+ */
 
+/**
+ * @namespace
+ */
 namespace Yandex\Common;
 
 use Guzzle\Http\Exception\ClientErrorResponseException;
 use Guzzle\Http\Message\Request;
 use Guzzle\Http\Message\Response;
-use Yandex\Common\Exception\ResponseException;
-use Yandex\Common\Version;
+use Yandex\Common\Exception\MissedArgumentException;
+use Yandex\Common\Exception\ProfileNotFoundException;
+use Yandex\Common\Exception\YandexException;
 
 /**
  * Class AbstractServiceClient
@@ -47,14 +57,14 @@ abstract class AbstractServiceClient extends AbstractPackage
     /**
      * @var string
      */
-    protected $sdkName = 'yandex-sdk-php';
+    protected $libraryName = 'yandex-php-library';
 
     /**
      * @return string
      */
     public function getUserAgent()
     {
-        return $this->sdkName . '/' . Version::$version;
+        return $this->libraryName . '/' . Version::$version;
     }
 
     /**
@@ -164,23 +174,26 @@ abstract class AbstractServiceClient extends AbstractPackage
      * @throws \Yandex\OAuth\AuthRequestException
      * @throws \Exception|\Guzzle\Http\Exception\ClientErrorResponseException
      * @return Response
-     *
      */
     protected function sendRequest(Request $request)
     {
         try {
-
             $request->setHeader('User-Agent', $this->getUserAgent());
             $response = $request->send();
-
         } catch (ClientErrorResponseException $ex) {
-
+            // get error from response
             $result = $request->getResponse()->json();
 
-            if (is_array($result) && isset($result['error'])) {
-                // handle a service error message
-                throw new ResponseException($result);
-                //throw new ResponseException('Service responsed with error code "' . $result['error'] . '"');
+            // handle a service error message
+            if (is_array($result) && isset($result['error'], $result['message'])) {
+                switch ($result['error']) {
+                    case 'MissedRequiredArguments':
+                        throw new MissedArgumentException($result['message']);
+                    case 'AssistantProfileNotFound':
+                        throw new ProfileNotFoundException($result['message']);
+                    default:
+                        throw new YandexException($result['message']);
+                }
             }
 
             // unknown error

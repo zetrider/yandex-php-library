@@ -1,14 +1,22 @@
 <?php
+/**
+ * Yandex PHP Library
+ *
+ * @copyright NIX Solutions Ltd.
+ * @link https://github.com/nixsolutions/yandex-php-library
+ */
 
-
+/**
+ * @namespace
+ */
 namespace Yandex\Disk;
 
 use Yandex\Common\AbstractServiceClient;
 use Guzzle\Service\Client;
 use Guzzle\Http\Message\Request;
-use Guzzle\Http\Message\RequestFactory;
 use Guzzle\Http\Message\Response;
 use Guzzle\Http\Exception\ClientErrorResponseException;
+use Yandex\Disk\Exception\DiskRequestException;
 
 /**
  * Class DiskClient
@@ -21,6 +29,9 @@ use Guzzle\Http\Exception\ClientErrorResponseException;
  */
 class DiskClient extends AbstractServiceClient
 {
+    /**
+     * @var string
+     */
     private $version = 'v1';
 
     /**
@@ -98,9 +109,6 @@ class DiskClient extends AbstractServiceClient
             throw new DiskRequestException(
                 'Service responded with error code: "' . $code . '" and message: "' . $message . '"'
             );
-
-            // unknown error
-            throw $ex;
         }
 
         return $response;
@@ -228,7 +236,7 @@ class DiskClient extends AbstractServiceClient
      * @param string $path
      * @param string $property
      * @param string $namespace
-     * @return string|bool
+     * @return string|false
      */
     public function getProperty($path = '', $property = '', $namespace = 'default:namespace')
     {
@@ -312,7 +320,7 @@ class DiskClient extends AbstractServiceClient
      * @param string $path
      * @param string $destination
      * @param string $name
-     * @return bool|string
+     * @return string|false
      */
     public function downloadFile($path = '', $destination = '', $name = '')
     {

@@ -18,7 +18,6 @@ use Yandex\Tests\Fixtures\Fixtures;
  */
 class PackageTest extends TestCase
 {
-
     /**
      * @var \Yandex\Tests\Fixtures\Fixtures
      */

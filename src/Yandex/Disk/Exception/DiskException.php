@@ -9,19 +9,18 @@
 /**
  * @namespace
  */
-namespace Yandex\SafeBrowsing;
+namespace Yandex\Disk\Exception;
 
 use Yandex\Common\Exception\YandexException;
 
 /**
- * Safe Browsing Exception
+ * Class DiskException
  *
- * @category Yandex
- * @package  SafeBrowsing
+ * @package  Yandex\Disk\Exception
  *
- * @author   Anton Shevchuk
- * @created  24.07.13 11:20
+ * @author   Alexander Mitsura <mitsuraa@gmail.com>
+ * @created  07.10.13 18:25
  */
-class SafeBrowsingException extends YandexException
+class DiskException extends YandexException
 {
 }

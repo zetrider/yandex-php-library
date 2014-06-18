@@ -8,14 +8,14 @@
 
 use Yandex\SafeBrowsing\SafeBrowsingClient;
 use Yandex\SafeBrowsing\SafeBrowsingException;
-use Yandex\Common\Exception\Exception;
+use Yandex\Common\Exception\YandexException;
 
 ini_set('memory_limit', '256M');
 
 /**
  * @param string $url
  * @param string $key
- * @return bool
+ * @return bool|null
  */
 function localSearchUrl($url, $key)
 {
@@ -58,8 +58,7 @@ function localSearchUrl($url, $key)
 <html lang="en-US">
 <head>
     <meta charset="UTF-8">
-    <title>Yandex.SDK: Safe Browsing Demo</title>
-
+    <title>Yandex PHP Library: Safe Browsing Demo</title>
     <link rel="stylesheet" href="//yandex.st/bootstrap/3.0.0/css/bootstrap.min.css">
     <link href="//netdna.bootstrapcdn.com/font-awesome/3.2.1/css/font-awesome.css" rel="stylesheet">
     <link rel="stylesheet" href="/examples/Disk/css/style.css">
@@ -68,7 +67,6 @@ function localSearchUrl($url, $key)
             padding: 6px 12px;
         }
     </style>
-
 </head>
 <body>
 
@@ -108,10 +106,10 @@ function localSearchUrl($url, $key)
 
         <form method="get">
             <div class="input-group">
-                <input name="url" placeholder="URL" type="text" class="form-control">
-                      <span class="input-group-btn">
-                          <input class="btn btn-primary" type="submit" value="Проверить URL"/>
-                      </span>
+                <input name="url" placeholder="URL" type="text" class="form-control"/>
+                <span class="input-group-btn">
+                    <input class="btn btn-primary" type="submit" value="Проверить URL"/>
+                </span>
             </div>
         </form>
         <p>
@@ -140,8 +138,8 @@ function localSearchUrl($url, $key)
     } catch (SafeBrowsingException $e) {
         echo "Safe Browsing Exception:<br/>";
         echo nl2br($e->getMessage());
-    } catch (Exception $e) {
-        echo "Yandex SDK Exception:<br/>";
+    } catch (YandexException $e) {
+        echo "Yandex Library Exception:<br/>";
         echo nl2br($e->getMessage());
     } catch (\Exception $e) {
         echo get_class($e) . "<br/>";
