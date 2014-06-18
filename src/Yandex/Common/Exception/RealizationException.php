@@ -19,6 +19,6 @@ namespace Yandex\Common\Exception;
  * @author   Anton Shevchuk
  * @created  09.08.13 12:31
  */
-class RealizationYandexException extends YandexException
+class RealizationException extends YandexException
 {
 }

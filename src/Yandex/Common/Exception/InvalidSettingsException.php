@@ -19,6 +19,6 @@ namespace Yandex\Common\Exception;
  * @author   Anton Shevchuk
  * @created  26.06.13 13:56
  */
-class InvalidSettingsYandexException extends YandexException
+class InvalidSettingsException extends YandexException
 {
 }
