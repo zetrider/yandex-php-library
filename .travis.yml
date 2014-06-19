@@ -19,11 +19,11 @@ script:
   - php vendor/bin/phpcs ./src/Yandex --standard=PSR2 --encoding=utf-8 --report=summary
   # PHPUnit tests
   - php vendor/bin/phpunit --configuration tests/phpunit.xml.dist --coverage-clover=.reports/clover.xml
+after_success:
+  # Send cover
   - php vendor/bin/coveralls -v
-after_script:
   - wget https://scrutinizer-ci.com/ocular.phar
   - php ocular.phar code-coverage:upload --format=php-clover .reports/clover.xml
-after_success:
   # Share build
   - composer update --no-dev
   - php phar.php
