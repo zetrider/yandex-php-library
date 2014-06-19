@@ -11,11 +11,11 @@
  */
 namespace Yandex\Disk;
 
-use Yandex\Common\AbstractServiceClient;
 use Guzzle\Service\Client;
-use Guzzle\Http\Message\Request;
 use Guzzle\Http\Message\Response;
+use Guzzle\Http\Message\RequestInterface;
 use Guzzle\Http\Exception\ClientErrorResponseException;
+use Yandex\Common\AbstractServiceClient;
 use Yandex\Disk\Exception\DiskRequestException;
 
 /**
@@ -87,13 +87,12 @@ class DiskClient extends AbstractServiceClient
     /**
      * Sends a request
      *
-     * @param Request $request
+     * @param RequestInterface $request
      *
      * @throws \Exception|\Guzzle\Http\Exception\ClientErrorResponseException
      * @return Response
-     *
      */
-    protected function sendRequest(Request $request)
+    protected function sendRequest(RequestInterface $request)
     {
         try {
 
@@ -121,6 +120,9 @@ class DiskClient extends AbstractServiceClient
     public function createDirectory($path = '')
     {
         $client = new Client($this->getServiceUrl());
+        /**
+         *
+         */
         $request = $client->createRequest('MKCOL');
         $request->setPath($path);
         $request->setProtocolVersion('1.1');

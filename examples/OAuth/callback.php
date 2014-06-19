@@ -46,7 +46,7 @@ session_start();
 
             try {
                 $client->requestAccessToken($_REQUEST['code']);
-            } catch (\Yandex\OAuth\AuthRequestException $ex) {
+            } catch (\Yandex\OAuth\Exception\AuthRequestException $ex) {
                 echo $ex->getMessage();
             }
 

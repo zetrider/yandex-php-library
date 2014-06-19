@@ -30,6 +30,10 @@ use Yandex\Common\Exception\YandexException;
 <body>
 
 <div class="container">
+    <div class="jumbotron">
+        <h2><span class="glyphicon glyphicon glyphicon-certificate"></span> Пример работы с Safe Browsing API Яндекса</h2>
+    </div>
+
     <h3>Проверить адреса</h3>
     <?php
     try {
