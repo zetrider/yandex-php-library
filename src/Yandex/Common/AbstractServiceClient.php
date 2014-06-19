@@ -13,6 +13,7 @@ namespace Yandex\Common;
 
 use Guzzle\Http\Exception\ClientErrorResponseException;
 use Guzzle\Http\Message\Request;
+use Guzzle\Http\Message\RequestInterface;
 use Guzzle\Http\Message\Response;
 use Yandex\Common\Exception\MissedArgumentException;
 use Yandex\Common\Exception\ProfileNotFoundException;
@@ -169,13 +170,14 @@ abstract class AbstractServiceClient extends AbstractPackage
     /**
      * Sends a request
      *
-     * @param Request $request
+     * @param \Guzzle\Http\Message\Request|\Guzzle\Http\Message\RequestInterface $request
      *
-     * @throws \Yandex\OAuth\AuthRequestException
-     * @throws \Exception|\Guzzle\Http\Exception\ClientErrorResponseException
+     * @throws Exception\MissedArgumentException
+     * @throws Exception\ProfileNotFoundException
+     * @throws Exception\YandexException
      * @return Response
      */
-    protected function sendRequest(Request $request)
+    protected function sendRequest(RequestInterface $request)
     {
         try {
             $request->setHeader('User-Agent', $this->getUserAgent());
