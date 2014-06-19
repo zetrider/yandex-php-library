@@ -7,17 +7,20 @@
     <link href="//netdna.bootstrapcdn.com/font-awesome/3.2.1/css/font-awesome.css" rel="stylesheet">
     <link rel="stylesheet" href="css/style.css">
     <?php
-
-    if (isset($_COOKIE['yaAccessToken']) && isset($_COOKIE['yaClientId'])) {
-        ?>
+    if (isset($_COOKIE['yaAccessToken']) && isset($_COOKIE['yaClientId'])) :
+    ?>
         <script src="js/require.js"></script>
         <script src="js/index.js"></script>
     <?php
-    }
+    endif;
     ?>
 
 </head>
 <body>
+<div class="container">
+    <div class="jumbotron">
+        <h2><span class="glyphicon glyphicon-hdd"></span> Пример работы с Яндекс Диском</h2>
+    </div>
 <?php
 if (!isset($_COOKIE['yaAccessToken']) || !isset($_COOKIE['yaClientId'])) {
     ?>
@@ -37,5 +40,6 @@ if (!isset($_COOKIE['yaAccessToken']) || !isset($_COOKIE['yaClientId'])) {
 <?php
 }
 ?>
+</div>
 </body>
 </html>

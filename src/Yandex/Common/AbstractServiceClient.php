@@ -13,6 +13,7 @@ namespace Yandex\Common;
 
 use Guzzle\Http\Exception\ClientErrorResponseException;
 use Guzzle\Http\Message\Request;
+use Guzzle\Http\Message\RequestInterface;
 use Guzzle\Http\Message\Response;
 use Yandex\Common\Exception\MissedArgumentException;
 use Yandex\Common\Exception\ProfileNotFoundException;
@@ -38,6 +39,12 @@ abstract class AbstractServiceClient extends AbstractPackage
      * @var string
      */
     protected $serviceScheme = self::HTTPS_SCHEME;
+
+    /**
+     * Can be HTTP 1.0 or HTTP 1.1
+     * @var string
+     */
+    protected $serviceProtocolVersion = '1.1';
 
     /**
      * @var string
@@ -167,18 +174,35 @@ abstract class AbstractServiceClient extends AbstractPackage
     }
 
     /**
+     * prepareRequest
+     *
+     * @param \Guzzle\Http\Message\RequestInterface $request
+     * @return RequestInterface
+     */
+    protected function prepareRequest(RequestInterface $request)
+    {
+        $request->setProtocolVersion($this->serviceProtocolVersion);
+        $request->setHeader('Authorization', 'OAuth ' . $this->getAccessToken());
+        $request->setHeader('Host', $this->getServiceDomain());
+        $request->setHeader('User-Agent', $this->getUserAgent());
+        $request->setHeader('Accept', '*/*');
+        return $request;
+    }
+
+    /**
      * Sends a request
      *
-     * @param Request $request
+     * @param \Guzzle\Http\Message\Request|\Guzzle\Http\Message\RequestInterface $request
      *
-     * @throws \Yandex\OAuth\AuthRequestException
-     * @throws \Exception|\Guzzle\Http\Exception\ClientErrorResponseException
+     * @throws Exception\MissedArgumentException
+     * @throws Exception\ProfileNotFoundException
+     * @throws Exception\YandexException
      * @return Response
      */
-    protected function sendRequest(Request $request)
+    protected function sendRequest(RequestInterface $request)
     {
         try {
-            $request->setHeader('User-Agent', $this->getUserAgent());
+            $request = $this->prepareRequest($request);
             $response = $request->send();
         } catch (ClientErrorResponseException $ex) {
             // get error from response

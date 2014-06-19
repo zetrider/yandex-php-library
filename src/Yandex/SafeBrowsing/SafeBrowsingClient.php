@@ -11,6 +11,7 @@
  */
 namespace Yandex\SafeBrowsing;
 
+use Guzzle\Http\Message\RequestInterface;
 use Yandex\Common\AbstractServiceClient;
 use Guzzle\Service\Client;
 use Guzzle\Http\Message\Request;
@@ -140,16 +141,15 @@ class SafeBrowsingClient extends AbstractServiceClient
     /**
      * Sends a request
      *
-     * @param Request $request
+     * @param RequestInterface $request
      * @return Response
      * @throws ForbiddenException
      * @throws SafeBrowsingException
      */
-    protected function sendRequest(Request $request)
+    protected function sendRequest(RequestInterface $request)
     {
         try {
-
-            $request->setHeader('User-Agent', $this->getUserAgent());
+            $request = $this->prepareRequest($request);
             $response = $request->send();
 
         } catch (ClientErrorResponseException $ex) {
@@ -180,8 +180,6 @@ class SafeBrowsingClient extends AbstractServiceClient
         $resource = 'gethash';
         $client = new Client($this->getServiceUrl($resource));
         $request = $client->createRequest('POST', null, null, $bodyString);
-        $request->setHeader('Host', $this->getServiceDomain());
-        $request->setHeader('Accept', '*/*');
         $response = $this->sendRequest($request);
         return array(
             'code' => $response->getStatusCode(),
@@ -199,8 +197,6 @@ class SafeBrowsingClient extends AbstractServiceClient
         $resource = 'downloads';
         $client = new Client($this->getServiceUrl($resource));
         $request = $client->createRequest('POST', null, null, $bodyString);
-        $request->setHeader('Host', $this->getServiceDomain());
-        $request->setHeader('Accept', '*/*');
         $response = $this->sendRequest($request);
         return array(
             'code' => $response->getStatusCode(),
@@ -217,8 +213,6 @@ class SafeBrowsingClient extends AbstractServiceClient
         $resource = 'list';
         $client = new Client();
         $request = $client->get($this->getServiceUrl($resource));
-        $request->setHeader('Host', $this->getServiceDomain());
-        $request->setHeader('Accept', '*/*');
         $response = $this->sendRequest($request);
         return explode("\n", trim($response->getBody(true)));
     }
@@ -232,8 +226,6 @@ class SafeBrowsingClient extends AbstractServiceClient
         $url = $this->getLookupUrl($url);
         $client = new Client();
         $request = $client->get($url);
-        $request->setHeader('Host', $this->getServiceDomain());
-        $request->setHeader('Accept', '*/*');
         $response = $this->sendRequest($request);
         if ($response->getStatusCode() === 200) {
             return $response->getBody(true);
@@ -251,8 +243,6 @@ class SafeBrowsingClient extends AbstractServiceClient
         $url = $this->getCheckAdultUrl($url);
         $client = new Client();
         $request = $client->get($url);
-        $request->setHeader('Host', $this->getServiceDomain());
-        $request->setHeader('Accept', '*/*');
         $response = $this->sendRequest($request);
         if ($response->getBody(true) === 'adult') {
             return true;
