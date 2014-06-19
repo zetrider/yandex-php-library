@@ -11,6 +11,7 @@
  */
 namespace Yandex\Market;
 
+use Guzzle\Http\Message\RequestInterface;
 use Yandex\Common\AbstractServiceClient;
 use Guzzle\Service\Client;
 use Guzzle\Http\Message\Request;
@@ -78,13 +79,11 @@ class MarketClient extends AbstractServiceClient
     //- store does not process orders on time
     const ORDER_SUBSTATUS_PROCESSING_EXPIRED = 'PROCESSING_EXPIRED';
 
-
     /**
      * Requested version of API
      * @var string
      */
     private $version = 'v2';
-
 
     /**
      * Application id
@@ -93,14 +92,12 @@ class MarketClient extends AbstractServiceClient
      */
     protected $clientId;
 
-
     /**
      * User login
      *
      * @var string
      */
     protected $login;
-
 
     /**
      * Campaign Id
@@ -109,14 +106,12 @@ class MarketClient extends AbstractServiceClient
      */
     protected $campaignId;
 
-
     /**
      * API domain
      *
      * @var string
      */
     protected $serviceDomain = 'api.partner.market.yandex.ru';
-
 
     /**
      * Get url to service resource with parameters
@@ -131,7 +126,6 @@ class MarketClient extends AbstractServiceClient
         . $this->version . '/' . $resource;
     }
 
-
     /**
      * @param string $token access token
      */
@@ -139,7 +133,6 @@ class MarketClient extends AbstractServiceClient
     {
         $this->setAccessToken($token);
     }
-
 
     /**
      * @param string $clientId
@@ -149,7 +142,6 @@ class MarketClient extends AbstractServiceClient
         $this->clientId = $clientId;
     }
 
-
     /**
      * @param string $login
      */
@@ -157,7 +149,6 @@ class MarketClient extends AbstractServiceClient
     {
         $this->login = $login;
     }
-
 
     /**
      * @param string $campaignId
@@ -167,7 +158,6 @@ class MarketClient extends AbstractServiceClient
         $this->campaignId = $campaignId;
     }
 
-
     /**
      * @return string
      */
@@ -175,7 +165,6 @@ class MarketClient extends AbstractServiceClient
     {
         return $this->clientId;
     }
-
 
     /**
      * @return string
@@ -185,20 +174,19 @@ class MarketClient extends AbstractServiceClient
         return $this->login;
     }
 
-
     /**
      * Sends a request
      *
-     * @param Request $request
+     * @param RequestInterface $request
      * @return Response
      * @throws ForbiddenException
      * @throws MarketRequestException
      */
-    protected function sendRequest(Request $request)
+    protected function sendRequest(RequestInterface $request)
     {
         try {
 
-            $request->setHeader('User-Agent', $this->getUserAgent());
+            $request = $this->prepareRequest($request);
             $response = $request->send();
 
         } catch (ClientErrorResponseException $ex) {
@@ -219,7 +207,6 @@ class MarketClient extends AbstractServiceClient
         return $response;
     }
 
-
     /**
      * Get OAuth data for header request
      *
@@ -227,12 +214,11 @@ class MarketClient extends AbstractServiceClient
      *
      * @return string
      */
-    public function getOauthData()
+    public function getAccessToken()
     {
-        return 'OAuth oauth_token=' . $this->getAccessToken() . ', oauth_client_id=' . $this->getClientId()
+        return 'OAuth oauth_token=' . parent::getAccessToken() . ', oauth_client_id=' . $this->getClientId()
         . ', oauth_login=' . $this->getLogin();
     }
-
 
     /**
      * Get User Campaigns
@@ -248,13 +234,11 @@ class MarketClient extends AbstractServiceClient
     public function getCampaigns()
     {
         $resource = 'campaigns.json';
+
         $client = new Client($this->getServiceUrl($resource));
         $request = $client->createRequest('GET');
-        $request->setProtocolVersion('1.1');
-        $request->setHeader('Authorization', $this->getOauthData());
-        $request->setHeader('Host', $this->getServiceDomain());
-        $request->setHeader('Accept', '*/*');
         $response = $this->sendRequest($request)->json();
+
         return $response['campaigns'];
     }
 
@@ -279,12 +263,8 @@ class MarketClient extends AbstractServiceClient
 
         $client = new Client($this->getServiceUrl($resource));
         $request = $client->createRequest('GET');
-        $request->setProtocolVersion('1.1');
-        $request->setHeader('Authorization', $this->getOauthData());
-        $request->setHeader('Host', $this->getServiceDomain());
-        $request->setHeader('Accept', '*/*');
-        $response = $this->sendRequest($request)->json();
-        return $response;
+
+        return $this->sendRequest($request)->json();
     }
 
 
@@ -302,12 +282,8 @@ class MarketClient extends AbstractServiceClient
 
         $client = new Client($this->getServiceUrl($resource));
         $request = $client->createRequest('GET');
-        $request->setProtocolVersion('1.1');
-        $request->setHeader('Authorization', $this->getOauthData());
-        $request->setHeader('Host', $this->getServiceDomain());
-        $request->setHeader('Accept', '*/*');
-        $response = $this->sendRequest($request)->json();
-        return $response;
+
+        return $this->sendRequest($request)->json();
     }
 
 
@@ -335,16 +311,12 @@ class MarketClient extends AbstractServiceClient
         }
 
         $data = json_encode($data);
+
         $client = new Client($this->getServiceUrl($resource));
         $request = $client->createRequest('PUT', null, null, $data);
-        $request->setProtocolVersion('1.1');
-        $request->setHeader('Authorization', $this->getOauthData());
-        $request->setHeader('Host', $this->getServiceDomain());
-        $request->setHeader('Accept', '*/*');
         $request->setHeader('Content-type', 'application/json');
 
-        $response = $this->sendRequest($request)->json();
-        return $response;
+        return $this->sendRequest($request)->json();
     }
 
 
@@ -364,15 +336,11 @@ class MarketClient extends AbstractServiceClient
     {
         $resource = 'campaigns/' . $this->campaignId . '/orders/' . $orderId . '/delivery.json';
         $data = json_encode($data);
+
         $client = new Client($this->getServiceUrl($resource));
         $request = $client->createRequest('PUT', null, null, $data);
-        $request->setProtocolVersion('1.1');
-        $request->setHeader('Authorization', $this->getOauthData());
-        $request->setHeader('Host', $this->getServiceDomain());
-        $request->setHeader('Accept', '*/*');
         $request->setHeader('Content-type', 'application/json');
 
-        $response = $this->sendRequest($request)->json();
-        return $response;
+        return $this->sendRequest($request)->json();
     }
 }

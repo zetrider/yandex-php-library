@@ -68,6 +68,10 @@ class OAuthClient
      */
     protected $accessToken = '';
 
+    /**
+     * @param string $clientId
+     * @param string $clientSecret
+     */
     public function __construct($clientId = '', $clientSecret = '')
     {
         $this->setClientId($clientId);

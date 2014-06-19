@@ -41,6 +41,12 @@ abstract class AbstractServiceClient extends AbstractPackage
     protected $serviceScheme = self::HTTPS_SCHEME;
 
     /**
+     * Can be HTTP 1.0 or HTTP 1.1
+     * @var string
+     */
+    protected $serviceProtocolVersion = '1.1';
+
+    /**
      * @var string
      */
     protected $serviceDomain = '';
@@ -168,6 +174,22 @@ abstract class AbstractServiceClient extends AbstractPackage
     }
 
     /**
+     * prepareRequest
+     *
+     * @param \Guzzle\Http\Message\RequestInterface $request
+     * @return RequestInterface
+     */
+    protected function prepareRequest(RequestInterface $request)
+    {
+        $request->setProtocolVersion($this->serviceProtocolVersion);
+        $request->setHeader('Authorization', 'OAuth ' . $this->getAccessToken());
+        $request->setHeader('Host', $this->getServiceDomain());
+        $request->setHeader('User-Agent', $this->getUserAgent());
+        $request->setHeader('Accept', '*/*');
+        return $request;
+    }
+
+    /**
      * Sends a request
      *
      * @param \Guzzle\Http\Message\Request|\Guzzle\Http\Message\RequestInterface $request
@@ -180,7 +202,7 @@ abstract class AbstractServiceClient extends AbstractPackage
     protected function sendRequest(RequestInterface $request)
     {
         try {
-            $request->setHeader('User-Agent', $this->getUserAgent());
+            $request = $this->prepareRequest($request);
             $response = $request->send();
         } catch (ClientErrorResponseException $ex) {
             // get error from response

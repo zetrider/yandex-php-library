@@ -11,6 +11,7 @@
  */
 namespace Yandex\Disk;
 
+use Guzzle\Http\Message\Header\HeaderInterface;
 use Guzzle\Service\Client;
 use Guzzle\Http\Message\Response;
 use Guzzle\Http\Message\RequestInterface;
@@ -40,13 +41,13 @@ class DiskClient extends AbstractServiceClient
     protected $serviceDomain = 'webdav.yandex.ru';
 
     /**
-     * @param string $_version
+     * @param string $version
      *
      * @return self
      */
-    public function setVersion($_version)
+    public function setVersion($version)
     {
-        $this->version = $_version;
+        $this->version = $version;
 
         return $this;
     }
@@ -95,10 +96,8 @@ class DiskClient extends AbstractServiceClient
     protected function sendRequest(RequestInterface $request)
     {
         try {
-
-            $request->setHeader('User-Agent', $this->getUserAgent());
+            $request = $this->prepareRequest($request);
             $response = $request->send();
-
         } catch (ClientErrorResponseException $ex) {
 
             $result = $request->getResponse();
@@ -120,15 +119,8 @@ class DiskClient extends AbstractServiceClient
     public function createDirectory($path = '')
     {
         $client = new Client($this->getServiceUrl());
-        /**
-         *
-         */
         $request = $client->createRequest('MKCOL');
         $request->setPath($path);
-        $request->setProtocolVersion('1.1');
-        $request->setHeader('Authorization', 'OAuth ' . $this->getAccessToken());
-        $request->setHeader('Host', $this->getServiceDomain());
-        $request->setHeader('Accept', '*/*');
         return (bool)$this->sendRequest($request);
     }
 
@@ -140,21 +132,18 @@ class DiskClient extends AbstractServiceClient
      */
     public function directoryContents($path = '', $offset = null, $amount = null)
     {
-        $contents = array();
         $client = new Client($this->getServiceUrl());
         $request = $client->createRequest('PROPFIND');
         $request->setPath($path);
-        $request->setProtocolVersion('1.1');
+        $request->setHeader('Depth', '1');
 
         if (isset($offset, $amount)) {
             $request->getQuery()->set('offset', $offset)->set('amount', $amount);
         }
 
-        $request->setHeader('Authorization', 'OAuth ' . $this->getAccessToken());
-        $request->setHeader('Host', $this->getServiceDomain());
-        $request->setHeader('Accept', '*/*');
-        $request->setHeader('Depth', '1');
         $xml = $this->sendRequest($request)->xml()->children('DAV:');
+
+        $contents = array();
         foreach ($xml as $element) {
             array_push(
                 $contents,
@@ -179,17 +168,17 @@ class DiskClient extends AbstractServiceClient
     public function diskSpaceInfo()
     {
         $client = new Client($this->getServiceUrl());
+
+        $body = '<?xml version="1.0" encoding="utf-8" ?><D:propfind xmlns:D="DAV:">
+            <D:prop><D:quota-available-bytes/><D:quota-used-bytes/></D:prop></D:propfind>';
+
         $request = $client->createRequest(
             'PROPFIND',
             '/',
             array(
-                'Authorization' => 'OAuth ' . $this->getAccessToken(),
-                'Host' => $this->getServiceDomain(),
-                'Accept' => '*/*',
                 'Depth' => '0'
             ),
-            '<?xml version="1.0" encoding="utf-8" ?><D:propfind xmlns:D="DAV:">
-            <D:prop><D:quota-available-bytes/><D:quota-used-bytes/></D:prop></D:propfind>'
+            $body
         );
         $result = $this->sendRequest($request)->xml()->children('DAV:');
         $info = (array)$result->response->propstat->prop;
@@ -210,16 +199,15 @@ class DiskClient extends AbstractServiceClient
     {
         if (!empty($property) && !empty($value)) {
             $client = new Client($this->getServiceUrl());
+
             $body = '<?xml version="1.0" encoding="utf-8" ?><propertyupdate xmlns="DAV:" xmlns:u="'
                 . $namespace . '"><set><prop><u:' . $property . '>' . $value . '</u:'
                 . $property . '></prop></set></propertyupdate>';
+
             $request = $client->createRequest(
                 'PROPPATCH',
                 $path,
                 array(
-                    'Host' => $this->getServiceDomain(),
-                    'Accept' => '*/*',
-                    'Authorization' => 'OAuth ' . $this->getAccessToken(),
                     'Content-Length' => strlen($body),
                     'Content-Type' => 'application/x-www-form-urlencoded'
                 ),
@@ -244,6 +232,7 @@ class DiskClient extends AbstractServiceClient
     {
         if (!empty($property)) {
             $client = new Client($this->getServiceUrl());
+
             $body = '<?xml version="1.0" encoding="utf-8" ?><propfind xmlns="DAV:"><prop><' . $property
                 . ' xmlns="' . $namespace . '"/></prop></propfind>';
 
@@ -251,10 +240,7 @@ class DiskClient extends AbstractServiceClient
                 'PROPFIND',
                 $path,
                 array(
-                    'Host' => $this->getServiceDomain(),
-                    'Accept' => '*/*',
                     'Depth' => '1',
-                    'Authorization' => 'OAuth ' . $this->getAccessToken(),
                     'Content-Length' => strlen($body),
                     'Content-Type' => 'application/x-www-form-urlencoded'
                 ),
@@ -278,14 +264,7 @@ class DiskClient extends AbstractServiceClient
     public function getLogin()
     {
         $client = new Client($this->getServiceUrl());
-        $request = $client->get(
-            '/?userinfo',
-            array(
-                'Authorization' => 'OAuth ' . $this->getAccessToken(),
-                'Host' => $this->getServiceDomain(),
-                'Accept' => '*/*'
-            )
-        );
+        $request = $client->get('/?userinfo');
         $response = $this->sendRequest($request);
         $result = explode(":", $response->getBody(true));
         array_shift($result);
@@ -304,15 +283,12 @@ class DiskClient extends AbstractServiceClient
         $client = new Client($this->getServiceUrl());
         $request = $client->createRequest('GET');
         $request->setPath($path);
-        $request->setProtocolVersion('1.1');
-        $request->setHeader('Authorization', 'OAuth ' . $this->getAccessToken());
-        $request->setHeader('Host', $this->getServiceDomain());
-        $request->setHeader('Accept', '*/*');
 
         $response = $this->sendRequest($request);
-        $headers = $response->getHeaders()->toArray();
+        $headers = $response->getHeaders();
         foreach ($headers as $key => $value) {
-            $result['headers'][$key] = $value[0];
+            /* @var HeaderInterface $value */
+            $result['headers'][$key] = $value->toArray();
         }
         $result['body'] = $response->getBody(true);
         return $result;
@@ -329,10 +305,6 @@ class DiskClient extends AbstractServiceClient
         $client = new Client($this->getServiceUrl());
         $request = $client->createRequest('GET');
         $request->setPath($path);
-        $request->setProtocolVersion('1.1');
-        $request->setHeader('Authorization', 'OAuth ' . $this->getAccessToken());
-        $request->setHeader('Host', $this->getServiceDomain());
-        $request->setHeader('Accept', '*/*');
         $response = $this->sendRequest($request);
 
         if ($name === '') {
@@ -394,11 +366,8 @@ class DiskClient extends AbstractServiceClient
         $request = $client->createRequest('GET');
         $request->setPath($path);
         $request->getQuery()->set('preview', null)->set('size', $size);
-        $request->setProtocolVersion('1.1');
-        $request->setHeader('Authorization', 'OAuth ' . $this->getAccessToken());
-        $request->setHeader('Host', $this->getServiceDomain());
         $response = $this->sendRequest($request);
-        $headers = $response->getHeaders()->toArray();
+        $headers = $response->getHeaders();
         foreach ($headers as $key => $value) {
             $result['headers'][$key] = $value[0];
         }
@@ -416,10 +385,6 @@ class DiskClient extends AbstractServiceClient
         $client = new Client($this->getServiceUrl());
         $request = $client->createRequest('COPY');
         $request->setPath($target);
-        $request->setProtocolVersion('1.1');
-        $request->setHeader('Authorization', 'OAuth ' . $this->getAccessToken());
-        $request->setHeader('Host', $this->getServiceDomain());
-        $request->setHeader('Accept', '*/*');
         $request->setHeader('Destination', $destination);
         return (bool)$this->sendRequest($request);
     }
@@ -434,10 +399,6 @@ class DiskClient extends AbstractServiceClient
         $client = new Client($this->getServiceUrl());
         $request = $client->createRequest('MOVE');
         $request->setPath($path);
-        $request->setProtocolVersion('1.1');
-        $request->setHeader('Authorization', 'OAuth ' . $this->getAccessToken());
-        $request->setHeader('Host', $this->getServiceDomain());
-        $request->setHeader('Accept', '*/*');
         $request->setHeader('Destination', $destination);
         return (bool)$this->sendRequest($request);
     }
@@ -451,10 +412,6 @@ class DiskClient extends AbstractServiceClient
         $client = new Client($this->getServiceUrl());
         $request = $client->createRequest('DELETE');
         $request->setPath($path);
-        $request->setProtocolVersion('1.1');
-        $request->setHeader('Authorization', 'OAuth ' . $this->getAccessToken());
-        $request->setHeader('Host', $this->getServiceDomain());
-        $request->setHeader('Accept', '*/*');
         return (bool)$this->sendRequest($request);
     }
 
@@ -465,14 +422,15 @@ class DiskClient extends AbstractServiceClient
     public function startPublishing($path = '')
     {
         $client = new Client($this->getServiceUrl());
-        $body = '<propertyupdate xmlns="DAV:"><set><prop><public_url xmlns="urn:yandex:disk:meta">true'
-            . '</public_url></prop></set></propertyupdate>';
+
+        $body = '<propertyupdate xmlns="DAV:"><set><prop>
+            <public_url xmlns="urn:yandex:disk:meta">true</public_url>
+            </prop></set></propertyupdate>';
+
         $request = $client->createRequest(
             'PROPPATCH',
             $path,
             array(
-                'Authorization' => 'OAuth ' . $this->getAccessToken(),
-                'Host' => $this->getServiceDomain(),
                 'Content-Length' => strlen($body)
             ),
             $body
@@ -489,14 +447,15 @@ class DiskClient extends AbstractServiceClient
     public function stopPublishing($path = '')
     {
         $client = new Client($this->getServiceUrl());
-        $body = '<propertyupdate xmlns="DAV:"><remove><prop><public_url xmlns="urn:yandex:disk:meta" />'
-            . '</prop></remove></propertyupdate>';
+
+        $body = '<propertyupdate xmlns="DAV:"><remove><prop>
+            <public_url xmlns="urn:yandex:disk:meta" />
+            </prop></remove></propertyupdate>';
+
         $request = $client->createRequest(
             'PROPPATCH',
             $path,
             array(
-                'Authorization' => 'OAuth ' . $this->getAccessToken(),
-                'Host' => $this->getServiceDomain(),
                 'Content-Length' => strlen($body)
             ),
             $body
@@ -511,13 +470,13 @@ class DiskClient extends AbstractServiceClient
     public function checkPublishing($path = '')
     {
         $client = new Client($this->getServiceUrl());
+
         $body = '<propfind xmlns="DAV:"><prop><public_url xmlns="urn:yandex:disk:meta"/></prop></propfind>';
+
         $request = $client->createRequest(
             'PROPFIND',
             $path,
             array(
-                'Authorization' => 'OAuth ' . $this->getAccessToken(),
-                'Host' => $this->getServiceDomain(),
                 'Content-Length' => strlen($body),
                 'Depth' => '0'
             ),
