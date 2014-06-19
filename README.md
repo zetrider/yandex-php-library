@@ -9,6 +9,8 @@ PHP библиотека к API Яндекса
 [![Coverage Status](https://coveralls.io/repos/nixsolutions/yandex-php-library/badge.png)](https://coveralls.io/r/nixsolutions/yandex-php-library)
 [![Dependency Status](https://www.versioneye.com/user/projects/53a1549983add72cb9000014/badge.svg?style=flat)](https://www.versioneye.com/user/projects/53a1549983add72cb9000014)
 
+[![License](https://poser.pugx.org/nixsolutions/yandex-php-library/license.svg)](https://packagist.org/packages/nixsolutions/yandex-php-library)
+
 ## Установка
 
 ### composer

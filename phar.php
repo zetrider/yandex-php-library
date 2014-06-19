@@ -1,12 +1,12 @@
 <?php
-//Remove reposes
+// Remove reposes
 exec("find . | grep .git | xargs rm -rf");
 
 $branchName = getenv('TRAVIS_BRANCH');
 $fileName = 'yandex-php-library_.phar';
 
 $phar = new Phar($fileName, 0, $fileName);
-//Add files to Phar
+// Add files to Phar
 $phar->buildFromDirectory(dirname(__FILE__), '/vendor/');
 $phar->buildFromDirectory(dirname(__FILE__), '/src/');
 $phar->addFile('CHANGELOG.md');
@@ -18,7 +18,7 @@ use Yandex\Disk\DiskClient;
 
 $disk = new DiskClient();
 $disk->setAccessToken(getenv('ACCESS_TOKEN'));
-//Send to Yandex.DisK
+// Send to Yandex.DisK
 $disk->uploadFile(
     '/builds/',
     array(
@@ -28,7 +28,7 @@ $disk->uploadFile(
     )
 );
 
-//Compressing
+// Compressing
 if (Phar::canCompress(Phar::BZ2)) {
     $phar->compress(Phar::BZ2, 'phar.bz2');
     //Send to Yandex.DisK
