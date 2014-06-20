@@ -121,6 +121,6 @@ class PackageTest extends TestCase
      */
     public function testGetWrongKey()
     {
-        $this->fixture->notExists;
+        $some = $this->fixture->notExists;
     }
 }
