@@ -14,7 +14,6 @@ namespace Yandex\SafeBrowsing;
 use Guzzle\Http\Message\RequestInterface;
 use Yandex\Common\AbstractServiceClient;
 use Guzzle\Service\Client;
-use Guzzle\Http\Message\Request;
 use Guzzle\Http\Message\Response;
 use Guzzle\Http\Exception\ClientErrorResponseException;
 use Yandex\Common\Exception\ForbiddenException;
@@ -219,7 +218,7 @@ class SafeBrowsingClient extends AbstractServiceClient
 
     /**
      * @param string $url
-     * @return string|bool
+     * @return string|false
      */
     public function lookup($url)
     {
@@ -231,7 +230,6 @@ class SafeBrowsingClient extends AbstractServiceClient
             return $response->getBody(true);
         }
         return false;
-
     }
 
     /**
@@ -252,7 +250,7 @@ class SafeBrowsingClient extends AbstractServiceClient
 
     /**
      * @param string $url
-     * @return array
+     * @return string
      */
     public function getChunkByUrl($url)
     {
@@ -530,7 +528,7 @@ class SafeBrowsingClient extends AbstractServiceClient
     /**
      * Parsing chunk
      *
-     * @param array $data
+     * @param string $data
      * @return array
      * @throws SafeBrowsingException
      */

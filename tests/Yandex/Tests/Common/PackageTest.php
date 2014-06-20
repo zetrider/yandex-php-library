@@ -98,11 +98,29 @@ class PackageTest extends TestCase
     }
 
     /**
+     * @covers Yandex\Common\AbstractPackage::__set
+     * @expectedException \Yandex\Common\Exception\InvalidSettingsException
+     */
+    public function testSetWrongKey()
+    {
+        $this->fixture->notExists = "KO";
+    }
+
+    /**
      * @covers Yandex\Common\AbstractPackage::__get
      * @expectedException \Yandex\Common\Exception\RealizationException
      */
     public function testGetRealizationException()
     {
         $this->fixture->writeOnly;
+    }
+
+    /**
+     * @covers Yandex\Common\AbstractPackage::__set
+     * @expectedException \Yandex\Common\Exception\InvalidSettingsException
+     */
+    public function testGetWrongKey()
+    {
+        $some = $this->fixture->notExists;
     }
 }

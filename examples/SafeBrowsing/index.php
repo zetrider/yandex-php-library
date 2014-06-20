@@ -101,7 +101,7 @@ use Yandex\Common\Exception\YandexException;
         echo "Safe Browsing Exception:<br/>";
         echo nl2br($e->getMessage());
     } catch (YandexException $e) {
-        echo "Yandex SDK Exception:<br/>";
+        echo "Yandex Library Exception:<br/>";
         echo nl2br($e->getMessage());
     } catch (\Exception $e) {
         echo get_class($e) . "<br/>";

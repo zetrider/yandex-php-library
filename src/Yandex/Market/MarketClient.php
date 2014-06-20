@@ -14,7 +14,6 @@ namespace Yandex\Market;
 use Guzzle\Http\Message\RequestInterface;
 use Yandex\Common\AbstractServiceClient;
 use Guzzle\Service\Client;
-use Guzzle\Http\Message\Request;
 use Guzzle\Http\Message\Response;
 use Guzzle\Http\Exception\ClientErrorResponseException;
 use Yandex\Common\Exception\ForbiddenException;

@@ -33,7 +33,6 @@ class OAuthClient
      *
      * The "code" type means that the application will use an intermediate code to obtain an access token.
      * The "token" type will result a user is redirected back to the application with an access token in a URL
-     *
      */
     const CODE_AUTH_TYPE = 'code';
     const TOKEN_AUTH_TYPE = 'token';
@@ -236,11 +235,11 @@ class OAuthClient
      *
      * @param $code
      *
-     * @return self
-     *
      * @throws AuthRequestException on a known request error
      * @throws AuthResponseException on a response format error
      * @throws RequestException on an unknown request error
+     *
+     * @return self
      */
     public function requestAccessToken($code)
     {
@@ -291,6 +290,5 @@ class OAuthClient
         $this->setAccessToken($result['access_token']);
 
         return $this;
-
     }
 }
