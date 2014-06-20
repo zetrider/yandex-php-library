@@ -208,13 +208,29 @@ class MarketClient extends AbstractServiceClient
     }
 
     /**
+     * prepareRequest
+     *
+     * @param \Guzzle\Http\Message\RequestInterface $request
+     * @return RequestInterface
+     */
+    protected function prepareRequest(RequestInterface $request)
+    {
+        $request->setProtocolVersion($this->serviceProtocolVersion);
+        $request->setHeader('Authorization', $this->getOauthData());
+        $request->setHeader('Host', $this->getServiceDomain());
+        $request->setHeader('User-Agent', $this->getUserAgent());
+        $request->setHeader('Accept', '*/*');
+        return $request;
+    }
+
+    /**
      * Get OAuth data for header request
      *
      * @see http://api.yandex.ru/market/partner/doc/dg/concepts/authorization.xml
      *
      * @return string
      */
-    public function getAccessToken()
+    public function getOauthData()
     {
         return 'OAuth oauth_token=' . parent::getAccessToken() . ', oauth_client_id=' . $this->getClientId()
         . ', oauth_login=' . $this->getLogin();
