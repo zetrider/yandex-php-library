@@ -5,7 +5,7 @@
          verbose="true"
          bootstrap="./bootstrap.php">
     <testsuites>
-        <testsuite name="SDK Test Suite">
+        <testsuite name="Library Test Suite">
             <directory>./Yandex/Tests/Common</directory>
         </testsuite>
     </testsuites>
