@@ -198,7 +198,7 @@ class MarketClient extends AbstractServiceClient
             $body = $result->getBody(true);
             if ($body) {
                 $jsonBody = json_decode($body);
-                if ($jsonBody && $jsonBody->error && $jsonBody->error->message) {
+                if ($jsonBody && isset($jsonBody->error) && isset($jsonBody->error->message)) {
                     $message = $jsonBody->error->message;
                 }
             }
