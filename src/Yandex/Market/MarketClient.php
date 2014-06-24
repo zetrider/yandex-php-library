@@ -195,6 +195,14 @@ class MarketClient extends AbstractServiceClient
             $code = $result->getStatusCode();
             $message = $result->getReasonPhrase();
 
+            $body = $result->getBody(true);
+            if ($body) {
+                $jsonBody = json_decode($body);
+                if ($jsonBody && $jsonBody->error && $jsonBody->error->message) {
+                    $message = $jsonBody->error->message;
+                }
+            }
+
             if ($code === 403) {
                 throw new ForbiddenException($message);
             }
