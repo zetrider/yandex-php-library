@@ -1,0 +1,41 @@
+<?php
+
+namespace Yandex\Metrica\Management\Models;
+
+use Yandex\Metrica\Management\Models\Grants;
+
+class GetGrantsResponse extends ManagementModel
+{
+
+    protected $grants = null;
+
+    protected $mappingClasses = array(
+        'grants' => 'Yandex\Metrica\Management\Models\Grants'
+    );
+
+    protected $propNameMap = array(
+        
+    );
+
+    /**
+     * Retrieve the grants property
+     *
+     * @return Grants|null
+     */
+    public function getGrants()
+    {
+        return $this->grants;
+    }
+
+    /**
+     * Set the grants property
+     *
+     * @param Grants $grants
+     * @return $this
+     */
+    public function setGrants($grants)
+    {
+        $this->grants = $grants;
+        return $this;
+    }
+}

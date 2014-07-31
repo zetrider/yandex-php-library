@@ -7,6 +7,7 @@
     <testsuites>
         <testsuite name="Library Test Suite">
             <directory>./Yandex/Tests/Common</directory>
+            <directory>./Yandex/Tests/Metrica</directory>
         </testsuite>
     </testsuites>
     <listeners>
