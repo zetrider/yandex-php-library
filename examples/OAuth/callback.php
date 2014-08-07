@@ -47,7 +47,7 @@ session_start();
             try {
                 $client->requestAccessToken($_REQUEST['code']);
             } catch (\Yandex\OAuth\Exception\AuthRequestException $ex) {
-                echo $ex->getMessage();
+                echo '<p class="text-danger">' . $ex->getMessage() . '</p>';
             }
 
             if ($client->getAccessToken()) {

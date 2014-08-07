@@ -274,10 +274,15 @@ class OAuthClient
 
             if (is_array($result) && isset($result['error'])) {
                 // handle a service error message
-                throw new AuthRequestException('Service responsed with error code "' . $result['error'] . '"');
+                $message = 'Service responsed with error code "' . $result['error'] . '".';
+
+                if (isset($result['error_description']) && $result['error_description']) {
+                    $message .= ' Description "' . $result['error_description'] . '".';
+                }
+                throw new AuthRequestException($message, 0, $ex);
             }
 
-            // unknown error
+            // unknown error. not parsed error
             throw $ex;
         }
 
