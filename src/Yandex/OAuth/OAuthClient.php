@@ -208,22 +208,30 @@ class OAuthClient
 
     /**
      * @param string $type
+     * @param string $state optional string
+     *
      * @return string
      */
-    public function getAuthUrl($type = self::CODE_AUTH_TYPE)
+    public function getAuthUrl($type = self::CODE_AUTH_TYPE, $state = null)
     {
-        return $this->getServiceUrl('authorize') . '?response_type=' . $type . '&client_id=' . $this->clientId;
+        $url = $this->getServiceUrl('authorize') . '?response_type=' . $type . '&client_id=' . $this->clientId;
+        if ($state) {
+            $url .= '&state=' . $state;
+        }
+
+        return $url;
     }
 
     /**
      * Sends a redirect to the Yandex authentication page.
      *
-     * @param bool $exit    indicates whether to stop the PHP script immediately or not
+     * @param bool   $exit  indicates whether to stop the PHP script immediately or not
      * @param string $type  a type of the authentication procedure
+     * @param string $state optional string
      */
-    public function authRedirect($exit = true, $type = self::CODE_AUTH_TYPE)
+    public function authRedirect($exit = true, $type = self::CODE_AUTH_TYPE, $state = null)
     {
-        header('Location: ' . $this->getAuthUrl($type));
+        header('Location: ' . $this->getAuthUrl($type, $state));
 
         if ($exit) {
             exit();
