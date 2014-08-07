@@ -11,7 +11,6 @@
  */
 namespace Yandex\Disk;
 
-use Guzzle\Http\Message\Header\HeaderInterface;
 use Guzzle\Service\Client;
 use Guzzle\Http\Message\Response;
 use Guzzle\Http\Message\RequestInterface;
@@ -287,7 +286,7 @@ class DiskClient extends AbstractServiceClient
         $response = $this->sendRequest($request);
         $headers = $response->getHeaders();
         foreach ($headers as $key => $value) {
-            /* @var HeaderInterface $value */
+            /* @var \Guzzle\Http\Message\Header\HeaderInterface $value */
             $result['headers'][$key] = $value->toArray();
         }
         $result['body'] = $response->getBody(true);
