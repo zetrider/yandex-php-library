@@ -65,7 +65,7 @@ if (isset($_COOKIE['yaAccessToken']) && isset($_COOKIE['yaClientId'])) {
         <h3>Ответ:</h3>
             <?php
             /** @var \Yandex\Market\Models\Campaign $campaign */
-            if (is_array($campaigns) OR $campaigns instanceof Traversable) {
+            if (is_array($campaigns) || is_object($campaigns)) {
                 foreach ($campaigns as $campaign) {
                     echo '<pre>';
                     print_r($campaign->toArray());
@@ -108,7 +108,7 @@ if (isset($_COOKIE['yaAccessToken']) && isset($_COOKIE['yaClientId'])) {
                         <div id="collapseOrdersLinks" class="panel-collapse collapse in">
                             <div class="panel-body">
                                 <?php
-                                if (is_array($orders) OR $orders instanceof Traversable) {
+                                if (is_array($orders) || is_object($orders)) {
                                     /** @var Yandex\Market\Models\Order $order */
                                     foreach ($orders as $order) {
                                         ?>

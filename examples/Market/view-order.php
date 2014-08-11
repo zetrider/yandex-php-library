@@ -169,7 +169,7 @@ if (!isset($_GET['campaignId']) || !$_GET['campaignId'] || !isset($_GET['orderId
         <hr/>
         <h3>Товары:</h3>
         <?php
-        if (is_array($order->getItems()) OR $order->getItems() instanceof Traversable) {
+        if (is_array($order->getItems()) || is_object($order->getItems())) {
             /** @var Yandex\Market\Models\Item $item */
             foreach ($order->getItems() as $item) {
                 ?>

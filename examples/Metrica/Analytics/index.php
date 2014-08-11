@@ -72,20 +72,18 @@ if (isset($_COOKIE['yaAccessToken']) && isset($_COOKIE['yaClientId'])) {
         } else {
             ?>
             <div>
-                <?php
-                if ($counters) {
-                    ?>
-                    <h3>Счетчики:</h3>
-                    <table id="countersTable" class="table table-striped table-bordered table-hover">
-                        <thead>
-                        <tr>
-                            <td>ID</td>
-                            <td>Название</td>
-                            <td>Количество посещений</td>
-                        </tr>
-                        </thead>
-                        <tbody>
-                        <?php
+                <h3>Счетчики:</h3>
+                <table id="countersTable" class="table table-striped table-bordered table-hover">
+                    <thead>
+                    <tr>
+                        <td>ID</td>
+                        <td>Название</td>
+                        <td>Количество посещений</td>
+                    </tr>
+                    </thead>
+                    <tbody>
+                    <?php
+                    if (is_array($counters) || is_object($counters)) {
                         foreach ($counters as $counter) {
                             ?>
                             <tr data-counter-id="<?= $counter->getId() ?>">
@@ -93,19 +91,18 @@ if (isset($_COOKIE['yaAccessToken']) && isset($_COOKIE['yaClientId'])) {
                                 <td><?= $counter->getName() ?></td>
                                 <td class="pageviews"></td>
                                 <td>
-                                    <a href="/examples/Metrica/Analytics/by-country.php?counter-id=<?= $counter->getId() ?>"
-                                       class="btn btn-primary">Отчет по странам</a><br />
+                                    <a href="/examples/Metrica/Analytics/by-country.php?counter-id=<?= $counter->getId(
+                                    ) ?>"
+                                       class="btn btn-primary">Отчет по странам</a><br/>
                                 </td>
                             </tr>
 
                         <?php
                         }
-                        ?>
-                        </tbody>
-                    </table>
-                <?php
-                }
-                ?>
+                    }
+                    ?>
+                    </tbody>
+                </table>
             </div>
         <?php
         }

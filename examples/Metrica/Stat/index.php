@@ -84,7 +84,7 @@ if (isset($_COOKIE['yaAccessToken']) && isset($_COOKIE['yaClientId'])) {
                     </thead>
                     <tbody>
                     <?php
-                    if (is_array($counters) OR $counters instanceof Traversable) {
+                    if (is_array($counters) || is_object($counters)) {
                         foreach ($counters as $counter) {
                             ?>
                             <tr data-counter-id="<?= $counter->getId() ?>">

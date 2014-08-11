@@ -78,7 +78,7 @@ if (isset($_COOKIE['yaAccessToken']) && isset($_COOKIE['yaClientId'])) {
                     </thead>
                     <tbody>
                     <?php
-                    if (is_array($goals) OR $goals instanceof Traversable) {
+                    if (is_array($goals) || is_object($goals)) {
                         foreach ($goals as $goal) {
                             ?>
                             <tr>
