@@ -65,7 +65,7 @@ if (isset($_COOKIE['yaAccessToken']) && isset($_COOKIE['yaClientId'])) {
         <h3>Ответ:</h3>
             <?php
             /** @var \Yandex\Market\Models\Campaign $campaign */
-            if (is_object($campaigns)) {
+            if (is_array($campaigns) OR $campaigns instanceof Traversable) {
                 foreach ($campaigns as $campaign) {
                     echo '<pre>';
                     print_r($campaign->toArray());
