@@ -65,10 +65,12 @@ if (isset($_COOKIE['yaAccessToken']) && isset($_COOKIE['yaClientId'])) {
         <h3>Ответ:</h3>
             <?php
             /** @var \Yandex\Market\Models\Campaign $campaign */
-            foreach ($campaigns as $campaign) {
-                echo '<pre>';
-                print_r($campaign->toArray());
-                echo '</pre>';
+            if (is_object($campaigns)) {
+                foreach ($campaigns as $campaign) {
+                    echo '<pre>';
+                    print_r($campaign->toArray());
+                    echo '</pre>';
+                }
             }
 
             $params = array(
