@@ -20,9 +20,10 @@ class DataTest extends TestCase
 
         $data = new Models\Data();
         $data->add($items);
+        $data = $data->getAll();
 
-        $this->assertEquals($fixtures['data'][0]['dimensions'], $data->getAll()[0]->getDimensions());
-        $this->assertEquals($fixtures['data'][0]['metrics'], $data->getAll()[0]->getMetrics());
+        $this->assertEquals($fixtures['data'][0]['dimensions'], $data[0]->getDimensions());
+        $this->assertEquals($fixtures['data'][0]['metrics'], $data[0]->getMetrics());
     }
 }
  

@@ -23,82 +23,85 @@ class CountersClientTest extends TestCase
         $response = $mock->getCounters(new Models\CountersParams());
 
         $this->assertEquals($fixtures["rows"], $response->getRows());
-        $this->assertEquals($fixtures["counters"][0]["id"], $response->getCounters()[0]->getId());
-        $this->assertEquals($fixtures["counters"][0]["owner_login"], $response->getCounters()[0]->getOwnerLogin());
-        $this->assertEquals($fixtures["counters"][0]["code_status"], $response->getCounters()[0]->getCodeStatus());
-        $this->assertEquals($fixtures["counters"][0]["name"], $response->getCounters()[0]->getName());
-        $this->assertEquals($fixtures["counters"][0]["site"], $response->getCounters()[0]->getSite());
-        $this->assertEquals($fixtures["counters"][0]["type"], $response->getCounters()[0]->getType());
-        $this->assertEquals($fixtures["counters"][0]["favorite"], $response->getCounters()[0]->getFavorite());
-        $this->assertEquals($fixtures["counters"][0]["permission"], $response->getCounters()[0]->getPermission());
-        $this->assertEquals($fixtures["counters"][0]["partner_id"], $response->getCounters()[0]->getPartnerId());
+
+        $counters = $response->getCounters();
+
+        $this->assertEquals($fixtures["counters"][0]["id"], $counters[0]->getId());
+        $this->assertEquals($fixtures["counters"][0]["owner_login"], $counters[0]->getOwnerLogin());
+        $this->assertEquals($fixtures["counters"][0]["code_status"], $counters[0]->getCodeStatus());
+        $this->assertEquals($fixtures["counters"][0]["name"], $counters[0]->getName());
+        $this->assertEquals($fixtures["counters"][0]["site"], $counters[0]->getSite());
+        $this->assertEquals($fixtures["counters"][0]["type"], $counters[0]->getType());
+        $this->assertEquals($fixtures["counters"][0]["favorite"], $counters[0]->getFavorite());
+        $this->assertEquals($fixtures["counters"][0]["permission"], $counters[0]->getPermission());
+        $this->assertEquals($fixtures["counters"][0]["partner_id"], $counters[0]->getPartnerId());
 
         $this->assertEquals(
             $fixtures["counters"][0]["webvisor"]["arch_type"],
-            $response->getCounters()[0]->getWebvisor()->getArchType()
+            $counters[0]->getWebvisor()->getArchType()
         );
         $this->assertEquals(
             $fixtures["counters"][0]["webvisor"]["load_player_type"],
-            $response->getCounters()[0]->getWebvisor()->getLoadPlayerType()
+            $counters[0]->getWebvisor()->getLoadPlayerType()
         );
 
         $this->assertEquals(
             $fixtures["counters"][0]["code_options"]["async"],
-            $response->getCounters()[0]->getCodeOptions()->getAsync()
+            $counters[0]->getCodeOptions()->getAsync()
         );
 
         $this->assertEquals(
             $fixtures["counters"][0]["code_options"]["informer"]["enabled"],
-            $response->getCounters()[0]->getCodeOptions()->getInformer()->getEnabled()
+            $counters[0]->getCodeOptions()->getInformer()->getEnabled()
         );
         $this->assertEquals(
             $fixtures["counters"][0]["code_options"]["informer"]["type"],
-            $response->getCounters()[0]->getCodeOptions()->getInformer()->getType()
+            $counters[0]->getCodeOptions()->getInformer()->getType()
         );
         $this->assertEquals(
             $fixtures["counters"][0]["code_options"]["informer"]["size"],
-            $response->getCounters()[0]->getCodeOptions()->getInformer()->getSize()
+            $counters[0]->getCodeOptions()->getInformer()->getSize()
         );
         $this->assertEquals(
             $fixtures["counters"][0]["code_options"]["informer"]["indicator"],
-            $response->getCounters()[0]->getCodeOptions()->getInformer()->getIndicator()
+            $counters[0]->getCodeOptions()->getInformer()->getIndicator()
         );
         $this->assertEquals(
             $fixtures["counters"][0]["code_options"]["informer"]["color_start"],
-            $response->getCounters()[0]->getCodeOptions()->getInformer()->getColorStart()
+            $counters[0]->getCodeOptions()->getInformer()->getColorStart()
         );
         $this->assertEquals(
             $fixtures["counters"][0]["code_options"]["informer"]["color_end"],
-            $response->getCounters()[0]->getCodeOptions()->getInformer()->getColorEnd()
+            $counters[0]->getCodeOptions()->getInformer()->getColorEnd()
         );
         $this->assertEquals(
             $fixtures["counters"][0]["code_options"]["informer"]["color_text"],
-            $response->getCounters()[0]->getCodeOptions()->getInformer()->getColorText()
+            $counters[0]->getCodeOptions()->getInformer()->getColorText()
         );
         $this->assertEquals(
             $fixtures["counters"][0]["code_options"]["informer"]["color_arrow"],
-            $response->getCounters()[0]->getCodeOptions()->getInformer()->getColorArrow()
+            $counters[0]->getCodeOptions()->getInformer()->getColorArrow()
         );
 
         $this->assertEquals(
             $fixtures["counters"][0]["code_options"]["visor"],
-            $response->getCounters()[0]->getCodeOptions()->getVisor()
+            $counters[0]->getCodeOptions()->getVisor()
         );
         $this->assertEquals(
             $fixtures["counters"][0]["code_options"]["ut"],
-            $response->getCounters()[0]->getCodeOptions()->getUt()
+            $counters[0]->getCodeOptions()->getUt()
         );
         $this->assertEquals(
             $fixtures["counters"][0]["code_options"]["track_hash"],
-            $response->getCounters()[0]->getCodeOptions()->getTrackHash()
+            $counters[0]->getCodeOptions()->getTrackHash()
         );
         $this->assertEquals(
             $fixtures["counters"][0]["code_options"]["xml_site"],
-            $response->getCounters()[0]->getCodeOptions()->getXmlSite()
+            $counters[0]->getCodeOptions()->getXmlSite()
         );
         $this->assertEquals(
             $fixtures["counters"][0]["code_options"]["in_one_line"],
-            $response->getCounters()[0]->getCodeOptions()->getInOneLine()
+            $counters[0]->getCodeOptions()->getInOneLine()
         );
     }
 

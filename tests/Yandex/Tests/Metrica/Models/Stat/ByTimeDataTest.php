@@ -48,8 +48,10 @@ class ByTimeDataTest extends TestCase
         $this->assertEquals($fixtures["query"]["date1"], $byTime->getQuery()->getDate1());
         $this->assertEquals($fixtures["query"]["date2"], $byTime->getQuery()->getDate2());
 
-        $this->assertEquals($fixtures["data"][0]["dimensions"], $byTime->getData()->getAll()[0]->getDimensions());
-        $this->assertEquals($fixtures["data"][0]["metrics"], $byTime->getData()->getAll()[0]->getMetrics());
+        $getData = $byTime->getData()->getAll();
+
+        $this->assertEquals($fixtures["data"][0]["dimensions"], $getData[0]->getDimensions());
+        $this->assertEquals($fixtures["data"][0]["metrics"], $getData[0]->getMetrics());
 
         $this->assertEquals($fixtures["total_rows"], $byTime->getTotalRows());
         $this->assertEquals($fixtures["sampled"], $byTime->getSampled());

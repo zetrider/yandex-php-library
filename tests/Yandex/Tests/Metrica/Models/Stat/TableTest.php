@@ -55,8 +55,10 @@ class TableTest extends TestCase {
         $this->assertEquals($fixtures["query"]["date1"], $table->getQuery()->getDate1());
         $this->assertEquals($fixtures["query"]["date2"], $table->getQuery()->getDate2());
 
-        $this->assertEquals($fixtures["data"][0]["dimensions"], $table->getData()->getAll()[0]->getDimensions());
-        $this->assertEquals($fixtures["data"][0]["metrics"], $table->getData()->getAll()[0]->getMetrics());
+        $getData = $table->getData()->getAll();
+
+        $this->assertEquals($fixtures["data"][0]["dimensions"], $getData[0]->getDimensions());
+        $this->assertEquals($fixtures["data"][0]["metrics"], $getData[0]->getMetrics());
 
         $this->assertEquals($fixtures["total_rows"], $table->getTotalRows());
         $this->assertEquals($fixtures["sampled"], $table->getSampled());

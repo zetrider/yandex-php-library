@@ -26,8 +26,10 @@ class DrillDownComparisonItemsTest extends TestCase
             ->setDimensions($dimensions)
             ->setMetrics($fixtures["data"][0]["metrics"]);
 
-        $this->assertEquals($fixtures["data"][0]["dimension"]["name"], $items->getDimensions()->getAll()[0]->getName());
-        $this->assertEquals($fixtures["data"][0]["dimension"]["id"], $items->getDimensions()->getAll()[0]->getId());
+        $dimensions = $items->getDimensions()->getAll();
+
+        $this->assertEquals($fixtures["data"][0]["dimension"]["name"], $dimensions[0]->getName());
+        $this->assertEquals($fixtures["data"][0]["dimension"]["id"], $dimensions[0]->getId());
         $this->assertEquals($fixtures["data"][0]["metrics"], $items->getMetrics());
     }
 }

@@ -29,13 +29,15 @@ class GoalTest extends TestCase
             ->setConditions($conditions)
             ->setClass($fixtures['goal']['class']);
 
+        $getConditions = $goal->getConditions()->getAll();
+
         $this->assertEquals($fixtures["goal"]["id"], $goal->getId());
         $this->assertEquals($fixtures["goal"]["name"], $goal->getName());
         $this->assertEquals($fixtures["goal"]["type"], $goal->getType());
         $this->assertEquals($fixtures["goal"]["flag"], $goal->getFlag());
         $this->assertEquals($fixtures["goal"]["class"], $goal->getClass());
-        $this->assertEquals($fixtures["goal"]["conditions"][0]["type"], $goal->getConditions()->getAll()[0]->getType());
-        $this->assertEquals($fixtures["goal"]["conditions"][0]["url"], $goal->getConditions()->getAll()[0]->getUrl());
+        $this->assertEquals($fixtures["goal"]["conditions"][0]["type"], $getConditions[0]->getType());
+        $this->assertEquals($fixtures["goal"]["conditions"][0]["url"], $getConditions[0]->getUrl());
     }
 }
  

@@ -62,10 +62,12 @@ class DrillDownTest extends TestCase
         $this->assertEquals($fixtures["query"]["date1"], $drillDown->getQuery()->getDate1());
         $this->assertEquals($fixtures["query"]["date2"], $drillDown->getQuery()->getDate2());
 
-        $this->assertEquals($fixtures["data"][0]["dimension"]["name"], $drillDown->getData()->getAll()[0]->getDimension()->getName());
-        $this->assertEquals($fixtures["data"][0]["dimension"]["id"], $drillDown->getData()->getAll()[0]->getDimension()->getId());
-        $this->assertEquals($fixtures["data"][0]["metrics"], $drillDown->getData()->getAll()[0]->getMetrics());
-        $this->assertEquals($fixtures["data"][0]["expand"], $drillDown->getData()->getAll()[0]->getExpand());
+        $getData = $drillDown->getData()->getAll();
+
+        $this->assertEquals($fixtures["data"][0]["dimension"]["name"], $getData[0]->getDimension()->getName());
+        $this->assertEquals($fixtures["data"][0]["dimension"]["id"], $getData[0]->getDimension()->getId());
+        $this->assertEquals($fixtures["data"][0]["metrics"], $getData[0]->getMetrics());
+        $this->assertEquals($fixtures["data"][0]["expand"], $getData[0]->getExpand());
 
         $this->assertEquals($fixtures["total_rows"], $drillDown->getTotalRows());
         $this->assertEquals($fixtures["sampled"], $drillDown->getSampled());

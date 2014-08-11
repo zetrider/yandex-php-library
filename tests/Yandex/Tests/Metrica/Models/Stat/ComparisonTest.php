@@ -67,8 +67,10 @@ class ComparisonTest extends TestCase
         $this->assertEquals($fixtures["query"]["date1_b"], $comparison->getQuery()->getDate1B());
         $this->assertEquals($fixtures["query"]["date2_b"], $comparison->getQuery()->getDate2B());
 
-        $this->assertEquals($fixtures["data"][0]["metrics"]["a"], $comparison->getData()->getAll()[0]->getMetrics()->getA());
-        $this->assertEquals($fixtures["data"][0]["metrics"]["b"], $comparison->getData()->getAll()[0]->getMetrics()->getB());
+        $getData = $comparison->getData()->getAll();
+
+        $this->assertEquals($fixtures["data"][0]["metrics"]["a"], $getData[0]->getMetrics()->getA());
+        $this->assertEquals($fixtures["data"][0]["metrics"]["b"], $getData[0]->getMetrics()->getB());
 
         $this->assertEquals($fixtures["total_rows"], $comparison->getTotalRows());
         $this->assertEquals($fixtures["sampled"], $comparison->getSampled());

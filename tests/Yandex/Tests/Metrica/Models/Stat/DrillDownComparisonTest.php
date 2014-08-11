@@ -75,25 +75,27 @@ class DrillDownComparisonTest extends TestCase
         $this->assertEquals($fixtures["query"]["date1_b"], $comparison->getQuery()->getDate1B());
         $this->assertEquals($fixtures["query"]["date2_b"], $comparison->getQuery()->getDate2B());
 
+        $getData = $comparison->getData()->getAll();
+
         $this->assertEquals(
             $fixtures["data"][0]["dimension"]["name"],
-            $comparison->getData()->getAll()[0]->getDimension()->getName()
+            $getData[0]->getDimension()->getName()
         );
         $this->assertEquals(
             $fixtures["data"][0]["dimension"]["id"],
-            $comparison->getData()->getAll()[0]->getDimension()->getId()
+            $getData[0]->getDimension()->getId()
         );
         $this->assertEquals(
             $fixtures["data"][0]["metrics"]["a"],
-            $comparison->getData()->getAll()[0]->getMetrics()->getA()
+            $getData[0]->getMetrics()->getA()
         );
         $this->assertEquals(
             $fixtures["data"][0]["metrics"]["b"],
-            $comparison->getData()->getAll()[0]->getMetrics()->getB()
+            $getData[0]->getMetrics()->getB()
         );
         $this->assertEquals(
             $fixtures["data"][0]["expand"],
-            $comparison->getData()->getAll()[0]->getExpand()
+            $getData[0]->getExpand()
         );
 
         $this->assertEquals($fixtures["total_rows"], $comparison->getTotalRows());

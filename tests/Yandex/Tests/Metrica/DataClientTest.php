@@ -31,8 +31,9 @@ class DataClientTest extends TestCase
         $this->assertEquals($fixtures["query"]["date1"], $table->getQuery()->getDate1());
         $this->assertEquals($fixtures["query"]["date2"], $table->getQuery()->getDate2());
 
-        $this->assertEquals($fixtures["data"][0]["dimensions"], $table->getData()[0]->getDimensions());
-        $this->assertEquals($fixtures["data"][0]["metrics"], $table->getData()[0]->getMetrics());
+        $data = $table->getData();
+        $this->assertEquals($fixtures["data"][0]["dimensions"], $data[0]->getDimensions());
+        $this->assertEquals($fixtures["data"][0]["metrics"], $data[0]->getMetrics());
 
         $this->assertEquals($fixtures["total_rows"], $table->getTotalRows());
         $this->assertEquals($fixtures["sampled"], $table->getSampled());
@@ -66,14 +67,16 @@ class DataClientTest extends TestCase
         $this->assertEquals($fixtures["query"]["date1"], $table->getQuery()->getDate1());
         $this->assertEquals($fixtures["query"]["date2"], $table->getQuery()->getDate2());
 
-        $this->assertEquals($fixtures["data"][0]["dimension"]["name"], $table->getData()[0]->getDimension()->getName());
-        $this->assertEquals($fixtures["data"][0]["dimension"]["id"], $table->getData()[0]->getDimension()->getId());
-        $this->assertEquals($fixtures["data"][0]["metrics"], $table->getData()[0]->getMetrics());
-        $this->assertEquals($fixtures["data"][0]["expand"], $table->getData()[0]->getExpand());
-        $this->assertEquals($fixtures["data"][1]["dimension"]["name"], $table->getData()[1]->getDimension()->getName());
-        $this->assertEquals($fixtures["data"][1]["dimension"]["id"], $table->getData()[1]->getDimension()->getId());
-        $this->assertEquals($fixtures["data"][1]["metrics"], $table->getData()[1]->getMetrics());
-        $this->assertEquals($fixtures["data"][1]["expand"], $table->getData()[1]->getExpand());
+        $data = $table->getData();
+
+        $this->assertEquals($fixtures["data"][0]["dimension"]["name"], $data[0]->getDimension()->getName());
+        $this->assertEquals($fixtures["data"][0]["dimension"]["id"], $data[0]->getDimension()->getId());
+        $this->assertEquals($fixtures["data"][0]["metrics"], $data[0]->getMetrics());
+        $this->assertEquals($fixtures["data"][0]["expand"], $data[0]->getExpand());
+        $this->assertEquals($fixtures["data"][1]["dimension"]["name"], $data[1]->getDimension()->getName());
+        $this->assertEquals($fixtures["data"][1]["dimension"]["id"], $data[1]->getDimension()->getId());
+        $this->assertEquals($fixtures["data"][1]["metrics"], $data[1]->getMetrics());
+        $this->assertEquals($fixtures["data"][1]["expand"], $data[1]->getExpand());
 
         $this->assertEquals($fixtures["total_rows"], $table->getTotalRows());
         $this->assertEquals($fixtures["sampled"], $table->getSampled());
@@ -104,8 +107,10 @@ class DataClientTest extends TestCase
         $this->assertEquals($fixtures["query"]["date1"], $table->getQuery()->getDate1());
         $this->assertEquals($fixtures["query"]["date2"], $table->getQuery()->getDate2());
 
-        $this->assertEquals($fixtures["data"][0]["dimensions"], $table->getData()[0]->getDimensions());
-        $this->assertEquals($fixtures["data"][0]["metrics"], $table->getData()[0]->getMetrics());
+        $data = $table->getData();
+
+        $this->assertEquals($fixtures["data"][0]["dimensions"], $data[0]->getDimensions());
+        $this->assertEquals($fixtures["data"][0]["metrics"], $data[0]->getMetrics());
 
         $this->assertEquals($fixtures["total_rows"], $table->getTotalRows());
         $this->assertEquals($fixtures["sampled"], $table->getSampled());
@@ -138,9 +143,11 @@ class DataClientTest extends TestCase
         $this->assertEquals($fixtures["query"]["date1_b"], $table->getQuery()->getDate1B());
         $this->assertEquals($fixtures["query"]["date2_b"], $table->getQuery()->getDate2B());
 
-        $this->assertEquals($fixtures["data"][0]["dimensions"], $table->getData()[0]->getDimensions());
-        $this->assertEquals($fixtures["data"][0]["metrics"]["a"], $table->getData()[0]->getMetrics()->getA());
-        $this->assertEquals($fixtures["data"][0]["metrics"]["b"], $table->getData()[0]->getMetrics()->getB());
+        $data = $table->getData();
+
+        $this->assertEquals($fixtures["data"][0]["dimensions"], $data[0]->getDimensions());
+        $this->assertEquals($fixtures["data"][0]["metrics"]["a"], $data[0]->getMetrics()->getA());
+        $this->assertEquals($fixtures["data"][0]["metrics"]["b"], $data[0]->getMetrics()->getB());
 
         $this->assertEquals($fixtures["total_rows"], $table->getTotalRows());
         $this->assertEquals($fixtures["sampled"], $table->getSampled());
@@ -175,16 +182,18 @@ class DataClientTest extends TestCase
         $this->assertEquals($fixtures["query"]["date1_b"], $table->getQuery()->getDate1B());
         $this->assertEquals($fixtures["query"]["date2_b"], $table->getQuery()->getDate2B());
 
-        $this->assertEquals($fixtures["data"][0]["dimension"]["name"], $table->getData()[0]->getDimension()->getName());
-        $this->assertEquals($fixtures["data"][0]["dimension"]["id"], $table->getData()[0]->getDimension()->getId());
-        $this->assertEquals($fixtures["data"][0]["metrics"]["a"], $table->getData()[0]->getMetrics()->getA());
-        $this->assertEquals($fixtures["data"][0]["metrics"]["b"], $table->getData()[0]->getMetrics()->getB());
-        $this->assertEquals($fixtures["data"][0]["expand"], $table->getData()[0]->getExpand());
-        $this->assertEquals($fixtures["data"][1]["dimension"]["name"], $table->getData()[1]->getDimension()->getName());
-        $this->assertEquals($fixtures["data"][1]["dimension"]["id"], $table->getData()[1]->getDimension()->getId());
-        $this->assertEquals($fixtures["data"][1]["metrics"]["a"], $table->getData()[1]->getMetrics()->getA());
-        $this->assertEquals($fixtures["data"][1]["metrics"]["b"], $table->getData()[1]->getMetrics()->getB());
-        $this->assertEquals($fixtures["data"][1]["expand"], $table->getData()[1]->getExpand());
+        $data = $table->getData();
+
+        $this->assertEquals($fixtures["data"][0]["dimension"]["name"], $data[0]->getDimension()->getName());
+        $this->assertEquals($fixtures["data"][0]["dimension"]["id"], $data[0]->getDimension()->getId());
+        $this->assertEquals($fixtures["data"][0]["metrics"]["a"], $data[0]->getMetrics()->getA());
+        $this->assertEquals($fixtures["data"][0]["metrics"]["b"], $data[0]->getMetrics()->getB());
+        $this->assertEquals($fixtures["data"][0]["expand"], $data[0]->getExpand());
+        $this->assertEquals($fixtures["data"][1]["dimension"]["name"], $data[1]->getDimension()->getName());
+        $this->assertEquals($fixtures["data"][1]["dimension"]["id"], $data[1]->getDimension()->getId());
+        $this->assertEquals($fixtures["data"][1]["metrics"]["a"], $data[1]->getMetrics()->getA());
+        $this->assertEquals($fixtures["data"][1]["metrics"]["b"], $data[1]->getMetrics()->getB());
+        $this->assertEquals($fixtures["data"][1]["expand"], $data[1]->getExpand());
 
         $this->assertEquals($fixtures["total_rows"], $table->getTotalRows());
         $this->assertEquals($fixtures["sampled"], $table->getSampled());

@@ -68,14 +68,16 @@ class GaTest extends TestCase
         $this->assertEquals($fixtures["query"]["start-index"], $ga->getQuery()->getStartIndex());
         $this->assertEquals($fixtures["query"]["max-results"], $ga->getQuery()->getMaxResults());
 
-        $this->assertEquals($fixtures["columnHeaders"][0]["name"], $ga->getColumnHeaders()->getAll()[0]->getName());
+        $columnHeaders = $ga->getColumnHeaders()->getAll();
+
+        $this->assertEquals($fixtures["columnHeaders"][0]["name"], $columnHeaders[0]->getName());
         $this->assertEquals(
             $fixtures["columnHeaders"][0]["columnType"],
-            $ga->getColumnHeaders()->getAll()[0]->getColumnType()
+            $columnHeaders[0]->getColumnType()
         );
         $this->assertEquals(
             $fixtures["columnHeaders"][0]["dataType"],
-            $ga->getColumnHeaders()->getAll()[0]->getDataType()
+            $columnHeaders[0]->getDataType()
         );
 
         $this->assertEquals($fixtures["rows"], $ga->getRows());
