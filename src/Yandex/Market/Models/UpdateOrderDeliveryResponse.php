@@ -1,0 +1,37 @@
+<?php
+
+namespace Yandex\Market\Models;
+
+use Yandex\Market\Models\Order;
+
+class UpdateOrderDeliveryResponse extends MarketModel
+{
+
+    protected $order = null;
+
+    protected $mappingClasses = array(
+        'order' => 'Yandex\Market\Models\Order'
+    );
+
+    /**
+     * Retrieve the order property
+     *
+     * @return Order|null
+     */
+    public function getOrder()
+    {
+        return $this->order;
+    }
+
+    /**
+     * Set the order property
+     *
+     * @param Order $order
+     * @return $this
+     */
+    public function setOrder($order)
+    {
+        $this->order = $order;
+        return $this;
+    }
+}

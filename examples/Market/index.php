@@ -63,22 +63,25 @@ if (isset($_COOKIE['yaAccessToken']) && isset($_COOKIE['yaClientId'])) {
         </p>
 
         <h3>Ответ:</h3>
-        <?php
-        echo '<pre>';
-        print_r($campaigns);
-        echo '</pre>';
+            <?php
+            /** @var \Yandex\Market\Models\Campaign $campaign */
+            foreach ($campaigns as $campaign) {
+                echo '<pre>';
+                print_r($campaign->toArray());
+                echo '</pre>';
+            }
 
-        $params = array(
-            'status' => null,
-            'fromDate' => null,
-            'toDate' => null,
-            'pageSize' => 50,
-            'page' => 1
-        );
-        $campaignId = $campaigns[0]['id'];
-        $market->setCampaignId($campaignId);
-        $orders = $market->getOrders($params);
-        ?>
+            $params = array(
+                'status' => null,
+                'fromDate' => null,
+                'toDate' => null,
+                'pageSize' => 50,
+                'page' => 1
+            );
+            $campaignId = $campaigns[0]->getId();
+            $market->setCampaignId($campaignId);
+            $orders = $market->getOrders($params);
+            ?>
 
         <h2>Информация о запрашиваемых заказах</h2>
         <h3>Запрос:</h3>
@@ -89,16 +92,56 @@ if (isset($_COOKIE['yaAccessToken']) && isset($_COOKIE['yaClientId'])) {
         </p>
 
         <h3>Ответ:</h3>
-        <pre>
-        <?php print_r($orders); ?>
-        </pre>
-        </div>
+            <div class="panel-group" id="accordion">
+                <?php if ($orders) { ?>
+
+                    <div class="panel panel-default">
+                        <div class="panel-heading">
+                            <h4 class="panel-title">
+                                <a data-toggle="collapse" data-parent="#accordion" href="#collapseOrdersLinks">
+                                    Список заказов с ссылками на их просмотр
+                                </a>
+                            </h4>
+                        </div>
+                        <div id="collapseOrdersLinks" class="panel-collapse collapse in">
+                            <div class="panel-body">
+                                <?php
+                                /** @var Yandex\Market\Models\Order $order */
+                                foreach ($orders as $order) {
+                                    ?>
+                                    <p>
+                                        <a href="view-order.php?orderId=<?= $order->getId();
+                                        ?>&campaignId=<?= $campaignId ?>">Заказ №<?= $order->getId() ?></a>
+                                    </p>
+                                <?php
+                                }
+                                ?>
+                            </div>
+                        </div>
+                    </div>
+                <?php } ?>
+                <div class="panel panel-default">
+                    <div class="panel-heading">
+                        <h4 class="panel-title">
+                            <a data-toggle="collapse" data-parent="#accordion" href="#collapseAllResponse">
+                                Полный ответ Заказов
+                            </a>
+                        </h4>
+                    </div>
+                    <div id="collapseAllResponse" class="panel-collapse collapse">
+                        <div class="panel-body">
+                            <pre><?php print_r($orders); ?></pre>
+                        </div>
+                    </div>
+                </div>
+            </div>
     <?php
     endif;
     ?>
 </div>
 <script src="http://yandex.st/jquery/2.0.3/jquery.min.js"></script>
 <script src="http://yandex.st/jquery/cookie/1.0/jquery.cookie.min.js"></script>
+<script src="//maxcdn.bootstrapcdn.com/bootstrap/3.2.0/js/bootstrap.min.js"></script>
 <script>
     $(function () {
         $('#goToAuth').click(function (e) {
