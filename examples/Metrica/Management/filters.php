@@ -8,6 +8,7 @@ use Yandex\Metrica\Management\ManagementClient;
 
 $filters = array();
 $errorMessage = false;
+$counterId = null;
 
 //Is auth
 if (isset($_COOKIE['yaAccessToken']) && isset($_COOKIE['yaClientId'])) {

@@ -5,7 +5,6 @@
  */
 
 use Yandex\Metrica\Management\ManagementClient;
-use Yandex\Metrica\Analytics\AnalyticsClient;
 
 $counters = array();
 $errorMessage = false;
@@ -13,7 +12,6 @@ $errorMessage = false;
 //Is auth
 if (isset($_COOKIE['yaAccessToken']) && isset($_COOKIE['yaClientId'])) {
     $settings = require_once '../../settings.php';
-
 
     try {
         $managementClient = new ManagementClient($_COOKIE['yaAccessToken']);

@@ -18,6 +18,7 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST' || $debug) {
     $cartRequest = new \Yandex\Market\Models\PostCartRequest();
     $cartRequest->fromJson($postCartJson);
     $currency = $cartRequest->getCart()->getCurrency();
+    /** @var Yandex\Market\Models\Items $requestedItems */
     $requestedItems = $cartRequest->getCart()->getItems();
 
     //Ответ магазина на запрос от Яндекс.Маркета

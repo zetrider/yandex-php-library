@@ -272,11 +272,9 @@ class DiskClient extends AbstractServiceClient
 
     /**
      * @param string $path
-     * @param string $destination
-     * @param string $name
      * @return array
      */
-    public function getFile($path = '', $destination = '', $name = '')
+    public function getFile($path = '')
     {
         $result = array();
         $client = new Client($this->getServiceUrl());

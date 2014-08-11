@@ -7,9 +7,29 @@
 use Yandex\Metrica\Management\ManagementClient;
 use Yandex\Metrica\Analytics\AnalyticsClient;
 
+const POST_PARAMS = 'POST';
+
 $errorMessage = null;
 $status = 'ok';
 $result = null;
+
+function checkParamsExist($needParams, $method = '')
+{
+    $existParams = $_GET;
+    $result = true;
+
+    if ($method == POST_PARAMS) {
+        $existParams = $_POST;
+    }
+
+    foreach ($needParams as $param) {
+        if (!array_key_exists($param, $existParams)) {
+            $result = false;
+            break;
+        }
+    }
+    return $result;
+}
 
 //Is auth
 if (isset($_COOKIE['yaAccessToken']) && isset($_COOKIE['yaClientId'])) {
@@ -24,7 +44,7 @@ if (isset($_COOKIE['yaAccessToken']) && isset($_COOKIE['yaClientId'])) {
             switch ($_GET['method']) {
 
                 case 'getCounter':
-                    if (isset($_GET['counterId']) && $_GET['counterId']) {
+                    if (checkParamsExist(array('counterId')) === true) {
                         //GET /management/v1/counter/{counterId}
                         $paramsObj = new \Yandex\Metrica\Management\Models\CounterParams();
                         $paramsObj->setField('goals,mirrors,grants,filters,operations');
@@ -39,7 +59,7 @@ if (isset($_COOKIE['yaAccessToken']) && isset($_COOKIE['yaClientId'])) {
                     break;
 
                 case 'getFilter':
-                    if (isset($_GET['counterId'], $_GET['filterId']) && $_GET['counterId'] && $_GET['filterId']) {
+                    if (checkParamsExist(array('counterId', 'filterId')) === true) {
                         //GET /management/v1/counter/{counterId}/filter/{filterId}
                         /**
                          * @see http://api.yandex.ru/metrika/doc/beta/management/filters/filter.xml
@@ -52,7 +72,7 @@ if (isset($_COOKIE['yaAccessToken']) && isset($_COOKIE['yaClientId'])) {
                     break;
 
                 case 'getGrant':
-                    if (isset($_GET['userLogin'], $_GET['counterId']) && $_GET['userLogin'] && $_GET['counterId']) {
+                    if (checkParamsExist(array('userLogin', 'counterId'))) {
                         //GET /management/v1/counter/{counterId}/grant/{userLogin}
                         /**
                          * @see http://api.yandex.ru/metrika/doc/beta/management/grants/grantold.xml
@@ -69,10 +89,7 @@ if (isset($_COOKIE['yaAccessToken']) && isset($_COOKIE['yaClientId'])) {
                     /**
                      * @see http://api.yandex.ru/metrika/doc/beta/management/operations/operation.xml
                      */
-                    if (isset($_GET['operationId'], $_GET['counterId'])
-                        && $_GET['operationId']
-                        && $_GET['counterId']
-                    ) {
+                    if (checkParamsExist(array('operationId', 'counterId'))) {
                         $result = $managementClient
                             ->operations()
                             ->getOperation($_GET['operationId'], $_GET['counterId'])
@@ -81,7 +98,7 @@ if (isset($_COOKIE['yaAccessToken']) && isset($_COOKIE['yaClientId'])) {
                     break;
 
                 case 'getPageViewsCount':
-                    if (isset($_GET['counterId']) && $_GET['counterId']) {
+                    if (checkParamsExist(array('counterId'))) {
                         $paramsObj = new \Yandex\Metrica\Analytics\Models\Params();
                         $paramsObj
                             ->setMetrics('ga:pageviews')
@@ -109,7 +126,7 @@ if (isset($_COOKIE['yaAccessToken']) && isset($_COOKIE['yaClientId'])) {
 
             switch ($_POST['method']) {
                 case 'addCounter':
-                    if (isset($_POST['counterSite']) && isset($_POST['counterName'])) {
+                    if (checkParamsExist(array('counterSite', 'counterName'), POST_PARAMS)) {
                         //POST /counters
                         /**
                          * @see http://api.yandex.ru/metrika/doc/ref/reference/add-counter.xml
@@ -126,9 +143,7 @@ if (isset($_COOKIE['yaAccessToken']) && isset($_COOKIE['yaClientId'])) {
                     break;
 
                 case 'updateCounter':
-                    if (isset($_POST['counterSite']) && isset($_POST['counterName'])
-                        && isset($_POST['counterId']) && $_POST['counterId']
-                    ) {
+                    if (checkParamsExist(array('counterSite', 'counterName', 'counterId'), POST_PARAMS)) {
                         //PUT /counter/{id}
                         /**
                          * @see http://api.yandex.ru/metrika/doc/ref/reference/edit-counter.xml
@@ -150,7 +165,7 @@ if (isset($_COOKIE['yaAccessToken']) && isset($_COOKIE['yaClientId'])) {
                     break;
 
                 case 'deleteCounter':
-                    if (isset($_POST['counterId']) && $_POST['counterId']) {
+                    if (checkParamsExist(array('counterId'), POST_PARAMS)) {
                         //DELETE /counter/{id}
                         /**
                          * @see http://api.yandex.ru/metrika/doc/ref/reference/delete-counter.xml
@@ -173,7 +188,7 @@ if (isset($_COOKIE['yaAccessToken']) && isset($_COOKIE['yaClientId'])) {
                     break;
 
                 case 'addDelegate':
-                    if (isset($_POST['userLogin'], $_POST['createAt'], $_POST['comment']) && $_POST['userLogin']) {
+                    if (checkParamsExist(array('userLogin', 'createAt', 'comment'), POST_PARAMS)) {
                         //POST /management/v1/delegates
                         /**
                          * @see http://api.yandex.ru/metrika/doc/beta/management/delegates/adddelegate.xml
@@ -191,7 +206,7 @@ if (isset($_COOKIE['yaAccessToken']) && isset($_COOKIE['yaClientId'])) {
                     break;
 
                 case 'updateDelegate':
-                    if (isset($_POST['userLogin'], $_POST['createAt'], $_POST['comment']) && $_POST['userLogin']) {
+                    if (checkParamsExist(array('userLogin', 'createAt', 'comment'), POST_PARAMS)) {
                         //PUT /management/v1/delegates
                         /**
                          * @see http://api.yandex.ru/metrika/doc/beta/management/delegates/updatedelegates.xml
@@ -209,7 +224,7 @@ if (isset($_COOKIE['yaAccessToken']) && isset($_COOKIE['yaClientId'])) {
                     break;
 
                 case 'deleteDelegate':
-                    if (isset($_POST['userLogin']) && $_POST['userLogin']) {
+                    if (checkParamsExist(array('userLogin'), POST_PARAMS)) {
                         //DELETE /management/v1/delegate/{userLogin}
                         /**
                          * @see http://api.yandex.ru/metrika/doc/beta/management/delegates/deletedelegateold.xml
@@ -231,7 +246,7 @@ if (isset($_COOKIE['yaAccessToken']) && isset($_COOKIE['yaClientId'])) {
                     break;
 
                 case 'deleteAccount':
-                    if (isset($_POST['userLogin']) && $_POST['userLogin']) {
+                    if (checkParamsExist(array('userLogin'), POST_PARAMS)) {
                         //DELETE /management/v1/account/{userLogin}
                         /**
                          * @see http://api.yandex.ru/metrika/doc/beta/management/accounts/deleteaccountold.xml
@@ -255,7 +270,7 @@ if (isset($_COOKIE['yaAccessToken']) && isset($_COOKIE['yaClientId'])) {
                 case 'addFilter':
                     if (isset($_POST['params'], $_POST['counterId']) && $_POST['params'] && $_POST['counterId']) {
                         parse_str($_POST['params'], $params);
-                        $filterModel = new Yandex\Metrica\Management\Models\Filter($params);
+                        $filterModel = new Yandex\Metrica\Management\Models\Filter((array)$params);
 
                         //POST /management/v1/counter/{counterId}/filters
                         /**
@@ -275,7 +290,7 @@ if (isset($_COOKIE['yaAccessToken']) && isset($_COOKIE['yaClientId'])) {
                         && $_POST['filterId']
                     ) {
                         parse_str($_POST['params'], $params);
-                        $filterModel = new Yandex\Metrica\Management\Models\Filter($params);
+                        $filterModel = new Yandex\Metrica\Management\Models\Filter((array)$params);
 
                         //PUT /management/v1/counter/{counterId}/filter/{filterId}
                         /**
@@ -389,9 +404,7 @@ if (isset($_COOKIE['yaAccessToken']) && isset($_COOKIE['yaClientId'])) {
                     break;
 
                 case 'addOperation':
-                    if (isset($_POST['counterId'], $_POST['action'], $_POST['attr'], $_POST['value'], $_POST['status'])
-                        && $_POST['counterId']
-                    ) {
+                    if (checkParamsExist(array('counterId', 'action', 'attr', 'value', 'status'), POST_PARAMS)) {
 
                         $operationModel = new Yandex\Metrica\Management\Models\Operation();
                         $operationModel->setAction($_POST['action'])
@@ -411,10 +424,10 @@ if (isset($_COOKIE['yaAccessToken']) && isset($_COOKIE['yaClientId'])) {
                     break;
 
                 case 'updateOperation':
-                    if (isset($_POST['counterId'], $_POST['operationId'], $_POST['action'], $_POST['attr']
-                        , $_POST['value'], $_POST['status'])
-                        && $_POST['counterId']
-                        && $_POST['operationId']
+                    if (checkParamsExist(
+                            array('counterId', 'operationId', 'action', 'attr', 'value', 'status'),
+                            POST_PARAMS
+                        )
                     ) {
 
                         $operationModel = new Yandex\Metrica\Management\Models\Operation();

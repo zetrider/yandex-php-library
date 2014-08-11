@@ -4,6 +4,7 @@ use Yandex\Market\Partner\PartnerClient;
 use Yandex\Common\Exception\ForbiddenException;
 
 $errorMessage = false;
+$order = null;
 
 //Is auth
 if (isset($_COOKIE['yaAccessToken']) && isset($_COOKIE['yaClientId'])
