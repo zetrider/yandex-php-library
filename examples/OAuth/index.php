@@ -16,15 +16,15 @@ use Yandex\OAuth\OAuthClient;
 
 // Client secret is not required in this case
 $client = new OAuthClient($settings['global']['clientId']);
-
+$state = 'yandex-php-library';
 if (isset($_REQUEST['type'])) {
 
     switch ($_REQUEST['type']) {
         case 'code':
-            $client->authRedirect();
+            $client->authRedirect(true, OAuthClient::CODE_AUTH_TYPE, $state);
             break;
         case 'token':
-            $client->authRedirect(true, OAuthClient::TOKEN_AUTH_TYPE);
+            $client->authRedirect(true, OAuthClient::TOKEN_AUTH_TYPE, $state);
             break;
         default:
             // do nothing
