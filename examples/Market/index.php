@@ -1,13 +1,13 @@
 <?php
 $settings = require_once '../settings.php';
-use Yandex\Market\MarketClient;
+use Yandex\Market\Partner\PartnerClient;
 use Yandex\Common\Exception\ForbiddenException;
 
 $errorMessage = false;
 
 // Is auth
 if (isset($_COOKIE['yaAccessToken']) && isset($_COOKIE['yaClientId'])) {
-    $market = new MarketClient($_COOKIE['yaAccessToken']);
+    $market = new PartnerClient($_COOKIE['yaAccessToken']);
     $market->setClientId($_COOKIE['yaClientId']);
     $market->setLogin($settings['global']['marketLogin']);
 

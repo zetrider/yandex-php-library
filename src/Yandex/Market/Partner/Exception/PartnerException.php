@@ -9,16 +9,18 @@
 /**
  * @namespace
  */
-namespace Yandex\Market\Exception;
+namespace Yandex\Market\Partner\Exception;
+
+use \Yandex\Common\Exception\YandexException;
 
 /**
- * Class MarketRequestException
+ * Class PartnerException
  *
- * @package  Yandex\Market\Exception
+ * @package  Yandex\Market\Partner\Exception
  *
  * @author   Alexander Khaylo <naxel@land.ru>
  * @created  04.11.13 12:48
  */
-class MarketRequestException extends MarketException
+class PartnerException extends YandexException
 {
 }

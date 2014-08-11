@@ -9,7 +9,7 @@
 /**
  * @namespace
  */
-namespace Yandex\Market;
+namespace Yandex\Market\Partner;
 
 use Guzzle\Http\Message\RequestInterface;
 use Yandex\Common\AbstractServiceClient;
@@ -17,10 +17,10 @@ use Guzzle\Service\Client;
 use Guzzle\Http\Message\Response;
 use Guzzle\Http\Exception\ClientErrorResponseException;
 use Yandex\Common\Exception\ForbiddenException;
-use Yandex\Market\Exception\MarketRequestException;
+use Yandex\Market\Partner\Exception\PartnerRequestException;
 
 /**
- * Class MarketClient
+ * Class PartnerClient
  *
  * @category Yandex
  * @package Market
@@ -28,7 +28,7 @@ use Yandex\Market\Exception\MarketRequestException;
  * @author   Alexander Khaylo <naxel@land.ru>
  * @created  04.11.13 12:48
  */
-class MarketClient extends AbstractServiceClient
+class PartnerClient extends AbstractServiceClient
 {
 
     /**
@@ -179,7 +179,7 @@ class MarketClient extends AbstractServiceClient
      * @param RequestInterface $request
      * @return Response
      * @throws ForbiddenException
-     * @throws MarketRequestException
+     * @throws PartnerRequestException
      */
     protected function sendRequest(RequestInterface $request)
     {
@@ -206,7 +206,7 @@ class MarketClient extends AbstractServiceClient
                 throw new ForbiddenException($message);
             }
 
-            throw new MarketRequestException(
+            throw new PartnerRequestException(
                 'Service responded with error code: "' . $code . '" and message: "' . $message . '"'
             );
         }
