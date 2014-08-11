@@ -169,26 +169,28 @@ if (!isset($_GET['campaignId']) || !$_GET['campaignId'] || !isset($_GET['orderId
         <hr/>
         <h3>Товары:</h3>
         <?php
-        /** @var Yandex\Market\Models\Item $item */
-        foreach ($order->getItems() as $item) {
-            ?>
-            <p>
-                <label>ID товара:</label> <?= $item->getOfferId() ?>
-            </p>
-            <p>
-                <label>Категория:</label> <?= $item->getFeedCategoryId() ?>
-            </p>
-            <p>
-                <label>Название товара:</label> <?= $item->getOfferName() ?>
-            </p>
-            <p>
-                <label>Цена:</label> <?= $item->getPrice() ?>
-            </p>
-            <p>
-                <label>Количество:</label> <?= $item->getCount() ?>
-            </p>
-            <hr/>
-        <?php
+        if (is_array($order->getItems()) OR $order->getItems() instanceof Traversable) {
+            /** @var Yandex\Market\Models\Item $item */
+            foreach ($order->getItems() as $item) {
+                ?>
+                <p>
+                    <label>ID товара:</label> <?= $item->getOfferId() ?>
+                </p>
+                <p>
+                    <label>Категория:</label> <?= $item->getFeedCategoryId() ?>
+                </p>
+                <p>
+                    <label>Название товара:</label> <?= $item->getOfferName() ?>
+                </p>
+                <p>
+                    <label>Цена:</label> <?= $item->getPrice() ?>
+                </p>
+                <p>
+                    <label>Количество:</label> <?= $item->getCount() ?>
+                </p>
+                <hr/>
+            <?php
+            }
         }
         ?>
         <?php if ($order->getBuyer()) { ?>

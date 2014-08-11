@@ -69,21 +69,19 @@ if (isset($_COOKIE['yaAccessToken']) && isset($_COOKIE['yaClientId'])) {
         } else {
             ?>
             <div>
-                <?php
-                if ($grants) {
-                    ?>
-                    <h3>Разрешения:</h3>
-                    <table id="grantTable" class="table table-striped table-bordered table-hover">
-                        <thead>
-                        <tr>
-                            <td>Логин пользователя</td>
-                            <td>Уровень доступа</td>
-                            <td>Дата предоставления доступа</td>
-                            <td>Комментарий</td>
-                        </tr>
-                        </thead>
-                        <tbody>
-                        <?php
+                <h3>Разрешения:</h3>
+                <table id="grantTable" class="table table-striped table-bordered table-hover">
+                    <thead>
+                    <tr>
+                        <td>Логин пользователя</td>
+                        <td>Уровень доступа</td>
+                        <td>Дата предоставления доступа</td>
+                        <td>Комментарий</td>
+                    </tr>
+                    </thead>
+                    <tbody>
+                    <?php
+                    if (is_array($grants) OR $grants instanceof Traversable) {
                         foreach ($grants as $grant) {
                             ?>
                             <tr data-user-login="<?= $grant->getUserLogin() ?>">
@@ -109,16 +107,12 @@ if (isset($_COOKIE['yaAccessToken']) && isset($_COOKIE['yaClientId'])) {
                                     </button>
                                 </td>
                             </tr>
-
                         <?php
                         }
-                        ?>
-                        </tbody>
-                    </table>
-                <?php
-                }
-                ?>
-
+                    }
+                    ?>
+                    </tbody>
+                </table>
                 <button id="openAddGrantModal" type="button" class="btn btn-success">
                         <span title="Создать счетчик"
                               class="glyphicon glyphicon-plus"> Создать разрешение</span>

@@ -74,19 +74,17 @@ if (isset($_COOKIE['yaAccessToken']) && isset($_COOKIE['yaClientId'])) {
         } else {
             ?>
             <div>
-                <?php
-                if ($counters) {
-                    ?>
-                    <h3>Счетчики:</h3>
-                    <table id="countersTable" class="table table-striped table-bordered table-hover">
-                        <thead>
-                        <tr>
-                            <td>ID</td>
-                            <td>Название</td>
-                        </tr>
-                        </thead>
-                        <tbody>
-                        <?php
+                <h3>Счетчики:</h3>
+                <table id="countersTable" class="table table-striped table-bordered table-hover">
+                    <thead>
+                    <tr>
+                        <td>ID</td>
+                        <td>Название</td>
+                    </tr>
+                    </thead>
+                    <tbody>
+                    <?php
+                    if (is_array($counters) OR $counters instanceof Traversable) {
                         foreach ($counters as $counter) {
                             ?>
                             <tr data-counter-id="<?= $counter->getId() ?>">
@@ -94,22 +92,20 @@ if (isset($_COOKIE['yaAccessToken']) && isset($_COOKIE['yaClientId'])) {
                                 <td><?= $counter->getName() ?></td>
                                 <td>
                                     <a href="/examples/Metrica/Stat/data.php?counter-id=<?= $counter->getId() ?>"
-                                       class="btn btn-primary">Отчет «Технологии — Браузеры»</a><br />
+                                       class="btn btn-primary">Отчет «Технологии — Браузеры»</a><br/>
                                     <a href="/examples/Metrica/Stat/bytime.php?counter-id=<?= $counter->getId() ?>"
-                                       class="btn btn-info">Отображение данных по времени</a><br />
+                                       class="btn btn-info">Отображение данных по времени</a><br/>
                                     <a href="/examples/Metrica/Stat/comparison.php?counter-id=<?= $counter->getId() ?>"
-                                       class="btn btn-warning">Сравнение сегментов</a><br />
+                                       class="btn btn-warning">Сравнение сегментов</a><br/>
                                 </td>
                             </tr>
 
                         <?php
                         }
-                        ?>
-                        </tbody>
-                    </table>
-                <?php
-                }
-                ?>
+                    }
+                    ?>
+                    </tbody>
+                </table>
             </div>
         <?php
         }

@@ -80,26 +80,24 @@ if (isset($_COOKIE['yaAccessToken']) && isset($_COOKIE['yaClientId'])) {
         } else {
             ?>
             <div>
-                <?php
-                if ($counters) {
-                    ?>
-                    <h3>Счетчики:</h3>
-                    <table id="countersTable" class="table table-striped table-bordered table-hover">
-                        <thead>
-                        <tr>
-                            <td>ID</td>
-                            <td>Статус</td>
-                            <td>Название</td>
-                            <td>Сайт</td>
-                            <td>Тип</td>
-                            <td>Владелец</td>
-                            <td>Права</td>
-                            <td>Действия</td>
-                            <td>Дополнения</td>
-                        </tr>
-                        </thead>
-                        <tbody>
-                        <?php
+                <h3>Счетчики:</h3>
+                <table id="countersTable" class="table table-striped table-bordered table-hover">
+                    <thead>
+                    <tr>
+                        <td>ID</td>
+                        <td>Статус</td>
+                        <td>Название</td>
+                        <td>Сайт</td>
+                        <td>Тип</td>
+                        <td>Владелец</td>
+                        <td>Права</td>
+                        <td>Действия</td>
+                        <td>Дополнения</td>
+                    </tr>
+                    </thead>
+                    <tbody>
+                    <?php
+                    if (is_array($counters) OR $counters instanceof Traversable) {
                         foreach ($counters as $counter) {
                             ?>
                             <tr data-counter-id="<?= $counter->getId() ?>">
@@ -128,27 +126,26 @@ if (isset($_COOKIE['yaAccessToken']) && isset($_COOKIE['yaClientId'])) {
                                     </button>
                                 </td>
                                 <td>
-                                    <a href="/examples/Metrica/Management/filters.php?counter-id=<?=$counter->getId()?>"
-                                       class="btn btn-primary">Фильтры</a><br />
-                                    <a href="/examples/Metrica/Management/grants.php?counter-id=<?=$counter->getId()?>"
-                                       class="btn btn-success">Разрешения</a><br />
+                                    <a href="/examples/Metrica/Management/filters.php?counter-id=<?= $counter->getId(
+                                    ) ?>"
+                                       class="btn btn-primary">Фильтры</a><br/>
+                                    <a href="/examples/Metrica/Management/grants.php?counter-id=<?= $counter->getId(
+                                    ) ?>"
+                                       class="btn btn-success">Разрешения</a><br/>
                                     <a href="/examples/Metrica/Management/operations.php?counter-id=
-                                       <?=$counter->getId()?>"
-                                       class="btn btn-info">Операции</a><br />
-                                    <a href="/examples/Metrica/Management/goals.php?counter-id=<?=$counter->getId()?>"
+                                       <?= $counter->getId() ?>"
+                                       class="btn btn-info">Операции</a><br/>
+                                    <a href="/examples/Metrica/Management/goals.php?counter-id=<?= $counter->getId() ?>"
                                        class="btn btn-warning">Цели</a>
                                 </td>
                             </tr>
 
                         <?php
                         }
-                        ?>
-                        </tbody>
-                    </table>
-                <?php
-                }
-                ?>
-
+                    }
+                    ?>
+                    </tbody>
+                </table>
                 <button id="openAddCounterModal" type="button" class="btn btn-success">
                         <span title="Создать счетчик"
                               class="glyphicon glyphicon-plus"> Создать счетчик</span>

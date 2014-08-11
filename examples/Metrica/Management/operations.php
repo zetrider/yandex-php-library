@@ -67,22 +67,20 @@ if (isset($_COOKIE['yaAccessToken']) && isset($_COOKIE['yaClientId'])) {
         } else {
             ?>
             <div>
-                <?php
-                if ($operations) {
-                    ?>
-                    <h3>Операции:</h3>
-                    <table id="operationsTable" class="table table-striped table-bordered table-hover">
-                        <thead>
-                        <tr>
-                            <td>ID</td>
-                            <td>Тип</td>
-                            <td>Поле для фильтрации</td>
-                            <td>Значение для замены</td>
-                            <td>Статус</td>
-                        </tr>
-                        </thead>
-                        <tbody>
-                        <?php
+                <h3>Операции:</h3>
+                <table id="operationsTable" class="table table-striped table-bordered table-hover">
+                    <thead>
+                    <tr>
+                        <td>ID</td>
+                        <td>Тип</td>
+                        <td>Поле для фильтрации</td>
+                        <td>Значение для замены</td>
+                        <td>Статус</td>
+                    </tr>
+                    </thead>
+                    <tbody>
+                    <?php
+                    if (is_array($operations) OR $operations instanceof Traversable) {
                         foreach ($operations as $operation) {
                             ?>
                             <tr data-operation-id="<?= $operation->getId() ?>">
@@ -109,16 +107,12 @@ if (isset($_COOKIE['yaAccessToken']) && isset($_COOKIE['yaClientId'])) {
                                     </button>
                                 </td>
                             </tr>
-
                         <?php
                         }
-                        ?>
-                        </tbody>
-                    </table>
-                <?php
-                }
-                ?>
-
+                    }
+                    ?>
+                    </tbody>
+                </table>
                 <button id="openAddOperationModal" type="button" class="btn btn-success">
                         <span title="Создать счетчик"
                               class="glyphicon glyphicon-plus"> Создать операцию</span>

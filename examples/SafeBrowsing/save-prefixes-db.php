@@ -62,14 +62,16 @@ use Yandex\Common\Exception\YandexException;
         $newPrefixes = array();
         $removedPrefixes = array();
 
-        foreach ($malwaresData as $shavarName => $types) {
+        if (is_array($malwaresData)) {
+            foreach ($malwaresData as $shavarName => $types) {
 
-            if (isset($types['added'])) {
-                $newPrefixes[$shavarName] = $types['added'];
-                file_put_contents('hosts_prefixes_' . $shavarName . '.json', json_encode($newPrefixes[$shavarName]));
-            }
-            if (isset($types['removed'])) {
-                $removedPrefixes[$shavarName] = $types['removed'];
+                if (isset($types['added'])) {
+                    $newPrefixes[$shavarName] = $types['added'];
+                    file_put_contents('hosts_prefixes_' . $shavarName . '.json', json_encode($newPrefixes[$shavarName]));
+                }
+                if (isset($types['removed'])) {
+                    $removedPrefixes[$shavarName] = $types['removed'];
+                }
             }
         }
 

@@ -63,20 +63,18 @@ if (isset($_COOKIE['yaAccessToken']) && isset($_COOKIE['yaClientId'])) {
         } else {
             ?>
             <div>
-                <?php
-                if ($delegates) {
-                    ?>
-                    <h3>Представители:</h3>
-                    <table id="delegatesTable" class="table table-striped table-bordered table-hover">
-                        <thead>
-                        <tr>
-                            <td>Пользователь</td>
-                            <td>Дата создания</td>
-                            <td>Комментарий</td>
-                        </tr>
-                        </thead>
-                        <tbody>
-                        <?php
+                <h3>Представители:</h3>
+                <table id="delegatesTable" class="table table-striped table-bordered table-hover">
+                    <thead>
+                    <tr>
+                        <td>Пользователь</td>
+                        <td>Дата создания</td>
+                        <td>Комментарий</td>
+                    </tr>
+                    </thead>
+                    <tbody>
+                    <?php
+                    if (is_array($delegates) OR $delegates instanceof Traversable) {
                         foreach ($delegates as $delegate) {
                             ?>
                             <tr data-user-login="<?= $delegate->getUserLogin() ?>">
@@ -93,13 +91,10 @@ if (isset($_COOKIE['yaAccessToken']) && isset($_COOKIE['yaClientId'])) {
 
                         <?php
                         }
-                        ?>
-                        </tbody>
-                    </table>
-                <?php
-                }
-                ?>
-
+                    }
+                    ?>
+                    </tbody>
+                </table>
                 <button id="openAddDelegateModal" type="button" class="btn btn-success">
                         <span title="Добавить представителя"
                               class="glyphicon glyphicon-plus"> Добавить представителя</span>

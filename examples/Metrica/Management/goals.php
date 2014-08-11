@@ -65,22 +65,20 @@ if (isset($_COOKIE['yaAccessToken']) && isset($_COOKIE['yaClientId'])) {
         } else {
             ?>
             <div>
-                <?php
-                if ($goals) {
-                    ?>
-                    <h3>Цели:</h3>
-                    <table id="countersTable" class="table table-striped table-bordered table-hover">
-                        <thead>
-                        <tr>
-                            <td>ID</td>
-                            <td>Название</td>
-                            <td>Тип</td>
-                            <td>Класс</td>
-                            <td>Тип цели для клиентов Яндекс.Маркета</td>
-                        </tr>
-                        </thead>
-                        <tbody>
-                        <?php
+                <h3>Цели:</h3>
+                <table id="countersTable" class="table table-striped table-bordered table-hover">
+                    <thead>
+                    <tr>
+                        <td>ID</td>
+                        <td>Название</td>
+                        <td>Тип</td>
+                        <td>Класс</td>
+                        <td>Тип цели для клиентов Яндекс.Маркета</td>
+                    </tr>
+                    </thead>
+                    <tbody>
+                    <?php
+                    if (is_array($goals) OR $goals instanceof Traversable) {
                         foreach ($goals as $goal) {
                             ?>
                             <tr>
@@ -93,12 +91,10 @@ if (isset($_COOKIE['yaAccessToken']) && isset($_COOKIE['yaClientId'])) {
 
                         <?php
                         }
-                        ?>
-                        </tbody>
-                    </table>
-                <?php
-                }
-                ?>
+                    }
+                    ?>
+                    </tbody>
+                </table>
             </div>
         <?php
         }

@@ -64,19 +64,17 @@ if (isset($_COOKIE['yaAccessToken']) && isset($_COOKIE['yaClientId'])) {
         } else {
             ?>
             <div>
-                <?php
-                if ($accounts) {
-                    ?>
-                    <h3>Аккаунты:</h3>
-                    <table id="accountTable" class="table table-striped table-bordered table-hover">
-                        <thead>
-                        <tr>
-                            <td>Пользователь</td>
-                            <td>Дата создания</td>
-                        </tr>
-                        </thead>
-                        <tbody>
-                        <?php
+                <h3>Аккаунты:</h3>
+                <table id="accountTable" class="table table-striped table-bordered table-hover">
+                    <thead>
+                    <tr>
+                        <td>Пользователь</td>
+                        <td>Дата создания</td>
+                    </tr>
+                    </thead>
+                    <tbody>
+                    <?php
+                    if (is_array($accounts) OR $accounts instanceof Traversable) {
                         foreach ($accounts as $account) {
                             ?>
                             <tr data-user-login="<?= $account->getUserLogin() ?>">
@@ -84,20 +82,18 @@ if (isset($_COOKIE['yaAccessToken']) && isset($_COOKIE['yaClientId'])) {
                                 <td><?= $account->getCreatedAt() ?></td>
                                 <td style="text-align: center">
                                     <button type="button" class="btn btn-danger deleteAccount">
-                                            <span title="Удалить"
-                                                  class="glyphicon glyphicon-trash"></span>
+                                                <span title="Удалить"
+                                                      class="glyphicon glyphicon-trash"></span>
                                     </button>
                                 </td>
                             </tr>
 
                         <?php
                         }
-                        ?>
-                        </tbody>
-                    </table>
-                <?php
-                }
-                ?>
+                    }
+                    ?>
+                    </tbody>
+                </table>
             </div>
         <?php
         }

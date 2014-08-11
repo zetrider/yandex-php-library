@@ -108,14 +108,16 @@ if (isset($_COOKIE['yaAccessToken']) && isset($_COOKIE['yaClientId'])) {
                         <div id="collapseOrdersLinks" class="panel-collapse collapse in">
                             <div class="panel-body">
                                 <?php
-                                /** @var Yandex\Market\Models\Order $order */
-                                foreach ($orders as $order) {
-                                    ?>
-                                    <p>
-                                        <a href="view-order.php?orderId=<?= $order->getId();
-                                        ?>&campaignId=<?= $campaignId ?>">Заказ №<?= $order->getId() ?></a>
-                                    </p>
-                                <?php
+                                if (is_array($orders) OR $orders instanceof Traversable) {
+                                    /** @var Yandex\Market\Models\Order $order */
+                                    foreach ($orders as $order) {
+                                        ?>
+                                        <p>
+                                            <a href="view-order.php?orderId=<?= $order->getId();
+                                            ?>&campaignId=<?= $campaignId ?>">Заказ №<?= $order->getId() ?></a>
+                                        </p>
+                                    <?php
+                                    }
                                 }
                                 ?>
                             </div>
