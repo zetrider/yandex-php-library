@@ -2,7 +2,7 @@
 
 namespace Yandex\Metrica\Management\Models;
 
-use Yandex\Metrica\Management\Models\Contributions;
+use Yandex\Metrica\Management\Models\Conditions;
 
 class Goal extends ManagementModel
 {
@@ -20,7 +20,7 @@ class Goal extends ManagementModel
     protected $conditions = null;
 
     protected $mappingClasses = array(
-        'conditions' => 'Yandex\Metrica\Management\Models\Contributions'
+        'conditions' => 'Yandex\Metrica\Management\Models\Conditions'
     );
 
     protected $propNameMap = array(
@@ -140,7 +140,7 @@ class Goal extends ManagementModel
     /**
      * Retrieve the conditions property
      *
-     * @return Contributions|null
+     * @return Conditions|null
      */
     public function getConditions()
     {
