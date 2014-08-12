@@ -4,8 +4,9 @@ namespace Yandex\Metrica\Stat\Models;
 
 use Yandex\Metrica\Stat\Models\Query;
 use Yandex\Metrica\Stat\Models\Data;
+use Yandex\Common\Model;
 
-class Table extends StatModel
+class Table extends Model
 {
 
     protected $totalRows = null;

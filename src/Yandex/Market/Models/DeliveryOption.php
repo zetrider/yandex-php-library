@@ -4,8 +4,9 @@ namespace Yandex\Market\Models;
 
 use Yandex\Market\Models\DatesRange;
 use Yandex\Market\Models\Outlets;
+use Yandex\Common\Model;
 
-class DeliveryOption extends MarketModel
+class DeliveryOption extends Model
 {
 
     protected $id = null;
@@ -23,6 +24,10 @@ class DeliveryOption extends MarketModel
     protected $mappingClasses = array(
         'dates' => 'Yandex\Market\Models\DatesRange',
         'outlets' => 'Yandex\Market\Models\Outlets'
+    );
+
+    protected $propNameMap = array(
+        
     );
 
     /**

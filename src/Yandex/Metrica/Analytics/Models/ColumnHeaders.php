@@ -2,7 +2,9 @@
 
 namespace Yandex\Metrica\Analytics\Models;
 
-class ColumnHeaders extends AnalyticsModel
+use Yandex\Common\ObjectModel;
+
+class ColumnHeaders extends ObjectModel
 {
 
     protected $collection = array(

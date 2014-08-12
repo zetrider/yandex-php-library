@@ -2,7 +2,9 @@
 
 namespace Yandex\Metrica\Management\Models;
 
-class Filters extends ManagementModel
+use Yandex\Common\ObjectModel;
+
+class Filters extends ObjectModel
 {
 
     protected $collection = array(

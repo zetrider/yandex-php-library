@@ -2,7 +2,9 @@
 
 namespace Yandex\Metrica\Analytics\Models;
 
-class Header extends AnalyticsModel
+use Yandex\Common\Model;
+
+class Header extends Model
 {
 
     protected $name = null;

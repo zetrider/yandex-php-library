@@ -2,7 +2,9 @@
 
 namespace Yandex\Market\Models;
 
-class Pager extends MarketModel
+use Yandex\Common\Model;
+
+class Pager extends Model
 {
 
     protected $total = null;
@@ -18,6 +20,10 @@ class Pager extends MarketModel
     protected $currentPage = null;
 
     protected $mappingClasses = array(
+        
+    );
+
+    protected $propNameMap = array(
         
     );
 

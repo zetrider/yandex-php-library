@@ -21,18 +21,18 @@ class FiltersClientTest extends TestCase
 
         $table = $mock->getFilters(2215573);
 
-        $this->assertEquals($fixtures["filters"][0]["id"], $table[0]->getId());
-        $this->assertEquals($fixtures["filters"][0]["attr"], $table[0]->getAttr());
-        $this->assertEquals($fixtures["filters"][0]["type"], $table[0]->getType());
-        $this->assertEquals($fixtures["filters"][0]["value"], $table[0]->getValue());
-        $this->assertEquals($fixtures["filters"][0]["action"], $table[0]->getAction());
-        $this->assertEquals($fixtures["filters"][0]["status"], $table[0]->getStatus());
-        $this->assertEquals($fixtures["filters"][1]["id"], $table[1]->getId());
-        $this->assertEquals($fixtures["filters"][1]["attr"], $table[1]->getAttr());
-        $this->assertEquals($fixtures["filters"][1]["type"], $table[1]->getType());
-        $this->assertEquals($fixtures["filters"][1]["value"], $table[1]->getValue());
-        $this->assertEquals($fixtures["filters"][1]["action"], $table[1]->getAction());
-        $this->assertEquals($fixtures["filters"][1]["status"], $table[1]->getStatus());
+        $this->assertEquals($fixtures["filters"][0]["id"], $table->current()->getId());
+        $this->assertEquals($fixtures["filters"][0]["attr"], $table->current()->getAttr());
+        $this->assertEquals($fixtures["filters"][0]["type"], $table->current()->getType());
+        $this->assertEquals($fixtures["filters"][0]["value"], $table->current()->getValue());
+        $this->assertEquals($fixtures["filters"][0]["action"], $table->current()->getAction());
+        $this->assertEquals($fixtures["filters"][0]["status"], $table->current()->getStatus());
+        $this->assertEquals($fixtures["filters"][1]["id"], $table->next()->getId());
+        $this->assertEquals($fixtures["filters"][1]["attr"], $table->current()->getAttr());
+        $this->assertEquals($fixtures["filters"][1]["type"], $table->current()->getType());
+        $this->assertEquals($fixtures["filters"][1]["value"], $table->current()->getValue());
+        $this->assertEquals($fixtures["filters"][1]["action"], $table->current()->getAction());
+        $this->assertEquals($fixtures["filters"][1]["status"], $table->current()->getStatus());
     }
 
     public function testGetFilter()

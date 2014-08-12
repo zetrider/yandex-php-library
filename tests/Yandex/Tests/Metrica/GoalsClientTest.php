@@ -19,19 +19,21 @@ class GoalsClientTest extends TestCase
             ->will($this->returnValue($fixtures));
 
         $table = $mock->getGoals(2215573);
-        $conditions = $table[1]->getConditions();
 
-        $this->assertEquals($fixtures["goals"][0]["id"], $table[0]->getId());
-        $this->assertEquals($fixtures["goals"][0]["name"], $table[0]->getName());
-        $this->assertEquals($fixtures["goals"][0]["type"], $table[0]->getType());
-        $this->assertEquals($fixtures["goals"][0]["class"], $table[0]->getClass());
-        $this->assertEquals($fixtures["goals"][1]["id"], $table[1]->getId());
-        $this->assertEquals($fixtures["goals"][1]["name"], $table[1]->getName());
-        $this->assertEquals($fixtures["goals"][1]["type"], $table[1]->getType());
-        $this->assertEquals($fixtures["goals"][1]["flag"], $table[1]->getFlag());
-        $this->assertEquals($fixtures["goals"][1]["class"], $table[1]->getClass());
-        $this->assertEquals($fixtures["goals"][1]["conditions"][0]["type"], $conditions[0]->getType());
-        $this->assertEquals($fixtures["goals"][1]["conditions"][0]["url"], $conditions[0]->getUrl());
+        $this->assertEquals($fixtures["goals"][0]["id"], $table->current()->getId());
+        $this->assertEquals($fixtures["goals"][0]["name"], $table->current()->getName());
+        $this->assertEquals($fixtures["goals"][0]["type"], $table->current()->getType());
+        $this->assertEquals($fixtures["goals"][0]["class"], $table->current()->getClass());
+        $this->assertEquals($fixtures["goals"][1]["id"], $table->next()->getId());
+        $this->assertEquals($fixtures["goals"][1]["name"], $table->current()->getName());
+        $this->assertEquals($fixtures["goals"][1]["type"], $table->current()->getType());
+        $this->assertEquals($fixtures["goals"][1]["flag"], $table->current()->getFlag());
+        $this->assertEquals($fixtures["goals"][1]["class"], $table->current()->getClass());
+
+        $conditions = $table->current()->getConditions();
+
+        $this->assertEquals($fixtures["goals"][1]["conditions"][0]["type"], $conditions->current()->getType());
+        $this->assertEquals($fixtures["goals"][1]["conditions"][0]["url"], $conditions->current()->getUrl());
 
 
     }
@@ -53,7 +55,7 @@ class GoalsClientTest extends TestCase
         $this->assertEquals($fixtures["goal"]["type"], $table->getType());
         $this->assertEquals($fixtures["goal"]["flag"], $table->getFlag());
         $this->assertEquals($fixtures["goal"]["class"], $table->getClass());
-        $this->assertEquals($fixtures["goal"]["conditions"][0]["type"], $conditions[0]->getType());
-        $this->assertEquals($fixtures["goal"]["conditions"][0]["url"], $conditions[0]->getUrl());
+        $this->assertEquals($fixtures["goal"]["conditions"][0]["type"], $conditions->current()->getType());
+        $this->assertEquals($fixtures["goal"]["conditions"][0]["url"], $conditions->current()->getUrl());
     }
 }

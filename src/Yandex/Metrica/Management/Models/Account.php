@@ -2,7 +2,9 @@
 
 namespace Yandex\Metrica\Management\Models;
 
-class Account extends ManagementModel
+use Yandex\Common\Model;
+
+class Account extends Model
 {
 
     protected $userLogin = null;

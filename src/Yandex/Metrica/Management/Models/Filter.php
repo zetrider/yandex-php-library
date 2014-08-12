@@ -2,7 +2,9 @@
 
 namespace Yandex\Metrica\Management\Models;
 
-class Filter extends ManagementModel
+use Yandex\Common\Model;
+
+class Filter extends Model
 {
 
     protected $id = null;

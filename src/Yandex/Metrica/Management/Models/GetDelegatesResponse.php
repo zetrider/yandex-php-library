@@ -3,8 +3,9 @@
 namespace Yandex\Metrica\Management\Models;
 
 use Yandex\Metrica\Management\Models\Delegates;
+use Yandex\Common\Model;
 
-class GetDelegatesResponse extends ManagementModel
+class GetDelegatesResponse extends Model
 {
 
     protected $delegates = null;

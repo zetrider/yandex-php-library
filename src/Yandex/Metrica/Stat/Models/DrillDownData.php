@@ -2,7 +2,9 @@
 
 namespace Yandex\Metrica\Stat\Models;
 
-class DrillDownData extends StatModel
+use Yandex\Common\ObjectModel;
+
+class DrillDownData extends ObjectModel
 {
 
     protected $collection = array(

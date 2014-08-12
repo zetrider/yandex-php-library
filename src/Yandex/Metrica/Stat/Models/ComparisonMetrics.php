@@ -2,7 +2,9 @@
 
 namespace Yandex\Metrica\Stat\Models;
 
-class ComparisonMetrics extends StatModel
+use Yandex\Common\Model;
+
+class ComparisonMetrics extends Model
 {
 
     protected $a = null;

@@ -20,14 +20,14 @@ class GrantsClientTest extends TestCase
 
         $table = $mock->getGrants(2215573);
 
-        $this->assertEquals($fixtures["grants"][0]["user_login"], $table[0]->getUserLogin());
-        $this->assertEquals($fixtures["grants"][0]["perm"], $table[0]->getPerm());
-        $this->assertEquals($fixtures["grants"][0]["created_at"], $table[0]->getCreatedAt());
-        $this->assertEquals($fixtures["grants"][0]["comment"], $table[0]->getComment());
-        $this->assertEquals($fixtures["grants"][1]["user_login"], $table[1]->getUserLogin());
-        $this->assertEquals($fixtures["grants"][1]["perm"], $table[1]->getPerm());
-        $this->assertEquals($fixtures["grants"][1]["created_at"], $table[1]->getCreatedAt());
-        $this->assertEquals($fixtures["grants"][1]["comment"], $table[1]->getComment());
+        $this->assertEquals($fixtures["grants"][0]["user_login"], $table->current()->getUserLogin());
+        $this->assertEquals($fixtures["grants"][0]["perm"], $table->current()->getPerm());
+        $this->assertEquals($fixtures["grants"][0]["created_at"], $table->current()->getCreatedAt());
+        $this->assertEquals($fixtures["grants"][0]["comment"], $table->current()->getComment());
+        $this->assertEquals($fixtures["grants"][1]["user_login"], $table->next()->getUserLogin());
+        $this->assertEquals($fixtures["grants"][1]["perm"], $table->current()->getPerm());
+        $this->assertEquals($fixtures["grants"][1]["created_at"], $table->current()->getCreatedAt());
+        $this->assertEquals($fixtures["grants"][1]["comment"], $table->current()->getComment());
     }
 
     public function testGetGrant()

@@ -2,7 +2,9 @@
 
 namespace Yandex\Market\Models;
 
-class Buyer extends MarketModel
+use Yandex\Common\Model;
+
+class Buyer extends Model
 {
 
     protected $id = null;
@@ -18,6 +20,10 @@ class Buyer extends MarketModel
     protected $email = null;
 
     protected $mappingClasses = array(
+        
+    );
+
+    protected $propNameMap = array(
         
     );
 

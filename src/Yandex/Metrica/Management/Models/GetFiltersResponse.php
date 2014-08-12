@@ -3,8 +3,9 @@
 namespace Yandex\Metrica\Management\Models;
 
 use Yandex\Metrica\Management\Models\Filters;
+use Yandex\Common\Model;
 
-class GetFiltersResponse extends ManagementModel
+class GetFiltersResponse extends Model
 {
 
     protected $filters = null;

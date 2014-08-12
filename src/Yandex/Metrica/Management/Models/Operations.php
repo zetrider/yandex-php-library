@@ -2,7 +2,9 @@
 
 namespace Yandex\Metrica\Management\Models;
 
-class Operations extends ManagementModel
+use Yandex\Common\ObjectModel;
+
+class Operations extends ObjectModel
 {
 
     protected $collection = array(

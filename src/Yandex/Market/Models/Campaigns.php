@@ -2,12 +2,20 @@
 
 namespace Yandex\Market\Models;
 
-class Campaigns extends MarketModel
+use Yandex\Common\ObjectModel;
+
+class Campaigns extends ObjectModel
 {
 
-    protected $collection = null;
+    protected $collection = array(
+        
+    );
 
     protected $mappingClasses = array(
+        
+    );
+
+    protected $propNameMap = array(
         
     );
 
@@ -21,7 +29,7 @@ class Campaigns extends MarketModel
         } elseif (is_object($campaign) && $campaign instanceof Campaign) {
             $this->collection[] = $campaign;
         }
-        
+
         return $this;
     }
 

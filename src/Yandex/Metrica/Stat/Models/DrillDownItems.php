@@ -3,8 +3,9 @@
 namespace Yandex\Metrica\Stat\Models;
 
 use Yandex\Metrica\Stat\Models\Dimension;
+use Yandex\Common\Model;
 
-class DrillDownItems extends StatModel
+class DrillDownItems extends Model
 {
 
     protected $dimension = null;

@@ -2,7 +2,9 @@
 
 namespace Yandex\Metrica\Management\Models;
 
-class Delegate extends ManagementModel
+use Yandex\Common\Model;
+
+class Delegate extends Model
 {
 
     protected $userLogin = null;

@@ -2,7 +2,9 @@
 
 namespace Yandex\Market\Models;
 
-class Address extends MarketModel
+use Yandex\Common\Model;
+
+class Address extends Model
 {
 
     protected $country = null;
@@ -32,6 +34,10 @@ class Address extends MarketModel
     protected $phone = null;
 
     protected $mappingClasses = array(
+        
+    );
+
+    protected $propNameMap = array(
         
     );
 

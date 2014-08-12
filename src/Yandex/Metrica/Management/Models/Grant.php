@@ -2,7 +2,9 @@
 
 namespace Yandex\Metrica\Management\Models;
 
-class Grant extends ManagementModel
+use Yandex\Common\Model;
+
+class Grant extends Model
 {
 
     protected $userLogin = null;

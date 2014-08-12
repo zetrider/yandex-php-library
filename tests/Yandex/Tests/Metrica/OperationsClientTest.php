@@ -20,16 +20,16 @@ class OperationsClientTest extends TestCase
 
         $table = $mock->getOperations(2215573);
 
-        $this->assertEquals($fixtures["operations"][0]["id"], $table[0]->getId());
-        $this->assertEquals($fixtures["operations"][0]["action"], $table[0]->getAction());
-        $this->assertEquals($fixtures["operations"][0]["attr"], $table[0]->getAttr());
-        $this->assertEquals($fixtures["operations"][0]["value"], $table[0]->getValue());
-        $this->assertEquals($fixtures["operations"][0]["status"], $table[0]->getStatus());
-        $this->assertEquals($fixtures["operations"][1]["id"], $table[1]->getId());
-        $this->assertEquals($fixtures["operations"][1]["action"], $table[1]->getAction());
-        $this->assertEquals($fixtures["operations"][1]["attr"], $table[1]->getAttr());
-        $this->assertEquals($fixtures["operations"][1]["value"], $table[1]->getValue());
-        $this->assertEquals($fixtures["operations"][1]["status"], $table[1]->getStatus());
+        $this->assertEquals($fixtures["operations"][0]["id"], $table->current()->getId());
+        $this->assertEquals($fixtures["operations"][0]["action"], $table->current()->getAction());
+        $this->assertEquals($fixtures["operations"][0]["attr"], $table->current()->getAttr());
+        $this->assertEquals($fixtures["operations"][0]["value"], $table->current()->getValue());
+        $this->assertEquals($fixtures["operations"][0]["status"], $table->current()->getStatus());
+        $this->assertEquals($fixtures["operations"][1]["id"], $table->next()->getId());
+        $this->assertEquals($fixtures["operations"][1]["action"], $table->current()->getAction());
+        $this->assertEquals($fixtures["operations"][1]["attr"], $table->current()->getAttr());
+        $this->assertEquals($fixtures["operations"][1]["value"], $table->current()->getValue());
+        $this->assertEquals($fixtures["operations"][1]["status"], $table->current()->getStatus());
     }
 
     public function testGetOperation()

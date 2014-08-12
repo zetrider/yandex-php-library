@@ -2,7 +2,9 @@
 
 namespace Yandex\Metrica\Stat\Models;
 
-class ByTimeParams extends StatModel
+use Yandex\Common\Model;
+
+class ByTimeParams extends Model
 {
 
     protected $id = null;

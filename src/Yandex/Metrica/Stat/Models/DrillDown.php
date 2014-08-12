@@ -4,8 +4,9 @@ namespace Yandex\Metrica\Stat\Models;
 
 use Yandex\Metrica\Stat\Models\Query;
 use Yandex\Metrica\Stat\Models\DrillDownData;
+use Yandex\Common\Model;
 
-class DrillDown extends StatModel
+class DrillDown extends Model
 {
 
     protected $totalRows = null;

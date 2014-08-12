@@ -5,8 +5,9 @@ namespace Yandex\Metrica\Stat\Models;
 use Yandex\Metrica\Stat\Models\ComparisonQuery;
 use Yandex\Metrica\Stat\Models\ComparisonData;
 use Yandex\Metrica\Stat\Models\ComparisonTotals;
+use Yandex\Common\Model;
 
-class Comparison extends StatModel
+class Comparison extends Model
 {
 
     protected $totalRows = null;

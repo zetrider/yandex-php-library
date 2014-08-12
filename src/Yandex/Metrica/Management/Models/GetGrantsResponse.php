@@ -3,8 +3,9 @@
 namespace Yandex\Metrica\Management\Models;
 
 use Yandex\Metrica\Management\Models\Grants;
+use Yandex\Common\Model;
 
-class GetGrantsResponse extends ManagementModel
+class GetGrantsResponse extends Model
 {
 
     protected $grants = null;

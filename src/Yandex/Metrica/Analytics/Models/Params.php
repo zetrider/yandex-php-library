@@ -2,7 +2,9 @@
 
 namespace Yandex\Metrica\Analytics\Models;
 
-class Params extends AnalyticsModel
+use Yandex\Common\Model;
+
+class Params extends Model
 {
 
     protected $endDate = null;

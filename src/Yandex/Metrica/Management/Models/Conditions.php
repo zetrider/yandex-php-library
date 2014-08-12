@@ -2,7 +2,9 @@
 
 namespace Yandex\Metrica\Management\Models;
 
-class Conditions extends ManagementModel
+use Yandex\Common\ObjectModel;
+
+class Conditions extends ObjectModel
 {
 
     protected $collection = array(

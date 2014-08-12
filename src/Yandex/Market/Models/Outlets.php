@@ -2,12 +2,20 @@
 
 namespace Yandex\Market\Models;
 
-class Outlets extends MarketModel
+use Yandex\Common\ObjectModel;
+
+class Outlets extends ObjectModel
 {
 
-    protected $collection = null;
+    protected $collection = array(
+        
+    );
 
     protected $mappingClasses = array(
+        
+    );
+
+    protected $propNameMap = array(
         
     );
 
@@ -21,7 +29,7 @@ class Outlets extends MarketModel
         } elseif (is_object($outlet) && $outlet instanceof Outlet) {
             $this->collection[] = $outlet;
         }
-        
+
         return $this;
     }
 

@@ -2,7 +2,9 @@
 
 namespace Yandex\Metrica\Analytics\Models;
 
-class Query extends AnalyticsModel
+use Yandex\Common\Model;
+
+class Query extends Model
 {
 
     protected $ids = null;

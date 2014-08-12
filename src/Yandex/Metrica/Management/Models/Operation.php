@@ -2,7 +2,9 @@
 
 namespace Yandex\Metrica\Management\Models;
 
-class Operation extends ManagementModel
+use Yandex\Common\Model;
+
+class Operation extends Model
 {
 
     protected $id = null;

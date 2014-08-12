@@ -2,7 +2,9 @@
 
 namespace Yandex\Metrica\Management\Models;
 
-class CounterParams extends ManagementModel
+use Yandex\Common\Model;
+
+class CounterParams extends Model
 {
 
     protected $callback = null;

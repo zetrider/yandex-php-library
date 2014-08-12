@@ -2,12 +2,18 @@
 
 namespace Yandex\Market\Models;
 
-class Outlet extends MarketModel
+use Yandex\Common\Model;
+
+class Outlet extends Model
 {
 
     protected $id = null;
 
     protected $mappingClasses = array(
+        
+    );
+
+    protected $propNameMap = array(
         
     );
 

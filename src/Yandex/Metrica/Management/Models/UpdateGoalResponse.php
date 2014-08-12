@@ -3,8 +3,9 @@
 namespace Yandex\Metrica\Management\Models;
 
 use Yandex\Metrica\Management\Models\Goal;
+use Yandex\Common\Model;
 
-class UpdateGoalResponse extends ManagementModel
+class UpdateGoalResponse extends Model
 {
 
     protected $goal = null;

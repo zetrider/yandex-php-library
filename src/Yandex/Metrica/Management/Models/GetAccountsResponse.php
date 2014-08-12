@@ -3,8 +3,9 @@
 namespace Yandex\Metrica\Management\Models;
 
 use Yandex\Metrica\Management\Models\Accounts;
+use Yandex\Common\Model;
 
-class GetAccountsResponse extends ManagementModel
+class GetAccountsResponse extends Model
 {
 
     protected $accounts = null;

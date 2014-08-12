@@ -2,7 +2,9 @@
 
 namespace Yandex\Metrica\Management\Models;
 
-class Monitoring extends ManagementModel
+use Yandex\Common\Model;
+
+class Monitoring extends Model
 {
 
     protected $enableMonitoring = null;

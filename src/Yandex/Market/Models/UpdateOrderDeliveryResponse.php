@@ -3,14 +3,19 @@
 namespace Yandex\Market\Models;
 
 use Yandex\Market\Models\Order;
+use Yandex\Common\Model;
 
-class UpdateOrderDeliveryResponse extends MarketModel
+class UpdateOrderDeliveryResponse extends Model
 {
 
     protected $order = null;
 
     protected $mappingClasses = array(
         'order' => 'Yandex\Market\Models\Order'
+    );
+
+    protected $propNameMap = array(
+        
     );
 
     /**

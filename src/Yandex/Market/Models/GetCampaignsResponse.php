@@ -3,14 +3,19 @@
 namespace Yandex\Market\Models;
 
 use Yandex\Market\Models\Campaigns;
+use Yandex\Common\Model;
 
-class GetCampaignsResponse extends MarketModel
+class GetCampaignsResponse extends Model
 {
 
     protected $campaigns = null;
 
     protected $mappingClasses = array(
         'campaigns' => 'Yandex\Market\Models\Campaigns'
+    );
+
+    protected $propNameMap = array(
+        
     );
 
     /**

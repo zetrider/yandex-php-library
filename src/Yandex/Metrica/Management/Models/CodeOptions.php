@@ -3,8 +3,9 @@
 namespace Yandex\Metrica\Management\Models;
 
 use Yandex\Metrica\Management\Models\Informer;
+use Yandex\Common\Model;
 
-class CodeOptions extends ManagementModel
+class CodeOptions extends Model
 {
 
     protected $async = null;

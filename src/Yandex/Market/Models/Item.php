@@ -2,7 +2,9 @@
 
 namespace Yandex\Market\Models;
 
-class Item extends MarketModel
+use Yandex\Common\Model;
+
+class Item extends Model
 {
 
     protected $feedId = null;
@@ -20,6 +22,10 @@ class Item extends MarketModel
     protected $delivery = null;
 
     protected $mappingClasses = array(
+        
+    );
+
+    protected $propNameMap = array(
         
     );
 

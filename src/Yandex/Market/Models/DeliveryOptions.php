@@ -2,12 +2,20 @@
 
 namespace Yandex\Market\Models;
 
-class DeliveryOptions extends MarketModel
+use Yandex\Common\ObjectModel;
+
+class DeliveryOptions extends ObjectModel
 {
 
-    protected $collection = null;
+    protected $collection = array(
+        
+    );
 
     protected $mappingClasses = array(
+        
+    );
+
+    protected $propNameMap = array(
         
     );
 
@@ -21,7 +29,7 @@ class DeliveryOptions extends MarketModel
         } elseif (is_object($deliveryOption) && $deliveryOption instanceof DeliveryOption) {
             $this->collection[] = $deliveryOption;
         }
-        
+
         return $this;
     }
 

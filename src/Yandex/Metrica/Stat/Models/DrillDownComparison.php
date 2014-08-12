@@ -5,8 +5,9 @@ namespace Yandex\Metrica\Stat\Models;
 use Yandex\Metrica\Stat\Models\ComparisonQuery;
 use Yandex\Metrica\Stat\Models\DrillDownComparisonData;
 use Yandex\Metrica\Stat\Models\ComparisonTotals;
+use Yandex\Common\Model;
 
-class DrillDownComparison extends StatModel
+class DrillDownComparison extends Model
 {
 
     protected $totalRows = null;

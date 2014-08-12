@@ -5,8 +5,9 @@ namespace Yandex\Market\Models;
 use Yandex\Market\Models\Region;
 use Yandex\Market\Models\Address;
 use Yandex\Market\Models\DatesRange;
+use Yandex\Common\Model;
 
-class Delivery extends MarketModel
+class Delivery extends Model
 {
 
     protected $id = null;
@@ -29,6 +30,10 @@ class Delivery extends MarketModel
         'region' => 'Yandex\Market\Models\Region',
         'address' => 'Yandex\Market\Models\Address',
         'dates' => 'Yandex\Market\Models\DatesRange'
+    );
+
+    protected $propNameMap = array(
+        
     );
 
     /**

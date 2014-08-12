@@ -4,8 +4,9 @@ namespace Yandex\Metrica\Stat\Models;
 
 use Yandex\Metrica\Stat\Models\Dimensions;
 use Yandex\Metrica\Stat\Models\ComparisonMetrics;
+use Yandex\Common\Model;
 
-class ComparisonItems extends StatModel
+class ComparisonItems extends Model
 {
 
     protected $dimensions = null;

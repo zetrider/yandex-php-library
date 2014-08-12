@@ -3,8 +3,9 @@
 namespace Yandex\Metrica\Management\Models;
 
 use Yandex\Metrica\Management\Models\Operation;
+use Yandex\Common\Model;
 
-class GetOperationResponse extends ManagementModel
+class GetOperationResponse extends Model
 {
 
     protected $operation = null;

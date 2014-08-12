@@ -2,7 +2,9 @@
 
 namespace Yandex\Metrica\Management\Models;
 
-class Accounts extends ManagementModel
+use Yandex\Common\ObjectModel;
+
+class Accounts extends ObjectModel
 {
 
     protected $collection = array(

@@ -2,7 +2,9 @@
 
 namespace Yandex\Market\Models;
 
-class Campaign extends MarketModel
+use Yandex\Common\Model;
+
+class Campaign extends Model
 {
 
     protected $id = null;
@@ -14,6 +16,10 @@ class Campaign extends MarketModel
     protected $stateReasons = null;
 
     protected $mappingClasses = array(
+        
+    );
+
+    protected $propNameMap = array(
         
     );
 

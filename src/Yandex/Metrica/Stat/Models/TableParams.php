@@ -2,7 +2,9 @@
 
 namespace Yandex\Metrica\Stat\Models;
 
-class TableParams extends StatModel
+use Yandex\Common\Model;
+
+class TableParams extends Model
 {
 
     protected $id = null;

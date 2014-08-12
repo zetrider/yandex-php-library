@@ -1,16 +1,26 @@
 <?php
+/**
+ * Yandex PHP Library
+ *
+ * @copyright NIX Solutions Ltd.
+ * @link https://github.com/nixsolutions/yandex-php-library
+ */
 
-namespace Yandex\Metrica\Analytics\Models;
+/**
+ * @namespace
+ */
+namespace Yandex\Common;
 
-abstract class AnalyticsModel
+
+abstract class Model
 {
 
     protected $mappingClasses = array(
-        
+
     );
 
     protected $propNameMap = array(
-        
+
     );
 
     /**
@@ -55,9 +65,6 @@ abstract class AnalyticsModel
             if (property_exists($this, $propertyName)) {
                 if (isset($this->mappingClasses[$propertyName])) {
                     $this->{$propertyName} = new $this->mappingClasses[$propertyName]($val);
-                    if (method_exists($this->{$propertyName}, "getAll")) {
-                        $this->{$propertyName} = $this->{$propertyName}->getAll();
-                    }
                 } else {
                     $this->{$propertyName} = $val;
                 }

@@ -2,19 +2,17 @@
 
 namespace Yandex\Metrica\Stat\Models;
 
-use Yandex\Metrica\Stat\Models\ComparisonTotals;
+use Yandex\Common\ObjectModel;
 
-class DrillDownComparisonData extends StatModel
+class DrillDownComparisonData extends ObjectModel
 {
 
     protected $collection = array(
         
     );
 
-    protected $totals = null;
-
     protected $mappingClasses = array(
-        'totals' => 'Yandex\Metrica\Stat\Models\ComparisonTotals'
+        
     );
 
     protected $propNameMap = array(
@@ -43,27 +41,5 @@ class DrillDownComparisonData extends StatModel
     public function getAll()
     {
         return $this->collection;
-    }
-
-    /**
-     * Retrieve the totals property
-     *
-     * @return ComparisonTotals|null
-     */
-    public function getTotals()
-    {
-        return $this->totals;
-    }
-
-    /**
-     * Set the totals property
-     *
-     * @param ComparisonTotals $totals
-     * @return $this
-     */
-    public function setTotals($totals)
-    {
-        $this->totals = $totals;
-        return $this;
     }
 }

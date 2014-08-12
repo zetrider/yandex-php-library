@@ -43,24 +43,24 @@ class GaClientTest extends TestCase
         $this->assertEquals($fixtures["query"]["max-results"], $response->getQuery()->getMaxResults());
 
         $columnHeaders = $response->getColumnHeaders();
-        $this->assertEquals($fixtures["columnHeaders"][0]["name"], $columnHeaders[0]->getName());
+        $this->assertEquals($fixtures["columnHeaders"][0]["name"], $columnHeaders->current()->getName());
         $this->assertEquals(
             $fixtures["columnHeaders"][0]["columnType"],
-            $columnHeaders[0]->getColumnType()
+            $columnHeaders->current()->getColumnType()
         );
         $this->assertEquals(
             $fixtures["columnHeaders"][0]["dataType"],
-            $columnHeaders[0]->getDataType()
+            $columnHeaders->current()->getDataType()
         );
         $this->assertEquals(
             $fixtures["columnHeaders"][1]["name"],
-            $columnHeaders[1]->getName()
+            $columnHeaders->next()->getName()
         );
         $this->assertEquals(
             $fixtures["columnHeaders"][1]["columnType"],
-            $columnHeaders[1]->getColumnType()
+            $columnHeaders->current()->getColumnType()
         );
-        $this->assertEquals($fixtures["columnHeaders"][1]["dataType"], $columnHeaders[1]->getDataType());
+        $this->assertEquals($fixtures["columnHeaders"][1]["dataType"], $columnHeaders->current()->getDataType());
 
         $this->assertEquals($fixtures["rows"], $response->getRows());
     }

@@ -2,7 +2,9 @@
 
 namespace Yandex\Metrica\Management\Models;
 
-class Informer extends ManagementModel
+use Yandex\Common\Model;
+
+class Informer extends Model
 {
 
     protected $enabled = null;

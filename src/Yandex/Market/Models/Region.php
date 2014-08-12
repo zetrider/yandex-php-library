@@ -2,7 +2,9 @@
 
 namespace Yandex\Market\Models;
 
-class Region extends MarketModel
+use Yandex\Common\Model;
+
+class Region extends Model
 {
 
     protected $id = null;
@@ -15,6 +17,10 @@ class Region extends MarketModel
 
     protected $mappingClasses = array(
         'parent' => 'Yandex\Market\Models\Region'
+    );
+
+    protected $propNameMap = array(
+        
     );
 
     /**

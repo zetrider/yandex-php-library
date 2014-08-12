@@ -21,7 +21,7 @@ class AccountsClientTest extends TestCase
 
         $table = $mock->getAccounts();
 
-        $this->assertEquals($fixtures["accounts"][0]["user_login"], $table[0]->getUserLogin());
-        $this->assertEquals($fixtures["accounts"][0]["created_at"], $table[0]->getCreatedAt());
+        $this->assertEquals($fixtures["accounts"][0]["user_login"], $table->current()->getUserLogin());
+        $this->assertEquals($fixtures["accounts"][0]["created_at"], $table->current()->getCreatedAt());
     }
 }

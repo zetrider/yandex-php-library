@@ -2,7 +2,9 @@
 
 namespace Yandex\Metrica\Management\Models;
 
-class Condition extends ManagementModel
+use Yandex\Common\Model;
+
+class Condition extends Model
 {
 
     protected $type = null;

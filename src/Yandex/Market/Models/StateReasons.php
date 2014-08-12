@@ -2,12 +2,20 @@
 
 namespace Yandex\Market\Models;
 
-class StateReasons extends MarketModel
+use Yandex\Common\ObjectModel;
+
+class StateReasons extends ObjectModel
 {
 
-    protected $collection = null;
+    protected $collection = array(
+        
+    );
 
     protected $mappingClasses = array(
+        
+    );
+
+    protected $propNameMap = array(
         
     );
 
@@ -21,7 +29,7 @@ class StateReasons extends MarketModel
         } elseif (is_object($stateReason) && $stateReason instanceof StateReason) {
             $this->collection[] = $stateReason;
         }
-        
+
         return $this;
     }
 

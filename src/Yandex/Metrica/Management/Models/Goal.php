@@ -3,8 +3,9 @@
 namespace Yandex\Metrica\Management\Models;
 
 use Yandex\Metrica\Management\Models\Conditions;
+use Yandex\Common\Model;
 
-class Goal extends ManagementModel
+class Goal extends Model
 {
 
     protected $id = null;
@@ -150,7 +151,7 @@ class Goal extends ManagementModel
     /**
      * Set the conditions property
      *
-     * @param Contributions $conditions
+     * @param Conditions $conditions
      * @return $this
      */
     public function setConditions($conditions)

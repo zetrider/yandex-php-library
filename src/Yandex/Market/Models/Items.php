@@ -2,12 +2,20 @@
 
 namespace Yandex\Market\Models;
 
-class Items extends MarketModel
+use Yandex\Common\ObjectModel;
+
+class Items extends ObjectModel
 {
 
-    protected $collection = null;
+    protected $collection = array(
+        
+    );
 
     protected $mappingClasses = array(
+        
+    );
+
+    protected $propNameMap = array(
         
     );
 
@@ -21,7 +29,7 @@ class Items extends MarketModel
         } elseif (is_object($item) && $item instanceof Item) {
             $this->collection[] = $item;
         }
-        
+
         return $this;
     }
 

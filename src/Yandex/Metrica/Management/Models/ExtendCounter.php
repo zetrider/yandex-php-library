@@ -9,8 +9,9 @@ use Yandex\Metrica\Management\Models\Filters;
 use Yandex\Metrica\Management\Models\Operations;
 use Yandex\Metrica\Management\Models\Grants;
 use Yandex\Metrica\Management\Models\Monitoring;
+use Yandex\Common\Model;
 
-class ExtendCounter extends ManagementModel
+class ExtendCounter extends Model
 {
 
     protected $id = null;

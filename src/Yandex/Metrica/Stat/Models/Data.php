@@ -2,7 +2,9 @@
 
 namespace Yandex\Metrica\Stat\Models;
 
-class Data extends StatModel
+use Yandex\Common\ObjectModel;
+
+class Data extends ObjectModel
 {
 
     protected $collection = array(

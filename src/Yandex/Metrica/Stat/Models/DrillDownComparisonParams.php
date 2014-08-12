@@ -2,7 +2,9 @@
 
 namespace Yandex\Metrica\Stat\Models;
 
-class DrillDownComparisonParams extends StatModel
+use Yandex\Common\Model;
+
+class DrillDownComparisonParams extends Model
 {
 
     protected $id = null;

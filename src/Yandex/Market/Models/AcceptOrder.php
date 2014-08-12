@@ -2,7 +2,9 @@
 
 namespace Yandex\Market\Models;
 
-class AcceptOrder extends MarketModel
+use Yandex\Common\Model;
+
+class AcceptOrder extends Model
 {
 
     protected $accepted = null;
@@ -12,6 +14,10 @@ class AcceptOrder extends MarketModel
     protected $reason = null;
 
     protected $mappingClasses = array(
+        
+    );
+
+    protected $propNameMap = array(
         
     );
 

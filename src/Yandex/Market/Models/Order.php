@@ -5,8 +5,9 @@ namespace Yandex\Market\Models;
 use Yandex\Market\Models\Items;
 use Yandex\Market\Models\Delivery;
 use Yandex\Market\Models\Buyer;
+use Yandex\Common\Model;
 
-class Order extends MarketModel
+class Order extends Model
 {
 
     protected $id = null;
@@ -41,6 +42,10 @@ class Order extends MarketModel
         'items' => 'Yandex\Market\Models\Items',
         'delivery' => 'Yandex\Market\Models\Delivery',
         'buyer' => 'Yandex\Market\Models\Buyer'
+    );
+
+    protected $propNameMap = array(
+        
     );
 
     /**

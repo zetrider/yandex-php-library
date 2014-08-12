@@ -5,8 +5,9 @@ namespace Yandex\Metrica\Management\Models;
 use Yandex\Metrica\Management\Models\Webvisor;
 use Yandex\Metrica\Management\Models\CodeOptions;
 use Yandex\Metrica\Management\Models\Monitoring;
+use Yandex\Common\Model;
 
-class Counter extends ManagementModel
+class Counter extends Model
 {
 
     protected $id = null;

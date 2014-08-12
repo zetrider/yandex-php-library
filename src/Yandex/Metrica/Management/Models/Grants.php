@@ -2,7 +2,9 @@
 
 namespace Yandex\Metrica\Management\Models;
 
-class Grants extends ManagementModel
+use Yandex\Common\ObjectModel;
+
+class Grants extends ObjectModel
 {
 
     protected $collection = array(

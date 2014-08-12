@@ -2,7 +2,9 @@
 
 namespace Yandex\Market\Models;
 
-class DatesRange extends MarketModel
+use Yandex\Common\Model;
+
+class DatesRange extends Model
 {
 
     protected $fromDate = null;
@@ -10,6 +12,10 @@ class DatesRange extends MarketModel
     protected $toDate = null;
 
     protected $mappingClasses = array(
+        
+    );
+
+    protected $propNameMap = array(
         
     );
 

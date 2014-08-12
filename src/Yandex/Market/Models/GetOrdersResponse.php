@@ -4,8 +4,9 @@ namespace Yandex\Market\Models;
 
 use Yandex\Market\Models\Pager;
 use Yandex\Market\Models\Orders;
+use Yandex\Common\Model;
 
-class GetOrdersResponse extends MarketModel
+class GetOrdersResponse extends Model
 {
 
     protected $pager = null;
@@ -15,6 +16,10 @@ class GetOrdersResponse extends MarketModel
     protected $mappingClasses = array(
         'pager' => 'Yandex\Market\Models\Pager',
         'orders' => 'Yandex\Market\Models\Orders'
+    );
+
+    protected $propNameMap = array(
+        
     );
 
     /**

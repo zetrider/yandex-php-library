@@ -2,7 +2,9 @@
 
 namespace Yandex\Metrica\Management\Models;
 
-class Delegates extends ManagementModel
+use Yandex\Common\ObjectModel;
+
+class Delegates extends ObjectModel
 {
 
     protected $collection = array(

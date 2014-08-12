@@ -3,14 +3,19 @@
 namespace Yandex\Market\Models;
 
 use Yandex\Market\Models\CartRequest;
+use Yandex\Common\Model;
 
-class PostCartRequest extends MarketModel
+class PostCartRequest extends Model
 {
 
     protected $cart = null;
 
     protected $mappingClasses = array(
         'cart' => 'Yandex\Market\Models\CartRequest'
+    );
+
+    protected $propNameMap = array(
+        
     );
 
     /**

@@ -2,7 +2,9 @@
 
 namespace Yandex\Metrica\Management\Models;
 
-class Goals extends ManagementModel
+use Yandex\Common\ObjectModel;
+
+class Goals extends ObjectModel
 {
 
     protected $collection = array(

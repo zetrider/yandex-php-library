@@ -2,7 +2,9 @@
 
 namespace Yandex\Metrica\Management\Models;
 
-class Webvisor extends ManagementModel
+use Yandex\Common\Model;
+
+class Webvisor extends Model
 {
 
     protected $urls = null;

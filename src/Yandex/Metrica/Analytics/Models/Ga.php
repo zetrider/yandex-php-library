@@ -4,8 +4,9 @@ namespace Yandex\Metrica\Analytics\Models;
 
 use Yandex\Metrica\Analytics\Models\Query;
 use Yandex\Metrica\Analytics\Models\ColumnHeaders;
+use Yandex\Common\Model;
 
-class Ga extends AnalyticsModel
+class Ga extends Model
 {
 
     protected $kind = null;

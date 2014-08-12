@@ -2,10 +2,10 @@
 
 namespace Yandex\Metrica\Management\Models;
 
-class Counters extends ManagementModel
-{
+use Yandex\Common\ObjectModel;
 
-    protected $rows = null;
+class Counters extends ObjectModel
+{
 
     protected $collection = array(
         
@@ -18,28 +18,6 @@ class Counters extends ManagementModel
     protected $propNameMap = array(
         
     );
-
-    /**
-     * Retrieve the rows property
-     *
-     * @return int|null
-     */
-    public function getRows()
-    {
-        return $this->rows;
-    }
-
-    /**
-     * Set the rows property
-     *
-     * @param int $rows
-     * @return $this
-     */
-    public function setRows($rows)
-    {
-        $this->rows = $rows;
-        return $this;
-    }
 
     /**
      * Add item

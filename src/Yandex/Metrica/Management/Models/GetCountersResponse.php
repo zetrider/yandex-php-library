@@ -3,8 +3,9 @@
 namespace Yandex\Metrica\Management\Models;
 
 use Yandex\Metrica\Management\Models\Counters;
+use Yandex\Common\Model;
 
-class GetCountersResponse extends ManagementModel
+class GetCountersResponse extends Model
 {
 
     protected $counters = null;

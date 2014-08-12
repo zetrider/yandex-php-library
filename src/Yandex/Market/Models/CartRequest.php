@@ -4,8 +4,9 @@ namespace Yandex\Market\Models;
 
 use Yandex\Market\Models\Items;
 use Yandex\Market\Models\Delivery;
+use Yandex\Common\Model;
 
-class CartRequest extends MarketModel
+class CartRequest extends Model
 {
 
     protected $currency = null;
@@ -17,6 +18,10 @@ class CartRequest extends MarketModel
     protected $mappingClasses = array(
         'items' => 'Yandex\Market\Models\Items',
         'delivery' => 'Yandex\Market\Models\Delivery'
+    );
+
+    protected $propNameMap = array(
+        
     );
 
     /**

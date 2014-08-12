@@ -2,7 +2,9 @@
 
 namespace Yandex\Metrica\Stat\Models;
 
-class Query extends StatModel
+use Yandex\Common\Model;
+
+class Query extends Model
 {
 
     protected $id = null;

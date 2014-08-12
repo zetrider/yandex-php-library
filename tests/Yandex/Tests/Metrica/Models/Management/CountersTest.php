@@ -54,11 +54,9 @@ class CountersTest extends TestCase
         
         $counters = new Models\Counters();
         $counters
-            ->setRows($fixtures['rows'])
             ->add($counter);
 
         $this->assertEquals(1, count($counters->getAll()));
-        $this->assertEquals($fixtures['rows'], $counters->getRows());
     }
 }
  

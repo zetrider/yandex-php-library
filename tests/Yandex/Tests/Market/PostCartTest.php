@@ -117,7 +117,7 @@ class PostCartTest extends TestCase
 
         $items = $cartRequest->getCart()->getItems();
         /** @var Item $item1 */
-        $item1 = $items[0];
+        $item1 = $items->current();
         $this->assertEquals(
             $jsonObj->cart->items[0]->feedId,
             $item1->getFeedId()
@@ -139,25 +139,25 @@ class PostCartTest extends TestCase
             $item1->getFeedCategoryId()
         );
         /** @var Item $item2 */
-        $item2 = $items[1];
+        $item2 = $items->next();
         $this->assertEquals(
-            $jsonObj->cart->items[1]->feedId,
+            $jsonObj->cart->items[0]->feedId,
             $item2->getFeedId()
         );
         $this->assertEquals(
-            $jsonObj->cart->items[1]->offerId,
+            $jsonObj->cart->items[0]->offerId,
             $item2->getOfferId()
         );
         $this->assertEquals(
-            $jsonObj->cart->items[1]->offerName,
+            $jsonObj->cart->items[0]->offerName,
             $item2->getOfferName()
         );
         $this->assertEquals(
-            $jsonObj->cart->items[1]->count,
+            $jsonObj->cart->items[0]->count,
             $item2->getCount()
         );
         $this->assertEquals(
-            $jsonObj->cart->items[1]->feedCategoryId,
+            $jsonObj->cart->items[0]->feedCategoryId,
             $item2->getFeedCategoryId()
         );
     }
