@@ -469,7 +469,7 @@ class SafeBrowsingClient extends AbstractServiceClient
 
                 if (substr_count($value, "u:") > 0) {
                     $chunkData = $this->getChunkByUrl('http://' . trim(str_replace('u:', '', $value)));
-                    $processed = $this->parseChunk($chunkData, $listName);
+                    $processed = $this->parseChunk($chunkData);
                     $chunksByList[$processed['type']][$processed['chunk_num']] = $processed['prefixes'];
                 } elseif (substr_count($value, "ad:") > 0) {
                     if (substr_count($value, ',') > 0) {

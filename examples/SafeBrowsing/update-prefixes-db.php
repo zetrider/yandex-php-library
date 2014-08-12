@@ -100,40 +100,42 @@ use Yandex\Common\Exception\YandexException;
             $removedPrefixes = array();
             $newChunks = 0;
             $removedChunks = 0;
-            foreach ($malwaresData as $shavarName => $types) {
+            if (is_array($malwaresData)) {
+                foreach ($malwaresData as $shavarName => $types) {
 
-                //Need add new malwares hash prefixes
-                if (isset($types['added'])) {
-                    foreach ($types['added'] as $chunkNum => $chunkData) {
-                        if (!isset($localHashPrefixes[$shavarName][$chunkNum])) {
-                            $localHashPrefixes[$shavarName][$chunkNum] = $chunkData;
-                            $newChunks++;
-                        }
-                    }
-                }
-
-                //Need remove chunks
-                if (isset($types['removed'])) {
-                    foreach ($types['removed'] as $chunkNum => $chunkData) {
-                        if (isset($localHashPrefixes[$shavarName][$chunkNum])) {
-                            unset($localHashPrefixes[$shavarName][$chunkNum]);
-                            $removedChunks++;
-                        }
-                    }
-                }
-
-                //Need remove chunks range
-                if (isset($types['delete_added_ranges'])) {
-                    foreach ($types['delete_added_ranges'] as $range) {
-                        for ($i = $range['min']; $i <= $range['max']; $i++) {
-                            if (isset($localHashPrefixes[$shavarName][$i])) {
-                                //Remove chunk
-                                unset($localHashPrefixes[$shavarName][$i]);
+                    //Need add new malwares hash prefixes
+                    if (isset($types['added'])) {
+                        foreach ($types['added'] as $chunkNum => $chunkData) {
+                            if (!isset($localHashPrefixes[$shavarName][$chunkNum])) {
+                                $localHashPrefixes[$shavarName][$chunkNum] = $chunkData;
+                                $newChunks++;
                             }
                         }
                     }
-                }
 
+                    //Need remove chunks
+                    if (isset($types['removed'])) {
+                        foreach ($types['removed'] as $chunkNum => $chunkData) {
+                            if (isset($localHashPrefixes[$shavarName][$chunkNum])) {
+                                unset($localHashPrefixes[$shavarName][$chunkNum]);
+                                $removedChunks++;
+                            }
+                        }
+                    }
+
+                    //Need remove chunks range
+                    if (isset($types['delete_added_ranges'])) {
+                        foreach ($types['delete_added_ranges'] as $range) {
+                            for ($i = $range['min']; $i <= $range['max']; $i++) {
+                                if (isset($localHashPrefixes[$shavarName][$i])) {
+                                    //Remove chunk
+                                    unset($localHashPrefixes[$shavarName][$i]);
+                                }
+                            }
+                        }
+                    }
+
+                }
             }
             ?>
             <div class="alert alert-info">Новых кусков: <?= $newChunks ?></div>

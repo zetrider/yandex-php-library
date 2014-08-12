@@ -14,10 +14,12 @@ namespace Yandex\Market\Partner;
 use Guzzle\Http\Message\RequestInterface;
 use Yandex\Common\AbstractServiceClient;
 use Guzzle\Service\Client;
+use Guzzle\Http\Message\Request;
 use Guzzle\Http\Message\Response;
 use Guzzle\Http\Exception\ClientErrorResponseException;
 use Yandex\Common\Exception\ForbiddenException;
 use Yandex\Market\Partner\Exception\PartnerRequestException;
+use Yandex\Market\Models;
 
 /**
  * Class PartnerClient
@@ -77,6 +79,27 @@ class PartnerClient extends AbstractServiceClient
     const ORDER_SUBSTATUS_REPLACING_ORDER = 'REPLACING_ORDER';
     //- store does not process orders on time
     const ORDER_SUBSTATUS_PROCESSING_EXPIRED = 'PROCESSING_EXPIRED';
+
+    //Способ оплаты заказа
+    //предоплата через Яндекс;
+    const PAYMENT_METHOD_YANDEX = 'YANDEX';
+    //предоплата напрямую магазину,
+    //не принимающему предоплату через Яндекс.
+    const PAYMENT_METHOD_SHOP_PREPAID = 'SHOP_PREPAID';
+    // наличный расчет при получении заказа;
+    const PAYMENT_METHOD_CASH_ON_DELIVERY = 'CASH_ON_DELIVERY';
+    // оплата банковской картой при получении заказа.
+    const PAYMENT_METHOD_CARD_ON_DELIVERY = 'CARD_ON_DELIVERY';
+
+    //Типы доставки
+    //курьерская доставка
+    const DELIVERY_TYPE_DELIVERY = 'DELIVERY';
+    //самовывоз
+    const DELIVERY_TYPE_PICKUP = 'PICKUP';
+    //почта
+    const DELIVERY_TYPE_POST = 'POST';
+
+    const ORDER_DECLINE_REASON_OUT_OF_DATE= 'OUT_OF_DATE';
 
     /**
      * Requested version of API
@@ -236,7 +259,7 @@ class PartnerClient extends AbstractServiceClient
      *
      * @see http://api.yandex.ru/market/partner/doc/dg/reference/get-campaigns.xml
      *
-     * @return array
+     * @return Models\Campaigns
      */
     public function getCampaigns()
     {
@@ -245,8 +268,8 @@ class PartnerClient extends AbstractServiceClient
         $client = new Client($this->getServiceUrl($resource));
         $request = $client->createRequest('GET');
         $response = $this->sendRequest($request)->json();
-
-        return $response['campaigns'];
+        $getCampaignsResponse = new Models\GetCampaignsResponse($response);
+        return $getCampaignsResponse->getCampaigns();
     }
 
 
@@ -261,9 +284,9 @@ class PartnerClient extends AbstractServiceClient
      *
      * @see http://api.yandex.ru/market/partner/doc/dg/reference/get-campaigns-id-orders.xml
      *
-     * @return array
+     * @return Models\GetOrdersResponse
      */
-    public function getOrders($params = array())
+    public function getOrdersResponse($params = array())
     {
         $resource = 'campaigns/' . $this->campaignId . '/orders.json';
         $resource .= '?' . http_build_query($params);
@@ -271,7 +294,20 @@ class PartnerClient extends AbstractServiceClient
         $client = new Client($this->getServiceUrl($resource));
         $request = $client->createRequest('GET');
 
-        return $this->sendRequest($request)->json();
+        $response = $this->sendRequest($request)->json();
+        return new Models\GetOrdersResponse($response);
+    }
+
+
+    /**
+     * Get only orders data without pagination
+     *
+     * @param array $params
+     * @return null|Models\Orders
+     */
+    public function getOrders($params = array())
+    {
+        return $this->getOrdersResponse($params)->getOrders();
     }
 
 
@@ -279,7 +315,7 @@ class PartnerClient extends AbstractServiceClient
      * Get order info
      *
      * @param int $orderId
-     * @return array
+     * @return Models\Order
      *
      * @link http://api.yandex.ru/market/partner/doc/dg/reference/get-campaigns-id-orders-id.xml
      */
@@ -290,7 +326,9 @@ class PartnerClient extends AbstractServiceClient
         $client = new Client($this->getServiceUrl($resource));
         $request = $client->createRequest('GET');
 
-        return $this->sendRequest($request)->json();
+        $response = $this->sendRequest($request)->json();
+        $getOrderResponse = new Models\GetOrderResponse($response);
+        return $getOrderResponse->getOrder();
     }
 
 
@@ -300,7 +338,7 @@ class PartnerClient extends AbstractServiceClient
      * @param int $orderId
      * @param string $status
      * @param null|string $subStatus
-     * @return array
+     * @return Models\Order
      *
      * @link http://api.yandex.ru/market/partner/doc/dg/reference/put-campaigns-id-orders-id-status.xml
      */
@@ -323,7 +361,9 @@ class PartnerClient extends AbstractServiceClient
         $request = $client->createRequest('PUT', null, null, $data);
         $request->setHeader('Content-type', 'application/json');
 
-        return $this->sendRequest($request)->json();
+        $response = $this->sendRequest($request)->json();
+        $updateOrderStatusResponse = new Models\UpdateOrderStatusResponse($response);
+        return $updateOrderStatusResponse->getOrder();
     }
 
 
@@ -331,23 +371,24 @@ class PartnerClient extends AbstractServiceClient
      * Update changed delivery parameters
      *
      * @param int $orderId
-     * @param array $data
-     * @return array
+     * @param Models\Delivery $delivery
+     * @return Models\Order
      *
      * Example:
      * PUT /v2/campaigns/10003/order/12345/delivery.json HTTP/1.1
      *
      * @link http://api.yandex.ru/market/partner/doc/dg/reference/put-campaigns-id-orders-id-delivery.xml
      */
-    public function updateDelivery($orderId, $data)
+    public function updateDelivery($orderId, Models\Delivery $delivery)
     {
         $resource = 'campaigns/' . $this->campaignId . '/orders/' . $orderId . '/delivery.json';
-        $data = json_encode($data);
-
+        $data = json_encode($delivery->toArray());
         $client = new Client($this->getServiceUrl($resource));
         $request = $client->createRequest('PUT', null, null, $data);
         $request->setHeader('Content-type', 'application/json');
 
-        return $this->sendRequest($request)->json();
+        $response = $this->sendRequest($request)->json();
+        $updateOrderDeliveryResponse = new Models\UpdateOrderDeliveryResponse($response);
+        return $updateOrderDeliveryResponse->getOrder();
     }
 }
