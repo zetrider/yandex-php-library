@@ -74,7 +74,7 @@ if (isset($_COOKIE['yaAccessToken']) && isset($_COOKIE['yaClientId'])) {
                     </thead>
                     <tbody>
                     <?php
-                    if (is_array($accounts) || is_object($accounts)) {
+                    if ($accounts instanceof Traversable) {
                         foreach ($accounts as $account) {
                             ?>
                             <tr data-user-login="<?= $account->getUserLogin() ?>">

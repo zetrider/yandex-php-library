@@ -81,7 +81,7 @@ if (isset($_COOKIE['yaAccessToken']) && isset($_COOKIE['yaClientId'])) {
                     </thead>
                     <tbody>
                     <?php
-                    if (is_array($grants) || is_object($grants)) {
+                    if ($grants instanceof Traversable) {
                         foreach ($grants as $grant) {
                             ?>
                             <tr data-user-login="<?= $grant->getUserLogin() ?>">

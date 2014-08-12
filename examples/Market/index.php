@@ -65,24 +65,26 @@ if (isset($_COOKIE['yaAccessToken']) && isset($_COOKIE['yaClientId'])) {
         <h3>Ответ:</h3>
             <?php
             /** @var \Yandex\Market\Models\Campaign $campaign */
-            if (is_array($campaigns) || is_object($campaigns)) {
+            if ($campaigns instanceof Traversable) {
+
+                $params = array(
+                    'status' => null,
+                    'fromDate' => null,
+                    'toDate' => null,
+                    'pageSize' => 50,
+                    'page' => 1
+                );
+
+                $campaignId = $campaigns->current()->getId();
+                $market->setCampaignId($campaignId);
+                $orders = $market->getOrders($params);
+
                 foreach ($campaigns as $campaign) {
                     echo '<pre>';
                     print_r($campaign->toArray());
                     echo '</pre>';
                 }
             }
-
-            $params = array(
-                'status' => null,
-                'fromDate' => null,
-                'toDate' => null,
-                'pageSize' => 50,
-                'page' => 1
-            );
-            $campaignId = $campaigns[0]->getId();
-            $market->setCampaignId($campaignId);
-            $orders = $market->getOrders($params);
             ?>
 
         <h2>Информация о запрашиваемых заказах</h2>
@@ -95,8 +97,6 @@ if (isset($_COOKIE['yaAccessToken']) && isset($_COOKIE['yaClientId'])) {
 
         <h3>Ответ:</h3>
             <div class="panel-group" id="accordion">
-                <?php if ($orders) { ?>
-
                     <div class="panel panel-default">
                         <div class="panel-heading">
                             <h4 class="panel-title">
@@ -108,7 +108,7 @@ if (isset($_COOKIE['yaAccessToken']) && isset($_COOKIE['yaClientId'])) {
                         <div id="collapseOrdersLinks" class="panel-collapse collapse in">
                             <div class="panel-body">
                                 <?php
-                                if (is_array($orders) || is_object($orders)) {
+                                if ($orders instanceof Traversable) {
                                     /** @var Yandex\Market\Models\Order $order */
                                     foreach ($orders as $order) {
                                         ?>
@@ -123,7 +123,6 @@ if (isset($_COOKIE['yaAccessToken']) && isset($_COOKIE['yaClientId'])) {
                             </div>
                         </div>
                     </div>
-                <?php } ?>
                 <div class="panel panel-default">
                     <div class="panel-heading">
                         <h4 class="panel-title">
@@ -134,7 +133,13 @@ if (isset($_COOKIE['yaAccessToken']) && isset($_COOKIE['yaClientId'])) {
                     </div>
                     <div id="collapseAllResponse" class="panel-collapse collapse">
                         <div class="panel-body">
-                            <pre><?php print_r($orders); ?></pre>
+                            <pre><?php
+                                foreach ($orders as $order) {
+                                    echo '<pre>';
+                                    print_r($order->toArray());
+                                    echo '</pre>';
+                                }
+                            ?></pre>
                         </div>
                     </div>
                 </div>
