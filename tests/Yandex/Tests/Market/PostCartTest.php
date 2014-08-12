@@ -141,23 +141,23 @@ class PostCartTest extends TestCase
         /** @var Item $item2 */
         $item2 = $items->next();
         $this->assertEquals(
-            $jsonObj->cart->items[0]->feedId,
+            $jsonObj->cart->items[1]->feedId,
             $item2->getFeedId()
         );
         $this->assertEquals(
-            $jsonObj->cart->items[0]->offerId,
+            $jsonObj->cart->items[1]->offerId,
             $item2->getOfferId()
         );
         $this->assertEquals(
-            $jsonObj->cart->items[0]->offerName,
+            $jsonObj->cart->items[1]->offerName,
             $item2->getOfferName()
         );
         $this->assertEquals(
-            $jsonObj->cart->items[0]->count,
+            $jsonObj->cart->items[1]->count,
             $item2->getCount()
         );
         $this->assertEquals(
-            $jsonObj->cart->items[0]->feedCategoryId,
+            $jsonObj->cart->items[1]->feedCategoryId,
             $item2->getFeedCategoryId()
         );
     }

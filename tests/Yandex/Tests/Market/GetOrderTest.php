@@ -48,9 +48,7 @@ class GetOrderTest extends TestCase
         //items
         $items = $order->getItems();
         /** @var Item $item0 */
-        $item0 = $items[0];
-        /** @var Item $item1 */
-        $item1 = $items[1];
+        $item0 = $items->current();
         $this->assertEquals($jsonObj->order->items[0]->feedId, $item0->getFeedId());
         $this->assertEquals($jsonObj->order->items[0]->offerId, $item0->getOfferId());
         $this->assertEquals($jsonObj->order->items[0]->feedCategoryId, $item0->getFeedCategoryId());
@@ -58,6 +56,8 @@ class GetOrderTest extends TestCase
         $this->assertEquals($jsonObj->order->items[0]->price, $item0->getPrice());
         $this->assertEquals($jsonObj->order->items[0]->count, $item0->getCount());
 
+        /** @var Item $item1 */
+        $item1 = $items->next();
         $this->assertEquals($jsonObj->order->items[1]->feedId, $item1->getFeedId());
         $this->assertEquals($jsonObj->order->items[1]->offerId, $item1->getOfferId());
         $this->assertEquals($jsonObj->order->items[1]->feedCategoryId, $item1->getFeedCategoryId());
