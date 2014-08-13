@@ -32,9 +32,9 @@ if (isset($_COOKIE['yaAccessToken'])) {
     header('Connection: Keep-Alive');
     header('Expires: 0');
     header('Cache-Control: must-revalidate, post-check=0, pre-check=0');
-    header('Date: ' . $file['headers']['Date']);
+    header('Date: ' . $file['headers']['date']);
     header('Content-Type: image/jpeg');
-    header('Content-Length: ' . $file['headers']['Content-Length']);
-    header('Accept-Ranges: ' . $file['headers']['Accept-Ranges']);
+    header('Content-Length: ' . $file['headers']['content-length']);
+    header('Accept-Ranges: ' . $file['headers']['accept-ranges']);
     echo $file['body'];
 }

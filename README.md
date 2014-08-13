@@ -62,6 +62,7 @@ $files = $disk->directoryContents();
 * [Yandex OAuth](https://github.com/nixsolutions/yandex-php-library/wiki/Yandex-OAuth)
 * [Yandex Site Search Pinger](https://github.com/nixsolutions/yandex-php-library/wiki/Yandex-Site-Search-Pinger)
 * [Yandex Safe Browsing](https://github.com/nixsolutions/yandex-php-library/wiki/Yandex-Safe-Browsing)
+* [Yandex Metrica](https://github.com/nixsolutions/yandex-php-library/wiki/Yandex-Metrica)
 
 ## Лицензия
 

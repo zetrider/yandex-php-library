@@ -80,7 +80,7 @@ if (isset($_COOKIE['yaAccessToken']) && isset($_COOKIE['yaClientId'])) {
                     </thead>
                     <tbody>
                     <?php
-                    if (is_array($operations) || is_object($operations)) {
+                    if ($operations instanceof Traversable) {
                         foreach ($operations as $operation) {
                             ?>
                             <tr data-operation-id="<?= $operation->getId() ?>">

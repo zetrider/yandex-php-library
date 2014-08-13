@@ -85,7 +85,7 @@ if (isset($_COOKIE['yaAccessToken']) && isset($_COOKIE['yaClientId'])) {
                     </thead>
                     <tbody>
                     <?php
-                    if (is_array($filters) || is_object($filters)) {
+                    if ($filters instanceof Traversable) {
                         foreach ($filters as $filter) {
                             ?>
                             <tr data-filter-id="<?= $filter->getId() ?>">
