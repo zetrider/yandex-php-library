@@ -31,13 +31,13 @@ if (isset($_COOKIE['yaAccessToken'])) {
     header('Connection: Keep-Alive');
     header('Expires: 0');
     header('Cache-Control: must-revalidate, post-check=0, pre-check=0');
-    header('Content-type: ' . $file['headers']['Last-Modified']);
-    header('Etag: ' . $file['headers']['Etag']);
-    header('Date: ' . $file['headers']['Date']);
-    header('Content-Type: ' . $file['headers']['Content-Type']);
-    header('Content-Length: ' . $file['headers']['Content-Length']);
-    header('Content-Disposition: ' . $file['headers']['Content-Disposition']);
-    header('Accept-Ranges: ' . $file['headers']['Accept-Ranges']);
+    header('Content-type: ' . $file['headers']['last-modified']);
+    header('Etag: ' . $file['headers']['etag']);
+    header('Date: ' . $file['headers']['date']);
+    header('Content-Type: ' . $file['headers']['content-type']);
+    header('Content-Length: ' . $file['headers']['content-length']);
+    header('Content-Disposition: ' . $file['headers']['content-disposition']);
+    header('Accept-Ranges: ' . $file['headers']['accept-ranges']);
 
     echo $file['body'];
 }

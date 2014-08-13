@@ -282,10 +282,11 @@ class DiskClient extends AbstractServiceClient
         $request->setPath($path);
 
         $response = $this->sendRequest($request);
-        $headers = $response->getHeaders();
+        $headers = $response->getHeaders()->getAll();
         foreach ($headers as $key => $value) {
             /* @var \Guzzle\Http\Message\Header\HeaderInterface $value */
-            $result['headers'][$key] = $value->toArray();
+            $value = $value->toArray();
+            $result['headers'][$key] = $value[0];
         }
         $result['body'] = $response->getBody(true);
         return $result;
@@ -364,8 +365,10 @@ class DiskClient extends AbstractServiceClient
         $request->setPath($path);
         $request->getQuery()->set('preview', null)->set('size', $size);
         $response = $this->sendRequest($request);
-        $headers = $response->getHeaders();
+        $headers = $response->getHeaders()->getAll();
         foreach ($headers as $key => $value) {
+            /* @var \Guzzle\Http\Message\Header\HeaderInterface $value */
+            $value = $value->toArray();
             $result['headers'][$key] = $value[0];
         }
         $result['body'] = $response->getBody(true);
