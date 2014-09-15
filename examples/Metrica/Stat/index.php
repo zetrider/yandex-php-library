@@ -31,13 +31,15 @@ if (isset($_COOKIE['yaAccessToken']) && isset($_COOKIE['yaClientId'])) {
         /**
          * @see http://api.yandex.ru/metrika/doc/beta/management/counters/counters.xml
          */
-        $counters = $managementClient->counters()->getCounters($paramsObj);
+        $counters = $managementClient->counters()->getCounters($paramsObj)->getCounters();
+    } catch (\Yandex\Common\Exception\UnauthorizedException $ex) {
+        $errorMessage = '<p>Недействительный токен. Вам необходимо '
+            . '<a href="/examples/OAuth/">авторизироваться</a> и повторить попытку.</p>';
+    } catch (\Yandex\Common\Exception\ForbiddenException $ex) {
+        $errorMessage = '<p>Возможно, у приложения нет прав на доступ к ресурсу. Попробуйте '
+            . '<a href="/examples/OAuth/">авторизироваться</a> и повторить.</p>';
     } catch (\Exception $ex) {
         $errorMessage = $ex->getMessage();
-        if ($errorMessage === 'PlatformNotAllowed') {
-            $errorMessage .= '<p>Возможно, у приложения нет прав на доступ к ресурсу. Попробуйте '
-                . '<a href="/examples/OAuth/">авторизироваться</a> и повторить.</p>';
-        }
     }
 }
 ?>
