@@ -17,6 +17,7 @@ use Guzzle\Http\Message\RequestInterface;
 use Guzzle\Http\Message\Response;
 use Guzzle\Http\Exception\ClientErrorResponseException;
 use Yandex\Common\Exception\ForbiddenException;
+use Yandex\Common\Exception\UnauthorizedException;
 use Yandex\Metrica\Exception\MetricaException;
 
 /**
@@ -77,6 +78,7 @@ class MetricaClient extends AbstractServiceClient
      * @param RequestInterface $request
      * @return Response
      * @throws ForbiddenException
+     * @throws UnauthorizedException
      * @throws MetricaException
      */
     protected function sendRequest(RequestInterface $request)
@@ -93,6 +95,10 @@ class MetricaClient extends AbstractServiceClient
 
             if ($code === 403) {
                 throw new ForbiddenException($message);
+            }
+
+            if ($code === 401) {
+                throw new UnauthorizedException($message);
             }
 
             throw new MetricaException(
