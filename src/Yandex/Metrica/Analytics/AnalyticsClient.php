@@ -25,6 +25,6 @@ class AnalyticsClient extends MetricaClient
 
     public function ga()
     {
-        return new GaClient();
+        return new GaClient($this->getAccessToken());
     }
 }
