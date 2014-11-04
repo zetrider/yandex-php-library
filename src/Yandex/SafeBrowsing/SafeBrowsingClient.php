@@ -17,6 +17,7 @@ use Guzzle\Service\Client;
 use Guzzle\Http\Message\Response;
 use Guzzle\Http\Exception\ClientErrorResponseException;
 use Yandex\Common\Exception\ForbiddenException;
+use Yandex\Common\Exception\UnauthorizedException;
 
 /**
  * Class SafeBrowsingClient
@@ -143,6 +144,7 @@ class SafeBrowsingClient extends AbstractServiceClient
      * @param RequestInterface $request
      * @return Response
      * @throws ForbiddenException
+     * @throws UnauthorizedException
      * @throws SafeBrowsingException
      */
     protected function sendRequest(RequestInterface $request)
@@ -159,6 +161,10 @@ class SafeBrowsingClient extends AbstractServiceClient
 
             if ($code === 403) {
                 throw new ForbiddenException($message);
+            }
+
+            if ($code === 401) {
+                throw new UnauthorizedException($message);
             }
 
             throw new SafeBrowsingException(

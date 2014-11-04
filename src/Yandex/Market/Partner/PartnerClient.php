@@ -18,6 +18,7 @@ use Guzzle\Http\Message\Request;
 use Guzzle\Http\Message\Response;
 use Guzzle\Http\Exception\ClientErrorResponseException;
 use Yandex\Common\Exception\ForbiddenException;
+use Yandex\Common\Exception\UnauthorizedException;
 use Yandex\Market\Partner\Exception\PartnerRequestException;
 use Yandex\Market\Models;
 
@@ -202,6 +203,7 @@ class PartnerClient extends AbstractServiceClient
      * @param RequestInterface $request
      * @return Response
      * @throws ForbiddenException
+     * @throws UnauthorizedException
      * @throws PartnerRequestException
      */
     protected function sendRequest(RequestInterface $request)
@@ -227,6 +229,10 @@ class PartnerClient extends AbstractServiceClient
 
             if ($code === 403) {
                 throw new ForbiddenException($message);
+            }
+
+            if ($code === 401) {
+                throw new UnauthorizedException($message);
             }
 
             throw new PartnerRequestException(
