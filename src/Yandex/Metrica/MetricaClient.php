@@ -45,7 +45,6 @@ class MetricaClient extends AbstractServiceClient
      */
     public function __construct($token = '')
     {
-        $this->setServiceScheme(self::HTTPS_SCHEME);
         $this->setAccessToken($token);
     }
 
