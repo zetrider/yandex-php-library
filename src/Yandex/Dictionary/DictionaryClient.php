@@ -57,17 +57,12 @@ class DictionaryClient extends AbstractServiceClient
     /**
      * @var string
      */
-    protected $serviceDomain = 'dictionary.yandex.net/api/v1/dicservice.json';
+    protected $serviceDomain = 'dictionary.yandex.net';
 
     /**
      * @var
      */
     protected $uiLanguage = 'en';
-
-    /**
-     * @var
-     */
-    protected $translateLanguage;
 
     /**
      * @var
@@ -90,7 +85,6 @@ class DictionaryClient extends AbstractServiceClient
     public function __construct($apiKey)
     {
         $this->setApiKey($apiKey);
-        $this->updateTranslateLanguage();
     }
 
     /**
@@ -189,7 +183,6 @@ class DictionaryClient extends AbstractServiceClient
     public function setTranslateFrom($translateFrom)
     {
         $this->translateFrom = $translateFrom;
-        $this->updateTranslateLanguage();
 
         return $this;
     }
@@ -208,7 +201,6 @@ class DictionaryClient extends AbstractServiceClient
     public function setTranslateTo($translateTo)
     {
         $this->translateTo = $translateTo;
-        $this->updateTranslateLanguage();
 
         return $this;
     }
@@ -226,7 +218,7 @@ class DictionaryClient extends AbstractServiceClient
      */
     public function getLanguage()
     {
-        return $this->translateLanguage;
+        return $this->translateFrom . '-' . $this->translateTo;
     }
 
     /**
@@ -238,6 +230,7 @@ class DictionaryClient extends AbstractServiceClient
      */
     public function getLookupUrl($text)
     {
+        $resource = 'api/v1/dicservice.json/lookup';
         $query = http_build_query(
             array(
                 'key' => $this->getApiKey(),
@@ -247,7 +240,7 @@ class DictionaryClient extends AbstractServiceClient
                 'text' => $text
             )
         );
-        $url = $this->getServiceUrl('lookup') . '?' . $query;
+        $url = $this->getServiceUrl($resource) . '?' . $query;
 
         return $url;
     }
@@ -315,13 +308,5 @@ class DictionaryClient extends AbstractServiceClient
         }
 
         return $response;
-    }
-
-    /**
-     * Updates the cache of the translation language
-     */
-    protected function updateTranslateLanguage()
-    {
-        $this->translateLanguage = $this->translateFrom . '-' . $this->translateTo;
     }
 }
