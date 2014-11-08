@@ -31,7 +31,7 @@ class DictionaryItem
     /**
      * @var
      */
-    protected $position;
+    protected $partOfSpeech;
 
     /**
      *
@@ -43,7 +43,7 @@ class DictionaryItem
         }
 
         if (isset($item->pos)){
-            $this->position = $item->pos;
+            $this->partOfSpeech = $item->pos;
         }
     }
 
@@ -66,8 +66,8 @@ class DictionaryItem
     /**
      *  @return string
      */
-    public function getPosition()
+    public function getPartOfSpeech()
     {
-        return $this->position;
+        return $this->partOfSpeech;
     }
 }
