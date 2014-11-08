@@ -11,7 +11,7 @@
  */
 namespace Yandex\Dictionary;
 
-use Yandex\Dictionary\DictionaryItem;
+use Yandex\Dictionary\DictionaryBaseItem;
 use Yandex\Dictionary\DictionaryExample;
 
 /**
@@ -23,7 +23,7 @@ use Yandex\Dictionary\DictionaryExample;
  * @author   Nikolay Oleynikov <oleynikovny@mail.ru>
  * @created  07.11.14 20:05
  */
-class DictionaryTranslation extends DictionaryItem
+class DictionaryTranslation extends DictionaryBaseItem
 {
 
     /**
@@ -50,13 +50,13 @@ class DictionaryTranslation extends DictionaryItem
 
         if (isset($translation->syn)){
             foreach ($translation->syn as $synonym){
-                $this->synonyms[] = new DictionaryItem($synonym);
+                $this->synonyms[] = new DictionaryBaseItem($synonym);
             }
         }
 
         if (isset($translation->mean)){
             foreach ($translation->mean as $meaning){
-                $this->meanings[] = new DictionaryItem($meaning);
+                $this->meanings[] = new DictionaryBaseItem($meaning);
             }
         }
 

@@ -11,7 +11,7 @@
  */
 namespace Yandex\Dictionary;
 
-use Yandex\Dictionary\DictionaryItem;
+use Yandex\Dictionary\DictionaryBaseItem;
 use Yandex\Dictionary\DictionaryTranslation;
 
 /**
@@ -23,7 +23,7 @@ use Yandex\Dictionary\DictionaryTranslation;
  * @author   Nikolay Oleynikov <oleynikovny@mail.ru>
  * @created  07.11.14 19:55
  */
-class DictionaryDefinition extends DictionaryItem
+class DictionaryDefinition extends DictionaryBaseItem
 {
 
     /**

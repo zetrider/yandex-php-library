@@ -12,7 +12,7 @@
 namespace Yandex\Dictionary;
 
 /**
- * Class DictionaryItem
+ * Class DictionaryBaseItem
  *
  * @category Yandex
  * @package  Dictionary
@@ -20,7 +20,7 @@ namespace Yandex\Dictionary;
  * @author   Nikolay Oleynikov <oleynikovny@mail.ru>
  * @created  07.11.14 20:38
  */
-class DictionaryItem
+class DictionaryBaseItem
 {
 
     /**

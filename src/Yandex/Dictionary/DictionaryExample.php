@@ -11,7 +11,7 @@
  */
 namespace Yandex\Dictionary;
 
-use Yandex\Dictionary\DictionaryItem;
+use Yandex\Dictionary\DictionaryBaseItem;
 
 /**
  * Class DictionaryExample
@@ -22,7 +22,7 @@ use Yandex\Dictionary\DictionaryItem;
  * @author   Nikolay Oleynikov <oleynikovny@mail.ru>
  * @created  07.11.14 20:21
  */
-class DictionaryExample extends DictionaryItem
+class DictionaryExample extends DictionaryBaseItem
 {
 
     /**
