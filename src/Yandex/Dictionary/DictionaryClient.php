@@ -223,8 +223,6 @@ class DictionaryClient extends AbstractServiceClient
 
     /**
      * @param string $text
-     * @param string $from
-     * @param string $to
      *
      * @return string
      */
@@ -246,11 +244,29 @@ class DictionaryClient extends AbstractServiceClient
     }
 
     /**
+     * @param string $text
+     *
+     * @return string
+     */
+    public function getGetLanguagesUrl()
+    {
+        $resource = 'api/v1/dicservice.json/getLangs';
+        $query = http_build_query(
+            array(
+                'key' => $this->getApiKey()
+            )
+        );
+        $url = $this->getServiceUrl($resource) . '?' . $query;
+
+        return $url;
+    }
+
+    /**
      * Looks up a text in the dictionary
      *
      * @param string $text
      *
-     * @return DictionaryItems
+     * @return
      */
     public function lookup($text)
     {
@@ -261,6 +277,22 @@ class DictionaryClient extends AbstractServiceClient
         if ($response->getStatusCode() === 200) {
             $definitions = $this->parseLookupResponse($response);
             return $definitions;
+        }
+        return false;
+    }
+
+    /**
+     * @return
+     */
+    public function getLanguages()
+    {
+        $url = $this->getGetLanguagesUrl();
+        $client = new Client();
+        $request = $client->get($url);
+        $response = $this->sendRequest($request);
+        if ($response->getStatusCode() === 200) {
+            $languages = $this->parseGetLanguagesResponse($response);
+            return $languages;
         }
         return false;
     }
@@ -278,6 +310,23 @@ class DictionaryClient extends AbstractServiceClient
             $definitions[] = new DictionaryDefinition($definitionData);
         }
         return $definitions;
+    }
+
+    /**
+     * @param Response $response
+     */
+    protected function parseGetLanguagesResponse(Response $response)
+    {
+        $responseBody = $response->getBody(true);
+        $responseData = json_decode($responseBody);
+        $languages = array();
+        foreach ($responseData as $language){
+            $translation = explode('-',$language);
+            $from = $translation[0];
+            $to = $translation[1];
+            $languages[] = array($from,$to);
+        }
+        return $languages;
     }
 
     /**
