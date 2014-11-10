@@ -37,8 +37,8 @@ class DictionaryExample extends DictionaryBaseItem
     {
         parent::__construct($example);
 
-        if (isset($example->tr)){
-            foreach ($example->tr as $translation){
+        if (isset($example->tr)) {
+            foreach ($example->tr as $translation) {
                 $this->translations[] = $translation->text;
             }
         }

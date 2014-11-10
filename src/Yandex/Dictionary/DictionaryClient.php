@@ -102,7 +102,7 @@ class DictionaryClient extends AbstractServiceClient
      */
     public function setFamilyFlag($enabled = true)
     {
-        $this->setFlag(self::FAMILY_FLAG,$enabled);
+        $this->setFlag(self::FAMILY_FLAG, $enabled);
 
         return $this;
     }
@@ -112,7 +112,7 @@ class DictionaryClient extends AbstractServiceClient
      */
     public function setMorphoFlag($enabled = true)
     {
-        $this->setFlag(self::MORPHO_FLAG,$enabled);
+        $this->setFlag(self::MORPHO_FLAG, $enabled);
 
         return $this;
     }
@@ -122,7 +122,7 @@ class DictionaryClient extends AbstractServiceClient
      */
     public function setPositionFilterFlag($enabled = true)
     {
-        $this->setFlag(self::POSITION_FILTER_FLAG,$enabled);
+        $this->setFlag(self::POSITION_FILTER_FLAG, $enabled);
 
         return $this;
     }
@@ -141,10 +141,9 @@ class DictionaryClient extends AbstractServiceClient
      */
     public function setFlag($flag, $enabled = true)
     {
-        if ($enabled){
+        if ($enabled) {
             $this->flags |= $flag;
-        }
-        else{
+        } else {
             $this->flags &= ~$flag;
         }
 
@@ -306,7 +305,7 @@ class DictionaryClient extends AbstractServiceClient
         $responseObject = json_decode($responseData);
         $definitionsData = $responseObject->def;
         $definitions = array();
-        foreach ($definitionsData as $definitionData){
+        foreach ($definitionsData as $definitionData) {
             $definitions[] = new DictionaryDefinition($definitionData);
         }
         return $definitions;
@@ -320,8 +319,8 @@ class DictionaryClient extends AbstractServiceClient
         $responseBody = $response->getBody(true);
         $responseData = json_decode($responseBody);
         $languages = array();
-        foreach ($responseData as $language){
-            $translation = explode('-',$language);
+        foreach ($responseData as $language) {
+            $translation = explode('-', $language);
             $from = $translation[0];
             $to = $translation[1];
             $languages[] = array($from,$to);

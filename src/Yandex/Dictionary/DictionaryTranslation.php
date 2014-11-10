@@ -48,20 +48,20 @@ class DictionaryTranslation extends DictionaryBaseItem
     {
         parent::__construct($translation);
 
-        if (isset($translation->syn)){
-            foreach ($translation->syn as $synonym){
+        if (isset($translation->syn)) {
+            foreach ($translation->syn as $synonym) {
                 $this->synonyms[] = new DictionaryBaseItem($synonym);
             }
         }
 
-        if (isset($translation->mean)){
-            foreach ($translation->mean as $meaning){
+        if (isset($translation->mean)) {
+            foreach ($translation->mean as $meaning) {
                 $this->meanings[] = new DictionaryBaseItem($meaning);
             }
         }
 
-        if (isset($translation->ex)){
-            foreach ($translation->ex as $example){
+        if (isset($translation->ex)) {
+            foreach ($translation->ex as $example) {
                 $this->examples[] = new DictionaryExample($example);
             }
         }

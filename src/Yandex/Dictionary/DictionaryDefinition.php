@@ -43,12 +43,12 @@ class DictionaryDefinition extends DictionaryBaseItem
     {
         parent::__construct($definition);
 
-        if (isset($definition->ts)){
+        if (isset($definition->ts)) {
             $this->transcription = $definition->ts;
         }
 
-        if (isset($definition->tr)){
-            foreach ($definition->tr as $translation){
+        if (isset($definition->tr)) {
+            foreach ($definition->tr as $translation) {
                 $this->translations[] = new DictionaryTranslation($translation);
             }
         }

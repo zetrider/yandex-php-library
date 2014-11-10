@@ -38,11 +38,11 @@ class DictionaryBaseItem
      */
     public function __construct($item)
     {
-        if (isset($item->text)){
+        if (isset($item->text)) {
             $this->text = $item->text;
         }
 
-        if (isset($item->pos)){
+        if (isset($item->pos)) {
             $this->partOfSpeech = $item->pos;
         }
     }
