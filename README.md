@@ -1,6 +1,8 @@
 PHP библиотека к API Яндекса
 ============================
 
+[![Gitter](https://badges.gitter.im/Join%20Chat.svg)](https://gitter.im/nixsolutions/yandex-php-library?utm_source=badge&utm_medium=badge&utm_campaign=pr-badge&utm_content=badge)
+
 [![Build Status](https://secure.travis-ci.org/nixsolutions/yandex-php-library.png?branch=master)](https://travis-ci.org/nixsolutions/yandex-php-library)
 [![Latest Stable Version](https://poser.pugx.org/nixsolutions/yandex-php-library/v/stable.png)](https://packagist.org/packages/nixsolutions/yandex-php-library)
 [![Total Downloads](https://poser.pugx.org/nixsolutions/yandex-php-library/downloads.png)](https://packagist.org/packages/nixsolutions/yandex-php-library)
