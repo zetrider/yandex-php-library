@@ -28,6 +28,6 @@ class StatClient extends MetricaClient
      */
     public function data()
     {
-        return new DataClient();
+        return new DataClient($this->getAccessToken());
     }
 }
