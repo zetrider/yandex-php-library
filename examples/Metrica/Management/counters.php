@@ -351,6 +351,7 @@ $(function () {
 
 
     $('#openAddCounterModal').click(function () {
+        $('form.form-horizontal').get(0).reset();
         $('#addCounterModal').modal('show');
     });
 

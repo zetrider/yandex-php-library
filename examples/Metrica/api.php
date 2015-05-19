@@ -121,7 +121,8 @@ if (isset($_COOKIE['yaAccessToken']) && isset($_COOKIE['yaClientId'])) {
 
                         $result = $managementClient
                             ->counters()
-                            ->addCounter($counterPostRequest);
+                            ->addCounter($counterPostRequest)
+                            ->toArray();
                     }
                     break;
 
