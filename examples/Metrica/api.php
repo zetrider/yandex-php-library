@@ -442,7 +442,7 @@ if (isset($_COOKIE['yaAccessToken']) && isset($_COOKIE['yaClientId'])) {
         $errorMessage = $ex->getMessage();
         if ($errorMessage === 'PlatformNotAllowed') {
             $errorMessage .= '<p>Возможно, у приложения нет прав на доступ к ресурсу. Попробуйте '
-                . '<a href="/examples/OAuth/">авторизироваться</a> и повторить.</p>';
+                . '<a href="' . rtrim(str_replace($_SERVER['DOCUMENT_ROOT'], '', __DIR__), "/") . '/../OAuth/' . '">авторизироваться</a> и повторить.</p>';
         }
     }
 }

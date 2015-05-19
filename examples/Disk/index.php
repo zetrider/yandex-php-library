@@ -26,7 +26,7 @@ if (!isset($_COOKIE['yaAccessToken']) || !isset($_COOKIE['yaClientId'])) {
     ?>
     <div class="alert alert-info">
         Для просмотра этой страници вам необходимо авторизироваться.
-        <a id="goToAuth" href="/examples/OAuth/" class="alert-link">Перейти на страницу авторизации</a>.
+        <a id="goToAuth" href="<?php echo rtrim(str_replace($_SERVER['DOCUMENT_ROOT'], '', __DIR__), "/") . '/../OAuth/'?>" class="alert-link">Перейти на страницу авторизации</a>.
     </div>
     <script src="http://yandex.st/jquery/2.0.3/jquery.min.js"></script>
     <script src="http://yandex.st/jquery/cookie/1.0/jquery.cookie.min.js"></script>
