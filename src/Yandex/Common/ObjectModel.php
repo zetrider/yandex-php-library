@@ -12,7 +12,7 @@
 namespace Yandex\Common;
 
 
-class ObjectModel extends Model implements \Iterator
+class ObjectModel extends Model implements \Iterator, \Countable
 {
 
     protected $collection = array();
@@ -46,6 +46,12 @@ class ObjectModel extends Model implements \Iterator
     public function rewind()
     {
         $this->innerCounter = 0;
+        reset($this->collection);
         return;
+    }
+
+    public function count()
+    {
+        return count($this->collection);
     }
 }
