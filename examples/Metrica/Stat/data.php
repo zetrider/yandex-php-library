@@ -97,7 +97,7 @@ if (isset($_COOKIE['yaAccessToken']) && isset($_COOKIE['yaClientId'])) {
                         if (!is_null($data->getData())) {
                             foreach ($data->getData() as $dimensions) { ?>
                                 <tr>
-                                    <td><?= current($dimensions->getDimensions())->getName() ?></td>
+                                    <td><?= $dimensions->getDimensions()->current()->getName() ?></td>
                                     <?php for ($i = 0; $i < count($data->getQuery()->getMetrics()); $i++) { ?>
                                     <td><?= $dimensions->getMetrics()[$i] ?></td>
                                     <?php } ?>
