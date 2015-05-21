@@ -34,10 +34,10 @@ if (isset($_COOKIE['yaAccessToken']) && isset($_COOKIE['yaClientId'])) {
         $counters = $managementClient->counters()->getCounters($paramsObj)->getCounters();
     } catch (\Yandex\Common\Exception\UnauthorizedException $ex) {
         $errorMessage = '<p>Недействительный токен. Вам необходимо '
-            . '<a href="/examples/OAuth/">авторизироваться</a> и повторить попытку.</p>';
+            . '<a href="' . rtrim(str_replace($_SERVER['DOCUMENT_ROOT'], '', __DIR__), "/") . '/../OAuth/' . '">авторизироваться</a> и повторить попытку.</p>';
     } catch (\Yandex\Common\Exception\ForbiddenException $ex) {
         $errorMessage = '<p>Возможно, у приложения нет прав на доступ к ресурсу. Попробуйте '
-            . '<a href="/examples/OAuth/">авторизироваться</a> и повторить.</p>';
+            . '<a href="' . rtrim(str_replace($_SERVER['DOCUMENT_ROOT'], '', __DIR__), "/") . '/../OAuth/' . '">авторизироваться</a> и повторить.</p>';
     } catch (\Exception $ex) {
         $errorMessage = $ex->getMessage();
     }

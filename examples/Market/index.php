@@ -16,7 +16,7 @@ if (isset($_COOKIE['yaAccessToken']) && isset($_COOKIE['yaClientId'])) {
     } catch (ForbiddenException $ex) {
         $errorMessage = $ex->getMessage();
         $errorMessage .= '<p>Возможно, у приложения нет прав на доступ к ресурсу. Попробуйте '
-            . '<a href="/examples/OAuth/">авторизироваться</a> и повторить.</p>';
+            . '<a href="' . rtrim(str_replace($_SERVER['DOCUMENT_ROOT'], '', __DIR__), "/") . "/../OAuth/" . '">авторизироваться</a> и повторить.</p>';
 
     } catch (Exception $ex) {
         $errorMessage = $ex->getMessage();
@@ -42,7 +42,7 @@ if (isset($_COOKIE['yaAccessToken']) && isset($_COOKIE['yaClientId'])) {
         ?>
         <div class="alert alert-info">
             Для просмотра этой страници вам необходимо авторизироваться.
-            <a id="goToAuth" href="/examples/OAuth/" class="alert-link">Перейти на страницу авторизации</a>.
+            <a id="goToAuth" href="<?php echo rtrim(str_replace($_SERVER['DOCUMENT_ROOT'], '', __DIR__), "/") . '/../OAuth/'?>" class="alert-link">Перейти на страницу авторизации</a>.
         </div>
     <?php
     elseif ($errorMessage) :
