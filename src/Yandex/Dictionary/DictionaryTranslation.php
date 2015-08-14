@@ -68,7 +68,7 @@ class DictionaryTranslation extends DictionaryBaseItem
     }
 
     /**
-     *  @return string
+     *  @return array
      */
     public function getSynonyms()
     {
@@ -76,7 +76,7 @@ class DictionaryTranslation extends DictionaryBaseItem
     }
 
     /**
-     *  @return string
+     *  @return array
      */
     public function getMeanings()
     {
@@ -84,7 +84,7 @@ class DictionaryTranslation extends DictionaryBaseItem
     }
 
     /**
-     *  @return string
+     *  @return array
      */
     public function getExamples()
     {
