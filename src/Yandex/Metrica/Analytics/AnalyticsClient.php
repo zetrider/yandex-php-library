@@ -20,7 +20,7 @@ class AnalyticsClient extends MetricaClient
      *
      * @var string
      */
-    protected $serviceDomain = 'beta.api-metrika.yandex.ru/analytics/v3/data';
+    protected $serviceDomain = 'api-metrika.yandex.ru/analytics/v3/data';
 
 
     public function ga()

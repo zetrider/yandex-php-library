@@ -21,7 +21,7 @@ class StatClient extends MetricaClient
      *
      * @var string
      */
-    protected $serviceDomain = 'beta.api-metrika.yandex.ru/stat/v1/data';
+    protected $serviceDomain = 'api-metrika.yandex.ru/stat/v1/data';
 
     /**
      * @return DataClient
