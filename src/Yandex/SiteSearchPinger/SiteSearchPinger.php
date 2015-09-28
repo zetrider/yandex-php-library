@@ -15,8 +15,8 @@ use Yandex\Common\AbstractServiceClient;
 use Yandex\Common\Exception\InvalidArgumentException;
 use Yandex\SiteSearchPinger\Exception\InvalidUrlException;
 use Yandex\SiteSearchPinger\Exception\SiteSearchPingerException;
-use Guzzle\Http\Client;
-use Guzzle\Http\Exception\ClientErrorResponseException;
+use GuzzleHttp\Client;
+use GuzzleHttp\Exception\ClientException;
 
 /**
  * SiteSearchPinger
@@ -155,7 +155,7 @@ class SiteSearchPinger extends AbstractServiceClient
 
         try {
             $response = $this->doRequest($urls, $publishDate);
-        } catch (ClientErrorResponseException $e) {
+        } catch (ClientException $e) {
             $xml = $e->getResponse()->xml();
 
             if (isset($xml->error) && isset($xml->error->message)) {
@@ -211,25 +211,30 @@ class SiteSearchPinger extends AbstractServiceClient
      */
     protected function doRequest($urls, $publishDate)
     {
-        $client = new Client($this->host);
-        $client->setDefaultOption('headers', array('Y-SDK' => 'Pinger'));
+        $client = new Client();
+        $client->setDefaultOption('headers', ['Y-SDK' => 'Pinger']);
         $client->setDefaultOption(
             'query',
-            array(
+            [
                 'key' => $this->key,
                 'login' => $this->login,
                 'search_id' => $this->searchId
-            )
+            ]
         );
 
-        /**
-         * @var \Guzzle\Http\Message\EntityEnclosingRequest $request
-         */
-        $request = $client->post($this->path);
-        $request->setProtocolVersion('1.0');
-        $request->setPostField('urls', join("\n", $urls));
-        $request->setPostField('publishdate', $publishDate);
+        $request = $client->createRequest(
+            'POST',
+            $this->host,
+            [
+                'version' => '1.0',
+                'form_params' => [
+                    'urls' => join("\n", $urls),
+                    'publishdate' => $publishDate
+                ]
+            ]
+        );
+        $request->setPath($this->path);
         $request->setHeader('User-Agent', $this->getUserAgent());
-        return $request->send();
+        return $client->send($request);
     }
 }

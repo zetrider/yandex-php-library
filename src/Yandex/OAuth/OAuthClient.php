@@ -251,22 +251,25 @@ class OAuthClient
      */
     public function requestAccessToken($code)
     {
-        $client = new Client($this->getServiceUrl());
+        $client = new Client();
 
-        $request = $client->post(
-            'token', // to relative path "/token"
-            null, // with no headers
-            array(
-                'grant_type'    => 'authorization_code',
-                'code'          => $code,
-                'client_id'     => $this->clientId,
-                'client_secret' => $this->clientSecret
-            )
+        $request = $client->createRequest(
+            'POST',
+            $this->getServiceUrl(),
+            [
+                'form_params' => [
+                    'grant_type'    => 'authorization_code',
+                    'code'          => $code,
+                    'client_id'     => $this->clientId,
+                    'client_secret' => $this->clientSecret
+                ]
+            ]
         );
+        $request->setPath('token');
 
         try {
 
-            $response = $request->send();
+            $response = $client->send($request);
 
         } catch (ClientErrorResponseException $ex) {
 
