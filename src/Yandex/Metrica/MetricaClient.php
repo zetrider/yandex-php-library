@@ -38,7 +38,7 @@ class MetricaClient extends AbstractServiceClient
      *
      * @var string
      */
-    protected $serviceDomain = 'beta.api-metrika.yandex.ru/management/v1';
+    protected $serviceDomain = 'api-metrika.yandex.ru/management/v1';
 
 
     /**

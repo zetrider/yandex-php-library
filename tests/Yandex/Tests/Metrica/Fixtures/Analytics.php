@@ -6,8 +6,8 @@ class Analytics
 {
     public static $analyticsFixtures = array(
         "kind" => "analytics#gaData",
-        "id" => "https://beta.api-metrika.yandex.ru/analytics/v3/data/ga",
-        "selfLink" => "https://beta.api-metrika.yandex.ru/analytics/v3/data/ga",
+        "id" => "https://api-metrika.yandex.ru/analytics/v3/data/ga",
+        "selfLink" => "https://api-metrika.yandex.ru/analytics/v3/data/ga",
         "containsSampledData" => false,
         "sampleSize" => "7617",
         "sampleSpace" => "7617",
