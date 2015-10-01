@@ -2,8 +2,6 @@
 
 namespace Yandex\Tests\Metrica;
 
-use Guzzle\Http\Message\Response;
-use Yandex\Metrica\Management\CountersClient;
 use Yandex\Tests\Metrica\Fixtures\Counters;
 use Yandex\Tests\TestCase;
 use Yandex\Metrica\Management\Models;

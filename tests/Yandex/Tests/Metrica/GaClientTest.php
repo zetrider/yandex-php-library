@@ -2,8 +2,6 @@
 
 namespace Yandex\Tests\Metrica;
 
-use Guzzle\Http\Message\Response;
-use Yandex\Metrica\Analytics\GaClient;
 use Yandex\Tests\TestCase;
 use Yandex\Tests\Metrica\Fixtures\Analytics;
 use Yandex\Metrica\Analytics\Models;
