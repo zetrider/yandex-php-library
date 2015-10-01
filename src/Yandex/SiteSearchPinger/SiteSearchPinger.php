@@ -166,8 +166,6 @@ class SiteSearchPinger extends AbstractServiceClient
                 throw new InvalidArgumentException($errorMessage);
             }
             return false;
-        } catch (\Exception $e) {
-            var_dump($e);exit;
         }
 
         if (!$xml = $response->xml()) {
