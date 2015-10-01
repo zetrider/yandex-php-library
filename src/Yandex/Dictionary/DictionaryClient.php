@@ -12,14 +12,12 @@
 namespace Yandex\Dictionary;
 
 use Yandex\Common\AbstractServiceClient;
-use Yandex\Dictionary\DictionaryDefinition;
-use Guzzle\Http\Message\Response;
-use Guzzle\Http\Client;
-use Guzzle\Http\Message\RequestInterface;
-use Guzzle\Http\Exception\ClientErrorResponseException;
-use Guzzle\Http\Exception\RequestException;
+use GuzzleHttp\Message\Response;
+use GuzzleHttp\Client;
+use GuzzleHttp\ClientInterface;
+use GuzzleHttp\Message\RequestInterface;
+use GuzzleHttp\Exception\ClientException;
 use Yandex\Common\Exception\ForbiddenException;
-use Yandex\Common\Exception\UnauthorizedException;
 use Yandex\Dictionary\Exception\DictionaryException;
 
 /**
@@ -89,6 +87,8 @@ class DictionaryClient extends AbstractServiceClient
 
     /**
      * @param string $apiKey
+     *
+     * @return $this
      */
     public function setApiKey($apiKey)
     {
@@ -99,6 +99,8 @@ class DictionaryClient extends AbstractServiceClient
 
     /**
      * @param boolean $enabled optional boolean
+     *
+     * @return $this
      */
     public function setFamilyFlag($enabled = true)
     {
@@ -109,6 +111,8 @@ class DictionaryClient extends AbstractServiceClient
 
     /**
      * @param boolean $enabled optional boolean
+     *
+     * @return $this
      */
     public function setMorphoFlag($enabled = true)
     {
@@ -119,6 +123,8 @@ class DictionaryClient extends AbstractServiceClient
 
     /**
      * @param boolean $enabled optional boolean
+     *
+     * @return $this
      */
     public function setPositionFilterFlag($enabled = true)
     {
@@ -138,6 +144,8 @@ class DictionaryClient extends AbstractServiceClient
     /**
      * @param integer $flag
      * @param boolean $enabled optional boolean
+     *
+     * @return $this
      */
     public function setFlag($flag, $enabled = true)
     {
@@ -160,6 +168,8 @@ class DictionaryClient extends AbstractServiceClient
 
     /**
      * @param string $uiLanguage
+     *
+     * @return $this
      */
     public function setUiLanguage($uiLanguage)
     {
@@ -178,6 +188,8 @@ class DictionaryClient extends AbstractServiceClient
 
     /**
      * @param string $translateFrom
+     *
+     * @return $this
      */
     public function setTranslateFrom($translateFrom)
     {
@@ -195,7 +207,9 @@ class DictionaryClient extends AbstractServiceClient
     }
 
     /**
-     * @param string $translateTo
+     * @param $translateTo
+     *
+     * @return $this
      */
     public function setTranslateTo($translateTo)
     {
@@ -243,8 +257,6 @@ class DictionaryClient extends AbstractServiceClient
     }
 
     /**
-     * @param string $text
-     *
      * @return string
      */
     public function getGetLanguagesUrl()
@@ -265,14 +277,17 @@ class DictionaryClient extends AbstractServiceClient
      *
      * @param string $text
      *
-     * @return
+     * @return array|bool
+     *
+     * @throws DictionaryException
+     * @throws ForbiddenException
      */
     public function lookup($text)
     {
         $url = $this->getLookupUrl($text);
         $client = new Client();
-        $request = $client->get($url);
-        $response = $this->sendRequest($request);
+        $request = $client->createRequest('GET', $url, ['version' => $this->serviceProtocolVersion]);
+        $response = $this->sendRequest($client, $request);
         if ($response->getStatusCode() === 200) {
             $definitions = $this->parseLookupResponse($response);
             return $definitions;
@@ -281,14 +296,17 @@ class DictionaryClient extends AbstractServiceClient
     }
 
     /**
-     * @return
+     * @return array|bool
+     *
+     * @throws DictionaryException
+     * @throws ForbiddenException
      */
     public function getLanguages()
     {
         $url = $this->getGetLanguagesUrl();
         $client = new Client();
-        $request = $client->get($url);
-        $response = $this->sendRequest($request);
+        $request = $client->createRequest('GET', $url, ['version' => $this->serviceProtocolVersion]);
+        $response = $this->sendRequest($client, $request);
         if ($response->getStatusCode() === 200) {
             $languages = $this->parseGetLanguagesResponse($response);
             return $languages;
@@ -298,10 +316,12 @@ class DictionaryClient extends AbstractServiceClient
 
     /**
      * @param Response $response
+     *
+     * @return array
      */
     protected function parseLookupResponse(Response $response)
     {
-        $responseData = $response->getBody(true);
+        $responseData = $response->getBody();
         $responseObject = json_decode($responseData);
         $definitionsData = $responseObject->def;
         $definitions = array();
@@ -313,10 +333,12 @@ class DictionaryClient extends AbstractServiceClient
 
     /**
      * @param Response $response
+     *
+     * @return array
      */
     protected function parseGetLanguagesResponse(Response $response)
     {
-        $responseBody = $response->getBody(true);
+        $responseBody = $response->getBody();
         $responseData = json_decode($responseBody);
         $languages = array();
         foreach ($responseData as $language) {
@@ -331,20 +353,22 @@ class DictionaryClient extends AbstractServiceClient
     /**
      * Sends a request
      *
+     * @param ClientInterface $client
      * @param RequestInterface $request
+     *
      * @return Response
+     *
      * @throws ForbiddenException
+     * @throws DictionaryException
      */
-    protected function sendRequest(RequestInterface $request)
+    protected function sendRequest(ClientInterface $client, RequestInterface $request)
     {
         try {
-            $response = $request->send();
-
-        } catch (ClientErrorResponseException $ex) {
-
-            $result = $request->getResponse();
-            $code = $result->getStatusCode();
-            $message = $result->getReasonPhrase();
+            $response = $client->send($request);
+        } catch (ClientException $ex) {
+            $response = $ex->getResponse();
+            $code = $response->getStatusCode();
+            $message = $response->getReasonPhrase();
 
             if ($code === 403) {
                 throw new ForbiddenException($message);

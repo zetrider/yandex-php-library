@@ -2,8 +2,6 @@
 
 namespace Yandex\Tests\Metrica;
 
-use Guzzle\Http\Message\Response;
-use Yandex\Metrica\Stat\DataClient;
 use Yandex\Tests\Metrica\Fixtures\Stat;
 use Yandex\Tests\TestCase;
 use Yandex\Metrica\Stat\Models;

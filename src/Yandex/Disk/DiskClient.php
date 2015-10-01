@@ -11,10 +11,11 @@
  */
 namespace Yandex\Disk;
 
-use Guzzle\Service\Client;
-use Guzzle\Http\Message\Response;
-use Guzzle\Http\Message\RequestInterface;
-use Guzzle\Http\Exception\ClientErrorResponseException;
+use GuzzleHttp\Client;
+use GuzzleHttp\ClientInterface;
+use GuzzleHttp\Message\Response;
+use GuzzleHttp\Message\RequestInterface;
+use GuzzleHttp\Exception\ClientException;
 use Yandex\Common\AbstractServiceClient;
 use Yandex\Disk\Exception\DiskRequestException;
 
@@ -89,17 +90,16 @@ class DiskClient extends AbstractServiceClient
      *
      * @param RequestInterface $request
      *
-     * @throws \Exception|\Guzzle\Http\Exception\ClientErrorResponseException
+     * @throws \Exception|\GuzzleHttp\Exception\ClientException
      * @return Response
      */
-    protected function sendRequest(RequestInterface $request)
+    protected function sendRequest(ClientInterface $client, RequestInterface $request)
     {
         try {
             $request = $this->prepareRequest($request);
-            $response = $request->send();
-        } catch (ClientErrorResponseException $ex) {
-
-            $result = $request->getResponse();
+            $response = $client->send($request);
+        } catch (ClientException $ex) {
+            $result = $ex->getResponse();
             $code = $result->getStatusCode();
             $message = $result->getReasonPhrase();
 
@@ -117,10 +117,10 @@ class DiskClient extends AbstractServiceClient
      */
     public function createDirectory($path = '')
     {
-        $client = new Client($this->getServiceUrl());
-        $request = $client->createRequest('MKCOL');
+        $client = new Client();
+        $request = $client->createRequest('MKCOL', $this->getServiceUrl());
         $request->setPath($path);
-        return (bool)$this->sendRequest($request);
+        return (bool)$this->sendRequest($client, $request);
     }
 
     /**
@@ -131,16 +131,17 @@ class DiskClient extends AbstractServiceClient
      */
     public function directoryContents($path = '', $offset = null, $amount = null)
     {
-        $client = new Client($this->getServiceUrl());
-        $request = $client->createRequest('PROPFIND');
+        $client = new Client();
+        $request = $client->createRequest('PROPFIND', $this->getServiceUrl());
         $request->setPath($path);
         $request->setHeader('Depth', '1');
 
         if (isset($offset, $amount)) {
-            $request->getQuery()->set('offset', $offset)->set('amount', $amount);
+            $request->getQuery()->set('offset', $offset);
+            $request->getQuery()->set('amount', $amount);
         }
 
-        $xml = $this->sendRequest($request)->xml()->children('DAV:');
+        $xml = $this->sendRequest($client, $request)->xml()->children('DAV:');
 
         $contents = array();
         foreach ($xml as $element) {
@@ -166,20 +167,24 @@ class DiskClient extends AbstractServiceClient
      */
     public function diskSpaceInfo()
     {
-        $client = new Client($this->getServiceUrl());
+        $client = new Client();
 
         $body = '<?xml version="1.0" encoding="utf-8" ?><D:propfind xmlns:D="DAV:">
             <D:prop><D:quota-available-bytes/><D:quota-used-bytes/></D:prop></D:propfind>';
 
         $request = $client->createRequest(
             'PROPFIND',
-            '/',
-            array(
-                'Depth' => '0'
-            ),
-            $body
+            $this->getServiceUrl(),
+            [
+                'headers' => [
+                    'Depth' => '0'
+                ],
+                'body' => $body
+            ]
         );
-        $result = $this->sendRequest($request)->xml()->children('DAV:');
+        $request->setPath('/');
+
+        $result = $this->sendRequest($client, $request)->xml()->children('DAV:');
         $info = (array)$result->response->propstat->prop;
         return array(
             'usedBytes' => $info['quota-used-bytes'],
@@ -197,7 +202,7 @@ class DiskClient extends AbstractServiceClient
     public function setProperty($path = '', $property = '', $value = '', $namespace = 'default:namespace')
     {
         if (!empty($property) && !empty($value)) {
-            $client = new Client($this->getServiceUrl());
+            $client = new Client();
 
             $body = '<?xml version="1.0" encoding="utf-8" ?><propertyupdate xmlns="DAV:" xmlns:u="'
                 . $namespace . '"><set><prop><u:' . $property . '>' . $value . '</u:'
@@ -205,14 +210,18 @@ class DiskClient extends AbstractServiceClient
 
             $request = $client->createRequest(
                 'PROPPATCH',
-                $path,
-                array(
-                    'Content-Length' => strlen($body),
-                    'Content-Type' => 'application/x-www-form-urlencoded'
-                ),
-                $body
+                $this->getServiceUrl(),
+                [
+                    'headers' => [
+                        'Content-Length' => strlen($body),
+                        'Content-Type' => 'application/x-www-form-urlencoded'
+                    ],
+                    'body' => $body
+                ]
             );
-            $response = $this->sendRequest($request)->xml()->children('DAV:')->response;
+            $request->setPath('/');
+
+            $response = $this->sendRequest($client, $request)->xml()->children('DAV:')->response;
             $resultStatus = $response->propstat->status;
             if (strpos($resultStatus, '200 OK')) {
                 return true;
@@ -230,23 +239,26 @@ class DiskClient extends AbstractServiceClient
     public function getProperty($path = '', $property = '', $namespace = 'default:namespace')
     {
         if (!empty($property)) {
-            $client = new Client($this->getServiceUrl());
+            $client = new Client();
 
             $body = '<?xml version="1.0" encoding="utf-8" ?><propfind xmlns="DAV:"><prop><' . $property
                 . ' xmlns="' . $namespace . '"/></prop></propfind>';
 
             $request = $client->createRequest(
                 'PROPFIND',
-                $path,
-                array(
-                    'Depth' => '1',
-                    'Content-Length' => strlen($body),
-                    'Content-Type' => 'application/x-www-form-urlencoded'
-                ),
-                $body
+                $this->getServiceUrl(),
+                [
+                    'headers' => [
+                        'Depth' => '1',
+                        'Content-Length' => strlen($body),
+                        'Content-Type' => 'application/x-www-form-urlencoded'
+                    ],
+                    'body' => $body
+                ]
             );
+            $request->setPath($path);
 
-            $result = $this->sendRequest($request);
+            $result = $this->sendRequest($client, $request);
             $response = $result->xml()->children('DAV:')->response;
             $resultStatus = $response->propstat->status;
             if (strpos($resultStatus, '200 OK')) {
@@ -259,13 +271,18 @@ class DiskClient extends AbstractServiceClient
 
     /**
      * @return string
+     * @see https://tech.yandex.com/disk/doc/dg/reference/userinfo-docpage/
      */
     public function getLogin()
     {
-        $client = new Client($this->getServiceUrl());
-        $request = $client->get('/?userinfo');
-        $response = $this->sendRequest($request);
-        $result = explode(":", $response->getBody(true));
+        $client = new Client();
+        $request = $client->createRequest(
+            'GET',
+            parent::getServiceUrl() . '?userinfo'
+        );
+
+        $response = $this->sendRequest($client, $request);
+        $result = explode(":", $response->getBody());
         array_shift($result);
         return implode(':', $result);
     }
@@ -277,18 +294,16 @@ class DiskClient extends AbstractServiceClient
     public function getFile($path = '')
     {
         $result = array();
-        $client = new Client($this->getServiceUrl());
-        $request = $client->createRequest('GET');
+        $client = new Client();
+        $request = $client->createRequest('GET', $this->getServiceUrl());
         $request->setPath($path);
 
-        $response = $this->sendRequest($request);
-        $headers = $response->getHeaders()->getAll();
+        $response = $this->sendRequest($client, $request);
+        $headers = $response->getHeaders();
         foreach ($headers as $key => $value) {
-            /* @var \Guzzle\Http\Message\Header\HeaderInterface $value */
-            $value = $value->toArray();
-            $result['headers'][$key] = $value[0];
+            $result['headers'][strtolower($key)] = $value[0];
         }
-        $result['body'] = $response->getBody(true);
+        $result['body'] = $response->getBody();
         return $result;
     }
 
@@ -300,20 +315,24 @@ class DiskClient extends AbstractServiceClient
      */
     public function downloadFile($path = '', $destination = '', $name = '')
     {
-        $client = new Client($this->getServiceUrl());
-        $request = $client->createRequest('GET');
+        $client = new Client();
+        $request = $client->createRequest('GET', $this->getServiceUrl());
         $request->setPath($path);
-        $response = $this->sendRequest($request);
+        $response = $this->sendRequest($client, $request);
 
         if ($name === '') {
             $matchResults = array();
-            preg_match("/.*?filename=\"(.*?)\".*?/", $response->getContentDisposition(), $matchResults);
+            preg_match(
+                "/.*?filename=\"(.*?)\".*?/",
+                (string) $response->getHeader('Content-Disposition'),
+                $matchResults
+            );
             $name = urldecode($matchResults[1]);
         }
 
         $file = $destination . $name;
 
-        $result = file_put_contents($file, $response->getBody(true)) ? $file : false;
+        $result = file_put_contents($file, $response->getBody()) ? $file : false;
 
         return $result;
     }
@@ -341,14 +360,17 @@ class DiskClient extends AbstractServiceClient
             $headers['Authorization'] = 'OAuth ' . $this->getAccessToken();
             $headers = isset($extraHeaders) ? array_merge($headers, $extraHeaders) : $headers;
 
-            $client = new Client($this->getServiceUrl());
+            $client = new Client();
             $request = $client->createRequest(
                 'PUT',
-                $path . $file['name'],
-                $headers,
-                file_get_contents($file['path'])
+                $this->getServiceUrl(),
+                [
+                    'headers' => $headers,
+                    'body' => file_get_contents($file['path'])
+                ]
             );
-            $this->sendRequest($request);
+            $request->setPath($path . $file['name']);
+            $this->sendRequest($client, $request);
         }
     }
 
@@ -360,18 +382,19 @@ class DiskClient extends AbstractServiceClient
     public function getImagePreview($path, $size)
     {
         $result = array();
-        $client = new Client($this->getServiceUrl());
-        $request = $client->createRequest('GET');
+        $client = new Client();
+        $request = $client->createRequest('GET', $this->getServiceUrl());
         $request->setPath($path);
-        $request->getQuery()->set('preview', null)->set('size', $size);
-        $response = $this->sendRequest($request);
-        $headers = $response->getHeaders()->getAll();
+        $request->getQuery()->set('preview', null);
+        $request->getQuery()->set('size', $size);
+        $response = $this->sendRequest($client, $request);
+
+        $headers = $response->getHeaders();
         foreach ($headers as $key => $value) {
-            /* @var \Guzzle\Http\Message\Header\HeaderInterface $value */
-            $value = $value->toArray();
-            $result['headers'][$key] = $value[0];
+            $result['headers'][strtolower($key)] = $value[0];
         }
-        $result['body'] = $response->getBody(true);
+
+        $result['body'] = $response->getBody();
         return $result;
     }
 
@@ -382,11 +405,11 @@ class DiskClient extends AbstractServiceClient
      */
     public function copy($target = '', $destination = '')
     {
-        $client = new Client($this->getServiceUrl());
-        $request = $client->createRequest('COPY');
+        $client = new Client();
+        $request = $client->createRequest('COPY', $this->getServiceUrl());
         $request->setPath($target);
         $request->setHeader('Destination', $destination);
-        return (bool)$this->sendRequest($request);
+        return (bool)$this->sendRequest($client, $request);
     }
 
     /**
@@ -396,11 +419,11 @@ class DiskClient extends AbstractServiceClient
      */
     public function move($path = '', $destination = '')
     {
-        $client = new Client($this->getServiceUrl());
-        $request = $client->createRequest('MOVE');
+        $client = new Client();
+        $request = $client->createRequest('MOVE', $this->getServiceUrl());
         $request->setPath($path);
         $request->setHeader('Destination', $destination);
-        return (bool)$this->sendRequest($request);
+        return (bool)$this->sendRequest($client, $request);
     }
 
     /**
@@ -409,10 +432,10 @@ class DiskClient extends AbstractServiceClient
      */
     public function delete($path = '')
     {
-        $client = new Client($this->getServiceUrl());
-        $request = $client->createRequest('DELETE');
+        $client = new Client();
+        $request = $client->createRequest('DELETE', $this->getServiceUrl());
         $request->setPath($path);
-        return (bool)$this->sendRequest($request);
+        return (bool)$this->sendRequest($client, $request);
     }
 
     /**
@@ -421,7 +444,7 @@ class DiskClient extends AbstractServiceClient
      */
     public function startPublishing($path = '')
     {
-        $client = new Client($this->getServiceUrl());
+        $client = new Client();
 
         $body = '<propertyupdate xmlns="DAV:"><set><prop>
             <public_url xmlns="urn:yandex:disk:meta">true</public_url>
@@ -429,13 +452,17 @@ class DiskClient extends AbstractServiceClient
 
         $request = $client->createRequest(
             'PROPPATCH',
-            $path,
-            array(
-                'Content-Length' => strlen($body)
-            ),
-            $body
+            $this->getServiceUrl(),
+            [
+                'headers' => [
+                    'Content-Length' => strlen($body)
+                ],
+                'body' => $body
+            ]
         );
-        $result = $this->sendRequest($request)->xml()->children('DAV:');
+        $request->setPath($path);
+
+        $result = $this->sendRequest($client, $request)->xml()->children('DAV:');
         $publicUrl = $result->response->propstat->prop->children()->public_url;
         return (string)$publicUrl;
     }
@@ -446,7 +473,7 @@ class DiskClient extends AbstractServiceClient
      */
     public function stopPublishing($path = '')
     {
-        $client = new Client($this->getServiceUrl());
+        $client = new Client();
 
         $body = '<propertyupdate xmlns="DAV:"><remove><prop>
             <public_url xmlns="urn:yandex:disk:meta" />
@@ -454,13 +481,17 @@ class DiskClient extends AbstractServiceClient
 
         $request = $client->createRequest(
             'PROPPATCH',
-            $path,
-            array(
-                'Content-Length' => strlen($body)
-            ),
-            $body
+            $this->getServiceUrl(),
+            [
+                'headers' => [
+                    'Content-Length' => strlen($body)
+                ],
+                'body' => $body
+            ]
         );
-        $this->sendRequest($request);
+        $request->setPath($path);
+
+        $this->sendRequest($client, $request);
     }
 
     /**
@@ -469,20 +500,24 @@ class DiskClient extends AbstractServiceClient
      */
     public function checkPublishing($path = '')
     {
-        $client = new Client($this->getServiceUrl());
+        $client = new Client();
 
         $body = '<propfind xmlns="DAV:"><prop><public_url xmlns="urn:yandex:disk:meta"/></prop></propfind>';
 
         $request = $client->createRequest(
             'PROPFIND',
-            $path,
-            array(
-                'Content-Length' => strlen($body),
-                'Depth' => '0'
-            ),
-            $body
+            $this->getServiceUrl(),
+            [
+                'headers' => [
+                    'Content-Length' => strlen($body),
+                    'Depth' => '0'
+                ],
+                'body' => $body
+            ]
         );
-        $result = $this->sendRequest($request)->xml()->children('DAV:');
+        $request->setPath($path);
+
+        $result = $this->sendRequest($client, $request)->xml()->children('DAV:');
         $propArray = (array)$result->response->propstat->prop->children();
         return empty($propArray['public_url']) ? (bool)false : (string)$propArray['public_url'];
     }

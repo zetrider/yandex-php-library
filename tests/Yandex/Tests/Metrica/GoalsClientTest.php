@@ -2,8 +2,6 @@
 
 namespace Yandex\Tests\Metrica;
 
-use Guzzle\Http\Message\Response;
-use Yandex\Metrica\Management\GoalsClient;
 use Yandex\Tests\TestCase;
 use Yandex\Tests\Metrica\Fixtures\Goals;
 

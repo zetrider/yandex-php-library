@@ -11,11 +11,12 @@
  */
 namespace Yandex\Metrica;
 
+use GuzzleHttp\ClientInterface;
 use Yandex\Common\AbstractServiceClient;
-use Guzzle\Service\Client;
-use Guzzle\Http\Message\RequestInterface;
-use Guzzle\Http\Message\Response;
-use Guzzle\Http\Exception\ClientErrorResponseException;
+use GuzzleHttp\Client;
+use GuzzleHttp\Message\RequestInterface;
+use GuzzleHttp\Message\Response;
+use GuzzleHttp\Exception\ClientException;
 use Yandex\Common\Exception\ForbiddenException;
 use Yandex\Common\Exception\UnauthorizedException;
 use Yandex\Metrica\Exception\MetricaException;
@@ -74,21 +75,22 @@ class MetricaClient extends AbstractServiceClient
     /**
      * Sends a request
      *
+     * @param ClientInterface $client
      * @param RequestInterface $request
      * @return Response
      * @throws ForbiddenException
      * @throws UnauthorizedException
      * @throws MetricaException
      */
-    protected function sendRequest(RequestInterface $request)
+    protected function sendRequest(ClientInterface $client, RequestInterface $request)
     {
         try {
             $request->setHeader('User-Agent', $this->getUserAgent());
-            $response = $request->send();
+            $response = $client->send($request);
 
-        } catch (ClientErrorResponseException $ex) {
+        } catch (ClientException $ex) {
 
-            $result = $request->getResponse();
+            $result = $ex->getResponse();
             $code = $result->getStatusCode();
             $message = $result->getReasonPhrase();
 
@@ -133,15 +135,18 @@ class MetricaClient extends AbstractServiceClient
     {
 
         $client = new Client();
-        $request = $client->get(
+        $request = $client->createRequest(
+            'GET',
             $this->getServiceUrl($resource, $params),
-            array(
-                'Authorization' => $this->getOauthData(),
-                'Accept' => 'application/x-yametrika+json',
-                'Content-Type' => 'application/x-yametrika+json',
-            )
+            [
+                'headers' => [
+                    'Authorization' => $this->getOauthData(),
+                    'Accept' => 'application/x-yametrika+json',
+                    'Content-Type' => 'application/x-yametrika+json',
+                ]
+            ]
         );
-        $response = $this->sendRequest($request)->json();
+        $response = $this->sendRequest($client, $request)->json();
         if (isset($response['links']) && isset($response['links']['next'])) {
             $url = $response['links']['next'];
             unset($response['rows']);
@@ -162,15 +167,18 @@ class MetricaClient extends AbstractServiceClient
     protected function getNextPartOfList($url, $data = array())
     {
         $client = new Client();
-        $request = $client->get(
+        $request = $client->createRequest(
+            'GET',
             $url,
-            array(
-                'Authorization' => $this->getOauthData(),
-                'Accept' => 'application/x-yametrika+json',
-                'Content-Type' => 'application/x-yametrika+json',
-            )
+            [
+                'headers' => [
+                    'Authorization' => $this->getOauthData(),
+                    'Accept' => 'application/x-yametrika+json',
+                    'Content-Type' => 'application/x-yametrika+json',
+                ]
+            ]
         );
-        $response = $this->sendRequest($request)->json();
+        $response = $this->sendRequest($client, $request)->json();
 
         $response = array_merge_recursive($data, $response);
         if (isset($response['links']) && isset($response['links']['next'])) {
@@ -195,17 +203,20 @@ class MetricaClient extends AbstractServiceClient
     {
         $client = new Client();
 
-        $request = $client->post(
+        $request = $client->createRequest(
+            'POST',
             $this->getServiceUrl($resource),
-            array(
-                'Authorization' => $this->getOauthData(),
-                'Accept' => 'application/x-yametrika+json',
-                'Content-Type' => 'application/x-yametrika+json',
-            ),
-            json_encode($params)
+            [
+                'headers' => [
+                    'Authorization' => $this->getOauthData(),
+                    'Accept' => 'application/x-yametrika+json',
+                    'Content-Type' => 'application/x-yametrika+json',
+                ],
+                'body' => json_encode($params)
+            ]
         );
 
-        $response = $this->sendRequest($request)->json();
+        $response = $this->sendRequest($client, $request)->json();
         return $response;
     }
 
@@ -221,17 +232,20 @@ class MetricaClient extends AbstractServiceClient
     {
         $client = new Client();
 
-        $request = $client->put(
+        $request = $client->createRequest(
+            'PUT',
             $this->getServiceUrl($resource),
-            array(
-                'Authorization' => $this->getOauthData(),
-                'Accept' => 'application/x-yametrika+json',
-                'Content-Type' => 'application/x-yametrika+json',
-            ),
-            json_encode($params)
+            [
+                'headers' => [
+                    'Authorization' => $this->getOauthData(),
+                    'Accept' => 'application/x-yametrika+json',
+                    'Content-Type' => 'application/x-yametrika+json',
+                ],
+                'body' => json_encode($params)
+            ]
         );
 
-        $response = $this->sendRequest($request)->json();
+        $response = $this->sendRequest($client, $request)->json();
         return $response;
     }
 
@@ -246,16 +260,19 @@ class MetricaClient extends AbstractServiceClient
     {
         $client = new Client();
 
-        $request = $client->delete(
+        $request = $client->createRequest(
+            'DELETE',
             $this->getServiceUrl($resource),
-            array(
-                'Authorization' => $this->getOauthData(),
-                'Accept' => 'application/x-yametrika+json',
-                'Content-Type' => 'application/x-yametrika+json',
-            )
+            [
+                'headers' => [
+                    'Authorization' => $this->getOauthData(),
+                    'Accept' => 'application/x-yametrika+json',
+                    'Content-Type' => 'application/x-yametrika+json',
+                ]
+            ]
         );
 
-        $response = $this->sendRequest($request)->json();
+        $response = $this->sendRequest($client, $request)->json();
         return $response;
     }
 }

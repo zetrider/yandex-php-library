@@ -4,21 +4,17 @@
  */
 namespace Yandex\Tests\Market;
 
-use Guzzle\Http\Message\Response;
-use Yandex\Market\Partner\PartnerClient;
 use Yandex\Market\Models\CartResponse;
 use Yandex\Market\Models\DatesRange;
 use Yandex\Market\Models\DeliveryOption;
 use Yandex\Market\Models\DeliveryOptions;
 use Yandex\Market\Models\Item;
 use Yandex\Market\Models\Items;
-use Yandex\Market\Models\Order;
 use Yandex\Market\Models\Outlet;
 use Yandex\Market\Models\Outlets;
 use Yandex\Market\Models\PostCartRequest;
 use Yandex\Market\Models\PostCartResponse;
 use Yandex\Tests\TestCase;
-use Yandex\Tests\Fixtures\Fixtures;
 
 /**
  * PackageTest

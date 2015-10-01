@@ -11,10 +11,10 @@
  */
 namespace Yandex\Common;
 
-use Guzzle\Http\Exception\ClientErrorResponseException;
-use Guzzle\Http\Message\Request;
-use Guzzle\Http\Message\RequestInterface;
-use Guzzle\Http\Message\Response;
+use GuzzleHttp\ClientInterface;
+use GuzzleHttp\Exception\ClientException;
+use GuzzleHttp\Message\RequestInterface;
+use GuzzleHttp\Message\Response;
 use Yandex\Common\Exception\MissedArgumentException;
 use Yandex\Common\Exception\ProfileNotFoundException;
 use Yandex\Common\Exception\YandexException;
@@ -176,12 +176,11 @@ abstract class AbstractServiceClient extends AbstractPackage
     /**
      * prepareRequest
      *
-     * @param \Guzzle\Http\Message\RequestInterface $request
+     * @param \GuzzleHttp\Message\RequestInterface $request
      * @return RequestInterface
      */
     protected function prepareRequest(RequestInterface $request)
     {
-        $request->setProtocolVersion($this->serviceProtocolVersion);
         $request->setHeader('Authorization', 'OAuth ' . $this->getAccessToken());
         $request->setHeader('Host', $this->getServiceDomain());
         $request->setHeader('User-Agent', $this->getUserAgent());
@@ -192,21 +191,22 @@ abstract class AbstractServiceClient extends AbstractPackage
     /**
      * Sends a request
      *
-     * @param \Guzzle\Http\Message\Request|\Guzzle\Http\Message\RequestInterface $request
+     * @param \GuzzleHttp\ClientInterface $client
+     * @param \GuzzleHttp\Message\Request|\GuzzleHttp\Message\RequestInterface $request
      *
      * @throws Exception\MissedArgumentException
      * @throws Exception\ProfileNotFoundException
      * @throws Exception\YandexException
      * @return Response
      */
-    protected function sendRequest(RequestInterface $request)
+    protected function sendRequest(ClientInterface $client, RequestInterface $request)
     {
         try {
             $request = $this->prepareRequest($request);
-            $response = $request->send();
-        } catch (ClientErrorResponseException $ex) {
+            $response = $client->send($request);
+        } catch (ClientException $ex) {
             // get error from response
-            $result = $request->getResponse()->json();
+            $result = $ex->getResponse()->json();
 
             // handle a service error message
             if (is_array($result) && isset($result['error'], $result['message'])) {

@@ -11,11 +11,12 @@
  */
 namespace Yandex\SafeBrowsing;
 
-use Guzzle\Http\Message\RequestInterface;
+use GuzzleHttp\Message\RequestInterface;
+use GuzzleHttp\ClientInterface;
 use Yandex\Common\AbstractServiceClient;
-use Guzzle\Service\Client;
-use Guzzle\Http\Message\Response;
-use Guzzle\Http\Exception\ClientErrorResponseException;
+use GuzzleHttp\Client;
+use GuzzleHttp\Message\Response;
+use GuzzleHttp\Exception\ClientException;
 use Yandex\Common\Exception\ForbiddenException;
 use Yandex\Common\Exception\UnauthorizedException;
 
@@ -141,21 +142,22 @@ class SafeBrowsingClient extends AbstractServiceClient
     /**
      * Sends a request
      *
+     * @param ClientInterface $client
      * @param RequestInterface $request
      * @return Response
      * @throws ForbiddenException
      * @throws UnauthorizedException
      * @throws SafeBrowsingException
      */
-    protected function sendRequest(RequestInterface $request)
+    protected function sendRequest(ClientInterface $client, RequestInterface $request)
     {
         try {
             $request = $this->prepareRequest($request);
-            $response = $request->send();
+            $response = $client->send($request);
 
-        } catch (ClientErrorResponseException $ex) {
+        } catch (ClientException $ex) {
 
-            $result = $request->getResponse();
+            $result = $ex->getResponse();
             $code = $result->getStatusCode();
             $message = $result->getReasonPhrase();
 
@@ -183,12 +185,18 @@ class SafeBrowsingClient extends AbstractServiceClient
     public function checkHash($bodyString = '')
     {
         $resource = 'gethash';
-        $client = new Client($this->getServiceUrl($resource));
-        $request = $client->createRequest('POST', null, null, $bodyString);
-        $response = $this->sendRequest($request);
+        $client = new Client();
+        $request = $client->createRequest(
+            'POST',
+            $this->getServiceUrl($resource),
+            [
+                'body' => $bodyString
+            ]
+        );
+        $response = $this->sendRequest($client, $request);
         return array(
             'code' => $response->getStatusCode(),
-            'data' => $response->getBody(true)
+            'data' => $response->getBody()
         );
     }
 
@@ -200,12 +208,18 @@ class SafeBrowsingClient extends AbstractServiceClient
     public function getChunks($bodyString = '')
     {
         $resource = 'downloads';
-        $client = new Client($this->getServiceUrl($resource));
-        $request = $client->createRequest('POST', null, null, $bodyString);
-        $response = $this->sendRequest($request);
+        $client = new Client();
+        $request = $client->createRequest(
+            'POST',
+            $this->getServiceUrl($resource),
+            [
+                'body' => $bodyString
+            ]
+        );
+        $response = $this->sendRequest($client, $request);
         return array(
             'code' => $response->getStatusCode(),
-            'data' => $response->getBody(true)
+            'data' => $response->getBody()
         );
     }
 
@@ -217,9 +231,9 @@ class SafeBrowsingClient extends AbstractServiceClient
     {
         $resource = 'list';
         $client = new Client();
-        $request = $client->get($this->getServiceUrl($resource));
-        $response = $this->sendRequest($request);
-        return explode("\n", trim($response->getBody(true)));
+        $request = $client->createRequest('GET', $this->getServiceUrl($resource));
+        $response = $this->sendRequest($client, $request);
+        return explode("\n", trim($response->getBody()));
     }
 
     /**
@@ -230,10 +244,10 @@ class SafeBrowsingClient extends AbstractServiceClient
     {
         $url = $this->getLookupUrl($url);
         $client = new Client();
-        $request = $client->get($url);
-        $response = $this->sendRequest($request);
+        $request = $client->createRequest('GET', $url);
+        $response = $this->sendRequest($client, $request);
         if ($response->getStatusCode() === 200) {
-            return $response->getBody(true);
+            return $response->getBody();
         }
         return false;
     }
@@ -246,9 +260,9 @@ class SafeBrowsingClient extends AbstractServiceClient
     {
         $url = $this->getCheckAdultUrl($url);
         $client = new Client();
-        $request = $client->get($url);
-        $response = $this->sendRequest($request);
-        if ($response->getBody(true) === 'adult') {
+        $request = $client->createRequest('GET', $url);
+        $response = $this->sendRequest($client, $request);
+        if ($response->getBody() === 'adult') {
             return true;
         }
         return false;
@@ -261,10 +275,10 @@ class SafeBrowsingClient extends AbstractServiceClient
     public function getChunkByUrl($url)
     {
         $client = new Client();
-        $request = $client->get($url);
+        $request = $client->createRequest('GET', $url);
         $request->setHeader('Accept', '*/*');
-        $response = $this->sendRequest($request);
-        return $response->getBody(true);
+        $response = $this->sendRequest($client, $request);
+        return $response->getBody();
     }
 
     /**

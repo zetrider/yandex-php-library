@@ -1,7 +1,6 @@
 <?php
 namespace Yandex\Tests\Metrica\Models\Management;
 
-use Guzzle\Http\Message\Response;
 use Yandex\Tests\Metrica\Fixtures\Filters;
 use Yandex\Tests\TestCase;
 use Yandex\Metrica\Management\Models;

@@ -1,8 +1,6 @@
 <?php
 namespace Yandex\Tests\Metrica\Models\Management;
 
-use Guzzle\Http\Message\Response;
-use Yandex\Metrica\Management\AccountsClient;
 use Yandex\Metrica\Management\Models\Account;
 use Yandex\Tests\TestCase;
 use Yandex\Tests\Metrica\Fixtures\Accounts;
