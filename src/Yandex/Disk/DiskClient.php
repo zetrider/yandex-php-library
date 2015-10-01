@@ -90,7 +90,7 @@ class DiskClient extends AbstractServiceClient
      *
      * @param RequestInterface $request
      *
-     * @throws \Exception|\Guzzle\Http\Exception\ClientErrorResponseException
+     * @throws \Exception|\GuzzleHttp\Exception\ClientException
      * @return Response
      */
     protected function sendRequest(ClientInterface $client, RequestInterface $request)

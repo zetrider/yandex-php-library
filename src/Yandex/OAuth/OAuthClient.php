@@ -11,9 +11,9 @@
  */
 namespace Yandex\OAuth;
 
-use Guzzle\Http\Client;
-use Guzzle\Http\Exception\ClientErrorResponseException;
-use Guzzle\Http\Exception\RequestException;
+use GuzzleHttp\Client;
+use GuzzleHttp\Exception\ClientException;
+use GuzzleHttp\Exception\RequestException;
 use Yandex\OAuth\Exception\AuthRequestException;
 use Yandex\OAuth\Exception\AuthResponseException;
 
@@ -257,7 +257,7 @@ class OAuthClient
             'POST',
             $this->getServiceUrl(),
             [
-                'form_params' => [
+                'body' => [
                     'grant_type'    => 'authorization_code',
                     'code'          => $code,
                     'client_id'     => $this->clientId,
@@ -271,9 +271,9 @@ class OAuthClient
 
             $response = $client->send($request);
 
-        } catch (ClientErrorResponseException $ex) {
+        } catch (ClientException $ex) {
 
-            $result = $request->getResponse()->json();
+            $result = $ex->getResponse()->json();
 
             if (is_array($result) && isset($result['error'])) {
                 // handle a service error message

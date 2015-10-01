@@ -166,6 +166,8 @@ class SiteSearchPinger extends AbstractServiceClient
                 throw new InvalidArgumentException($errorMessage);
             }
             return false;
+        } catch (\Exception $e) {
+            var_dump($e);exit;
         }
 
         if (!$xml = $response->xml()) {
@@ -207,7 +209,7 @@ class SiteSearchPinger extends AbstractServiceClient
     /**
      * @param array $urls
      * @param integer $publishDate
-     * @return \Guzzle\Http\Message\Response
+     * @return \GuzzleHttp\Message\Response
      */
     protected function doRequest($urls, $publishDate)
     {
@@ -227,7 +229,7 @@ class SiteSearchPinger extends AbstractServiceClient
             $this->host,
             [
                 'version' => '1.0',
-                'form_params' => [
+                'body' => [
                     'urls' => join("\n", $urls),
                     'publishdate' => $publishDate
                 ]
