@@ -366,7 +366,7 @@ class DiskClient extends AbstractServiceClient
                 $this->getServiceUrl(),
                 [
                     'headers' => $headers,
-                    'body' => file_get_contents($file['path'])
+                    'body' => '@' .$file['path']
                 ]
             );
             $request->setPath($path . $file['name']);
