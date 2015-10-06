@@ -355,9 +355,6 @@ class DiskClient extends AbstractServiceClient
             $headers['Content-Type'] = $parts[0];
             $headers['Etag'] = md5_file($file['path']);
             $headers['Sha256'] = hash_file('sha256', $file['path']);
-            $headers['Host'] = $this->getServiceDomain();
-            $headers['Accept'] = '*/*';
-            $headers['Authorization'] = 'OAuth ' . $this->getAccessToken();
             $headers = isset($extraHeaders) ? array_merge($headers, $extraHeaders) : $headers;
 
             $client = new Client();
@@ -366,7 +363,8 @@ class DiskClient extends AbstractServiceClient
                 $this->getServiceUrl(),
                 [
                     'headers' => $headers,
-                    'body' => '@' .$file['path']
+                    'body' => fopen($file['path'], 'r'),
+                    'expect' => true
                 ]
             );
             $request->setPath($path . $file['name']);
