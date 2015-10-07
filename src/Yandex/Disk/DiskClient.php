@@ -364,8 +364,7 @@ class DiskClient extends AbstractServiceClient
                 [
                     'headers' => $headers,
                     'body' => fopen($file['path'], 'rb'),
-                    'expect' => true,
-                    'debug' => true
+                    'expect' => true
                 ]
             );
             $request->setPath($path . $file['name']);
