@@ -133,8 +133,7 @@ class MetricaClient extends AbstractServiceClient
      */
     protected function sendGetRequest($resource, $params = array())
     {
-
-        $client = new Client();
+        $client = $this->getClient();
         $request = $client->createRequest(
             'GET',
             $this->getServiceUrl($resource, $params),
@@ -166,7 +165,7 @@ class MetricaClient extends AbstractServiceClient
      */
     protected function getNextPartOfList($url, $data = array())
     {
-        $client = new Client();
+        $client = $this->getClient();
         $request = $client->createRequest(
             'GET',
             $url,
@@ -201,7 +200,7 @@ class MetricaClient extends AbstractServiceClient
      */
     protected function sendPostRequest($resource, $params)
     {
-        $client = new Client();
+        $client = $this->getClient();
 
         $request = $client->createRequest(
             'POST',
@@ -230,7 +229,7 @@ class MetricaClient extends AbstractServiceClient
      */
     protected function sendPutRequest($resource, $params)
     {
-        $client = new Client();
+        $client = $this->getClient();
 
         $request = $client->createRequest(
             'PUT',
@@ -258,7 +257,7 @@ class MetricaClient extends AbstractServiceClient
      */
     protected function sendDeleteRequest($resource)
     {
-        $client = new Client();
+        $client = $this->getClient();
 
         $request = $client->createRequest(
             'DELETE',

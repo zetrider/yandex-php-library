@@ -211,7 +211,7 @@ class SiteSearchPinger extends AbstractServiceClient
      */
     protected function doRequest($urls, $publishDate)
     {
-        $client = new Client();
+        $client = $this->getClient();
         $client->setDefaultOption('headers', ['Y-SDK' => 'Pinger']);
         $client->setDefaultOption(
             'query',

@@ -273,7 +273,7 @@ class PartnerClient extends AbstractServiceClient
     {
         $resource = 'campaigns.json';
 
-        $client = new Client();
+        $client = $this->getClient();
         $request = $client->createRequest('GET', $this->getServiceUrl($resource));
         $response = $this->sendRequest($client, $request)->json();
         $getCampaignsResponse = new Models\GetCampaignsResponse($response);
@@ -299,7 +299,7 @@ class PartnerClient extends AbstractServiceClient
         $resource = 'campaigns/' . $this->campaignId . '/orders.json';
         $resource .= '?' . http_build_query($params);
 
-        $client = new Client();
+        $client = $this->getClient();
         $request = $client->createRequest('GET', $this->getServiceUrl($resource));
 
         $response = $this->sendRequest($client, $request)->json();
@@ -331,7 +331,7 @@ class PartnerClient extends AbstractServiceClient
     {
         $resource = 'campaigns/' . $this->campaignId . '/orders/' . $orderId . '.json';
 
-        $client = new Client();
+        $client = $this->getClient();
         $request = $client->createRequest('GET', $this->getServiceUrl($resource));
 
         $response = $this->sendRequest($client, $request)->json();
@@ -365,7 +365,7 @@ class PartnerClient extends AbstractServiceClient
 
         $data = json_encode($data);
 
-        $client = new Client();
+        $client = $this->getClient();
         $request = $client->createRequest(
             'PUT',
             $this->getServiceUrl($resource),
@@ -397,7 +397,7 @@ class PartnerClient extends AbstractServiceClient
     {
         $resource = 'campaigns/' . $this->campaignId . '/orders/' . $orderId . '/delivery.json';
         $data = json_encode($delivery->toArray());
-        $client = new Client();
+        $client = $this->getClient();
         $request = $client->createRequest(
             'PUT',
             $this->getServiceUrl($resource),

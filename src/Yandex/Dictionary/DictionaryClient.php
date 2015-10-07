@@ -285,7 +285,7 @@ class DictionaryClient extends AbstractServiceClient
     public function lookup($text)
     {
         $url = $this->getLookupUrl($text);
-        $client = new Client();
+        $client = $this->getClient();
         $request = $client->createRequest('GET', $url, ['version' => $this->serviceProtocolVersion]);
         $response = $this->sendRequest($client, $request);
         if ($response->getStatusCode() === 200) {
@@ -304,7 +304,7 @@ class DictionaryClient extends AbstractServiceClient
     public function getLanguages()
     {
         $url = $this->getGetLanguagesUrl();
-        $client = new Client();
+        $client = $this->getClient();
         $request = $client->createRequest('GET', $url, ['version' => $this->serviceProtocolVersion]);
         $response = $this->sendRequest($client, $request);
         if ($response->getStatusCode() === 200) {
