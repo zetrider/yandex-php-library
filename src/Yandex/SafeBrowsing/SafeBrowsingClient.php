@@ -185,7 +185,7 @@ class SafeBrowsingClient extends AbstractServiceClient
     public function checkHash($bodyString = '')
     {
         $resource = 'gethash';
-        $client = new Client();
+        $client = $this->getClient();
         $request = $client->createRequest(
             'POST',
             $this->getServiceUrl($resource),
@@ -208,7 +208,7 @@ class SafeBrowsingClient extends AbstractServiceClient
     public function getChunks($bodyString = '')
     {
         $resource = 'downloads';
-        $client = new Client();
+        $client = $this->getClient();
         $request = $client->createRequest(
             'POST',
             $this->getServiceUrl($resource),
@@ -230,7 +230,7 @@ class SafeBrowsingClient extends AbstractServiceClient
     public function getShavarsList()
     {
         $resource = 'list';
-        $client = new Client();
+        $client = $this->getClient();
         $request = $client->createRequest('GET', $this->getServiceUrl($resource));
         $response = $this->sendRequest($client, $request);
         return explode("\n", trim($response->getBody()));
@@ -243,7 +243,7 @@ class SafeBrowsingClient extends AbstractServiceClient
     public function lookup($url)
     {
         $url = $this->getLookupUrl($url);
-        $client = new Client();
+        $client = $this->getClient();
         $request = $client->createRequest('GET', $url);
         $response = $this->sendRequest($client, $request);
         if ($response->getStatusCode() === 200) {
@@ -259,7 +259,7 @@ class SafeBrowsingClient extends AbstractServiceClient
     public function checkAdult($url)
     {
         $url = $this->getCheckAdultUrl($url);
-        $client = new Client();
+        $client = $this->getClient();
         $request = $client->createRequest('GET', $url);
         $response = $this->sendRequest($client, $request);
         if ($response->getBody() === 'adult') {
@@ -274,7 +274,7 @@ class SafeBrowsingClient extends AbstractServiceClient
      */
     public function getChunkByUrl($url)
     {
-        $client = new Client();
+        $client = $this->getClient();
         $request = $client->createRequest('GET', $url);
         $request->setHeader('Accept', '*/*');
         $response = $this->sendRequest($client, $request);

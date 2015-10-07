@@ -11,6 +11,7 @@
  */
 namespace Yandex\Common;
 
+use GuzzleHttp\Client;
 use GuzzleHttp\ClientInterface;
 use GuzzleHttp\Exception\ClientException;
 use GuzzleHttp\Message\RequestInterface;
@@ -64,6 +65,11 @@ abstract class AbstractServiceClient extends AbstractPackage
     /**
      * @var string
      */
+    protected $proxy = '';
+
+    /**
+     * @var string
+     */
     protected $libraryName = 'yandex-php-library';
 
     /**
@@ -93,6 +99,26 @@ abstract class AbstractServiceClient extends AbstractPackage
     {
         return $this->accessToken;
     }
+
+    /**
+     * @param $proxy
+     * @return $this
+     */
+    public function setProxy($proxy)
+    {
+        $this->proxy = $proxy;
+
+        return $this;
+    }
+
+    /**
+     * @return string
+     */
+    public function getProxy()
+    {
+        return $this->proxy;
+    }
+
 
     /**
      * @param string $serviceDomain
@@ -171,6 +197,18 @@ abstract class AbstractServiceClient extends AbstractPackage
     protected function doCheckSettings()
     {
         return true;
+    }
+
+    /**
+     * @return \GuzzleHttp\ClientInterface
+     */
+    protected function getClient()
+    {
+        $client = new Client();
+        if ($this->getProxy()) {
+            $client->setDefaultOption('proxy', $this->getProxy());
+        }
+        return $client;
     }
 
     /**
