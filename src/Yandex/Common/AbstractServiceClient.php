@@ -68,6 +68,11 @@ abstract class AbstractServiceClient extends AbstractPackage
     protected $proxy = '';
 
     /**
+     * @var bool
+     */
+    protected $debug = false;
+
+    /**
      * @var string
      */
     protected $libraryName = 'yandex-php-library';
@@ -119,6 +124,24 @@ abstract class AbstractServiceClient extends AbstractPackage
         return $this->proxy;
     }
 
+    /**
+     * @param $debug
+     * @return $this
+     */
+    public function setDebug($debug)
+    {
+        $this->debug = (bool) $debug;
+
+        return $this;
+    }
+
+    /**
+     * @return bool
+     */
+    public function getDebug()
+    {
+        return $this->debug;
+    }
 
     /**
      * @param string $serviceDomain
@@ -207,6 +230,9 @@ abstract class AbstractServiceClient extends AbstractPackage
         $client = new Client();
         if ($this->getProxy()) {
             $client->setDefaultOption('proxy', $this->getProxy());
+        }
+        if ($this->getDebug()) {
+            $client->setDefaultOption('debug', $this->getDebug());
         }
         return $client;
     }
