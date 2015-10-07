@@ -363,7 +363,7 @@ class DiskClient extends AbstractServiceClient
                 $this->getServiceUrl(),
                 [
                     'headers' => $headers,
-                    'body' => fopen($file['path'], 'r'),
+                    'body' => fopen($file['path'], 'rb'),
                     'expect' => true
                 ]
             );
