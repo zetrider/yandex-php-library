@@ -18,6 +18,7 @@ use GuzzleHttp\Client;
 use GuzzleHttp\Message\Response;
 use GuzzleHttp\Exception\ClientException;
 use Yandex\Common\Exception\ForbiddenException;
+use Yandex\Common\Exception\NotFoundException;
 use Yandex\Common\Exception\UnauthorizedException;
 
 /**
@@ -148,6 +149,7 @@ class SafeBrowsingClient extends AbstractServiceClient
      * @throws ForbiddenException
      * @throws UnauthorizedException
      * @throws SafeBrowsingException
+     * @throws NotFoundException
      */
     protected function sendRequest(ClientInterface $client, RequestInterface $request)
     {
@@ -167,6 +169,10 @@ class SafeBrowsingClient extends AbstractServiceClient
 
             if ($code === 401) {
                 throw new UnauthorizedException($message);
+            }
+
+            if ($code === 404) {
+                throw new NotFoundException($message);
             }
 
             throw new SafeBrowsingException(
@@ -276,6 +282,10 @@ class SafeBrowsingClient extends AbstractServiceClient
     {
         $client = $this->getClient();
         $request = $client->createRequest('GET', $url);
+        $host = parse_url($url, PHP_URL_HOST);
+        if ($host) {
+            $request->setHeader('Host', $host);
+        }
         $request->setHeader('Accept', '*/*');
         $response = $this->sendRequest($client, $request);
         return $response->getBody();
@@ -466,6 +476,8 @@ class SafeBrowsingClient extends AbstractServiceClient
         $response = $this->getChunks($body);
         $result = array();
 
+        $response['data'] = (string) $response['data'];
+
         if (substr_count($response['data'], 'r:pleasereset') > 0) {
             return 'pleasereset';
         }
@@ -488,9 +500,13 @@ class SafeBrowsingClient extends AbstractServiceClient
             foreach ($list as $value) {
 
                 if (substr_count($value, "u:") > 0) {
-                    $chunkData = $this->getChunkByUrl('http://' . trim(str_replace('u:', '', $value)));
-                    $processed = $this->parseChunk($chunkData);
-                    $chunksByList[$processed['type']][$processed['chunk_num']] = $processed['prefixes'];
+                    try {
+                        $chunkData = $this->getChunkByUrl('http://' . trim(str_replace('u:', '', $value)));
+                        $processed = $this->parseChunk($chunkData);
+                        $chunksByList[$processed['type']][$processed['chunk_num']] = $processed['prefixes'];
+                    } catch (NotFoundException $e) {
+                        continue;
+                    }
                 } elseif (substr_count($value, "ad:") > 0) {
                     if (substr_count($value, ',') > 0) {
                         $ranges = explode(',', trim(str_replace("ad:", "", $value)));

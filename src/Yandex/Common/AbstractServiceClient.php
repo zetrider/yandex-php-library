@@ -246,7 +246,9 @@ abstract class AbstractServiceClient extends AbstractPackage
     protected function prepareRequest(RequestInterface $request)
     {
         $request->setHeader('Authorization', 'OAuth ' . $this->getAccessToken());
-        $request->setHeader('Host', $this->getServiceDomain());
+        if (!$request->hasHeader('Host')) {
+            $request->setHeader('Host', $this->getServiceDomain());
+        }
         $request->setHeader('User-Agent', $this->getUserAgent());
         $request->setHeader('Accept', '*/*');
         return $request;
