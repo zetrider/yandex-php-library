@@ -9,6 +9,7 @@
             <directory>./Yandex/Tests/Common</directory>
             <directory>./Yandex/Tests/Metrica</directory>
             <directory>./Yandex/Tests/Market</directory>
+            <directory>./Yandex/Tests/OAuth</directory>
         </testsuite>
     </testsuites>
     <listeners>
