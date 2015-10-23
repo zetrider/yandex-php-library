@@ -14,6 +14,7 @@ namespace Yandex\OAuth;
 use GuzzleHttp\Client;
 use GuzzleHttp\Exception\ClientException;
 use GuzzleHttp\Exception\RequestException;
+use Yandex\Common\AbstractServiceClient;
 use Yandex\OAuth\Exception\AuthRequestException;
 use Yandex\OAuth\Exception\AuthResponseException;
 
@@ -26,7 +27,7 @@ use Yandex\OAuth\Exception\AuthResponseException;
  * @author   Eugene Zabolotniy <realbaziak@gmail.com>
  * @created  29.08.13 12:07
  */
-class OAuthClient
+class OAuthClient extends AbstractServiceClient
 {
     /*
      * Authentication types constants
@@ -50,22 +51,7 @@ class OAuthClient
     /**
      * @var string
      */
-    protected $serviceScheme = 'https';
-
-    /**
-     * @var string
-     */
     protected $serviceDomain = 'oauth.yandex.ru';
-
-    /**
-     * @var string
-     */
-    protected $servicePort = '';
-
-    /**
-     * @var string
-     */
-    protected $accessToken = '';
 
     /**
      * @param string $clientId
@@ -115,95 +101,6 @@ class OAuthClient
     public function getClientSecret()
     {
         return $this->clientSecret;
-    }
-
-    /**
-     * @param string $accessToken
-     *
-     * @return self
-     */
-    public function setAccessToken($accessToken)
-    {
-        $this->accessToken = $accessToken;
-
-        return $this;
-    }
-
-    /**
-     * @return string
-     */
-    public function getAccessToken()
-    {
-        return $this->accessToken;
-    }
-
-    /**
-     * @param string $serviceDomain
-     *
-     * @return self
-     */
-    public function setServiceDomain($serviceDomain)
-    {
-        $this->serviceDomain = $serviceDomain;
-
-        return $this;
-    }
-
-    /**
-     * @return string
-     */
-    public function getServiceDomain()
-    {
-        return $this->serviceDomain;
-    }
-
-    /**
-     * @param string $servicePort
-     *
-     * @return self
-     */
-    public function setServicePort($servicePort)
-    {
-        $this->servicePort = $servicePort;
-
-        return $this;
-    }
-
-    /**
-     * @return string
-     */
-    public function getServicePort()
-    {
-        return $this->servicePort;
-    }
-
-    /**
-     * @param string $serviceScheme
-     *
-     * @return self
-     */
-    public function setServiceScheme($serviceScheme)
-    {
-        $this->serviceScheme = $serviceScheme;
-
-        return $this;
-    }
-
-    /**
-     * @return string
-     */
-    public function getServiceScheme()
-    {
-        return $this->serviceScheme;
-    }
-
-    /**
-     * @param string $resource
-     * @return string
-     */
-    public function getServiceUrl($resource = '')
-    {
-        return $this->serviceScheme . '://' . $this->serviceDomain . '/' . rawurlencode($resource);
     }
 
     /**

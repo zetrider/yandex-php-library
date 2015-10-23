@@ -5,6 +5,7 @@
 namespace Yandex\Tests;
 
 use Yandex;
+use ReflectionClass;
 
 /**
  * ControllerTestCase
@@ -17,4 +18,15 @@ use Yandex;
  */
 class TestCase extends \PHPUnit_Framework_TestCase
 {
+    /**
+     * @param string|object $classNameOrObject
+     * @param string $name
+     * @return \ReflectionMethod
+     */
+    protected static function getNotAccessibleMethod($classNameOrObject, $name) {
+        $class = new ReflectionClass($classNameOrObject);
+        $method = $class->getMethod($name);
+        $method->setAccessible(true);
+        return $method;
+    }
 }
