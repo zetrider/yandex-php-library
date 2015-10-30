@@ -5,7 +5,7 @@ namespace Yandex\Tests\OAuth;
 use Yandex\OAuth\OAuthClient;
 use Yandex\Tests\TestCase;
 
-class AccountsClientTest extends TestCase
+class OAuthClientTest extends TestCase
 {
     public function testCreate()
     {

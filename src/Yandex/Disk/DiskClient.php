@@ -104,7 +104,8 @@ class DiskClient extends AbstractServiceClient
             $message = $result->getReasonPhrase();
 
             throw new DiskRequestException(
-                'Service responded with error code: "' . $code . '" and message: "' . $message . '"'
+                'Service responded with error code: "' . $code . '" and message: "' . $message . '"',
+                $code
             );
         }
 
