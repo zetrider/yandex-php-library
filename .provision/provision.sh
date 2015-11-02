@@ -6,7 +6,7 @@ export DIR="$( cd "$( dirname "$0" )" && pwd )"
 export SITE_DOMAIN="yandex-php-library"
 export PROVISION_DIR="/var/www/$SITE_DOMAIN"
 
-export PHP_VERSION='5.4.45'
+export PHP_VERSION='5.5.30'
 
 echo "Provision dir: $DIR"
 
