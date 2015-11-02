@@ -11,7 +11,10 @@
  */
 namespace Yandex\Metrica\Stat;
 
-
+/**
+ * Class MetricConst
+ * @package Yandex\Metrica\Stat
+ */
 class MetricConst
 {
     const PV_COOKIE_ENABLED_PERCENTAGE = "ym:pv:cookieEnabledPercentage";

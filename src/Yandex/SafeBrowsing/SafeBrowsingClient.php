@@ -496,7 +496,6 @@ class SafeBrowsingClient extends AbstractServiceClient
         foreach ($chunksList as $listName => $list) {
             $chunksByList = [];
             foreach ($list as $value) {
-
                 if (substr_count($value, "u:") > 0) {
                     try {
                         $chunkData = $this->getChunkByUrl('http://' . trim(str_replace('u:', '', $value)));

@@ -164,7 +164,6 @@ class OAuthClient extends AbstractServiceClient
                 ]
             );
         } catch (ClientException $ex) {
-
             $result = $this->getDecodedBody($ex->getResponse()->getBody());
 
             if (is_array($result) && isset($result['error'])) {

@@ -84,7 +84,6 @@ class MetricaClient extends AbstractServiceClient
         try {
             $response = $this->getClient()->request($method, $uri, $options);
         } catch (ClientException $ex) {
-
             $result = $ex->getResponse();
             $code = $result->getStatusCode();
             $message = $result->getReasonPhrase();

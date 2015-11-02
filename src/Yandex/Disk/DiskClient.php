@@ -369,7 +369,6 @@ class DiskClient extends AbstractServiceClient
                     'body' => fopen($file['path'], 'rb'),
                     'expect' => true
                 ]
-
             );
         }
     }

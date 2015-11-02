@@ -2,7 +2,10 @@
 
 namespace Yandex\Metrica\Analytics;
 
-
+/**
+ * Class MetricConst
+ * @package Yandex\Metrica\Analytics
+ */
 class MetricConst
 {
 

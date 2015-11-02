@@ -26,7 +26,6 @@ abstract class MarketModel
     public function fromArray($data)
     {
         foreach ($data as $key => $val) {
-        
             if (is_int($key)) {
                 if (method_exists($this, "add")) {
                     $this->add($val);

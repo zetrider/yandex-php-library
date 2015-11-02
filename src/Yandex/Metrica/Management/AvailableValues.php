@@ -2,6 +2,10 @@
 
 namespace Yandex\Metrica\Management;
 
+/**
+ * Class AvailableValues
+ * @package Yandex\Metrica\Management
+ */
 class AvailableValues
 {
     /**
@@ -146,7 +150,7 @@ class AvailableValues
     const OPERATIONS_STATUS_DISABLED = "disabled";
 
     /**
-     *  	Уровень доступа
+     *  Уровень доступа
      */
 
     // только просмотр
