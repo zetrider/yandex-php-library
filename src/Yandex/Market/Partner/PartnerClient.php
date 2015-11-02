@@ -11,12 +11,9 @@
  */
 namespace Yandex\Market\Partner;
 
-use GuzzleHttp\ClientInterface;
-use GuzzleHttp\Message\RequestInterface;
+use Psr\Http\Message\UriInterface;
 use Yandex\Common\AbstractServiceClient;
-use GuzzleHttp\Client;
-use GuzzleHttp\Message\Request;
-use GuzzleHttp\Message\Response;
+use GuzzleHttp\Psr7\Response;
 use GuzzleHttp\Exception\ClientException;
 use Yandex\Common\Exception\ForbiddenException;
 use Yandex\Common\Exception\UnauthorizedException;
@@ -201,20 +198,20 @@ class PartnerClient extends AbstractServiceClient
     /**
      * Sends a request
      *
-     * @param ClientInterface $client
-     * @param RequestInterface $request
+     * @param string              $method  HTTP method
+     * @param string|UriInterface $uri     URI object or string.
+     * @param array               $options Request options to apply.
+     *
      * @return Response
+     *
      * @throws ForbiddenException
      * @throws UnauthorizedException
      * @throws PartnerRequestException
      */
-    protected function sendRequest(ClientInterface $client, RequestInterface $request)
+    protected function sendRequest($method, $uri, array $options = [])
     {
         try {
-
-            $request = $this->prepareRequest($request);
-            $response = $client->send($request);
-
+            $response = $this->getClient()->request($method, $uri, $options);
         } catch (ClientException $ex) {
 
             $result = $ex->getResponse();
@@ -238,7 +235,8 @@ class PartnerClient extends AbstractServiceClient
             }
 
             throw new PartnerRequestException(
-                'Service responded with error code: "' . $code . '" and message: "' . $message . '"'
+                'Service responded with error code: "' . $code . '" and message: "' . $message . '"',
+                $code
             );
         }
 
@@ -273,10 +271,11 @@ class PartnerClient extends AbstractServiceClient
     {
         $resource = 'campaigns.json';
 
-        $client = $this->getClient();
-        $request = $client->createRequest('GET', $this->getServiceUrl($resource));
-        $response = $this->sendRequest($client, $request)->json();
-        $getCampaignsResponse = new Models\GetCampaignsResponse($response);
+        $response = $this->sendRequest('GET', $this->getServiceUrl($resource));
+
+        $decodedResponseBody = $this->getDecodedBody($response->getBody());
+
+        $getCampaignsResponse = new Models\GetCampaignsResponse($decodedResponseBody);
         return $getCampaignsResponse->getCampaigns();
     }
 
@@ -294,16 +293,16 @@ class PartnerClient extends AbstractServiceClient
      *
      * @return Models\GetOrdersResponse
      */
-    public function getOrdersResponse($params = array())
+    public function getOrdersResponse($params = [])
     {
         $resource = 'campaigns/' . $this->campaignId . '/orders.json';
         $resource .= '?' . http_build_query($params);
 
-        $client = $this->getClient();
-        $request = $client->createRequest('GET', $this->getServiceUrl($resource));
+        $response = $this->sendRequest('GET', $this->getServiceUrl($resource));
 
-        $response = $this->sendRequest($client, $request)->json();
-        return new Models\GetOrdersResponse($response);
+        $decodedResponseBody = $this->getDecodedBody($response->getBody());
+
+        return new Models\GetOrdersResponse($decodedResponseBody);
     }
 
 
@@ -313,7 +312,7 @@ class PartnerClient extends AbstractServiceClient
      * @param array $params
      * @return null|Models\Orders
      */
-    public function getOrders($params = array())
+    public function getOrders($params = [])
     {
         return $this->getOrdersResponse($params)->getOrders();
     }
@@ -331,11 +330,11 @@ class PartnerClient extends AbstractServiceClient
     {
         $resource = 'campaigns/' . $this->campaignId . '/orders/' . $orderId . '.json';
 
-        $client = $this->getClient();
-        $request = $client->createRequest('GET', $this->getServiceUrl($resource));
+        $response = $this->sendRequest('GET', $this->getServiceUrl($resource));
 
-        $response = $this->sendRequest($client, $request)->json();
-        $getOrderResponse = new Models\GetOrderResponse($response);
+        $decodedResponseBody = $this->getDecodedBody($response->getBody());
+
+        $getOrderResponse = new Models\GetOrderResponse($decodedResponseBody);
         return $getOrderResponse->getOrder();
     }
 
@@ -354,29 +353,26 @@ class PartnerClient extends AbstractServiceClient
     {
         $resource = 'campaigns/' . $this->campaignId . '/orders/' . $orderId . '/status.json';
 
-        $data = array(
-            "order" => array(
+        $data = [
+            "order" => [
                 "status" => $status
-            )
-        );
+            ]
+        ];
         if ($subStatus) {
             $data['order']['substatus'] = $subStatus;
         }
 
-        $data = json_encode($data);
-
-        $client = $this->getClient();
-        $request = $client->createRequest(
+        $response = $this->sendRequest(
             'PUT',
             $this->getServiceUrl($resource),
             [
-                'body' => $data
+                'json' => $data
             ]
         );
-        $request->setHeader('Content-type', 'application/json');
 
-        $response = $this->sendRequest($client, $request)->json();
-        $updateOrderStatusResponse = new Models\UpdateOrderStatusResponse($response);
+        $decodedResponseBody = $this->getDecodedBody($response->getBody());
+
+        $updateOrderStatusResponse = new Models\UpdateOrderStatusResponse($decodedResponseBody);
         return $updateOrderStatusResponse->getOrder();
     }
 
@@ -396,19 +392,19 @@ class PartnerClient extends AbstractServiceClient
     public function updateDelivery($orderId, Models\Delivery $delivery)
     {
         $resource = 'campaigns/' . $this->campaignId . '/orders/' . $orderId . '/delivery.json';
-        $data = json_encode($delivery->toArray());
-        $client = $this->getClient();
-        $request = $client->createRequest(
+
+        $response = $this->sendRequest(
             'PUT',
             $this->getServiceUrl($resource),
             [
-                'body' => $data
+                'json' => $delivery->toArray()
+
             ]
         );
-        $request->setHeader('Content-type', 'application/json');
 
-        $response = $this->sendRequest($client, $request)->json();
-        $updateOrderDeliveryResponse = new Models\UpdateOrderDeliveryResponse($response);
+        $decodedResponseBody = $this->getDecodedBody($response->getBody());
+
+        $updateOrderDeliveryResponse = new Models\UpdateOrderDeliveryResponse($decodedResponseBody);
         return $updateOrderDeliveryResponse->getOrder();
     }
 }

@@ -12,10 +12,8 @@
 namespace Yandex\Dictionary;
 
 use Yandex\Common\AbstractServiceClient;
-use GuzzleHttp\Message\Response;
-use GuzzleHttp\Client;
-use GuzzleHttp\ClientInterface;
-use GuzzleHttp\Message\RequestInterface;
+use GuzzleHttp\Psr7\Response;
+use Psr\Http\Message\UriInterface;
 use GuzzleHttp\Exception\ClientException;
 use Yandex\Common\Exception\ForbiddenException;
 use Yandex\Dictionary\Exception\DictionaryException;
@@ -31,7 +29,6 @@ use Yandex\Dictionary\Exception\DictionaryException;
  */
 class DictionaryClient extends AbstractServiceClient
 {
-
     /**
      * @const
      */
@@ -243,13 +240,13 @@ class DictionaryClient extends AbstractServiceClient
     {
         $resource = 'api/v1/dicservice.json/lookup';
         $query = http_build_query(
-            array(
+            [
                 'key' => $this->getApiKey(),
                 'lang' => $this->getLanguage(),
                 'ui' => $this->getUiLanguage(),
                 'flags' => $this->getFlags(),
                 'text' => $text
-            )
+            ]
         );
         $url = $this->getServiceUrl($resource) . '?' . $query;
 
@@ -263,9 +260,9 @@ class DictionaryClient extends AbstractServiceClient
     {
         $resource = 'api/v1/dicservice.json/getLangs';
         $query = http_build_query(
-            array(
+            [
                 'key' => $this->getApiKey()
-            )
+            ]
         );
         $url = $this->getServiceUrl($resource) . '?' . $query;
 
@@ -285,9 +282,13 @@ class DictionaryClient extends AbstractServiceClient
     public function lookup($text)
     {
         $url = $this->getLookupUrl($text);
-        $client = $this->getClient();
-        $request = $client->createRequest('GET', $url, ['version' => $this->serviceProtocolVersion]);
-        $response = $this->sendRequest($client, $request);
+        $response = $this->sendRequest(
+            'GET',
+            $url,
+            [
+                'version' => $this->serviceProtocolVersion
+            ]
+        );
         if ($response->getStatusCode() === 200) {
             $definitions = $this->parseLookupResponse($response);
             return $definitions;
@@ -304,9 +305,13 @@ class DictionaryClient extends AbstractServiceClient
     public function getLanguages()
     {
         $url = $this->getGetLanguagesUrl();
-        $client = $this->getClient();
-        $request = $client->createRequest('GET', $url, ['version' => $this->serviceProtocolVersion]);
-        $response = $this->sendRequest($client, $request);
+        $response = $this->sendRequest(
+            'GET',
+            $url,
+            [
+                'version' => $this->serviceProtocolVersion
+            ]
+        );
         if ($response->getStatusCode() === 200) {
             $languages = $this->parseGetLanguagesResponse($response);
             return $languages;
@@ -324,7 +329,7 @@ class DictionaryClient extends AbstractServiceClient
         $responseData = $response->getBody();
         $responseObject = json_decode($responseData);
         $definitionsData = $responseObject->def;
-        $definitions = array();
+        $definitions = [];
         foreach ($definitionsData as $definitionData) {
             $definitions[] = new DictionaryDefinition($definitionData);
         }
@@ -340,12 +345,12 @@ class DictionaryClient extends AbstractServiceClient
     {
         $responseBody = $response->getBody();
         $responseData = json_decode($responseBody);
-        $languages = array();
+        $languages = [];
         foreach ($responseData as $language) {
             $translation = explode('-', $language);
             $from = $translation[0];
             $to = $translation[1];
-            $languages[] = array($from,$to);
+            $languages[] = [$from,$to];
         }
         return $languages;
     }
@@ -353,18 +358,19 @@ class DictionaryClient extends AbstractServiceClient
     /**
      * Sends a request
      *
-     * @param ClientInterface $client
-     * @param RequestInterface $request
+     * @param string              $method  HTTP method
+     * @param string|UriInterface $uri     URI object or string.
+     * @param array               $options Request options to apply.
      *
      * @return Response
      *
      * @throws ForbiddenException
      * @throws DictionaryException
      */
-    protected function sendRequest(ClientInterface $client, RequestInterface $request)
+    protected function sendRequest($method, $uri, array $options = [])
     {
         try {
-            $response = $client->send($request);
+            $response = $this->getClient()->request($method, $uri, $options);
         } catch (ClientException $ex) {
             $response = $ex->getResponse();
             $code = $response->getStatusCode();
@@ -375,7 +381,8 @@ class DictionaryClient extends AbstractServiceClient
             }
 
             throw new DictionaryException(
-                'Service responded with error code: "' . $code . '" and message: "' . $message . '"'
+                'Service responded with error code: "' . $code . '" and message: "' . $message . '"',
+                $code
             );
         }
 

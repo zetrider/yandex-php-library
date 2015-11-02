@@ -11,11 +11,9 @@
  */
 namespace Yandex\SafeBrowsing;
 
-use GuzzleHttp\Message\RequestInterface;
-use GuzzleHttp\ClientInterface;
+use Psr\Http\Message\UriInterface;
 use Yandex\Common\AbstractServiceClient;
-use GuzzleHttp\Client;
-use GuzzleHttp\Message\Response;
+use GuzzleHttp\Psr7\Response;
 use GuzzleHttp\Exception\ClientException;
 use Yandex\Common\Exception\ForbiddenException;
 use Yandex\Common\Exception\NotFoundException;
@@ -55,12 +53,12 @@ class SafeBrowsingClient extends AbstractServiceClient
     /**
      * @var array
      */
-    protected $malwareShavars = array(
+    protected $malwareShavars = [
         'ydx-malware-shavar',
         'ydx-phish-shavar',
         'goog-malware-shavar',
         'goog-phish-shavar'
-    );
+    ];
 
     /**
      * @param string $apiKey
@@ -143,22 +141,22 @@ class SafeBrowsingClient extends AbstractServiceClient
     /**
      * Sends a request
      *
-     * @param ClientInterface $client
-     * @param RequestInterface $request
+     * @param string              $method  HTTP method
+     * @param string|UriInterface $uri     URI object or string.
+     * @param array               $options Request options to apply.
+     *
      * @return Response
+     *
      * @throws ForbiddenException
      * @throws UnauthorizedException
      * @throws SafeBrowsingException
      * @throws NotFoundException
      */
-    protected function sendRequest(ClientInterface $client, RequestInterface $request)
+    protected function sendRequest($method, $uri, array $options = [])
     {
         try {
-            $request = $this->prepareRequest($request);
-            $response = $client->send($request);
-
+            $response = $this->getClient()->request($method, $uri, $options);
         } catch (ClientException $ex) {
-
             $result = $ex->getResponse();
             $code = $result->getStatusCode();
             $message = $result->getReasonPhrase();
@@ -176,7 +174,8 @@ class SafeBrowsingClient extends AbstractServiceClient
             }
 
             throw new SafeBrowsingException(
-                'Service responded with error code: "' . $code . '" and message: "' . $message . '"'
+                'Service responded with error code: "' . $code . '" and message: "' . $message . '"',
+                $code
             );
         }
 
@@ -191,19 +190,19 @@ class SafeBrowsingClient extends AbstractServiceClient
     public function checkHash($bodyString = '')
     {
         $resource = 'gethash';
-        $client = $this->getClient();
-        $request = $client->createRequest(
+
+        $response = $this->sendRequest(
             'POST',
             $this->getServiceUrl($resource),
             [
                 'body' => $bodyString
             ]
         );
-        $response = $this->sendRequest($client, $request);
-        return array(
+
+        return [
             'code' => $response->getStatusCode(),
             'data' => $response->getBody()
-        );
+        ];
     }
 
     /**
@@ -214,19 +213,19 @@ class SafeBrowsingClient extends AbstractServiceClient
     public function getChunks($bodyString = '')
     {
         $resource = 'downloads';
-        $client = $this->getClient();
-        $request = $client->createRequest(
+
+        $response = $this->sendRequest(
             'POST',
             $this->getServiceUrl($resource),
             [
                 'body' => $bodyString
             ]
         );
-        $response = $this->sendRequest($client, $request);
-        return array(
+
+        return [
             'code' => $response->getStatusCode(),
             'data' => $response->getBody()
-        );
+        ];
     }
 
     /**
@@ -236,9 +235,7 @@ class SafeBrowsingClient extends AbstractServiceClient
     public function getShavarsList()
     {
         $resource = 'list';
-        $client = $this->getClient();
-        $request = $client->createRequest('GET', $this->getServiceUrl($resource));
-        $response = $this->sendRequest($client, $request);
+        $response = $this->sendRequest('GET', $this->getServiceUrl($resource));
         return explode("\n", trim($response->getBody()));
     }
 
@@ -248,10 +245,7 @@ class SafeBrowsingClient extends AbstractServiceClient
      */
     public function lookup($url)
     {
-        $url = $this->getLookupUrl($url);
-        $client = $this->getClient();
-        $request = $client->createRequest('GET', $url);
-        $response = $this->sendRequest($client, $request);
+        $response = $this->sendRequest('GET', $this->getLookupUrl($url));
         if ($response->getStatusCode() === 200) {
             return $response->getBody();
         }
@@ -264,10 +258,7 @@ class SafeBrowsingClient extends AbstractServiceClient
      */
     public function checkAdult($url)
     {
-        $url = $this->getCheckAdultUrl($url);
-        $client = $this->getClient();
-        $request = $client->createRequest('GET', $url);
-        $response = $this->sendRequest($client, $request);
+        $response = $this->sendRequest('GET', $this->getCheckAdultUrl($url));
         if ($response->getBody() === 'adult') {
             return true;
         }
@@ -281,13 +272,20 @@ class SafeBrowsingClient extends AbstractServiceClient
     public function getChunkByUrl($url)
     {
         $client = $this->getClient();
-        $request = $client->createRequest('GET', $url);
+
         $host = parse_url($url, PHP_URL_HOST);
+        $headers = $client->getConfig('headers');
         if ($host) {
-            $request->setHeader('Host', $host);
+            $headers['Host'] = $host;
         }
-        $request->setHeader('Accept', '*/*');
-        $response = $this->sendRequest($client, $request);
+
+        $response = $this->sendRequest(
+            'GET',
+            $url,
+            [
+                'headers' => $headers
+            ]
+        );
         return $response->getBody();
     }
 
@@ -333,7 +331,7 @@ class SafeBrowsingClient extends AbstractServiceClient
      */
     public function getFullHashes($responseData)
     {
-        $hashesData = array();
+        $hashesData = [];
         while (strlen($responseData) > 0) {
             $splithead = explode("\n", $responseData, 2);
 
@@ -355,7 +353,7 @@ class SafeBrowsingClient extends AbstractServiceClient
     public function getHashesByUrl($url)
     {
         //Remove line feeds, return carriages, tabs, vertical tabs
-        $url = trim(str_replace(array("\x09", "\x0A", "\x0D", "\x0B"), '', $url));
+        $url = trim(str_replace(["\x09", "\x0A", "\x0D", "\x0B"], '', $url));
         //extract hostname
         $parts = parse_url(strtolower($url));
         if (!isset($parts['scheme'])) {
@@ -368,7 +366,7 @@ class SafeBrowsingClient extends AbstractServiceClient
         $maxCountDomains = 5;
 
         //Exact hostname in the url
-        $hosts = array();
+        $hosts = [];
         if (filter_var($host, FILTER_VALIDATE_IP)) {
             $hosts[] = $host . '/';
         } else {
@@ -394,7 +392,7 @@ class SafeBrowsingClient extends AbstractServiceClient
      */
     private function getHashesByHosts($hosts)
     {
-        $hashes = array();
+        $hashes = [];
         foreach ($hosts as $host) {
             $hashes[] = $this->getHashByHost($host);
         }
@@ -409,7 +407,7 @@ class SafeBrowsingClient extends AbstractServiceClient
     {
         //SHA-256
         $hash = hash('sha256', $host);
-        return array("host" => $host, "prefix" => substr($hash, 0, 8), "full" => $hash);
+        return ["host" => $host, "prefix" => substr($hash, 0, 8), "full" => $hash];
     }
 
     /**
@@ -417,7 +415,7 @@ class SafeBrowsingClient extends AbstractServiceClient
      * @return string
      * @throws SafeBrowsingException
      */
-    private function prepareDownloadsRequest($savedChunks = array())
+    private function prepareDownloadsRequest($savedChunks = [])
     {
         $body = '';
         if (count($this->malwareShavars) < 1) {
@@ -469,12 +467,12 @@ class SafeBrowsingClient extends AbstractServiceClient
      * @return array
      * @throws SafeBrowsingException
      */
-    public function getMalwaresData($savedChunks = array())
+    public function getMalwaresData($savedChunks = [])
     {
         $body = $this->prepareDownloadsRequest($savedChunks);
 
         $response = $this->getChunks($body);
-        $result = array();
+        $result = [];
 
         $response['data'] = (string) $response['data'];
 
@@ -482,7 +480,7 @@ class SafeBrowsingClient extends AbstractServiceClient
             return 'pleasereset';
         }
 
-        $chunksList = array();
+        $chunksList = [];
         if (substr_count($response['data'], 'i:') < 1) {
             throw new SafeBrowsingException(
                 'ERROR: Incorrect data in list'
@@ -496,7 +494,7 @@ class SafeBrowsingClient extends AbstractServiceClient
             $chunksList[array_shift($listData)] = $listData;
         }
         foreach ($chunksList as $listName => $list) {
-            $chunksByList = array();
+            $chunksByList = [];
             foreach ($list as $value) {
 
                 if (substr_count($value, "u:") > 0) {
@@ -510,47 +508,46 @@ class SafeBrowsingClient extends AbstractServiceClient
                 } elseif (substr_count($value, "ad:") > 0) {
                     if (substr_count($value, ',') > 0) {
                         $ranges = explode(',', trim(str_replace("ad:", "", $value)));
-                        $rangesData = array();
+                        $rangesData = [];
                         foreach ($ranges as $range) {
                             list($min, $max) = explode('-', $range);
-                            $rangesData[] = array(
+                            $rangesData[] = [
                                 'min' => $min,
                                 'max' => $max
-                            );
+                            ];
                         }
                         $chunksByList['delete_added_ranges'] = $rangesData;
                     } else {
                         $range = trim(str_replace("sd:", "", $value));
                         list($min, $max) = explode('-', $range);
-                        $chunksByList['delete_added_ranges'] = array(
-                            array(
+                        $chunksByList['delete_added_ranges'] = [
+                            [
                                 'min' => $min,
                                 'max' => $max
-                            )
-
-                        );
+                            ]
+                        ];
                     }
                 } elseif (substr_count($value, "sd:") > 0) {
                     if (substr_count($value, ',') > 0) {
                         $ranges = explode(',', trim(str_replace("sd:", "", $value)));
-                        $rangesData = array();
+                        $rangesData = [];
                         foreach ($ranges as $range) {
                             list($min, $max) = explode('-', $range);
-                            $rangesData[] = array(
+                            $rangesData[] = [
                                 'min' => $min,
                                 'max' => $max
-                            );
+                            ];
                         }
                         $chunksByList['delete_removed_ranges'] = $rangesData;
                     } else {
                         $range = trim(str_replace("sd:", "", $value));
                         list($min, $max) = explode('-', $range);
-                        $chunksByList['delete_removed_ranges'] = array(
-                            array(
+                        $chunksByList['delete_removed_ranges'] = [
+                            [
                                 'min' => $min,
                                 'max' => $max
-                            )
-                        );
+                            ]
+                        ];
                     }
                 }
             }
@@ -591,7 +588,7 @@ class SafeBrowsingClient extends AbstractServiceClient
         //First get chunkData according to length
         $chunkData = bin2hex(substr($splitHead[1], 0, $chunkLen));
         if ($type == 'a') {
-            $prefixes = array();
+            $prefixes = [];
             while (strlen($chunkData) > 0) {
                 $prefixes[] = substr($chunkData, 0, 8);
                 $count = hexdec(substr($chunkData, 8, 2));
@@ -607,14 +604,14 @@ class SafeBrowsingClient extends AbstractServiceClient
                 }
             }
 
-            return array(
+            return [
                 'type' => 'added',
                 'chunk_num' => $chunkNum,
                 'prefixes' => $prefixes
-            );
+            ];
 
         } elseif ($type == 's') {
-            $prefixes = array();
+            $prefixes = [];
             while (strlen($chunkData) > 0) {
                 $prefixes[] = substr($chunkData, 0, 8);
                 $count = hexdec(substr($chunkData, 8, 2));
@@ -632,11 +629,11 @@ class SafeBrowsingClient extends AbstractServiceClient
                 }
             }
 
-            return array(
+            return [
                 'type' => 'removed',
                 'chunk_num' => $chunkNum,
                 'prefixes' => $prefixes
-            );
+            ];
 
         } else {
             throw new SafeBrowsingException(

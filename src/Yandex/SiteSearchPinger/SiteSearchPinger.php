@@ -15,7 +15,7 @@ use Yandex\Common\AbstractServiceClient;
 use Yandex\Common\Exception\InvalidArgumentException;
 use Yandex\SiteSearchPinger\Exception\InvalidUrlException;
 use Yandex\SiteSearchPinger\Exception\SiteSearchPingerException;
-use GuzzleHttp\Client;
+use GuzzleHttp\Psr7\Response;
 use GuzzleHttp\Exception\ClientException;
 
 /**
@@ -34,6 +34,8 @@ use GuzzleHttp\Exception\ClientException;
  */
 class SiteSearchPinger extends AbstractServiceClient
 {
+    const DECODE_TYPE_DEFAULT = self::DECODE_TYPE_XML;
+
     /**
      * @var string
      */
@@ -79,16 +81,16 @@ class SiteSearchPinger extends AbstractServiceClient
     /**
      * @var array
      */
-    protected $invalid = array(
+    protected $invalid = [
         self::INVALID_MALFORMED_URLS => "Invalid URL format",
         self::INVALID_NOT_CONFIRMED_IN_WMC => "Invalid site URL. Site is not confirmed on http://webmaster.yandex.ru/",
         self::INVALID_OUT_OF_SEARCH_AREA => "Invalid site URL. Site is not under your search area",
-    );
+    ];
 
     /**
      * @var array
      */
-    protected $invalidUrls = array();
+    protected $invalidUrls = [];
 
     /**
      * set search key
@@ -156,7 +158,7 @@ class SiteSearchPinger extends AbstractServiceClient
         try {
             $response = $this->doRequest($urls, $publishDate);
         } catch (ClientException $e) {
-            $xml = $e->getResponse()->xml();
+            $xml = $this->getDecodedBody($e->getResponse()->getBody());
 
             if (isset($xml->error) && isset($xml->error->message)) {
                 $errorMessage = (string) $xml->error->message;
@@ -168,7 +170,7 @@ class SiteSearchPinger extends AbstractServiceClient
             return false;
         }
 
-        if (!$xml = $response->xml()) {
+        if (!$xml = $this->getDecodedBody($response->getBody())) {
             throw new SiteSearchPingerException("Wrong server response format");
         } elseif ($xml->getName() == 'empty-param') {
             // workaround for invalid request, with empty `urls`
@@ -182,7 +184,7 @@ class SiteSearchPinger extends AbstractServiceClient
         }
 
         // check invalid urls and fill errors stack
-        $this->invalidUrls = array();
+        $this->invalidUrls = [];
         if (isset($xml->invalid)) {
             foreach ($xml->invalid as $invalid) {
                 foreach ($invalid as $url) {
@@ -207,34 +209,32 @@ class SiteSearchPinger extends AbstractServiceClient
     /**
      * @param array $urls
      * @param integer $publishDate
-     * @return \GuzzleHttp\Message\Response
+     *
+     * @return Response;
      */
     protected function doRequest($urls, $publishDate)
     {
         $client = $this->getClient();
-        $client->setDefaultOption('headers', ['Y-SDK' => 'Pinger']);
-        $client->setDefaultOption(
-            'query',
-            [
-                'key' => $this->key,
-                'login' => $this->login,
-                'search_id' => $this->searchId
-            ]
-        );
 
-        $request = $client->createRequest(
+        return $client->request(
             'POST',
-            $this->host,
+            $this->host . '/' . $this->path,
             [
                 'version' => '1.0',
-                'body' => [
+                'form_params' => [
                     'urls' => join("\n", $urls),
                     'publishdate' => $publishDate
+                ],
+                'query' => [
+                    'key' => $this->key,
+                    'login' => $this->login,
+                    'search_id' => $this->searchId
+                ],
+                'headers' => [
+                    'Y-SDK' => 'Pinger',
+                    'User-Agent' => $this->getUserAgent()
                 ]
             ]
         );
-        $request->setPath($this->path);
-        $request->setHeader('User-Agent', $this->getUserAgent());
-        return $client->send($request);
     }
 }
