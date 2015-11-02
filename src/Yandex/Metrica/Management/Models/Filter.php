@@ -23,14 +23,12 @@ class Filter extends Model
 
     protected $endIp = null;
 
-    protected $mappingClasses = array(
-        
-    );
+    protected $mappingClasses = [];
 
-    protected $propNameMap = array(
+    protected $propNameMap = [
         'startIp' => 'start_ip',
         'endIp' => 'end_ip'
-    );
+    ];
 
     /**
      * Retrieve the id property

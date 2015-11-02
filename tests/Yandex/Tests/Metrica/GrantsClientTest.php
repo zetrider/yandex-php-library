@@ -11,7 +11,7 @@ class GrantsClientTest extends TestCase
     {
         $fixtures = Grants::$grantsFixtures;
 
-        $mock = $this->getMock('Yandex\Metrica\Management\GrantsClient', array('sendGetRequest'));
+        $mock = $this->getMock('Yandex\Metrica\Management\GrantsClient', ['sendGetRequest']);
         $mock->expects($this->any())
             ->method('sendGetRequest')
             ->will($this->returnValue($fixtures));
@@ -32,7 +32,7 @@ class GrantsClientTest extends TestCase
     {
         $fixtures = Grants::$grantFixtures;
 
-        $mock = $this->getMock('Yandex\Metrica\Management\GrantsClient', array('sendGetRequest'));
+        $mock = $this->getMock('Yandex\Metrica\Management\GrantsClient', ['sendGetRequest']);
         $mock->expects($this->any())
             ->method('sendGetRequest')
             ->will($this->returnValue($fixtures));

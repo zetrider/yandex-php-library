@@ -10,13 +10,11 @@ class UpdateOperationResponse extends Model
 
     protected $operation = null;
 
-    protected $mappingClasses = array(
+    protected $mappingClasses = [
         'operation' => 'Yandex\Metrica\Management\Models\Operation'
-    );
+    ];
 
-    protected $propNameMap = array(
-        
-    );
+    protected $propNameMap = [];
 
     /**
      * Retrieve the operation property

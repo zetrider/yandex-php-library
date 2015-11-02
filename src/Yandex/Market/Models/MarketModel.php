@@ -5,16 +5,14 @@ namespace Yandex\Market\Models;
 abstract class MarketModel
 {
 
-    protected $mappingClasses = array(
-        
-    );
+    protected $mappingClasses = [];
 
     /**
      * Constructor
      *
      * @param array $data
      */
-    public function __construct($data = array())
+    public function __construct($data = [])
     {
         $this->fromArray($data);
     }
@@ -90,7 +88,7 @@ abstract class MarketModel
     protected function toArrayRecursive($data)
     {
         if (is_array($data) || is_object($data)) {
-            $result = array();
+            $result = [];
             foreach ($data as $key => $value) {
                 if ($key === "mappingClasses") {
                     continue;

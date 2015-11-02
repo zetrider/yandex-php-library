@@ -17,16 +17,14 @@ class Monitoring extends Model
 
     protected $smsTime = null;
 
-    protected $mappingClasses = array(
-        
-    );
+    protected $mappingClasses = [];
 
-    protected $propNameMap = array(
+    protected $propNameMap = [
         'enableMonitoring' => 'enable_monitoring',
         'smsAllowed' => 'sms_allowed',
         'enableSms' => 'enable_sms',
         'smsTime' => 'sms_time'
-    );
+    ];
 
     /**
      * Retrieve the enableMonitoring property

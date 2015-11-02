@@ -17,13 +17,9 @@ class Operation extends Model
 
     protected $status = null;
 
-    protected $mappingClasses = array(
-        
-    );
+    protected $mappingClasses = [];
 
-    protected $propNameMap = array(
-        
-    );
+    protected $propNameMap = [];
 
     /**
      * Retrieve the id property

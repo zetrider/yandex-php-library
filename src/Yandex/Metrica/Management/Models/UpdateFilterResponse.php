@@ -10,13 +10,11 @@ class UpdateFilterResponse extends Model
 
     protected $filter = null;
 
-    protected $mappingClasses = array(
+    protected $mappingClasses = [
         'filter' => 'Yandex\Metrica\Management\Models\Filter'
-    );
+    ];
 
-    protected $propNameMap = array(
-        
-    );
+    protected $propNameMap = [];
 
     /**
      * Retrieve the filter property

@@ -15,13 +15,9 @@ class Campaign extends Model
 
     protected $stateReasons = null;
 
-    protected $mappingClasses = array(
-        
-    );
+    protected $mappingClasses = [];
 
-    protected $propNameMap = array(
-        
-    );
+    protected $propNameMap = [];
 
     /**
      * Retrieve the id property

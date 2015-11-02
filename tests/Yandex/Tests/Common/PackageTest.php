@@ -49,9 +49,9 @@ class PackageTest extends TestCase
     public function testSetSettings()
     {
         $this->fixture->setSettings(
-            array(
+            [
                 'bar' => 42
-            )
+            ]
         );
 
         $this->assertEquals($this->fixture->bar, 42);
@@ -63,9 +63,9 @@ class PackageTest extends TestCase
     public function testCamelCaseSettings()
     {
         $this->fixture->setSettings(
-            array(
+            [
                 'foo_bar' => 42
-            )
+            ]
         );
 
         $this->assertEquals($this->fixture->fooBar, 42);
@@ -79,10 +79,10 @@ class PackageTest extends TestCase
     {
 
         $this->fixture->setSettings(
-            array(
+            [
                 'bar' => null,
                 'foo' => 42
-            )
+            ]
         );
 
         $this->fixture->checkSettings();

@@ -13,13 +13,9 @@ class AcceptOrder extends Model
 
     protected $reason = null;
 
-    protected $mappingClasses = array(
-        
-    );
+    protected $mappingClasses = [];
 
-    protected $propNameMap = array(
-        
-    );
+    protected $propNameMap = [];
 
     /**
      * Retrieve the accepted property

@@ -10,13 +10,11 @@ class UpdateCounterResponse extends Model
 
     protected $counter = null;
 
-    protected $mappingClasses = array(
+    protected $mappingClasses = [
         'counter' => 'Yandex\Metrica\Management\Models\Counter'
-    );
+    ];
 
-    protected $propNameMap = array(
-        
-    );
+    protected $propNameMap = [];
 
     /**
      * Retrieve the counter property

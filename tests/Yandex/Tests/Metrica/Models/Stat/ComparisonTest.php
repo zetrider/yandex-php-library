@@ -33,7 +33,7 @@ class ComparisonTest extends TestCase
         $items = new Models\ComparisonItems();
         $items
             ->setMetrics($metrics)
-            ->setDimensions(new Models\Dimension(array()))
+            ->setDimensions(new Models\Dimensions([]))
             ->setMetrics($metrics);
 
         $data = new Models\ComparisonData();

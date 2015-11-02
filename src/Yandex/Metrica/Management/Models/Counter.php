@@ -48,13 +48,13 @@ class Counter extends Model
 
     protected $maxRetargetingGoals = null;
 
-    protected $mappingClasses = array(
+    protected $mappingClasses = [
         'webvisor' => 'Yandex\Metrica\Management\Models\Webvisor',
         'codeOptions' => 'Yandex\Metrica\Management\Models\CodeOptions',
         'monitoring' => 'Yandex\Metrica\Management\Models\Monitoring'
-    );
+    ];
 
-    protected $propNameMap = array(
+    protected $propNameMap = [
         'ownerLogin' => 'owner_login',
         'codeStatus' => 'code_status',
         'codeOptions' => 'code_options',
@@ -65,7 +65,7 @@ class Counter extends Model
         'maxGoals' => 'max_goals',
         'maxDetailedGoals' => 'max_detailed_goals',
         'maxRetargetingGoals' => 'max_retargeting_goals'
-    );
+    ];
 
     /**
      * Retrieve the id property

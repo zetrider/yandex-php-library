@@ -11,9 +11,6 @@
  */
 namespace Yandex\Dictionary;
 
-use Yandex\Dictionary\DictionaryBaseItem;
-use Yandex\Dictionary\DictionaryTranslation;
-
 /**
  * Class DictionaryDefinition
  *
@@ -25,7 +22,6 @@ use Yandex\Dictionary\DictionaryTranslation;
  */
 class DictionaryDefinition extends DictionaryBaseItem
 {
-
     /**
      * @var
      */
@@ -34,7 +30,7 @@ class DictionaryDefinition extends DictionaryBaseItem
     /**
      * @var
      */
-    protected $translations = array();
+    protected $translations = [];
 
     /**
      *

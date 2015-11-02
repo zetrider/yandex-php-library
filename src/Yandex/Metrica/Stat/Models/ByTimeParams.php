@@ -43,15 +43,13 @@ class ByTimeParams extends Model
 
     protected $topKeys = null;
 
-    protected $mappingClasses = array(
-        
-    );
+    protected $mappingClasses = [];
 
-    protected $propNameMap = array(
+    protected $propNameMap = [
         'includeUndefined' => 'include_undefined',
         'rowIds' => 'row_ids',
         'topKeys' => 'top_keys'
-    );
+    ];
 
     /**
      * Retrieve the id property

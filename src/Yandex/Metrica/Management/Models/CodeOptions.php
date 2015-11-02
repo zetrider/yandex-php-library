@@ -22,15 +22,15 @@ class CodeOptions extends Model
 
     protected $inOneLine = null;
 
-    protected $mappingClasses = array(
+    protected $mappingClasses = [
         'informer' => 'Yandex\Metrica\Management\Models\Informer'
-    );
+    ];
 
-    protected $propNameMap = array(
+    protected $propNameMap = [
         'trackHash' => 'track_hash',
         'xmlSite' => 'xml_site',
         'inOneLine' => 'in_one_line'
-    );
+    ];
 
     /**
      * Retrieve the async property

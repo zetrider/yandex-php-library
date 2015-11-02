@@ -41,7 +41,7 @@ class DataClient extends StatClient
      * @param array $parentId
      * @return Models\DrillDown
      */
-    public function getDrillDown(Models\TableParams $params, array $parentId = array())
+    public function getDrillDown(Models\TableParams $params, array $parentId = [])
     {
         $resource = 'drilldown';
         $params = $params->toArray();

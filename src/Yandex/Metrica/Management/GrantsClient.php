@@ -22,7 +22,7 @@ class GrantsClient extends ManagementClient
      * @param array $params
      * @return array
      */
-    public function getGrants($counterId, $params = array())
+    public function getGrants($counterId, $params = [])
     {
         $resource = 'counter/' . $counterId . '/grants';
         $response = $this->sendGetRequest($resource, $params);
@@ -43,7 +43,7 @@ class GrantsClient extends ManagementClient
     public function addGrant($counterId, Models\Grant $grant)
     {
         $resource = 'counter/' . $counterId . '/grants';
-        $response = $this->sendPostRequest($resource, array("grant" => $grant->toArray()));
+        $response = $this->sendPostRequest($resource, ["grant" => $grant->toArray()]);
         $grantResponse = new Models\AddGrantResponse($response);
         return $grantResponse->getGrant();
     }
@@ -59,7 +59,7 @@ class GrantsClient extends ManagementClient
      * @param array $params
      * @return array
      */
-    public function getGrant($counterId, $userLogin, $params = array())
+    public function getGrant($counterId, $userLogin, $params = [])
     {
         $resource = 'counter/' . $counterId . '/grant/' . $userLogin;
         $response = $this->sendGetRequest($resource, $params);
@@ -81,7 +81,7 @@ class GrantsClient extends ManagementClient
     public function updateGrant($counterId, $userLogin, Models\Grant $grant)
     {
         $resource = 'counter/' . $counterId . '/grant/' . $userLogin;
-        $response = $this->sendPutRequest($resource, array("grant" => $grant->toArray()));
+        $response = $this->sendPutRequest($resource, ["grant" => $grant->toArray()]);
         $grantResponse = new Models\UpdateGrantResponse($response);
         return $grantResponse->getGrant();
     }

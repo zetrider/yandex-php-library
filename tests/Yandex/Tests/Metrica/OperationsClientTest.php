@@ -11,7 +11,7 @@ class OperationsClientTest extends TestCase
     {
         $fixtures = Operations::$operationsFixtures;
 
-        $mock = $this->getMock('Yandex\Metrica\Management\OperationsClient', array('sendGetRequest'));
+        $mock = $this->getMock('Yandex\Metrica\Management\OperationsClient', ['sendGetRequest']);
         $mock->expects($this->any())
             ->method('sendGetRequest')
             ->will($this->returnValue($fixtures));
@@ -34,7 +34,7 @@ class OperationsClientTest extends TestCase
     {
         $fixtures = Operations::$operationFixtures;
 
-        $mock = $this->getMock('Yandex\Metrica\Management\OperationsClient', array('sendGetRequest'));
+        $mock = $this->getMock('Yandex\Metrica\Management\OperationsClient', ['sendGetRequest']);
         $mock->expects($this->any())
             ->method('sendGetRequest')
             ->will($this->returnValue($fixtures));

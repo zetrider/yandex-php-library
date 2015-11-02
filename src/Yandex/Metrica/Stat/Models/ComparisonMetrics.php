@@ -11,13 +11,9 @@ class ComparisonMetrics extends Model
 
     protected $b = null;
 
-    protected $mappingClasses = array(
-        
-    );
+    protected $mappingClasses = [];
 
-    protected $propNameMap = array(
-        
-    );
+    protected $propNameMap = [];
 
     /**
      * Retrieve the a property

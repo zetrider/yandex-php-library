@@ -10,13 +10,11 @@ class AddDelegateResponse extends Model
 
     protected $delegate = null;
 
-    protected $mappingClasses = array(
+    protected $mappingClasses = [
         'delegate' => 'Yandex\Metrica\Management\Models\Delegate'
-    );
+    ];
 
-    protected $propNameMap = array(
-        
-    );
+    protected $propNameMap = [];
 
     /**
      * Retrieve the delegate property

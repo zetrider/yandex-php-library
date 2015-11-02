@@ -42,7 +42,7 @@ class GoalsClient extends ManagementClient
     public function addGoal($counterId, Models\Goal $goal)
     {
         $resource = 'counter/' . $counterId . '/goals';
-        $response = $this->sendPostRequest($resource, array("goal" => $goal->toArray()));
+        $response = $this->sendPostRequest($resource, ["goal" => $goal->toArray()]);
         $goalResponse = new Models\AddGoalResponse($response);
         return $goalResponse->getGoal();
     }
@@ -79,7 +79,7 @@ class GoalsClient extends ManagementClient
     public function updateGoal($id, $counterId, Models\Goal $goal)
     {
         $resource = 'counter/' . $counterId . '/goal/' . $id;
-        $response = $this->sendPutRequest($resource, array("goal" => $goal->toArray()));
+        $response = $this->sendPutRequest($resource, ["goal" => $goal->toArray()]);
         $goalResponse = new Models\UpdateGoalResponse($response);
         return $goalResponse->getGoal();
     }

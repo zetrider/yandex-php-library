@@ -21,14 +21,12 @@ class DeliveryOption extends Model
 
     protected $outlets = null;
 
-    protected $mappingClasses = array(
+    protected $mappingClasses = [
         'dates' => 'Yandex\Market\Models\DatesRange',
         'outlets' => 'Yandex\Market\Models\Outlets'
-    );
+    ];
 
-    protected $propNameMap = array(
-        
-    );
+    protected $propNameMap = [];
 
     /**
      * Retrieve the id property

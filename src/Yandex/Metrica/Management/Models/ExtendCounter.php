@@ -62,7 +62,7 @@ class ExtendCounter extends Model
 
     protected $lang = null;
 
-    protected $mappingClasses = array(
+    protected $mappingClasses = [
         'webvisor' => 'Yandex\Metrica\Management\Models\Webvisor',
         'codeOptions' => 'Yandex\Metrica\Management\Models\CodeOptions',
         'goals' => 'Yandex\Metrica\Management\Models\Goals',
@@ -70,9 +70,9 @@ class ExtendCounter extends Model
         'operations' => 'Yandex\Metrica\Management\Models\Operations',
         'grants' => 'Yandex\Metrica\Management\Models\Grants',
         'monitoring' => 'Yandex\Metrica\Management\Models\Monitoring'
-    );
+    ];
 
-    protected $propNameMap = array(
+    protected $propNameMap = [
         'ownerLogin' => 'owner_login',
         'codeStatus' => 'code_status',
         'codeOptions' => 'code_options',
@@ -80,7 +80,7 @@ class ExtendCounter extends Model
         'timeZoneName' => 'time_zone_name',
         'visitThreshoId' => 'visit_thresho_id',
         'includeUndefined' => 'include_undefined'
-    );
+    ];
 
     /**
      * Retrieve the id property

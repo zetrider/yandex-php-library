@@ -12,13 +12,11 @@ class Items extends Model
 
     protected $metrics = null;
 
-    protected $mappingClasses = array(
+    protected $mappingClasses = [
         'dimensions' => 'Yandex\Metrica\Stat\Models\Dimensions'
-    );
+    ];
 
-    protected $propNameMap = array(
-        
-    );
+    protected $propNameMap = [];
 
     /**
      * Retrieve the dimensions property

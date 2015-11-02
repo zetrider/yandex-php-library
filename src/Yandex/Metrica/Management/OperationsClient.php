@@ -22,7 +22,7 @@ class OperationsClient extends ManagementClient
      * @param array $params
      * @return array
      */
-    public function getOperations($counterId, $params = array())
+    public function getOperations($counterId, $params = [])
     {
         $resource = 'counter/' . $counterId . '/operations';
         $response = $this->sendGetRequest($resource, $params);
@@ -43,7 +43,7 @@ class OperationsClient extends ManagementClient
     public function addOperation($counterId, Models\Operation $operation)
     {
         $resource = 'counter/' . $counterId . '/operations';
-        $response = $this->sendPostRequest($resource, array("operation" => $operation->toArray()));
+        $response = $this->sendPostRequest($resource, ["operation" => $operation->toArray()]);
         $operationResponse = new Models\AddOperationResponse($response);
         return $operationResponse->getOperation();
     }
@@ -59,7 +59,7 @@ class OperationsClient extends ManagementClient
      * @param array $params
      * @return array
      */
-    public function getOperation($id, $counterId, $params = array())
+    public function getOperation($id, $counterId, $params = [])
     {
         $resource = 'counter/' . $counterId . '/operation/' . $id;
         $response = $this->sendGetRequest($resource, $params);
@@ -81,7 +81,7 @@ class OperationsClient extends ManagementClient
     public function updateOperation($id, $counterId, Models\Operation $operation)
     {
         $resource = 'counter/' . $counterId . '/operation/' . $id;
-        $response = $this->sendPutRequest($resource, array("operation" => $operation->toArray()));
+        $response = $this->sendPutRequest($resource, ["operation" => $operation->toArray()]);
         $operationsResponse = new Models\UpdateOperationResponse($response);
         return $operationsResponse->getOperation();
     }

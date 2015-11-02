@@ -13,14 +13,12 @@ class ComparisonItems extends Model
 
     protected $metrics = null;
 
-    protected $mappingClasses = array(
+    protected $mappingClasses = [
         'dimensions' => 'Yandex\Metrica\Stat\Models\Dimensions',
         'metrics' => 'Yandex\Metrica\Stat\Models\ComparisonMetrics'
-    );
+    ];
 
-    protected $propNameMap = array(
-        
-    );
+    protected $propNameMap = [];
 
     /**
      * Retrieve the dimensions property

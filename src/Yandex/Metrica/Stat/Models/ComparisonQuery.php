@@ -33,18 +33,16 @@ class ComparisonQuery extends Model
 
     protected $filtersB = null;
 
-    protected $mappingClasses = array(
-        
-    );
+    protected $mappingClasses = [];
 
-    protected $propNameMap = array(
+    protected $propNameMap = [
         'date1A' => 'date1_a',
         'date2A' => 'date2_a',
         'filtersA' => 'filters_a',
         'date1B' => 'date1_b',
         'date2B' => 'date2_b',
         'filtersB' => 'filters_b'
-    );
+    ];
 
     /**
      * Retrieve the id property

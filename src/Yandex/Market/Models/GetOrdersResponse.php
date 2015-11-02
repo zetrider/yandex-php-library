@@ -13,14 +13,12 @@ class GetOrdersResponse extends Model
 
     protected $orders = null;
 
-    protected $mappingClasses = array(
+    protected $mappingClasses = [
         'pager' => 'Yandex\Market\Models\Pager',
         'orders' => 'Yandex\Market\Models\Orders'
-    );
+    ];
 
-    protected $propNameMap = array(
-        
-    );
+    protected $propNameMap = [];
 
     /**
      * Retrieve the pager property

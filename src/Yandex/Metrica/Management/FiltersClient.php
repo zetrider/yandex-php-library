@@ -42,7 +42,7 @@ class FiltersClient extends ManagementClient
     public function addFilter($counterId, Models\Filter $filter)
     {
         $resource = 'counter/' . $counterId . '/filters';
-        $response = $this->sendPostRequest($resource, array("filter" => $filter->toArray()));
+        $response = $this->sendPostRequest($resource, ["filter" => $filter->toArray()]);
         $filterResponse = new Models\AddFilterResponse($response);
         return $filterResponse->getFilter();
     }
@@ -58,7 +58,7 @@ class FiltersClient extends ManagementClient
      * @param array $params
      * @return array
      */
-    public function getFilter($id, $counterId, $params = array())
+    public function getFilter($id, $counterId, $params = [])
     {
         $resource = 'counter/' . $counterId . '/filter/' . $id;
         $response = $this->sendGetRequest($resource, $params);
@@ -80,7 +80,7 @@ class FiltersClient extends ManagementClient
     public function updateFilter($id, $counterId, Models\Filter $filter)
     {
         $resource = 'counter/' . $counterId . '/filter/' . $id;
-        $response = $this->sendPutRequest($resource, array("filter" => $filter->toArray()));
+        $response = $this->sendPutRequest($resource, ["filter" => $filter->toArray()]);
         $filterResponse = new Models\UpdateFilterResponse($response);
         return $filterResponse->getFilter();
     }

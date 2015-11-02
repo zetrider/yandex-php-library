@@ -4,29 +4,29 @@ namespace Yandex\Tests\Metrica\Fixtures;
 
 class Grants
 {
-    public static $grantsFixtures = array(
-        "grants" => array(
-            0 => array(
+    public static $grantsFixtures = [
+        "grants" => [
+            0 => [
                 "user_login" => "api-metrika2",
                 "perm" => "view",
                 "created_at" => "2010-12-08 20:02:01",
                 "comment" => ""
-            ),
-            1 => array(
+            ],
+            1 => [
                 "user_login" => "",
                 "perm" => "public_stat",
                 "created_at" => "2010-12-08 20:02:01",
                 "comment" => ""
-            )
-        )
-    );
+            ]
+        ]
+    ];
 
-    public static $grantFixtures = array(
-        "grant" => array(
+    public static $grantFixtures = [
+        "grant" => [
             "user_login" => "api-metrika2",
             "perm" => "view",
             "created_at" => "2010-12-08 20:02:01",
             "comment" => ""
-        )
-    );
+        ]
+    ];
 }

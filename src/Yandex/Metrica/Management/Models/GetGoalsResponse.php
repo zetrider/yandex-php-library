@@ -10,13 +10,11 @@ class GetGoalsResponse extends Model
 
     protected $goals = null;
 
-    protected $mappingClasses = array(
+    protected $mappingClasses = [
         'goals' => 'Yandex\Metrica\Management\Models\Goals'
-    );
+    ];
 
-    protected $propNameMap = array(
-        
-    );
+    protected $propNameMap = [];
 
     /**
      * Retrieve the goals property

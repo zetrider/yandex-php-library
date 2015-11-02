@@ -12,7 +12,7 @@ class AccountsClientTest extends TestCase
     {
         $fixtures = Accounts::$accountsFixtures;
 
-        $mock = $this->getMock('Yandex\Metrica\Management\AccountsClient', array('sendGetRequest'));
+        $mock = $this->getMock('Yandex\Metrica\Management\AccountsClient', ['sendGetRequest']);
         $mock->expects($this->any())
             ->method('sendGetRequest')
             ->will($this->returnValue($fixtures));

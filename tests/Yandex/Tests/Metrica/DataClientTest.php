@@ -13,7 +13,7 @@ class DataClientTest extends TestCase
     {
         $fixtures = Stat::$tableFixtures;
 
-        $mock = $this->getMock('Yandex\Metrica\Stat\DataClient', array('sendGetRequest'));
+        $mock = $this->getMock('Yandex\Metrica\Stat\DataClient', ['sendGetRequest']);
         $mock->expects($this->any())
             ->method('sendGetRequest')
             ->will($this->returnValue($fixtures));
@@ -47,7 +47,7 @@ class DataClientTest extends TestCase
     {
         $fixtures = Stat::$drillDownFixtures;
 
-        $mock = $this->getMock('Yandex\Metrica\Stat\DataClient', array('sendGetRequest'));
+        $mock = $this->getMock('Yandex\Metrica\Stat\DataClient', ['sendGetRequest']);
         $mock->expects($this->any())
             ->method('sendGetRequest')
             ->will($this->returnValue($fixtures));
@@ -90,7 +90,7 @@ class DataClientTest extends TestCase
     {
         $fixtures = Stat::$byTimeFixtures;
 
-        $mock = $this->getMock('Yandex\Metrica\Stat\DataClient', array('sendGetRequest'));
+        $mock = $this->getMock('Yandex\Metrica\Stat\DataClient', ['sendGetRequest']);
         $mock->expects($this->any())
             ->method('sendGetRequest')
             ->will($this->returnValue($fixtures));
@@ -121,7 +121,7 @@ class DataClientTest extends TestCase
     {
         $fixtures = Stat::$comparisonFixtures;
 
-        $mock = $this->getMock('Yandex\Metrica\Stat\DataClient', array('sendGetRequest'));
+        $mock = $this->getMock('Yandex\Metrica\Stat\DataClient', ['sendGetRequest']);
         $mock->expects($this->any())
             ->method('sendGetRequest')
             ->will($this->returnValue($fixtures));
@@ -158,7 +158,7 @@ class DataClientTest extends TestCase
     {
         $fixtures = Stat::$drillDownComparisonFixtures;
 
-        $mock = $this->getMock('Yandex\Metrica\Stat\DataClient', array('sendGetRequest'));
+        $mock = $this->getMock('Yandex\Metrica\Stat\DataClient', ['sendGetRequest']);
         $mock->expects($this->any())
             ->method('sendGetRequest')
             ->will($this->returnValue($fixtures));

@@ -11,14 +11,12 @@ class Account extends Model
 
     protected $createdAt = null;
 
-    protected $mappingClasses = array(
-        
-    );
+    protected $mappingClasses = [];
 
-    protected $propNameMap = array(
+    protected $propNameMap = [
         'userLogin' => 'user_login',
         'createdAt' => 'created_at'
-    );
+    ];
 
     /**
      * Retrieve the userLogin property

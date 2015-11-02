@@ -25,16 +25,14 @@ class Query extends Model
 
     protected $maxResults = null;
 
-    protected $mappingClasses = array(
-        
-    );
+    protected $mappingClasses = [];
 
-    protected $propNameMap = array(
+    protected $propNameMap = [
         'startDate' => 'start-date',
         'endDate' => 'end-date',
         'startIndex' => 'start-index',
         'maxResults' => 'max-results'
-    );
+    ];
 
     /**
      * Retrieve the ids property

@@ -33,14 +33,12 @@ class Ga extends Model
 
     protected $rows = null;
 
-    protected $mappingClasses = array(
+    protected $mappingClasses = [
         'query' => 'Yandex\Metrica\Analytics\Models\Query',
         'columnHeaders' => 'Yandex\Metrica\Analytics\Models\ColumnHeaders'
-    );
+    ];
 
-    protected $propNameMap = array(
-        
-    );
+    protected $propNameMap = [];
 
     /**
      * Retrieve the kind property

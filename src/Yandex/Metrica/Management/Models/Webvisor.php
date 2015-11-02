@@ -15,15 +15,13 @@ class Webvisor extends Model
 
     protected $loadPlayerType = null;
 
-    protected $mappingClasses = array(
-        
-    );
+    protected $mappingClasses = [];
 
-    protected $propNameMap = array(
+    protected $propNameMap = [
         'archEnabled' => 'arch_enabled',
         'archType' => 'arch_type',
         'loadPlayerType' => 'load_player_type'
-    );
+    ];
 
     /**
      * Retrieve the urls property

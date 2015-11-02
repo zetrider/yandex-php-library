@@ -12,13 +12,11 @@ class GetCountersResponse extends Model
 
     protected $rows = null;
 
-    protected $mappingClasses = array(
+    protected $mappingClasses = [
         'counters' => 'Yandex\Metrica\Management\Models\Counters'
-    );
+    ];
 
-    protected $propNameMap = array(
-        
-    );
+    protected $propNameMap = [];
 
     /**
      * Retrieve the counters property

@@ -31,18 +31,18 @@ class Table extends Model
 
     protected $data = null;
 
-    protected $mappingClasses = array(
+    protected $mappingClasses = [
         'query' => 'Yandex\Metrica\Stat\Models\Query',
         'data' => 'Yandex\Metrica\Stat\Models\Data'
-    );
+    ];
 
-    protected $propNameMap = array(
+    protected $propNameMap = [
         'totalRows' => 'total_rows',
         'sampleShare' => 'sample_share',
         'sampleSize' => 'sample_size',
         'sampleSpace' => 'sample_space',
         'dataLag' => 'data_lag'
-    );
+    ];
 
     /**
      * Retrieve the totalRows property

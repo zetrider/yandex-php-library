@@ -13,14 +13,12 @@ class Delegate extends Model
 
     protected $comment = null;
 
-    protected $mappingClasses = array(
-        
-    );
+    protected $mappingClasses = [];
 
-    protected $propNameMap = array(
+    protected $propNameMap = [
         'userLogin' => 'user_login',
         'createdAt' => 'created_at'
-    );
+    ];
 
     /**
      * Retrieve the userLogin property
