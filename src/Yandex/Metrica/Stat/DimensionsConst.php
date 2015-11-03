@@ -11,7 +11,10 @@
  */
 namespace Yandex\Metrica\Stat;
 
-
+/**
+ * Class DimensionsConst
+ * @package Yandex\Metrica\Stat
+ */
 class DimensionsConst
 {
     const PV_URL = "ym:pv:URL";

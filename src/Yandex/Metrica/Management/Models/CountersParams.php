@@ -25,14 +25,12 @@ class CountersParams extends Model
 
     protected $type = null;
 
-    protected $mappingClasses = array(
-        
-    );
+    protected $mappingClasses = [];
 
-    protected $propNameMap = array(
+    protected $propNameMap = [
         'perPage' => 'per_page',
         'searchString' => 'search_string'
-    );
+    ];
 
     /**
      * Retrieve the callback property

@@ -11,8 +11,6 @@
  */
 namespace Yandex\Dictionary;
 
-use Yandex\Dictionary\DictionaryBaseItem;
-
 /**
  * Class DictionaryExample
  *
@@ -24,11 +22,10 @@ use Yandex\Dictionary\DictionaryBaseItem;
  */
 class DictionaryExample extends DictionaryBaseItem
 {
-
     /**
      * @var
      */
-    protected $translations = array();
+    protected $translations = [];
 
     /**
      *

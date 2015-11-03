@@ -43,11 +43,11 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST' || $debug) {
 
     //Способы оплаты, доступные для корзины.
     $cart->setPaymentMethods(
-        array(
+        [
             //Способ оплаты заказа
             PartnerClient::PAYMENT_METHOD_CASH_ON_DELIVERY,
             PartnerClient::PAYMENT_METHOD_CARD_ON_DELIVERY,
-        )
+        ]
     );
 
     //Опции доставки, доступные для корзины.

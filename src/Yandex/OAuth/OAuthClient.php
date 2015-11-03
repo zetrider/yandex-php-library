@@ -150,27 +150,21 @@ class OAuthClient extends AbstractServiceClient
     {
         $client = $this->getClient();
 
-        $request = $client->createRequest(
-            'POST',
-            $this->getServiceUrl(),
-            [
-                'body' => [
-                    'grant_type'    => 'authorization_code',
-                    'code'          => $code,
-                    'client_id'     => $this->clientId,
-                    'client_secret' => $this->clientSecret
-                ]
-            ]
-        );
-        $request->setPath('token');
-
         try {
-
-            $response = $client->send($request);
-
+            $response = $client->request(
+                'POST',
+                '/token',
+                [
+                    'form_params' => [
+                        'grant_type'    => 'authorization_code',
+                        'code'          => $code,
+                        'client_id'     => $this->clientId,
+                        'client_secret' => $this->clientSecret
+                    ]
+                ]
+            );
         } catch (ClientException $ex) {
-
-            $result = $ex->getResponse()->json();
+            $result = $this->getDecodedBody($ex->getResponse()->getBody());
 
             if (is_array($result) && isset($result['error'])) {
                 // handle a service error message
@@ -187,7 +181,7 @@ class OAuthClient extends AbstractServiceClient
         }
 
         try {
-            $result = $response->json();
+            $result = $this->getDecodedBody($response->getBody());
         } catch (\RuntimeException $ex) {
             throw new AuthResponseException('Server response can\'t be parsed', 0, $ex);
         }

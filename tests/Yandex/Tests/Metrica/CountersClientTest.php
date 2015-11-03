@@ -13,7 +13,7 @@ class CountersClientTest extends TestCase
     {
         $fixtures = Counters::$countersFixtures;
 
-        $mock = $this->getMock('Yandex\Metrica\Management\CountersClient', array('sendGetRequest'));
+        $mock = $this->getMock('Yandex\Metrica\Management\CountersClient', ['sendGetRequest']);
         $mock->expects($this->any())
             ->method('sendGetRequest')
             ->will($this->returnValue($fixtures));
@@ -107,7 +107,7 @@ class CountersClientTest extends TestCase
     {
         $fixtures = Counters::$counterFixtures;
 
-        $mock = $this->getMock('Yandex\Metrica\Management\CountersClient', array('sendGetRequest'));
+        $mock = $this->getMock('Yandex\Metrica\Management\CountersClient', ['sendGetRequest']);
         $mock->expects($this->any())
             ->method('sendGetRequest')
             ->will($this->returnValue($fixtures));

@@ -11,11 +11,13 @@
  */
 namespace Yandex\Common;
 
-
+/**
+ * Class ObjectModel
+ * @package Yandex\Common
+ */
 class ObjectModel extends Model implements \Iterator, \Countable
 {
-
-    protected $collection = array();
+    protected $collection = [];
     protected $innerCounter = -1;
 
     public function current()

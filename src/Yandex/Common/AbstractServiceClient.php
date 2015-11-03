@@ -13,9 +13,9 @@ namespace Yandex\Common;
 
 use GuzzleHttp\Client;
 use GuzzleHttp\ClientInterface;
+use Psr\Http\Message\UriInterface;
 use GuzzleHttp\Exception\ClientException;
-use GuzzleHttp\Message\RequestInterface;
-use GuzzleHttp\Message\Response;
+use GuzzleHttp\Psr7\Response;
 use Yandex\Common\Exception\MissedArgumentException;
 use Yandex\Common\Exception\ProfileNotFoundException;
 use Yandex\Common\Exception\YandexException;
@@ -35,6 +35,10 @@ abstract class AbstractServiceClient extends AbstractPackage
      */
     const HTTPS_SCHEME = 'https';
     const HTTP_SCHEME = 'http';
+
+    const DECODE_TYPE_JSON = 'json';
+    const DECODE_TYPE_XML = 'xml';
+    const DECODE_TYPE_DEFAULT = self::DECODE_TYPE_JSON;
 
     /**
      * @var string
@@ -223,66 +227,60 @@ abstract class AbstractServiceClient extends AbstractPackage
     }
 
     /**
-     * @return \GuzzleHttp\ClientInterface
+     * @return ClientInterface
      */
     protected function getClient()
     {
-        $client = new Client();
+        $defaultOptions = [
+            'base_uri' => $this->getServiceUrl(),
+            'headers' => [
+                'Authorization' => 'OAuth ' . $this->getAccessToken(),
+                'Host' => $this->getServiceDomain(),
+                'User-Agent' => $this->getUserAgent(),
+                'Accept' => '*/*'
+            ]
+        ];
         if ($this->getProxy()) {
-            $client->setDefaultOption('proxy', $this->getProxy());
+            $defaultOptions['proxy'] = $this->getProxy();
         }
         if ($this->getDebug()) {
-            $client->setDefaultOption('debug', $this->getDebug());
+            $defaultOptions['debug'] = $this->getDebug();
         }
-        return $client;
-    }
-
-    /**
-     * prepareRequest
-     *
-     * @param \GuzzleHttp\Message\RequestInterface $request
-     * @return RequestInterface
-     */
-    protected function prepareRequest(RequestInterface $request)
-    {
-        $request->setHeader('Authorization', 'OAuth ' . $this->getAccessToken());
-        if (!$request->hasHeader('Host')) {
-            $request->setHeader('Host', $this->getServiceDomain());
-        }
-        $request->setHeader('User-Agent', $this->getUserAgent());
-        $request->setHeader('Accept', '*/*');
-        return $request;
+        return new Client($defaultOptions);
     }
 
     /**
      * Sends a request
      *
-     * @param \GuzzleHttp\ClientInterface $client
-     * @param \GuzzleHttp\Message\Request|\GuzzleHttp\Message\RequestInterface $request
+     * @param string              $method  HTTP method
+     * @param string|UriInterface $uri     URI object or string.
+     * @param array               $options Request options to apply.
      *
      * @throws Exception\MissedArgumentException
      * @throws Exception\ProfileNotFoundException
      * @throws Exception\YandexException
      * @return Response
      */
-    protected function sendRequest(ClientInterface $client, RequestInterface $request)
+    protected function sendRequest($method, $uri, array $options = [])
     {
         try {
-            $request = $this->prepareRequest($request);
-            $response = $client->send($request);
+            $response = $this->getClient()->request($method, $uri, $options);
         } catch (ClientException $ex) {
             // get error from response
-            $result = $ex->getResponse()->json();
+            $decodedResponseBody = $this->getDecodedBody($ex->getResponse()->getBody());
+            $code = $ex->getResponse()->getStatusCode();
 
             // handle a service error message
-            if (is_array($result) && isset($result['error'], $result['message'])) {
-                switch ($result['error']) {
+            if (is_array($decodedResponseBody)
+                && isset($decodedResponseBody['error'], $decodedResponseBody['message'])
+            ) {
+                switch ($decodedResponseBody['error']) {
                     case 'MissedRequiredArguments':
-                        throw new MissedArgumentException($result['message']);
+                        throw new MissedArgumentException($decodedResponseBody['message']);
                     case 'AssistantProfileNotFound':
-                        throw new ProfileNotFoundException($result['message']);
+                        throw new ProfileNotFoundException($decodedResponseBody['message']);
                     default:
-                        throw new YandexException($result['message']);
+                        throw new YandexException($decodedResponseBody['message'], $code);
                 }
             }
 
@@ -291,5 +289,24 @@ abstract class AbstractServiceClient extends AbstractPackage
         }
 
         return $response;
+    }
+
+    /**
+     * @param $body
+     * @param string $type
+     * @return mixed|\SimpleXMLElement
+     */
+    protected function getDecodedBody($body, $type = null)
+    {
+        if (!isset($type)) {
+            $type = static::DECODE_TYPE_DEFAULT;
+        }
+        switch ($type) {
+            case self::DECODE_TYPE_XML:
+                return simplexml_load_string((string) $body);
+            case self::DECODE_TYPE_JSON:
+            default:
+                return json_decode((string) $body, true);
+        }
     }
 }

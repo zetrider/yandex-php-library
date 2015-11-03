@@ -11,13 +11,9 @@ class DatesRange extends Model
 
     protected $toDate = null;
 
-    protected $mappingClasses = array(
-        
-    );
+    protected $mappingClasses = [];
 
-    protected $propNameMap = array(
-        
-    );
+    protected $propNameMap = [];
 
     /**
      * Retrieve the fromDate property

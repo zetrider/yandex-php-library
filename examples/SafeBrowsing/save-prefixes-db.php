@@ -59,8 +59,8 @@ use Yandex\Common\Exception\YandexException;
          * Using "downloads" request
          */
         $malwaresData = $safeBrowsing->getMalwaresData();
-        $newPrefixes = array();
-        $removedPrefixes = array();
+        $newPrefixes = [];
+        $removedPrefixes = [];
 
         if (is_array($malwaresData)) {
             foreach ($malwaresData as $shavarName => $types) {

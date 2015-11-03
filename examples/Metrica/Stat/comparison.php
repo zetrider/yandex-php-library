@@ -6,7 +6,7 @@
 
 use Yandex\Metrica\Stat\StatClient;
 
-$data = array();
+$data = [];
 $errorMessage = false;
 //
 //Is auth

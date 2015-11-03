@@ -22,7 +22,6 @@ namespace Yandex\Dictionary;
  */
 class DictionaryBaseItem
 {
-
     /**
      * @var
      */

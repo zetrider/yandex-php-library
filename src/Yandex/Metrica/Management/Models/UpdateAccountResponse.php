@@ -10,13 +10,11 @@ class UpdateAccountResponse extends Model
 
     protected $accounts = null;
 
-    protected $mappingClasses = array(
+    protected $mappingClasses = [
         'accounts' => 'Yandex\Metrica\Management\Models\Accounts'
-    );
+    ];
 
-    protected $propNameMap = array(
-        
-    );
+    protected $propNameMap = [];
 
     /**
      * Retrieve the accounts property

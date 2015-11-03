@@ -26,15 +26,13 @@ class Delivery extends Model
 
     protected $dates = null;
 
-    protected $mappingClasses = array(
+    protected $mappingClasses = [
         'region' => 'Yandex\Market\Models\Region',
         'address' => 'Yandex\Market\Models\Address',
         'dates' => 'Yandex\Market\Models\DatesRange'
-    );
+    ];
 
-    protected $propNameMap = array(
-        
-    );
+    protected $propNameMap = [];
 
     /**
      * Retrieve the id property

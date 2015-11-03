@@ -7,17 +7,11 @@ use Yandex\Common\ObjectModel;
 class DeliveryOptions extends ObjectModel
 {
 
-    protected $collection = array(
-        
-    );
+    protected $collection = [];
 
-    protected $mappingClasses = array(
-        
-    );
+    protected $mappingClasses = [];
 
-    protected $propNameMap = array(
-        
-    );
+    protected $propNameMap = [];
 
     /**
      * Add item

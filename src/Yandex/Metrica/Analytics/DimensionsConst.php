@@ -1,9 +1,11 @@
 <?php
 
-
 namespace Yandex\Metrica\Analytics;
 
-
+/**
+ * Class DimensionsConst
+ * @package Yandex\Metrica\Analytics
+ */
 class DimensionsConst
 {
 

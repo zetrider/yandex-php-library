@@ -43,7 +43,7 @@ class CountersClient extends ManagementClient
     public function addCounter(Models\Counter $counter)
     {
         $resource = 'counters';
-        $response = $this->sendPostRequest($resource, array("counter" => $counter->toArray()));
+        $response = $this->sendPostRequest($resource, ["counter" => $counter->toArray()]);
         $counter = new Models\AddCounterResponse($response);
         return $counter->getCounter();
     }
@@ -79,7 +79,7 @@ class CountersClient extends ManagementClient
     public function updateCounter($id, Models\ExtendCounter $counter)
     {
         $resource = 'counter/' . $id;
-        $response = $this->sendPutRequest($resource, array("counter" => $counter->toArray()));
+        $response = $this->sendPutRequest($resource, ["counter" => $counter->toArray()]);
         $counter = new Models\UpdateCounterResponse($response);
         return $counter->getCounter();
     }
@@ -95,7 +95,7 @@ class CountersClient extends ManagementClient
     public function undeleteCounter($id)
     {
         $resource = 'counter/' . $id . '/undelete';
-        $response = $this->sendPostRequest($resource, array());
+        $response = $this->sendPostRequest($resource, []);
         return $response;
     }
 

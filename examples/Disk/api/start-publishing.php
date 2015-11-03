@@ -27,7 +27,7 @@ if (isset($_COOKIE['yaAccessToken'])) {
     $diskClient->setServiceScheme(\Yandex\Disk\DiskClient::HTTPS_SCHEME);
 
     header('Content-type: application/json');
-    $response = array();
+    $response = [];
 
     if ($url = $diskClient->startPublishing($target)) {
         $response['status'] = 'publishing';

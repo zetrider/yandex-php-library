@@ -46,14 +46,14 @@ use Yandex\Common\Exception\YandexException as YandexException;
             $pinger->login = $settings["pinger"]["login"];
             $pinger->searchId = $settings["pinger"]["searchId"];
 
-            $url = array(
+            $url = [
                 "http://anton.shevchuk.name/php/php-development-environment-under-macos/",
                 "http://anton.shevchuk.name/php/php-framework-bluz-update/",
                 "http://ya.ru",
                 "http://yandex.ru",
                 "yaru",
                 "yarus",
-            );
+            ];
 
             $added = $pinger->ping($url);
 

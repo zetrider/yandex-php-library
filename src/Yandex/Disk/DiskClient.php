@@ -11,10 +11,8 @@
  */
 namespace Yandex\Disk;
 
-use GuzzleHttp\Client;
-use GuzzleHttp\ClientInterface;
-use GuzzleHttp\Message\Response;
-use GuzzleHttp\Message\RequestInterface;
+use Psr\Http\Message\UriInterface;
+use GuzzleHttp\Psr7\Response;
 use GuzzleHttp\Exception\ClientException;
 use Yandex\Common\AbstractServiceClient;
 use Yandex\Disk\Exception\DiskRequestException;
@@ -27,9 +25,13 @@ use Yandex\Disk\Exception\DiskRequestException;
  *
  * @author   Alexander Mitsura <mitsuraa@gmail.com>
  * @created  07.10.13 12:35
+ *
+ * @see https://tech.yandex.com/disk/doc/dg/concepts/api-methods-docpage/
  */
 class DiskClient extends AbstractServiceClient
 {
+    const DECODE_TYPE_DEFAULT = self::DECODE_TYPE_XML;
+
     /**
      * @var string
      */
@@ -88,16 +90,17 @@ class DiskClient extends AbstractServiceClient
     /**
      * Sends a request
      *
-     * @param RequestInterface $request
+     * @param string              $method  HTTP method
+     * @param string|UriInterface $uri     URI object or string.
+     * @param array               $options Request options to apply.
      *
      * @throws \Exception|\GuzzleHttp\Exception\ClientException
      * @return Response
      */
-    protected function sendRequest(ClientInterface $client, RequestInterface $request)
+    protected function sendRequest($method, $uri, array $options = [])
     {
         try {
-            $request = $this->prepareRequest($request);
-            $response = $client->send($request);
+            $response = $this->getClient()->request($method, $uri, $options);
         } catch (ClientException $ex) {
             $result = $ex->getResponse();
             $code = $result->getStatusCode();
@@ -115,13 +118,12 @@ class DiskClient extends AbstractServiceClient
     /**
      * @param string $path
      * @return bool
+     *
+     * @see https://tech.yandex.com/disk/doc/dg/reference/mkcol-docpage/
      */
     public function createDirectory($path = '')
     {
-        $client = $this->getClient();
-        $request = $client->createRequest('MKCOL', $this->getServiceUrl());
-        $request->setPath($path);
-        return (bool)$this->sendRequest($client, $request);
+        return (bool) $this->sendRequest('MKCOL', $path);
     }
 
     /**
@@ -129,26 +131,32 @@ class DiskClient extends AbstractServiceClient
      * @param null $offset
      * @param null $amount
      * @return array
+     *
+     * @see https://tech.yandex.com/disk/doc/dg/reference/propfind_contains-request-docpage/
      */
     public function directoryContents($path = '', $offset = null, $amount = null)
     {
-        $client = $this->getClient();
-        $request = $client->createRequest('PROPFIND', $this->getServiceUrl());
-        $request->setPath($path);
-        $request->setHeader('Depth', '1');
+        $response = $this->sendRequest(
+            'PROPFIND',
+            $path,
+            [
+                'headers' => [
+                    'Depth' => '1'
+                ],
+                'query' => [
+                    'offset' => $offset,
+                    'amount' => $amount
+                ]
+            ]
+        );
 
-        if (isset($offset, $amount)) {
-            $request->getQuery()->set('offset', $offset);
-            $request->getQuery()->set('amount', $amount);
-        }
+        $decodedResponseBody = $this->getDecodedBody($response->getBody());
 
-        $xml = $this->sendRequest($client, $request)->xml()->children('DAV:');
-
-        $contents = array();
-        foreach ($xml as $element) {
+        $contents = [];
+        foreach ($decodedResponseBody->children('DAV:') as $element) {
             array_push(
                 $contents,
-                array(
+                [
                     'href' => $element->href->__toString(),
                     'status' => $element->propstat->status->__toString(),
                     'creationDate' => $element->propstat->prop->creationdate->__toString(),
@@ -157,7 +165,7 @@ class DiskClient extends AbstractServiceClient
                     'contentLength' => $element->propstat->prop->getcontentlength->__toString(),
                     'resourceType' => $element->propstat->prop->resourcetype->collection ? 'dir' : 'file',
                     'contentType' => $element->propstat->prop->getcontenttype->__toString()
-                )
+                ]
             );
         }
         return $contents;
@@ -165,17 +173,17 @@ class DiskClient extends AbstractServiceClient
 
     /**
      * @return array
+     *
+     * @see https://tech.yandex.com/disk/doc/dg/reference/propfind_space-request-docpage/
      */
     public function diskSpaceInfo()
     {
-        $client = $this->getClient();
-
         $body = '<?xml version="1.0" encoding="utf-8" ?><D:propfind xmlns:D="DAV:">
             <D:prop><D:quota-available-bytes/><D:quota-used-bytes/></D:prop></D:propfind>';
 
-        $request = $client->createRequest(
+        $response = $this->sendRequest(
             'PROPFIND',
-            $this->getServiceUrl(),
+            '/',
             [
                 'headers' => [
                     'Depth' => '0'
@@ -183,14 +191,14 @@ class DiskClient extends AbstractServiceClient
                 'body' => $body
             ]
         );
-        $request->setPath('/');
 
-        $result = $this->sendRequest($client, $request)->xml()->children('DAV:');
-        $info = (array)$result->response->propstat->prop;
-        return array(
+        $decodedResponseBody = $this->getDecodedBody($response->getBody());
+
+        $info = (array) $decodedResponseBody->children('DAV:')->response->propstat->prop;
+        return [
             'usedBytes' => $info['quota-used-bytes'],
             'availableBytes' => $info['quota-available-bytes']
-        );
+        ];
     }
 
     /**
@@ -199,19 +207,19 @@ class DiskClient extends AbstractServiceClient
      * @param string $value
      * @param string $namespace
      * @return bool
+     *
+     * @see https://tech.yandex.com/disk/doc/dg/reference/proppatch-docpage/
      */
     public function setProperty($path = '', $property = '', $value = '', $namespace = 'default:namespace')
     {
         if (!empty($property) && !empty($value)) {
-            $client = $this->getClient();
-
             $body = '<?xml version="1.0" encoding="utf-8" ?><propertyupdate xmlns="DAV:" xmlns:u="'
                 . $namespace . '"><set><prop><u:' . $property . '>' . $value . '</u:'
                 . $property . '></prop></set></propertyupdate>';
 
-            $request = $client->createRequest(
+            $response = $this->sendRequest(
                 'PROPPATCH',
-                $this->getServiceUrl(),
+                $path,
                 [
                     'headers' => [
                         'Content-Length' => strlen($body),
@@ -220,10 +228,10 @@ class DiskClient extends AbstractServiceClient
                     'body' => $body
                 ]
             );
-            $request->setPath('/');
 
-            $response = $this->sendRequest($client, $request)->xml()->children('DAV:')->response;
-            $resultStatus = $response->propstat->status;
+            $decodedResponseBody = $this->getDecodedBody($response->getBody());
+
+            $resultStatus = $decodedResponseBody->children('DAV:')->response->propstat->status;
             if (strpos($resultStatus, '200 OK')) {
                 return true;
             }
@@ -236,18 +244,18 @@ class DiskClient extends AbstractServiceClient
      * @param string $property
      * @param string $namespace
      * @return string|false
+     *
+     * @see https://tech.yandex.com/disk/doc/dg/reference/propfind_property-request-docpage/
      */
     public function getProperty($path = '', $property = '', $namespace = 'default:namespace')
     {
         if (!empty($property)) {
-            $client = $this->getClient();
-
             $body = '<?xml version="1.0" encoding="utf-8" ?><propfind xmlns="DAV:"><prop><' . $property
                 . ' xmlns="' . $namespace . '"/></prop></propfind>';
 
-            $request = $client->createRequest(
+            $response = $this->sendRequest(
                 'PROPFIND',
-                $this->getServiceUrl(),
+                $path,
                 [
                     'headers' => [
                         'Depth' => '1',
@@ -257,11 +265,10 @@ class DiskClient extends AbstractServiceClient
                     'body' => $body
                 ]
             );
-            $request->setPath($path);
 
-            $result = $this->sendRequest($client, $request);
-            $response = $result->xml()->children('DAV:')->response;
-            $resultStatus = $response->propstat->status;
+            $decodedResponseBody = $this->getDecodedBody($response->getBody());
+
+            $resultStatus = $decodedResponseBody->children('DAV:')->response->propstat->status;
             if (strpos($resultStatus, '200 OK')) {
                 return (string)$response->propstat->prop->children();
             }
@@ -276,13 +283,10 @@ class DiskClient extends AbstractServiceClient
      */
     public function getLogin()
     {
-        $client = $this->getClient();
-        $request = $client->createRequest(
+        $response = $this->sendRequest(
             'GET',
-            parent::getServiceUrl() . '?userinfo'
+            '/?userinfo'
         );
-
-        $response = $this->sendRequest($client, $request);
         $result = explode(":", $response->getBody());
         array_shift($result);
         return implode(':', $result);
@@ -291,17 +295,15 @@ class DiskClient extends AbstractServiceClient
     /**
      * @param string $path
      * @return array
+     *
+     * @see https://tech.yandex.com/disk/doc/dg/reference/get-docpage/
      */
     public function getFile($path = '')
     {
-        $result = array();
-        $client = $this->getClient();
-        $request = $client->createRequest('GET', $this->getServiceUrl());
-        $request->setPath($path);
+        $response = $this->sendRequest('GET', $path);
 
-        $response = $this->sendRequest($client, $request);
-        $headers = $response->getHeaders();
-        foreach ($headers as $key => $value) {
+        $result = [];
+        foreach ($response->getHeaders() as $key => $value) {
             $result['headers'][strtolower($key)] = $value[0];
         }
         $result['body'] = $response->getBody();
@@ -313,16 +315,15 @@ class DiskClient extends AbstractServiceClient
      * @param string $destination
      * @param string $name
      * @return string|false
+     *
+     * @see https://tech.yandex.com/disk/doc/dg/reference/get-docpage/
      */
     public function downloadFile($path = '', $destination = '', $name = '')
     {
-        $client = $this->getClient();
-        $request = $client->createRequest('GET', $this->getServiceUrl());
-        $request->setPath($path);
-        $response = $this->sendRequest($client, $request);
+        $response = $this->sendRequest('GET', $path);
 
         if ($name === '') {
-            $matchResults = array();
+            $matchResults = [];
             preg_match(
                 "/.*?filename=\"(.*?)\".*?/",
                 (string) $response->getHeader('Content-Disposition'),
@@ -343,13 +344,15 @@ class DiskClient extends AbstractServiceClient
      * @param array $file
      * @param array $extraHeaders
      * @return void
+     *
+     * @see https://tech.yandex.com/disk/doc/dg/reference/put-docpage/
      */
     public function uploadFile($path = '', $file = null, $extraHeaders = null)
     {
         if (file_exists($file['path'])) {
-            $headers = array(
+            $headers = [
                 'Content-Length' => (string)$file['size']
-            );
+            ];
             $finfo = finfo_open(FILEINFO_MIME);
             $mime = finfo_file($finfo, $file['path']);
             $parts = explode(";", $mime);
@@ -358,18 +361,15 @@ class DiskClient extends AbstractServiceClient
             $headers['Sha256'] = hash_file('sha256', $file['path']);
             $headers = isset($extraHeaders) ? array_merge($headers, $extraHeaders) : $headers;
 
-            $client = $this->getClient();
-            $request = $client->createRequest(
+            $this->sendRequest(
                 'PUT',
-                $this->getServiceUrl(),
+                $path . $file['name'],
                 [
                     'headers' => $headers,
                     'body' => fopen($file['path'], 'rb'),
                     'expect' => true
                 ]
             );
-            $request->setPath($path . $file['name']);
-            $this->sendRequest($client, $request);
         }
     }
 
@@ -377,19 +377,24 @@ class DiskClient extends AbstractServiceClient
      * @param $path
      * @param $size
      * @return array
+     *
+     * @see https://tech.yandex.com/disk/doc/dg/reference/preview-docpage/
      */
     public function getImagePreview($path, $size)
     {
-        $result = array();
-        $client = $this->getClient();
-        $request = $client->createRequest('GET', $this->getServiceUrl());
-        $request->setPath($path);
-        $request->getQuery()->set('preview', null);
-        $request->getQuery()->set('size', $size);
-        $response = $this->sendRequest($client, $request);
+        $response = $this->sendRequest(
+            'GET',
+            $path,
+            [
+                'query' => [
+                    'preview' => '',
+                    'size' => $size
+                ]
+            ]
+        );
 
-        $headers = $response->getHeaders();
-        foreach ($headers as $key => $value) {
+        $result = [];
+        foreach ($response->getHeaders() as $key => $value) {
             $result['headers'][strtolower($key)] = $value[0];
         }
 
@@ -401,57 +406,69 @@ class DiskClient extends AbstractServiceClient
      * @param string $target
      * @param string $destination
      * @return bool
+     *
+     * @see https://tech.yandex.com/disk/doc/dg/reference/copy-docpage/
      */
     public function copy($target = '', $destination = '')
     {
-        $client = $this->getClient();
-        $request = $client->createRequest('COPY', $this->getServiceUrl());
-        $request->setPath($target);
-        $request->setHeader('Destination', $destination);
-        return (bool)$this->sendRequest($client, $request);
+        return (bool) $this->sendRequest(
+            'COPY',
+            $target,
+            [
+                'headers' => [
+                    'Destination' => $destination
+                ]
+            ]
+        );
     }
 
     /**
      * @param string $path
      * @param string $destination
      * @return bool
+     *
+     * @see https://tech.yandex.com/disk/doc/dg/reference/move-docpage/
      */
     public function move($path = '', $destination = '')
     {
-        $client = $this->getClient();
-        $request = $client->createRequest('MOVE', $this->getServiceUrl());
-        $request->setPath($path);
-        $request->setHeader('Destination', $destination);
-        return (bool)$this->sendRequest($client, $request);
+        return (bool) $this->sendRequest(
+            'MOVE',
+            $path,
+            [
+                'headers' => [
+                    'Destination' => $destination
+                ]
+            ]
+        );
     }
 
     /**
      * @param string $path
      * @return bool
+     *
+     * @see https://tech.yandex.com/disk/doc/dg/reference/delete-docpage/
      */
     public function delete($path = '')
     {
-        $client = $this->getClient();
-        $request = $client->createRequest('DELETE', $this->getServiceUrl());
-        $request->setPath($path);
-        return (bool)$this->sendRequest($client, $request);
+        return (bool) $this->sendRequest('DELETE', $path);
     }
 
     /**
      * @param string $path
      * @return string
+     *
+     * @see https://tech.yandex.com/disk/doc/dg/reference/publish-docpage/#publish-s_1
+     * @see https://tech.yandex.com/disk/doc/dg/reference/publish-docpage/#publish-s
      */
     public function startPublishing($path = '')
     {
-        $client = $this->getClient();
-
         $body = '<propertyupdate xmlns="DAV:"><set><prop>
             <public_url xmlns="urn:yandex:disk:meta">true</public_url>
             </prop></set></propertyupdate>';
 
-        $request = $client->createRequest(
+        $response = $this->sendRequest(
             'PROPPATCH',
-            $this->getServiceUrl(),
+            $path,
             [
                 'headers' => [
                     'Content-Length' => strlen($body)
@@ -459,28 +476,28 @@ class DiskClient extends AbstractServiceClient
                 'body' => $body
             ]
         );
-        $request->setPath($path);
 
-        $result = $this->sendRequest($client, $request)->xml()->children('DAV:');
-        $publicUrl = $result->response->propstat->prop->children()->public_url;
+        $decodedResponseBody = $this->getDecodedBody($response->getBody());
+
+        $publicUrl = $decodedResponseBody->children('DAV:')->response->propstat->prop->children()->public_url;
         return (string)$publicUrl;
     }
 
     /**
      * @param string $path
      * @return void
+     *
+     * @see @https://tech.yandex.com/disk/doc/dg/reference/publish-docpage/#unpublish
      */
     public function stopPublishing($path = '')
     {
-        $client = $this->getClient();
-
         $body = '<propertyupdate xmlns="DAV:"><remove><prop>
             <public_url xmlns="urn:yandex:disk:meta" />
             </prop></remove></propertyupdate>';
 
-        $request = $client->createRequest(
+        $this->sendRequest(
             'PROPPATCH',
-            $this->getServiceUrl(),
+            $path,
             [
                 'headers' => [
                     'Content-Length' => strlen($body)
@@ -488,24 +505,21 @@ class DiskClient extends AbstractServiceClient
                 'body' => $body
             ]
         );
-        $request->setPath($path);
-
-        $this->sendRequest($client, $request);
     }
 
     /**
      * @param string $path
      * @return string|bool
+     *
+     * @see https://tech.yandex.com/disk/doc/dg/reference/publish-docpage/#unpublish_1
      */
     public function checkPublishing($path = '')
     {
-        $client = $this->getClient();
-
         $body = '<propfind xmlns="DAV:"><prop><public_url xmlns="urn:yandex:disk:meta"/></prop></propfind>';
 
-        $request = $client->createRequest(
+        $response = $this->sendRequest(
             'PROPFIND',
-            $this->getServiceUrl(),
+            $path,
             [
                 'headers' => [
                     'Content-Length' => strlen($body),
@@ -514,10 +528,10 @@ class DiskClient extends AbstractServiceClient
                 'body' => $body
             ]
         );
-        $request->setPath($path);
 
-        $result = $this->sendRequest($client, $request)->xml()->children('DAV:');
-        $propArray = (array)$result->response->propstat->prop->children();
+        $decodedResponseBody = $this->getDecodedBody($response->getBody());
+
+        $propArray = (array) $decodedResponseBody->children('DAV:')->response->propstat->prop->children();
         return empty($propArray['public_url']) ? (bool)false : (string)$propArray['public_url'];
     }
 }

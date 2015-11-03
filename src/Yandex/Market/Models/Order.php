@@ -38,15 +38,13 @@ class Order extends Model
 
     protected $buyer = null;
 
-    protected $mappingClasses = array(
+    protected $mappingClasses = [
         'items' => 'Yandex\Market\Models\Items',
         'delivery' => 'Yandex\Market\Models\Delivery',
         'buyer' => 'Yandex\Market\Models\Buyer'
-    );
+    ];
 
-    protected $propNameMap = array(
-        
-    );
+    protected $propNameMap = [];
 
     /**
      * Retrieve the id property

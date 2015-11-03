@@ -10,13 +10,11 @@ class GetDelegatesResponse extends Model
 
     protected $delegates = null;
 
-    protected $mappingClasses = array(
+    protected $mappingClasses = [
         'delegates' => 'Yandex\Metrica\Management\Models\Delegates'
-    );
+    ];
 
-    protected $propNameMap = array(
-        
-    );
+    protected $propNameMap = [];
 
     /**
      * Retrieve the delegates property

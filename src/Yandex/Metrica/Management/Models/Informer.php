@@ -23,16 +23,14 @@ class Informer extends Model
 
     protected $colorArrow = null;
 
-    protected $mappingClasses = array(
-        
-    );
+    protected $mappingClasses = [];
 
-    protected $propNameMap = array(
+    protected $propNameMap = [
         'colorStart' => 'color_start',
         'colorEnd' => 'color_end',
         'colorText' => 'color_text',
         'colorArrow' => 'color_arrow'
-    );
+    ];
 
     /**
      * Retrieve the enabled property

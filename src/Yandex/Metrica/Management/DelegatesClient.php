@@ -58,13 +58,13 @@ class DelegatesClient extends ManagementClient
     public function addDelegates($login, $comment = '')
     {
         $resource = 'delegates';
-        $params = array(
-            'delegate' => array(
+        $params = [
+            'delegate' => [
                 'user_login' => $login,
                 'created_at' => date('c'),
                 'comment' => $comment
-            )
-        );
+            ]
+        ];
         $response = $this->sendPostRequest($resource, $params);
         $delegateResponse = new Models\AddDelegateResponse($response);
         return $delegateResponse->getDelegate();

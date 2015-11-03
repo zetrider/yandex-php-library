@@ -4,8 +4,8 @@
  */
 namespace Yandex\Tests\Market;
 
-use GuzzleHttp\Message\Response;
-use GuzzleHttp\Stream\Stream;
+use GuzzleHttp\Psr7\Response;
+use GuzzleHttp\Psr7\Stream;
 use Yandex\Market\Models\Item;
 use Yandex\Market\Models\Order;
 use Yandex\Tests\TestCase;
@@ -27,9 +27,8 @@ class GetOrderTest extends TestCase
     {
         $json = file_get_contents(__DIR__ . '/' . $this->fixturesFolder . '/get-campaigns-id-orders-id.json');
         $jsonObj = json_decode($json);
-        $response = new Response(200);
-        $response->setBody(Stream::factory($json));
-        $marketPartnerMock = $this->getMock('Yandex\Market\Partner\PartnerClient', array('sendRequest'));
+        $response = new Response(200, [], \GuzzleHttp\Psr7\stream_for($json));
+        $marketPartnerMock = $this->getMock('Yandex\Market\Partner\PartnerClient', ['sendRequest']);
         $marketPartnerMock->expects($this->any())
             ->method('sendRequest')
             ->will($this->returnValue($response));

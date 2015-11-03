@@ -11,7 +11,7 @@ class DelegatesClientTest extends TestCase
     {
         $fixtures = Delegates::$delegatesFixtures;
 
-        $mock = $this->getMock('Yandex\Metrica\Management\DelegatesClient', array('sendGetRequest'));
+        $mock = $this->getMock('Yandex\Metrica\Management\DelegatesClient', ['sendGetRequest']);
         $mock->expects($this->any())
             ->method('sendGetRequest')
             ->will($this->returnValue($fixtures));

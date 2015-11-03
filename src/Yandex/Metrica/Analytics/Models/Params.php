@@ -29,16 +29,14 @@ class Params extends Model
 
     protected $startIndex = null;
 
-    protected $mappingClasses = array(
-        
-    );
+    protected $mappingClasses = [];
 
-    protected $propNameMap = array(
+    protected $propNameMap = [
         'endDate' => 'end-date',
         'startDate' => 'start-date',
         'maxResults' => 'max-results',
         'startIndex' => 'start-index'
-    );
+    ];
 
     /**
      * Retrieve the endDate property

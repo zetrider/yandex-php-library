@@ -31,17 +31,17 @@ class CounterItem extends Model
 
     protected $partnerId = null;
 
-    protected $mappingClasses = array(
+    protected $mappingClasses = [
         'webvisor' => 'Yandex\Metrica\Management\Models\Webvisor',
         'codeOptions' => 'Yandex\Metrica\Management\Models\CodeOptions'
-    );
+    ];
 
-    protected $propNameMap = array(
+    protected $propNameMap = [
         'ownerLogin' => 'owner_login',
         'codeStatus' => 'code_status',
         'codeOptions' => 'code_options',
         'partnerId' => 'partner_id'
-    );
+    ];
 
     /**
      * Retrieve the id property

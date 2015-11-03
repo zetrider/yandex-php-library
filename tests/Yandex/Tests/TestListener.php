@@ -77,6 +77,24 @@ class TestListener implements \PHPUnit_Framework_TestListener
     }
 
     /**
+     * Risky test.
+     *
+     * @param \PHPUnit_Framework_Test $test
+     * @param \Exception              $e
+     * @param float                   $time
+     *
+     * @return void
+     *
+     * @since  Method available since Release 4.0.0
+     */
+    public function addRiskyTest(\PHPUnit_Framework_Test $test, \Exception $e, $time)
+    {
+        echo "\t[";
+        echo $this->colorize("risky");
+        echo "]-";
+    }
+
+    /**
      * @param \PHPUnit_Framework_Test $test
      * @return void
      */

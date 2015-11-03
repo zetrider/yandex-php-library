@@ -11,7 +11,7 @@ class GoalsClientTest extends TestCase
     {
         $fixtures = Goals::$goalsFixtures;
 
-        $mock = $this->getMock('Yandex\Metrica\Management\GoalsClient', array('sendGetRequest'));
+        $mock = $this->getMock('Yandex\Metrica\Management\GoalsClient', ['sendGetRequest']);
         $mock->expects($this->any())
             ->method('sendGetRequest')
             ->will($this->returnValue($fixtures));
@@ -40,7 +40,7 @@ class GoalsClientTest extends TestCase
     {
         $fixtures = Goals::$goalFixtures;
 
-        $mock = $this->getMock('Yandex\Metrica\Management\GoalsClient', array('sendGetRequest'));
+        $mock = $this->getMock('Yandex\Metrica\Management\GoalsClient', ['sendGetRequest']);
         $mock->expects($this->any())
             ->method('sendGetRequest')
             ->will($this->returnValue($fixtures));

@@ -11,24 +11,22 @@
  */
 namespace Yandex\Common;
 
-
+/**
+ * Class Model
+ * @package Yandex\Common
+ */
 abstract class Model
 {
+    protected $mappingClasses = [];
 
-    protected $mappingClasses = array(
-
-    );
-
-    protected $propNameMap = array(
-
-    );
+    protected $propNameMap = [];
 
     /**
      * Constructor
      *
      * @param array $data
      */
-    public function __construct($data = array())
+    public function __construct($data = [])
     {
         $this->fromArray($data);
     }
@@ -42,7 +40,6 @@ abstract class Model
     public function fromArray($data)
     {
         foreach ($data as $key => $val) {
-
             if (is_int($key)) {
                 if (method_exists($this, "add")) {
                     $this->add($val);
@@ -114,7 +111,7 @@ abstract class Model
     protected function toArrayRecursive($data)
     {
         if (is_array($data) || is_object($data)) {
-            $result = array();
+            $result = [];
             foreach ($data as $key => $value) {
                 if ($key === "mappingClasses" || $key === "propNameMap") {
                     continue;

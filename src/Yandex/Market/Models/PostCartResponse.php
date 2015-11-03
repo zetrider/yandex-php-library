@@ -10,13 +10,11 @@ class PostCartResponse extends Model
 
     protected $cart = null;
 
-    protected $mappingClasses = array(
+    protected $mappingClasses = [
         'cart' => 'Yandex\Market\Models\CartResponse'
-    );
+    ];
 
-    protected $propNameMap = array(
-        
-    );
+    protected $propNameMap = [];
 
     /**
      * Retrieve the cart property

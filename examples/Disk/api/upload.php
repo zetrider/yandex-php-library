@@ -24,11 +24,11 @@ if (isset($_COOKIE['yaAccessToken'])) {
 
     $diskClient->setServiceScheme(\Yandex\Disk\DiskClient::HTTPS_SCHEME);
 
-    $file = array(
+    $file = [
         'name' => $_FILES['file']['name'],
         'size' => $_FILES['file']['size'],
         'path' => $_FILES['file']['tmp_name']
-    );
+    ];
     $diskClient->uploadFile($_POST['href'], $file);
     header('Location: ' . $_SERVER["HTTP_REFERER"]);
 }

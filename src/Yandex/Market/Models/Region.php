@@ -15,13 +15,11 @@ class Region extends Model
 
     protected $parent = null;
 
-    protected $mappingClasses = array(
+    protected $mappingClasses = [
         'parent' => 'Yandex\Market\Models\Region'
-    );
+    ];
 
-    protected $propNameMap = array(
-        
-    );
+    protected $propNameMap = [];
 
     /**
      * Retrieve the id property

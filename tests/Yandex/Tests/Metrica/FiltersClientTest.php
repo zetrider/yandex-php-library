@@ -12,7 +12,7 @@ class FiltersClientTest extends TestCase
     {
         $fixtures = Filters::$filtersFixtures;
 
-        $mock = $this->getMock('Yandex\Metrica\Management\FiltersClient', array('sendGetRequest'));
+        $mock = $this->getMock('Yandex\Metrica\Management\FiltersClient', ['sendGetRequest']);
         $mock->expects($this->any())
             ->method('sendGetRequest')
             ->will($this->returnValue($fixtures));
@@ -37,7 +37,7 @@ class FiltersClientTest extends TestCase
     {
         $fixtures = Filters::$filterFixtures;
 
-        $mock = $this->getMock('Yandex\Metrica\Management\FiltersClient', array('sendGetRequest'));
+        $mock = $this->getMock('Yandex\Metrica\Management\FiltersClient', ['sendGetRequest']);
         $mock->expects($this->any())
             ->method('sendGetRequest')
             ->will($this->returnValue($fixtures));

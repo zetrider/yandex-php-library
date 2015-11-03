@@ -15,14 +15,12 @@ class CartRequest extends Model
 
     protected $delivery = null;
 
-    protected $mappingClasses = array(
+    protected $mappingClasses = [
         'items' => 'Yandex\Market\Models\Items',
         'delivery' => 'Yandex\Market\Models\Delivery'
-    );
+    ];
 
-    protected $propNameMap = array(
-        
-    );
+    protected $propNameMap = [];
 
     /**
      * Retrieve the currency property

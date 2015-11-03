@@ -37,13 +37,11 @@ class TableParams extends Model
 
     protected $pretty = null;
 
-    protected $mappingClasses = array(
-        
-    );
+    protected $mappingClasses = [];
 
-    protected $propNameMap = array(
+    protected $propNameMap = [
         'includeUndefined' => 'include_undefined'
-    );
+    ];
 
     /**
      * Retrieve the id property

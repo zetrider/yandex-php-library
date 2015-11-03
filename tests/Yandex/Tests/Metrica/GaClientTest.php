@@ -13,7 +13,7 @@ class GaClientTest extends TestCase
     {
         $fixtures = Analytics::$analyticsFixtures;
 
-        $mock = $this->getMock('Yandex\Metrica\Analytics\GaClient', array('sendGetRequest'));
+        $mock = $this->getMock('Yandex\Metrica\Analytics\GaClient', ['sendGetRequest']);
         $mock->expects($this->any())
             ->method('sendGetRequest')
             ->will($this->returnValue($fixtures));

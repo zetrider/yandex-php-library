@@ -7,7 +7,7 @@
 use Yandex\Metrica\Management\ManagementClient;
 
 
-$counters = array();
+$counters = [];
 $errorMessage = false;
 
 //Is auth

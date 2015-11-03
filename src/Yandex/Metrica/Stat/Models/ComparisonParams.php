@@ -45,11 +45,9 @@ class ComparisonParams extends Model
 
     protected $sort = null;
 
-    protected $mappingClasses = array(
-        
-    );
+    protected $mappingClasses = [];
 
-    protected $propNameMap = array(
+    protected $propNameMap = [
         'date1A' => 'date1_a',
         'date1B' => 'date1_b',
         'date2A' => 'date2_a',
@@ -57,7 +55,7 @@ class ComparisonParams extends Model
         'filtersA' => 'filters_a',
         'filtersB' => 'filters_b',
         'includeUndefined' => 'include_undefined'
-    );
+    ];
 
     /**
      * Retrieve the id property

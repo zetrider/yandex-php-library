@@ -37,7 +37,7 @@ if (isset($_COOKIE['yaAccessToken']) && isset($_COOKIE['yaClientId'])
         $errorMessage = $ex->getMessage();
     }
 }
-$orderStatusesTexts = array(
+$orderStatusesTexts = [
     PartnerClient::ORDER_STATUS_RESERVED => 'заказ в резерве',
     PartnerClient::ORDER_STATUS_UNPAID => 'заказ оформлен, но еще не оплачен',
     PartnerClient::ORDER_STATUS_PROCESSING => 'заказ находится в обработке',
@@ -45,7 +45,7 @@ $orderStatusesTexts = array(
     PartnerClient::ORDER_STATUS_PICKUP => 'заказ доставлен в пункт самовывоза',
     PartnerClient::ORDER_STATUS_DELIVERED => 'заказ получен покупателем',
     PartnerClient::ORDER_STATUS_CANCELLED => 'заказ отменен',
-);
+];
 ?>
 <!doctype html>
 <html lang="en-US">

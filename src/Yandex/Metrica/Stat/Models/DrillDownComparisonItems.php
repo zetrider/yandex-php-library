@@ -15,14 +15,12 @@ class DrillDownComparisonItems extends Model
 
     protected $expand = null;
 
-    protected $mappingClasses = array(
+    protected $mappingClasses = [
         'dimension' => 'Yandex\Metrica\Stat\Models\Dimension',
         'metrics' => 'Yandex\Metrica\Stat\Models\ComparisonMetrics'
-    );
+    ];
 
-    protected $propNameMap = array(
-        
-    );
+    protected $propNameMap = [];
 
     /**
      * Retrieve the dimension property

@@ -1,6 +1,6 @@
 <?php
-namespace Yandex\Metrica\Exception;
 
+namespace Yandex\Metrica\Exception;
 
 use \Yandex\Common\Exception\YandexException;
 

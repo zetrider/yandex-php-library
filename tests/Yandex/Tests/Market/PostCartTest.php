@@ -201,10 +201,10 @@ class PostCartTest extends TestCase
 
         $cart->setDeliveryOptions($deliveryOptions);
         $cart->setPaymentMethods(
-            array(
+            [
                 $jsonArray['cart']['paymentMethods'][0],
                 $jsonArray['cart']['paymentMethods'][1]
-            )
+            ]
         );
 
         $items = new Items();

@@ -10,13 +10,11 @@ class PostOrderAccept extends Model
 
     protected $order = null;
 
-    protected $mappingClasses = array(
+    protected $mappingClasses = [
         'order' => 'Yandex\Market\Models\Order'
-    );
+    ];
 
-    protected $propNameMap = array(
-        
-    );
+    protected $propNameMap = [];
 
     /**
      * Retrieve the order property

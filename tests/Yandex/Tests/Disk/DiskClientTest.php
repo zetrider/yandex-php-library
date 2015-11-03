@@ -29,7 +29,7 @@ class DiskClientTest extends TestCase
         $diskClient = $this->getDiskClient();
 
         try {
-            $diskClient->createDirectory('test');
+            $diskClient->createDirectory('/test');
             $this->fail('DiskRequestException has not been thrown');
         } catch (DiskRequestException $e) {
             $this->assertEquals(401, $e->getCode());

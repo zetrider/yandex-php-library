@@ -20,13 +20,11 @@ class Goal extends Model
 
     protected $conditions = null;
 
-    protected $mappingClasses = array(
+    protected $mappingClasses = [
         'conditions' => 'Yandex\Metrica\Management\Models\Conditions'
-    );
+    ];
 
-    protected $propNameMap = array(
-        
-    );
+    protected $propNameMap = [];
 
     /**
      * Retrieve the id property
