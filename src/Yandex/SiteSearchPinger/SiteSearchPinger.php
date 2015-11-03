@@ -39,7 +39,17 @@ class SiteSearchPinger extends AbstractServiceClient
     /**
      * @var string
      */
-    protected $host = "http://site.yandex.ru";
+    protected $serviceScheme = self::HTTP_SCHEME;
+
+    /**
+     * @var string
+     */
+    protected $serviceProtocolVersion = '1.0';
+
+    /**
+     * @var string
+     */
+    protected $serviceDomain = "site.yandex.ru";
 
     /**
      * @var string
@@ -218,9 +228,9 @@ class SiteSearchPinger extends AbstractServiceClient
 
         return $client->request(
             'POST',
-            $this->host . '/' . $this->path,
+            '/' . $this->path,
             [
-                'version' => '1.0',
+                'version' => $this->serviceProtocolVersion,
                 'form_params' => [
                     'urls' => join("\n", $urls),
                     'publishdate' => $publishDate
@@ -231,8 +241,7 @@ class SiteSearchPinger extends AbstractServiceClient
                     'search_id' => $this->searchId
                 ],
                 'headers' => [
-                    'Y-SDK' => 'Pinger',
-                    'User-Agent' => $this->getUserAgent()
+                    'Y-SDK' => 'Pinger'
                 ]
             ]
         );
