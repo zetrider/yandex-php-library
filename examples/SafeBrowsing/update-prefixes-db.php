@@ -50,18 +50,18 @@ use Yandex\Common\Exception\YandexException;
         /**
          * Example:
          */
-        //$savedChunks['ydx-malware-shavar'] = array(
-        //    'added' => array(
+        //$savedChunks['ydx-malware-shavar'] = [
+        //    'added' => [
         //        'min' => 1,
         //        'max' => 30000
-        //    ),
-        //    'removed' => array(
+        //    ],
+        //    'removed' => [
         //        'min' => 1,
         //        'max' => 30000
-        //    )
+        //    ]
         //
-        //);
-        $savedChunks = array();
+        //];
+        $savedChunks = [];
 
         foreach ($localHashPrefixes as $shavar => $shavarData) {
 
@@ -79,10 +79,10 @@ use Yandex\Common\Exception\YandexException;
             }
 
             if ($minChunkNum && $maxChunkNum) {
-                $savedChunks[$shavar]['added'] = array(
+                $savedChunks[$shavar]['added'] = [
                     'min' => $minChunkNum,
                     'max' => $maxChunkNum
-                );
+                ];
             }
         }
 
@@ -96,8 +96,8 @@ use Yandex\Common\Exception\YandexException;
             <div class="alert alert-info">Нужно сбросить БД</div>
         <?php
         } else {
-            $newPrefixes = array();
-            $removedPrefixes = array();
+            $newPrefixes = [];
+            $removedPrefixes = [];
             $newChunks = 0;
             $removedChunks = 0;
             if (is_array($malwaresData)) {

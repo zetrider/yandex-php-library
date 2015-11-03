@@ -67,13 +67,13 @@ if (isset($_COOKIE['yaAccessToken']) && isset($_COOKIE['yaClientId'])) {
             /** @var \Yandex\Market\Models\Campaign $campaign */
             if ($campaigns instanceof Traversable) {
 
-                $params = array(
+                $params = [
                     'status' => null,
                     'fromDate' => null,
                     'toDate' => null,
                     'pageSize' => 50,
                     'page' => 1
-                );
+                ];
 
                 $campaignId = $campaigns->current()->getId();
                 $market->setCampaignId($campaignId);
