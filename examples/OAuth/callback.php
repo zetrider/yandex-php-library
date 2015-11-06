@@ -18,6 +18,11 @@ session_start();
 
 <div class="container">
     <div class="col-md-8">
+        <ol class="breadcrumb">
+            <li><a href="/examples">Examples</a></li>
+            <li><a href="/examples/OAuth">OAuth</a></li>
+            <li class="active">callback</li>
+        </ol>
         <p>
             <a href="index.php">&lt;Назад</a>
         </p>

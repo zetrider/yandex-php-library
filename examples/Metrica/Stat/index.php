@@ -60,6 +60,11 @@ if (isset($_COOKIE['yaAccessToken']) && isset($_COOKIE['yaClientId'])) {
     <div class="jumbotron">
         <h2><a href="/examples/Metrica"><span class="glyphicon glyphicon-tasks"></span></a> Пример работы с Яндекс Метрикой</h2>
     </div>
+    <ol class="breadcrumb">
+        <li><a href="/examples">Examples</a></li>
+        <li><a href="/examples/Metrica">Metrica</a></li>
+        <li class="active">Stat</li>
+    </ol>
     <?php
     if (!isset($_COOKIE['yaAccessToken']) || !isset($_COOKIE['yaClientId'])) {
         ?>

@@ -25,6 +25,11 @@ use Yandex\Common\Exception\YandexException;
 <body>
 
 <div class="container">
+    <ol class="breadcrumb">
+        <li><a href="/examples">Examples</a></li>
+        <li><a href="/examples/SafeBrowsing">SafeBrowsing</a></li>
+        <li class="active">Обновление локальной базы префиксов хешей вредоносных сайтов</li>
+    </ol>
     <h3>Обновление локальной базы префиксов хешей вредоносных сайтов</h3>
     <?php
     try {

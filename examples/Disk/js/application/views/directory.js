@@ -15,7 +15,7 @@ define([
     PreviewView
     ) {
         return Backbone.View.extend({
-            el: 'body',
+            el: '#app',
             events: {
                 'mousedown .elements-list-item': 'showItemContextMenu',
                 'mousedown .container': 'showContextMenu',
