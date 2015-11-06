@@ -75,6 +75,10 @@ class SpellerClient extends AbstractServiceClient
             ]
         );
 
+        if (!empty($query['callback'])) {
+            return (string) $response->getBody();
+        }
+
         return $this->getDecodedBody($response->getBody());
     }
 
@@ -113,6 +117,10 @@ class SpellerClient extends AbstractServiceClient
                 'body' => join('&', $query)
             ]
         );
+
+        if (!empty($mergedParams['callback'])) {
+            return (string) $response->getBody();
+        }
 
         return $this->getDecodedBody($response->getBody());
     }

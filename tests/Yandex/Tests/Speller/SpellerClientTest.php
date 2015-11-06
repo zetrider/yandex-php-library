@@ -179,6 +179,13 @@ class SpellerClientTest extends TestCase
                 'params' => [],
                 'expectedResult' => []
             ],
+            'text without errors with callback' => [
+                'text' => 'test',
+                'params' => [
+                    'callback' => 'callback'
+                ],
+                'expectedResult' => 'callback([])'
+            ],
             'text with error in first word' => [
                 'text' => 'trest',
                 'params' => [],
@@ -243,6 +250,16 @@ class SpellerClientTest extends TestCase
                 ],
                 'params' => [],
                 'expectedResult' => [[],[]]
+            ],
+            'texts without errors with callback' => [
+                'text' => [
+                    'test',
+                    'best'
+                ],
+                'params' => [
+                    'callback' => 'callback'
+                ],
+                'expectedResult' => 'callback([[],[]])'
             ],
             'text with error in first word of first text' => [
                 'text' => [
