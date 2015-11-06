@@ -11,6 +11,7 @@
             <directory>./Yandex/Tests/Market</directory>
             <directory>./Yandex/Tests/OAuth</directory>
             <directory>./Yandex/Tests/Disk</directory>
+            <directory>./Yandex/Tests/Speller</directory>
         </testsuite>
     </testsuites>
     <listeners>

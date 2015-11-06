@@ -30,6 +30,11 @@ use Yandex\Common\Exception\YandexException;
 <body>
 
 <div class="container">
+    <ol class="breadcrumb">
+        <li><a href="/examples">Examples</a></li>
+        <li><a href="/examples/SafeBrowsing">SafeBrowsing</a></li>
+        <li class="active">Lookup API и Check Adult API</li>
+    </ol>
     <h3>Lookup API и Check Adult API</h3>
     <?php
     try {

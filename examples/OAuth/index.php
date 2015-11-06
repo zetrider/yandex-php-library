@@ -53,6 +53,10 @@ if (isset($_REQUEST['type'])) {
 
 <div class="container">
     <div>
+        <ol class="breadcrumb">
+            <li><a href="/examples">Examples</a></li>
+            <li class="active">OAuth</li>
+        </ol>
         <h3>Регистрация и настройка приложения</h3>
         <ol>
             <li>Создаем новое приложение на <a href="https://oauth.yandex.ru/client/new">этой</a> странице</li>

@@ -37,6 +37,10 @@ if (isset($_COOKIE['yaAccessToken']) && isset($_COOKIE['yaClientId'])) {
     <div class="jumbotron">
         <h2><span class="glyphicon glyphicon-shopping-cart"></span> Пример работы с Яндекс Маркетом</h2>
     </div>
+    <ol class="breadcrumb">
+        <li><a href="/examples">Examples</a></li>
+        <li class="active">Market</li>
+    </ol>
     <?php
     if (!isset($_COOKIE['yaAccessToken']) || !isset($_COOKIE['yaClientId'])) :
         ?>

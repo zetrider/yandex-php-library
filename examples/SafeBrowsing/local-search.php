@@ -71,6 +71,11 @@ function localSearchUrl($url, $key)
 <body>
 
 <div class="container">
+    <ol class="breadcrumb">
+        <li><a href="/examples">Examples</a></li>
+        <li><a href="/examples/SafeBrowsing">SafeBrowsing</a></li>
+        <li class="active">Поиск префикса хеша сайта в локальной БД</li>
+    </ol>
     <h3>Поиск префикса хеша сайта в локальной БД</h3>
     <?php
     try {

@@ -26,6 +26,10 @@ use Yandex\Common\Exception\YandexException as YandexException;
         <h2><span class="glyphicon glyphicon-search"></span> Пример работы с Яндекс Пингером</h2>
     </div>
     <div class="col-md-8">
+        <ol class="breadcrumb">
+            <li><a href="/examples">Examples</a></li>
+            <li class="active">SiteSearchPinger</li>
+        </ol>
         <?php
         try {
 
