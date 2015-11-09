@@ -310,6 +310,68 @@ class Stat
         ]
     ];
 
+    public static $byTimeWithGroupFixtures = [
+        "query" => [
+            "id" => 2138128,
+            "dimensions" => [],
+            "metrics" => [
+                "ym:s:pageviews"
+            ],
+            "sort" => [
+                "-ym:s:pageviews"
+            ],
+            "date1" => "2015-09-21",
+            "date2" => "2015-09-28",
+            "auto_group_size" => 8,
+            "group" => "hours",
+            "auto_group_type" => "hours"
+        ],
+        "data" => [
+            0 => [
+                "dimensions" => [],
+                "metrics" => [
+                    0 => [
+                        0.0,
+                        28.0,
+                        0.0,
+                        0.0,
+                        4.0,
+                        0.0,
+                        0.0,
+                        6.0,
+                        0.0,
+                        0.0,
+                        1.0,
+                        6.0,
+                        0.0,
+                        0.0,
+                        0.0,
+                        0.0,
+                        0.0,
+                        0.0,
+                        0.0,
+                        0.0,
+                        0.0,
+                        0.0,
+                        13.0,
+                        0.0
+                    ]
+                ]
+            ]
+        ],
+        "total_rows" => 6,
+        "sampled" => false,
+        "sample_share" => 1,
+        "sample_size" => 6,
+        "sample_space" => 6,
+        "data_lag" => 114,
+        "totals" => [
+            0 => [
+                58.0
+            ]
+        ]
+    ];
+
     public static $comparisonFixtures = [
         "query" => [
             "id" => 2138128,

@@ -4,9 +4,12 @@ namespace Yandex\Metrica\Stat\Models;
 
 use Yandex\Common\Model;
 
+/**
+ * Class Query
+ * @package Yandex\Metrica\Stat\Models
+ */
 class Query extends Model
 {
-
     protected $id = null;
 
     protected $preset = null;
@@ -27,9 +30,18 @@ class Query extends Model
 
     protected $filters = null;
 
+    protected $group = null;
+
+    protected $autoGroupType = null;
+
+    protected $autoGroupSize = null;
+
     protected $mappingClasses = [];
 
-    protected $propNameMap = [];
+    protected $propNameMap = [
+        'autoGroupType' => 'auto_group_type',
+        'autoGroupSize' => 'auto_group_size'
+    ];
 
     /**
      * Retrieve the id property
@@ -248,6 +260,72 @@ class Query extends Model
     public function setFilters($filters)
     {
         $this->filters = $filters;
+        return $this;
+    }
+
+    /**
+     * Retrieve the group property
+     *
+     * @return string|null
+     */
+    public function getGroup()
+    {
+        return $this->group;
+    }
+
+    /**
+     * Set the group property
+     *
+     * @param string $group
+     * @return $this
+     */
+    public function setGroup($group)
+    {
+        $this->group = $group;
+        return $this;
+    }
+
+    /**
+     * Retrieve the autoGroupType property
+     *
+     * @return string|null
+     */
+    public function getAutoGroupType()
+    {
+        return $this->autoGroupType;
+    }
+
+    /**
+     * Set the autoGroupType property
+     *
+     * @param string $autoGroupType
+     * @return $this
+     */
+    public function setAutoGroupType($autoGroupType)
+    {
+        $this->autoGroupType = $autoGroupType;
+        return $this;
+    }
+
+    /**
+     * Retrieve the autoGroupSize property
+     *
+     * @return string|null
+     */
+    public function getAutoGroupSize()
+    {
+        return $this->autoGroupSize;
+    }
+
+    /**
+     * Set the autoGroupSize property
+     *
+     * @param string $autoGroupSize
+     * @return $this
+     */
+    public function setAutoGroupSize($autoGroupSize)
+    {
+        $this->autoGroupSize = $autoGroupSize;
         return $this;
     }
 }
