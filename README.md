@@ -24,8 +24,7 @@ PHP библиотека к API Яндекса
 поддерживаются в версиях библиотеки > 0.4.1 и < 2.0.0 (из стабильных релизов это 1.0.0).
 Выпуск обновлений для этой версии под вопросом.
 
-В дальнейшем планируется переход к php 5.5 и [Guzzle 6](https://github.com/guzzle/guzzle).
-Эти изменения будут добавляться в master и потом будет добавлен релиз 2.0.0.
+В 2.0.0 был сделан переход к php 5.5 и [Guzzle 6](https://github.com/guzzle/guzzle).
 
 ### composer
 
@@ -77,6 +76,8 @@ $files = $disk->directoryContents();
 * [Yandex Site Search Pinger](https://github.com/nixsolutions/yandex-php-library/wiki/Yandex-Site-Search-Pinger)
 * [Yandex Safe Browsing](https://github.com/nixsolutions/yandex-php-library/wiki/Yandex-Safe-Browsing)
 * [Yandex Metrica](https://github.com/nixsolutions/yandex-php-library/wiki/Yandex-Metrica)
+* [Yandex Dictionary](https://github.com/nixsolutions/yandex-php-library/wiki/Yandex-Dictionary)
+* [Yandex Speller](https://github.com/nixsolutions/yandex-php-library/wiki/Yandex-Speller)
 
 ## Лицензия
 
