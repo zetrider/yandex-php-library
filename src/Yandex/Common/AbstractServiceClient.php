@@ -77,6 +77,11 @@ abstract class AbstractServiceClient extends AbstractPackage
     protected $debug = false;
 
     /**
+     * @var null
+     */
+    protected $client = null;
+
+    /**
      * @var string
      */
     protected $libraryName = 'yandex-php-library';
@@ -227,26 +232,41 @@ abstract class AbstractServiceClient extends AbstractPackage
     }
 
     /**
+     * @param ClientInterface $client
+     * @return $this
+     */
+    protected function setClient(ClientInterface $client)
+    {
+        $this->client = $client;
+
+        return $this;
+    }
+
+    /**
      * @return ClientInterface
      */
     protected function getClient()
     {
-        $defaultOptions = [
-            'base_uri' => $this->getServiceUrl(),
-            'headers' => [
-                'Authorization' => 'OAuth ' . $this->getAccessToken(),
-                'Host' => $this->getServiceDomain(),
-                'User-Agent' => $this->getUserAgent(),
-                'Accept' => '*/*'
-            ]
-        ];
-        if ($this->getProxy()) {
-            $defaultOptions['proxy'] = $this->getProxy();
+        if (is_null($this->client)) {
+            $defaultOptions = [
+                'base_uri' => $this->getServiceUrl(),
+                'headers' => [
+                    'Authorization' => 'OAuth ' . $this->getAccessToken(),
+                    'Host' => $this->getServiceDomain(),
+                    'User-Agent' => $this->getUserAgent(),
+                    'Accept' => '*/*'
+                ]
+            ];
+            if ($this->getProxy()) {
+                $defaultOptions['proxy'] = $this->getProxy();
+            }
+            if ($this->getDebug()) {
+                $defaultOptions['debug'] = $this->getDebug();
+            }
+            $this->client = new Client($defaultOptions);
         }
-        if ($this->getDebug()) {
-            $defaultOptions['debug'] = $this->getDebug();
-        }
-        return new Client($defaultOptions);
+
+        return $this->client;
     }
 
     /**

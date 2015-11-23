@@ -4,6 +4,7 @@ namespace Yandex\Tests\OAuth;
 
 use Yandex\OAuth\OAuthClient;
 use Yandex\Tests\TestCase;
+use GuzzleHttp\Psr7\Response;
 
 class OAuthClientTest extends TestCase
 {
@@ -187,6 +188,62 @@ class OAuthClientTest extends TestCase
                 'expectedServiceScheme' => 'test'
             ],
         ];
+    }
+
+    public function testRequestAccessToken()
+    {
+        $code = '33333333';
+        $clientId = 'client-id';
+        $clientSecret = 'client-secret';
+
+        $response = new Response(
+            200,
+            [
+                'Content-type' => 'application/json'
+            ],
+            json_encode([
+                "access_token" => "5fd980a5133b4887a8937fe07d3a0a60",
+                "token_type" => "bearer",
+                "expires_in" => 124234123534
+            ]),
+            '1.1',
+            'OK'
+        );
+
+        $guzzleClient = $this->getMockBuilder('GuzzleHttp\Client')
+            ->setMethods(array('request'))
+            ->getMock();
+
+        $guzzleClient->expects($this->once())
+            ->method('request')
+            ->with(
+                $this->equalTo('POST'),
+                $this->equalTo('/token'),
+                $this->equalTo([
+                    'auth' => [
+                        $clientId,
+                        $clientSecret
+                    ],
+                    'form_params' => [
+                        'grant_type'    => 'authorization_code',
+                        'code'          => $code,
+                        'client_id'     => $clientId,
+                        'client_secret' => $clientSecret
+                    ]
+                ])
+            )
+            ->willReturn($response);
+
+        $oauthClient = $this->getOauthClient();
+
+        $setClient = self::getNotAccessibleMethod($oauthClient, 'setClient');
+
+        $setClient->invokeArgs($oauthClient, [$guzzleClient]);
+
+        $oauthClient->setClientId($clientId);
+        $oauthClient->setClientSecret($clientSecret);
+
+        $oauthClient->requestAccessToken($code);
     }
 
     /**
