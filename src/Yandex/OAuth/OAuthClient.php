@@ -155,6 +155,10 @@ class OAuthClient extends AbstractServiceClient
                 'POST',
                 '/token',
                 [
+                    'auth' => [
+                        $this->clientId,
+                        $this->clientSecret
+                    ],
                     'form_params' => [
                         'grant_type'    => 'authorization_code',
                         'code'          => $code,
