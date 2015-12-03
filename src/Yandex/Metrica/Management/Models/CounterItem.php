@@ -31,6 +31,8 @@ class CounterItem extends Model
 
     protected $partnerId = null;
 
+    protected $mirrors = null;
+
     protected $mappingClasses = array(
         'webvisor' => 'Yandex\Metrica\Management\Models\Webvisor',
         'codeOptions' => 'Yandex\Metrica\Management\Models\CodeOptions'
@@ -40,7 +42,8 @@ class CounterItem extends Model
         'ownerLogin' => 'owner_login',
         'codeStatus' => 'code_status',
         'codeOptions' => 'code_options',
-        'partnerId' => 'partner_id'
+        'partnerId' => 'partner_id',
+        'mirrors' => 'mirrors'
     );
 
     /**
@@ -284,4 +287,27 @@ class CounterItem extends Model
         $this->partnerId = $partnerId;
         return $this;
     }
+
+    /**
+     * Retrieve the mirrors property
+     *
+     * @return array|null
+     */
+    public function getMirrors()
+    {
+        return $this->mirrors;
+    }
+
+    /**
+     * Set the mirrors property
+     *
+     * @param int $mirrors
+     * @return $this
+     */
+    public function setMirrors($mirrors)
+    {
+        $this->mirrors = $mirrors;
+        return $this;
+    }
+
 }
