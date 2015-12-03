@@ -17,6 +17,7 @@ use GuzzleHttp\Psr7\Response;
 use GuzzleHttp\Exception\ClientException;
 use Yandex\Common\Exception\ForbiddenException;
 use Yandex\Common\Exception\UnauthorizedException;
+use Yandex\Common\Exception\TooManyRequestsException;
 use Yandex\Metrica\Exception\MetricaException;
 
 /**
@@ -94,6 +95,10 @@ class MetricaClient extends AbstractServiceClient
 
             if ($code === 401) {
                 throw new UnauthorizedException($message);
+            }
+
+            if ($code === 429) {
+                throw new TooManyRequestsException($message);
             }
 
             throw new MetricaException(
