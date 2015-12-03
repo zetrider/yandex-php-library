@@ -309,5 +309,4 @@ class CounterItem extends Model
         $this->mirrors = $mirrors;
         return $this;
     }
-
 }
