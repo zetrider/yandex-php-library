@@ -10,9 +10,9 @@ class ResponseModelInfoGet extends Model
 
     protected $model = null;
 
-    protected $mappingClasses = array(
-        'model' => 'Yandex\Market\Content\Models\ModelInfo',
-    );
+    protected $mappingClasses = [
+        'model' => 'Yandex\Market\Content\Models\ModelInfo'
+    ];
 
     /**
      * Retrieve the model property

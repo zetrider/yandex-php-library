@@ -8,13 +8,13 @@ class ResponseFilterCategoryGet extends PagedModel
 {
     protected $regionDelimiterPosition = null;
 
-    protected $mappingClasses = array(
-        'items' => 'Yandex\Market\Content\Models\SearchResults',
-    );
+    protected $mappingClasses = [
+        'items' => 'Yandex\Market\Content\Models\SearchResults'
+    ];
 
-    protected $propNameMap = array(
+    protected $propNameMap = [
         'results' => 'items'
-    );
+    ];
 
     /**
      * Constructor

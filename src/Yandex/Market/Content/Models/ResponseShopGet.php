@@ -8,9 +8,9 @@ class ResponseShopGet extends Model
 {
     protected $shop = null;
 
-    protected $mappingClasses = array(
-        'shop' => 'Yandex\Market\Content\Models\Shop',
-    );
+    protected $mappingClasses = [
+        'shop' => 'Yandex\Market\Content\Models\Shop'
+    ];
 
     /**
      * Retrieve the shop property

@@ -51,20 +51,20 @@ class ModelSingle extends MarketModel
 
     protected $previewPhoto = null;
 
-    protected $mappingClasses = array(
+    protected $mappingClasses = [
         'photos' => 'Yandex\Market\Content\Models\Photos',
         'prices' => 'Yandex\Market\Content\Models\Prices',
         'facts' => 'Yandex\Market\Content\Models\Facts',
         'mainPhoto' => 'Yandex\Market\Content\Models\Base\Photo',
         'bigPhoto' => 'Yandex\Market\Content\Models\Base\Photo',
         'previewPhoto' => 'Yandex\Market\Content\Models\Base\Photo'
-    );
+    ];
 
-    protected $propNameMap = array(
+    protected $propNameMap = [
         'vendor' => 'vendorName',
         'modificationsCount' => 'childrenCount',
         'gradeCount' => 'gradesCount'
-    );
+    ];
 
     /**
      * Constructor

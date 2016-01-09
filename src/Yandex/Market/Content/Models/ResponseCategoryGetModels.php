@@ -6,9 +6,9 @@ use Yandex\Market\Content\Models\Base\PagedModel;
 
 class ResponseCategoryGetModels extends PagedModel
 {
-    protected $mappingClasses = array(
+    protected $mappingClasses = [
         'items' => 'Yandex\Market\Content\Models\Base\Models'
-    );
+    ];
 
     /**
      * Constructor

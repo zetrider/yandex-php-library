@@ -10,10 +10,10 @@ class Media extends Model
 
     protected $articlesCount = null;
 
-    protected $propNameMap = array(
+    protected $propNameMap = [
         'reviews' => 'reviewsCount',
         'articles' => 'articlesCount',
-    );
+    ];
 
     /**
      * Retrieve the reviewsCount property

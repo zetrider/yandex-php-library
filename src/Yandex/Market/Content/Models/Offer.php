@@ -54,7 +54,7 @@ class Offer extends Model
 
     protected $filters = null;
 
-    protected $mappingClasses = array(
+    protected $mappingClasses = [
         'shopInfo' => 'Yandex\Market\Content\Models\ShopInfo',
         'photos' => 'Yandex\Market\Content\Models\OfferPhotos',
         'previewPhotos' => 'Yandex\Market\Content\Models\OfferPhotos',
@@ -64,13 +64,13 @@ class Offer extends Model
         'delivery' => 'Yandex\Market\Content\Models\Delivery',
         'outlet' => 'Yandex\Market\Content\Models\Outlet',
         'filters' => 'Yandex\Market\Content\Models\Filters',
-        'vendor' =>  'Yandex\Market\Content\Models\Vendor',
-    );
+        'vendor' =>  'Yandex\Market\Content\Models\Vendor'
+    ];
 
-    protected $propNameMap = array(
+    protected $propNameMap = [
         'offerId' => 'id',
-        'variations' => 'variationsCount',
-    );
+        'variations' => 'variationsCount'
+    ];
 
     /**
      * Retrieve the id property

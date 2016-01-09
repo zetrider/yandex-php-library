@@ -6,13 +6,13 @@ use Yandex\Market\Content\Models\Base\PagedModel;
 
 class ResponseVendorsListGet extends PagedModel
 {
-    protected $mappingClasses = array(
+    protected $mappingClasses = [
         'items' => 'Yandex\Market\Content\Models\Vendors'
-    );
+    ];
 
-    protected $propNameMap = array(
+    protected $propNameMap = [
         'vendor' => 'items'
-    );
+    ];
 
     /**
      * Constructor

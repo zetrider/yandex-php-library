@@ -6,9 +6,9 @@ use Yandex\Market\Content\Models\Base\PagedModel;
 
 class ResponseCategoryGetList extends PagedModel
 {
-    protected $mappingClasses = array(
+    protected $mappingClasses = [
         'items' => 'Yandex\Market\Content\Models\Categories'
-    );
+    ];
 
     /**
      * Constructor

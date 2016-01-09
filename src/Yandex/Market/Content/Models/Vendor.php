@@ -25,16 +25,16 @@ class Vendor extends Model
 
     protected $topCategories = null;
 
-    protected $mappingClasses = array(
+    protected $mappingClasses = [
         'categories' => 'Yandex\Market\Content\Models\Categories',
         'topCategories' => 'Yandex\Market\Content\Models\Categories'
-    );
+    ];
 
-    protected $propNameMap = array(
+    protected $propNameMap = [
         'topModelId' => 'modelId',
         'topModelImage' => 'modelPhotoUrl',
-        'picture' => 'pictureUrl',
-    );
+        'picture' => 'pictureUrl'
+    ];
 
     /**
      * Retrieve the id property

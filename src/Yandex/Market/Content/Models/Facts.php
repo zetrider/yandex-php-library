@@ -10,15 +10,15 @@ class Facts extends Model
 
     protected $contras = null;
 
-    protected $mappingClasses = array(
+    protected $mappingClasses = [
         'pros' => 'Yandex\Market\Content\Models\Pros',
         'contras' => 'Yandex\Market\Content\Models\Contras'
-    );
+    ];
 
-    protected $propNameMap = array(
+    protected $propNameMap = [
         'pro' => 'pros',
-        'contra' => 'contras',
-    );
+        'contra' => 'contras'
+    ];
 
     /**
      * Retrieve the pros property

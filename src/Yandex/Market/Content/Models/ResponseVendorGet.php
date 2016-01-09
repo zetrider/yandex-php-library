@@ -10,9 +10,9 @@ class ResponseVendorGet extends Model
 
     protected $vendor = null;
 
-    protected $mappingClasses = array(
+    protected $mappingClasses = [
         'vendor' => 'Yandex\Market\Content\Models\Vendor'
-    );
+    ];
 
     /**
      * Retrieve the categories property

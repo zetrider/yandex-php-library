@@ -39,12 +39,12 @@ class Category extends Model
 
     protected $imageUrl = null;
 
-    protected $mappingClasses = array(
+    protected $mappingClasses = [
         'vendors' => 'Yandex\Market\Content\Models\Vendors',
         'children' => 'Yandex\Market\Content\Models\Categories'
-    );
+    ];
 
-    protected $propNameMap = array(
+    protected $propNameMap = [
         'visual' => 'isVisual',
         'uniqName' => 'uniqueName',
         'modelsNum' => 'modelsCount',
@@ -54,7 +54,7 @@ class Category extends Model
         'innerCategories' => 'children',
         'count' => 'offersCount',
         'uniq_name' => 'uniqueName',
-    );
+    ];
 
     /**
      * Retrieve the id property

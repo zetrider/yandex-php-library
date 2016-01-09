@@ -49,19 +49,19 @@ class ModelParent extends MarketModel
      */
     protected $childrenCount = null;
 
-    protected $mappingClasses = array(
+    protected $mappingClasses = [
         'photos' => 'Yandex\Market\Content\Models\Photos',
         'prices' => 'Yandex\Market\Content\Models\Prices',
         'facts' => 'Yandex\Market\Content\Models\Facts',
         'mainPhoto' => 'Yandex\Market\Content\Models\Base\Photo',
-        'children' => 'Yandex\Market\Content\Models\Children',
-    );
+        'children' => 'Yandex\Market\Content\Models\Children'
+    ];
 
-    protected $propNameMap = array(
+    protected $propNameMap = [
         'vendor' => 'vendorName',
         'modificationsCount' => 'childrenCount',
         'gradeCount' => 'gradesCount'
-    );
+    ];
 
     /**
      * Constructor

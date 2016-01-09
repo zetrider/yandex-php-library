@@ -17,7 +17,7 @@ class Fact extends Model
     {
         // fix for opinion pro & contra.
         if (is_string($data))
-            $data = array('fact'=>$data);
+            $data = ['fact'=>$data];
 
         parent::__construct($data);
     }

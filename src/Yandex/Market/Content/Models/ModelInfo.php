@@ -28,20 +28,20 @@ class ModelInfo extends Model
 
     protected $facts = null;
 
-    protected $mappingClasses = array(
+    protected $mappingClasses = [
         'category' => 'Yandex\Market\Content\Models\Category',
         'prices' => 'Yandex\Market\Content\Models\Prices',
         'vendor' => 'Yandex\Market\Content\Models\Vendor',
         'rating' => 'Yandex\Market\Content\Models\Rating',
         'media' => 'Yandex\Market\Content\Models\Media',
         'facts' => 'Yandex\Market\Content\Models\Facts'
-    );
+    ];
 
-    protected $propNameMap = array(
+    protected $propNameMap = [
         'offerCount' => 'offersCount',
         'price' => 'prices',
-        'photo' => 'photoUrl',
-    );
+        'photo' => 'photoUrl'
+    ];
 
     /**
      * Retrieve the id property

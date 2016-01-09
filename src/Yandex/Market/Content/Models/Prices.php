@@ -12,10 +12,10 @@ class Prices extends Price
 
     protected $avg = null;
 
-    protected $propNameMap = array(
+    protected $propNameMap = [
         'curCode' => 'currencyCode',
-        'curName' => 'currencyName',
-    );
+        'curName' => 'currencyName'
+    ];
 
     /**
      * Constructor
@@ -30,7 +30,9 @@ class Prices extends Price
     }
 
     /**
-     * @return null
+     * Retrieve the max property
+     *
+     * @return float|null
      */
     public function getMax()
     {
@@ -38,7 +40,9 @@ class Prices extends Price
     }
 
     /**
-     * @return null
+     * Retrieve the min property
+     *
+     * @return float|null
      */
     public function getMin()
     {
@@ -46,7 +50,9 @@ class Prices extends Price
     }
 
     /**
-     * @return null
+     * Retrieve the avg property
+     *
+     * @return float|null
      */
     public function getAvg()
     {

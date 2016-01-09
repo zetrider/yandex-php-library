@@ -6,13 +6,13 @@ use Yandex\Market\Content\Models\Base\PagedModel;
 
 class ResponseShopOpinionsGet extends PagedModel
 {
-    protected $mappingClasses = array(
+    protected $mappingClasses = [
         'items' => 'Yandex\Market\Content\Models\ShopOpinions'
-    );
+    ];
 
-    protected $propNameMap = array(
-        'opinion' => 'items',
-    );
+    protected $propNameMap = [
+        'opinion' => 'items'
+    ];
 
     /**
      * Constructor

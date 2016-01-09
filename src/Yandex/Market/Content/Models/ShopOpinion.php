@@ -42,13 +42,13 @@ class ShopOpinion extends Model
 
     protected $shop = null;
 
-    protected $mappingClasses = array(
+    protected $mappingClasses = [
         'authorInfo' => 'Yandex\Market\Content\Models\OpinionAuthorInfo',
         'comments' => 'Yandex\Market\Content\Models\Comments',
         'pro' => 'Yandex\Market\Content\Models\Fact',
         'contra' => 'Yandex\Market\Content\Models\Fact',
         'shop' => 'Yandex\Market\Content\Models\Shop'
-    );
+    ];
 
     /**
      * Retrieve the grade property

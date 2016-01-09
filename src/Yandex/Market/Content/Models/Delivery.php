@@ -36,14 +36,14 @@ class Delivery extends Model
 
     protected $brief = null;
 
-    protected $mappingClasses = array(
+    protected $mappingClasses = [
         'price' => 'Yandex\Market\Content\Models\Base\Price',
         'methods' => 'Yandex\Market\Content\Models\DeliveryMethods',
-    );
+    ];
 
-    protected $propNameMap = array(
+    protected $propNameMap = [
         'priorityRegion' => 'priorityRegionId',
-    );
+    ];
 
     /**
      * Retrieve the priorityRegionId property

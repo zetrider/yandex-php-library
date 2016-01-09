@@ -40,11 +40,11 @@ class ModelOpinion extends Model
 
     protected $qualityGrade = null;
 
-    protected $mappingClasses = array(
+    protected $mappingClasses = [
         'authorInfo' => 'Yandex\Market\Content\Models\OpinionAuthorInfo',
         'pro' => 'Yandex\Market\Content\Models\Fact',
-        'contra' => 'Yandex\Market\Content\Models\Fact',
-    );
+        'contra' => 'Yandex\Market\Content\Models\Fact'
+    ];
 
     /**
      * Retrieve the grade property

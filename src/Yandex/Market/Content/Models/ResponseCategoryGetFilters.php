@@ -8,9 +8,9 @@ class ResponseCategoryGetFilters extends Model
 {
     protected $filters = null;
 
-    protected $mappingClasses = array(
+    protected $mappingClasses = [
         'filters' => 'Yandex\Market\Content\Models\Filters'
-    );
+    ];
 
     /**
      * Retrieve the filters property

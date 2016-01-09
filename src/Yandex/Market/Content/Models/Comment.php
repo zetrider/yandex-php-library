@@ -32,17 +32,17 @@ class Comment extends Model
 
     protected $children = null;
 
-    protected $mappingClasses = array(
+    protected $mappingClasses = [
         'user' => 'Yandex\Market\Content\Models\User',
         'children' => 'Yandex\Market\Content\Models\Comments'
-    );
+    ];
 
-    protected $propNameMap = array(
+    protected $propNameMap = [
         'valid' => 'isValid',
         'deleted' => 'isDeleted',
         'blocked' => 'isBlocked',
         'sticky' => 'isSticky'
-    );
+    ];
 
     /**
      * Retrieve the id property

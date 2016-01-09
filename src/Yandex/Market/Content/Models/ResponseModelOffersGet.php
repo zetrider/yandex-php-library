@@ -22,10 +22,10 @@ class ResponseModelOffersGet extends PagedModel
         parent::__construct($data['offers']);
     }
 
-    protected $mappingClasses = array(
+    protected $mappingClasses = [
         'items' => 'Yandex\Market\Content\Models\Offers',
-        'filters' => 'Yandex\Market\Content\Models\Filters',
-    );
+        'filters' => 'Yandex\Market\Content\Models\Filters'
+    ];
 
     /**
      * Retrieve the $regionDelimiterPosition property

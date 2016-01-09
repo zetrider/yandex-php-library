@@ -8,9 +8,9 @@ class ResponseOfferGet extends Model
 {
     protected $offer = null;
 
-    protected $mappingClasses = array(
+    protected $mappingClasses = [
         'offer' => 'Yandex\Market\Content\Models\Offer'
-    );
+    ];
 
     /**
      * Retrieve the offer property

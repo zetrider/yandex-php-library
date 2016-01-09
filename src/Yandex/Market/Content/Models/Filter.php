@@ -34,15 +34,15 @@ class Filter extends Model
 
     protected $enumFilterType = null;
 
-    protected $mappingClasses = array(
+    protected $mappingClasses = [
         'property' => 'Yandex\Market\Content\Models\Property',
         'options' => 'Yandex\Market\Content\Models\Options'
-    );
+    ];
 
-    protected $propNameMap = array(
+    protected $propNameMap = [
         'shortname' => 'shortName',
         'filterProperty' => 'property'
-    );
+    ];
 
     public function getId()
     {

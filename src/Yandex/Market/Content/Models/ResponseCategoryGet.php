@@ -8,9 +8,9 @@ class ResponseCategoryGet extends Model
 {
     protected $category = null;
 
-    protected $mappingClasses = array(
+    protected $mappingClasses = [
         'category' => 'Yandex\Market\Content\Models\Category'
-    );
+    ];
 
     /**
      * Retrieve the categories property

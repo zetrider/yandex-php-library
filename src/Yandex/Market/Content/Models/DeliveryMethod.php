@@ -16,9 +16,9 @@ class DeliveryMethod extends Model
 
     protected $speedTo = null;
 
-    protected $propNameMap = array(
+    protected $propNameMap = [
         'price' => 'priceValue',
-    );
+    ];
 
     /**
      * Retrieve the serviceName property

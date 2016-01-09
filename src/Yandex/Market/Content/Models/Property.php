@@ -10,15 +10,25 @@ class Property extends Model
 
     protected $description = null;
 
-    protected $propNameMap = array(
+    protected $propNameMap = [
         'longname' => 'longName'
-    );
+    ];
 
+    /**
+     * Retrieve the longName property
+     *
+     * @return string|null
+     */
     public function getLongName()
     {
         return $this->longName;
     }
 
+    /**
+     * Retrieve the description property
+     *
+     * @return string|null
+     */
     public function getDescription()
     {
         return $this->description;

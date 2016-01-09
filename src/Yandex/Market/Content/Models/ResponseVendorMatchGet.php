@@ -9,9 +9,9 @@ class ResponseVendorMatchGet extends Model
 
     protected $vendor = null;
 
-    protected $mappingClasses = array(
+    protected $mappingClasses = [
         'vendor' => 'Yandex\Market\Content\Models\Vendor'
-    );
+    ];
 
     /**
      * Retrieve the time property

@@ -37,18 +37,18 @@ class ModelVisual extends MarketModel
      */
     protected $childrenCount = null;
 
-    protected $mappingClasses = array(
+    protected $mappingClasses = [
         'photos' => 'Yandex\Market\Content\Models\ModelVisualPhotos',
         'prices' => 'Yandex\Market\Content\Models\Prices',
         'previewPhotos' => 'Yandex\Market\Content\Models\ModelVisualPhotos',
         // @todo Need test below properties.
         'filters' => 'Yandex\Market\Content\Models\Filters',
-        'offers' => 'Yandex\Market\Content\Models\Offers',
-    );
+        'offers' => 'Yandex\Market\Content\Models\Offers'
+    ];
 
-    protected $propNameMap = array(
+    protected $propNameMap = [
         'modificationsCount' => 'childrenCount'
-    );
+    ];
 
     /**
      * Retrieve the offersCount property

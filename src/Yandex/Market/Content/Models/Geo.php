@@ -14,9 +14,9 @@ class Geo extends Model
 
     protected $distance = null;
 
-    protected $propNameMap = array(
-        'geoId' => 'id',
-    );
+    protected $propNameMap = [
+        'geoId' => 'id'
+    ];
 
     /**
      * Retrieve the id property

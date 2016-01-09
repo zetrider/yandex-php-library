@@ -8,13 +8,13 @@ class ResponseGeoRegionGet extends Model
 {
     protected $geoRegion = null;
 
-    protected $mappingClasses = array(
+    protected $mappingClasses = [
         'geoRegion' => 'Yandex\Market\Content\Models\GeoRegion'
-    );
+    ];
 
-    protected $propNameMap = array(
+    protected $propNameMap = [
         'georegion' => 'geoRegion'
-    );
+    ];
 
     /**
      * Retrieve the geoRegion property

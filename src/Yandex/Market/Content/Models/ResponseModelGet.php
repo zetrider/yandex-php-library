@@ -8,9 +8,9 @@ class ResponseModelGet extends Model
 {
     protected $model = null;
 
-    protected $mappingClasses = array(
-        'model' => 'Yandex\Market\Content\Models\Base\MarketModel',
-    );
+    protected $mappingClasses = [
+        'model' => 'Yandex\Market\Content\Models\Base\MarketModel'
+    ];
 
     /**
      * Constructor

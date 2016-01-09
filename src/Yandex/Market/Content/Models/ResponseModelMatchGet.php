@@ -10,13 +10,13 @@ class ResponseModelMatchGet extends Model
 
     protected $models = null;
 
-    protected $mappingClasses = array(
-        'models' => 'Yandex\Market\Content\Models\Base\Models',
-    );
+    protected $mappingClasses = [
+        'models' => 'Yandex\Market\Content\Models\Base\Models'
+    ];
 
-    protected $propNameMap = array(
-        'model' => 'models',
-    );
+    protected $propNameMap = [
+        'model' => 'models'
+    ];
 
     /**
      * Retrieve the time property

@@ -8,13 +8,13 @@ class ResponsePopularModelsGet extends Model
 {
     protected $categories = null;
 
-    protected $mappingClasses = array(
+    protected $mappingClasses = [
         'categories' => 'Yandex\Market\Content\Models\Categories'
-    );
+    ];
 
-    protected $propNameMap = array(
-        'topCategoryList' => 'categories',
-    );
+    protected $propNameMap = [
+        'topCategoryList' => 'categories'
+    ];
 
     /**
      * Constructor
