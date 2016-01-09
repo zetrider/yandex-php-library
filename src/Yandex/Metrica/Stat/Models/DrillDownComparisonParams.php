@@ -50,14 +50,14 @@ class DrillDownComparisonParams extends Model
     protected $mappingClasses = [];
 
     protected $propNameMap = [
-        'date1A' => 'date1_a',
-        'date1B' => 'date1_b',
-        'date2A' => 'date2_a',
-        'date2B' => 'date2_b',
-        'filtersA' => 'filters_a',
-        'filtersB' => 'filters_b',
-        'includeUndefined' => 'include_undefined',
-        'parentId' => 'parent_id'
+        'date1_a' => 'date1A',
+        'date1_b' => 'date1B',
+        'date2_a' => 'date2A',
+        'date2_b' => 'date2B',
+        'filters_a' => 'filtersA',
+        'filters_b' => 'filtersB',
+        'include_undefined' => 'includeUndefined',
+        'parent_id' => 'parentId'
     ];
 
     /**

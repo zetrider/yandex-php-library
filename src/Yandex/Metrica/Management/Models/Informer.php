@@ -26,10 +26,10 @@ class Informer extends Model
     protected $mappingClasses = [];
 
     protected $propNameMap = [
-        'colorStart' => 'color_start',
-        'colorEnd' => 'color_end',
-        'colorText' => 'color_text',
-        'colorArrow' => 'color_arrow'
+        'color_start' => 'colorStart',
+        'color_end' => 'colorEnd',
+        'color_text' => 'colorText',
+        'color_arrow' => 'colorArrow'
     ];
 
     /**

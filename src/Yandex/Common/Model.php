@@ -19,6 +19,22 @@ abstract class Model
 {
     protected $mappingClasses = [];
 
+    /**
+     * Contains property name mappings.
+     *
+     * [
+     *  'data_array_property1' => 'objectProperty1',
+     *  'data_array_property2' => 'objectProperty2',
+     * ]
+     *
+     * Data array property uses as keys
+     * because there is can be more then one rule per object property
+     *
+     * f.g. $data['nmodels'] and ['modelsnum'] should map in modelsCount property.
+     * Otherwise not unique array keys cause remapping of properties.
+     *
+     * @var array
+     */
     protected $propNameMap = [];
 
     /**
@@ -49,7 +65,7 @@ abstract class Model
             $propertyName = $key;
             $ourPropertyName = array_search($propertyName, $this->propNameMap);
 
-            if ($ourPropertyName) {
+            if ($ourPropertyName && isset($data[$ourPropertyName])) {
                 $propertyName = $ourPropertyName;
             }
 

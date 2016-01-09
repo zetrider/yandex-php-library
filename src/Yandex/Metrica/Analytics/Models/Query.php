@@ -28,10 +28,10 @@ class Query extends Model
     protected $mappingClasses = [];
 
     protected $propNameMap = [
-        'startDate' => 'start-date',
-        'endDate' => 'end-date',
-        'startIndex' => 'start-index',
-        'maxResults' => 'max-results'
+        'start-date' => 'startDate',
+        'end-date' => 'endDate',
+        'start-index' => 'startIndex',
+        'max-results' => 'maxResults'
     ];
 
     /**

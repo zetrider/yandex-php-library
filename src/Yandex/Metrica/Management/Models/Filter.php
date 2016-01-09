@@ -26,8 +26,8 @@ class Filter extends Model
     protected $mappingClasses = [];
 
     protected $propNameMap = [
-        'startIp' => 'start_ip',
-        'endIp' => 'end_ip'
+        'start_ip' => 'startIp',
+        'end_ip' => 'endIp'
     ];
 
     /**

@@ -55,16 +55,16 @@ class Counter extends Model
     ];
 
     protected $propNameMap = [
-        'ownerLogin' => 'owner_login',
-        'codeStatus' => 'code_status',
-        'codeOptions' => 'code_options',
-        'partnerId' => 'partner_id',
-        'filterRobots' => 'filter_robots',
-        'timeZoneName' => 'time_zone_name',
-        'visitThreshold' => 'visit_threshold',
-        'maxGoals' => 'max_goals',
-        'maxDetailedGoals' => 'max_detailed_goals',
-        'maxRetargetingGoals' => 'max_retargeting_goals'
+        'owner_login' => 'ownerLogin',
+        'code_status' => 'codeStatus',
+        'code_options' => 'codeOptions',
+        'partner_id' => 'partnerId',
+        'filter_robots' => 'filterRobots',
+        'time_zone_name' => 'timeZoneName',
+        'visit_threshold' => 'visitThreshold',
+        'max_goals' => 'maxGoals',
+        'max_detailed_goals' => 'maxDetailedGoals',
+        'max_retargeting_goals' => 'maxRetargetingGoals'
     ];
 
     /**

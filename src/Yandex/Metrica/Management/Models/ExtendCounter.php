@@ -73,13 +73,13 @@ class ExtendCounter extends Model
     ];
 
     protected $propNameMap = [
-        'ownerLogin' => 'owner_login',
-        'codeStatus' => 'code_status',
-        'codeOptions' => 'code_options',
-        'filterRobots' => 'filter_robots',
-        'timeZoneName' => 'time_zone_name',
-        'visitThreshoId' => 'visit_thresho_id',
-        'includeUndefined' => 'include_undefined'
+        'owner_login' => 'ownerLogin',
+        'code_status' => 'codeStatus',
+        'code_options' => 'codeOptions',
+        'filter_robots' => 'filterRobots',
+        'time_zone_name' => 'timeZoneName',
+        'visit_thresho_id' => 'visitThreshoId',
+        'include_undefined' => 'includeUndefined'
     ];
 
     /**

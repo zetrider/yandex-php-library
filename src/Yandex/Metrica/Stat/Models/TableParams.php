@@ -40,7 +40,7 @@ class TableParams extends Model
     protected $mappingClasses = [];
 
     protected $propNameMap = [
-        'includeUndefined' => 'include_undefined'
+        'include_undefined' => 'includeUndefined'
     ];
 
     /**

@@ -20,10 +20,10 @@ class Monitoring extends Model
     protected $mappingClasses = [];
 
     protected $propNameMap = [
-        'enableMonitoring' => 'enable_monitoring',
-        'smsAllowed' => 'sms_allowed',
-        'enableSms' => 'enable_sms',
-        'smsTime' => 'sms_time'
+        'enable_monitoring' => 'enableMonitoring',
+        'sms_allowed' => 'smsAllowed',
+        'enable_sms' => 'enableSms',
+        'sms_time' => 'smsTime'
     ];
 
     /**
