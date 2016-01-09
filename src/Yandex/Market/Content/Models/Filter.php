@@ -109,7 +109,8 @@ class Filter extends Model
         return $this->options;
     }
 
-    public function getEnumFilterType() {
+    public function getEnumFilterType()
+    {
         return $this->enumFilterType;
     }
 }

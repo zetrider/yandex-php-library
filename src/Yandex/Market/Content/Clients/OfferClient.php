@@ -3,7 +3,7 @@
  * Yandex PHP Library
  *
  * @copyright NIX Solutions Ltd.
- * @link https://github.com/nixsolutions/yandex-php-library
+ * @link      https://github.com/nixsolutions/yandex-php-library
  */
 
 /**
@@ -18,10 +18,10 @@ use Yandex\Market\Content\Models;
  * Class OfferClient
  *
  * @category Yandex
- * @package MarketContent
+ * @package  MarketContent
  *
- * @author   Oleg Scherbakov <holdmann@yandex.ru>
- * @created  08.01.16 02:10
+ * @author  Oleg Scherbakov <holdmann@yandex.ru>
+ * @created 08.01.16 02:10
  */
 class OfferClient extends ContentClient
 {
@@ -29,10 +29,11 @@ class OfferClient extends ContentClient
      * Get offer information
      *
      * Returns offer of Yandex.Market service according to params.
+     *
      * @see https://tech.yandex.ru/market/content-data/doc/dg/reference/offer-id-docpage/
      *
      * @param string $offerId
-     * @param array $params
+     * @param array  $params
      *
      * @return Models\ResponseOfferGet
      */

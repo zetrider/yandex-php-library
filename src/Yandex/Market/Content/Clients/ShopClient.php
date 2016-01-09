@@ -3,7 +3,7 @@
  * Yandex PHP Library
  *
  * @copyright NIX Solutions Ltd.
- * @link https://github.com/nixsolutions/yandex-php-library
+ * @link      https://github.com/nixsolutions/yandex-php-library
  */
 
 /**
@@ -18,10 +18,10 @@ use Yandex\Market\Content\Models;
  * Class ShopClient
  *
  * @category Yandex
- * @package MarketContent
+ * @package  MarketContent
  *
- * @author   Oleg Scherbakov <holdmann@yandex.ru>
- * @created  08.01.16 04:06
+ * @author  Oleg Scherbakov <holdmann@yandex.ru>
+ * @created 08.01.16 04:06
  */
 class ShopClient extends ContentClient
 {
@@ -29,6 +29,7 @@ class ShopClient extends ContentClient
      * Get Shop
      *
      * Returns shop of Yandex.Market service matched specified params.
+     *
      * @see https://tech.yandex.ru/market/content-data/doc/dg/reference/shops-host-docpage/
      *
      * @param array $params
@@ -50,6 +51,7 @@ class ShopClient extends ContentClient
      * Get shop information
      *
      * Returns shop of Yandex.Market.
+     *
      * @see https://tech.yandex.ru/market/content-data/doc/dg/reference/shop-id-docpage/
      *
      * @param int $shopId
@@ -70,9 +72,10 @@ class ShopClient extends ContentClient
      * Get outlets of shop
      *
      * Returns outlets of Yandex.Market service shop according to params.
+     *
      * @see https://tech.yandex.ru/market/content-data/doc/dg/reference/shop-id-outlets-docpage/
      *
-     * @param int $shopId
+     * @param int   $shopId
      * @param array $params
      *
      * @return Models\ResponseShopOutletsGet
@@ -92,9 +95,10 @@ class ShopClient extends ContentClient
      * Get opinions of shop
      *
      * Returns opinions list of Yandex.Market service shop.
+     *
      * @see https://tech.yandex.ru/market/content-data/doc/dg/reference/shop-id-opinion-docpage/
      *
-     * @param int $shopId
+     * @param int   $shopId
      * @param array $params
      *
      * @return Models\ResponseShopOpinionsGet

@@ -3,7 +3,7 @@
  * Yandex PHP Library
  *
  * @copyright NIX Solutions Ltd.
- * @link https://github.com/nixsolutions/yandex-php-library
+ * @link      https://github.com/nixsolutions/yandex-php-library
  */
 
 /**
@@ -18,10 +18,10 @@ use Yandex\Market\Content\Models;
  * Class PopularClient
  *
  * @category Yandex
- * @package MarketContent
+ * @package  MarketContent
  *
- * @author   Oleg Scherbakov <holdmann@yandex.ru>
- * @created  08.01.16 01:19
+ * @author  Oleg Scherbakov <holdmann@yandex.ru>
+ * @created 08.01.16 01:19
  */
 class PopularClient extends ContentClient
 {
@@ -29,6 +29,7 @@ class PopularClient extends ContentClient
      * Get popular models
      *
      * Returns popular models of Yandex.Market service according to params.
+     *
      * @see https://tech.yandex.ru/market/content-data/doc/dg/reference/popular-docpage/
      *
      * @param array $params
@@ -50,9 +51,10 @@ class PopularClient extends ContentClient
      * Get popular category models
      *
      * Returns popular category models of Yandex.Market service according to params.
+     *
      * @see https://tech.yandex.ru/market/content-data/doc/dg/reference/popular-category-id-docpage/
      *
-     * @param int $categoryId
+     * @param int   $categoryId
      * @param array $params
      *
      * @return Models\ResponsePopularCategoryModelsGet

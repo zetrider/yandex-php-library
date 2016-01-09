@@ -3,7 +3,7 @@
  * Yandex PHP Library
  *
  * @copyright NIX Solutions Ltd.
- * @link https://github.com/nixsolutions/yandex-php-library
+ * @link      https://github.com/nixsolutions/yandex-php-library
  */
 
 /**
@@ -18,10 +18,10 @@ use Yandex\Market\Content\Models;
  * Class GeoRegionClient
  *
  * @category Yandex
- * @package MarketContent
+ * @package  MarketContent
  *
- * @author   Oleg Scherbakov <holdmann@yandex.ru>
- * @created  08.01.16 18:44
+ * @author  Oleg Scherbakov <holdmann@yandex.ru>
+ * @created 08.01.16 18:44
  */
 class GeoRegionClient extends ContentClient
 {
@@ -29,6 +29,7 @@ class GeoRegionClient extends ContentClient
      * Get geo regions
      *
      * Returns geo regions list of Yandex.Market service according to params.
+     *
      * @see https://tech.yandex.ru/market/content-data/doc/dg/reference/georegion-docpage/
      *
      * @param array $params
@@ -50,6 +51,7 @@ class GeoRegionClient extends ContentClient
      * Get geo region information
      *
      * Returns geo region of Yandex.Market service.
+     *
      * @see https://tech.yandex.ru/market/content-data/doc/dg/reference/georegion-id-docpage/
      *
      * @param int $regionId
@@ -70,9 +72,10 @@ class GeoRegionClient extends ContentClient
      * Get children of geo region
      *
      * Returns children list of Yandex.Market service geo region.
+     *
      * @see https://tech.yandex.ru/market/content-data/doc/dg/reference/georegion-id-children-docpage/
      *
-     * @param int $regionId
+     * @param int   $regionId
      * @param array $params
      *
      * @return Models\ResponseGeoRegionChildrenGet
@@ -92,6 +95,7 @@ class GeoRegionClient extends ContentClient
      * Get suggests of geo region
      *
      * Returns suggests list of geo region in Yandex.Market service.
+     *
      * @see https://tech.yandex.ru/market/content-data/doc/dg/reference/georegion-suggest-docpage/
      *
      * @param array $params
@@ -113,9 +117,10 @@ class GeoRegionClient extends ContentClient
      * Get shops summary in geo region
      *
      * Returns shops summary information of Yandex.Market service in geo region.
+     *
      * @see https://tech.yandex.ru/market/content-data/doc/dg/reference/regions-id-shops-summary-docpage/
      *
-     * @param int $regionId
+     * @param int   $regionId
      * @param array $params
      *
      * @return Models\ResponseGeoRegionShopsSummaryGet

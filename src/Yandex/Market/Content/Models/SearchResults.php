@@ -17,13 +17,16 @@ class SearchResults extends ObjectModel
     public function add($searchResult)
     {
         if (is_array($searchResult)) {
-            if (isset($searchResult['model']))
+            if (isset($searchResult['model'])) {
                 $this->collection[] = MarketModel::getInstance($searchResult['model']);
+            }
 
-            if (isset($searchResult['offer']))
+            if (isset($searchResult['offer'])) {
                 $this->collection[] = new Offer($searchResult['offer']);
+            }
 
-        } elseif (is_object($searchResult) && ($searchResult instanceof MarketModel || $searchResult instanceof Offer)) {
+        } elseif (is_object($searchResult) && ($searchResult instanceof MarketModel || $searchResult instanceof Offer)
+        ) {
             $this->collection[] = $searchResult;
         }
 

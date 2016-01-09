@@ -75,9 +75,10 @@ class ModelChild extends MarketModel
     {
         // fix photo inheritance
         // @todo: Check whether only one child can be inherit in "photos" property.
-        if (isset($data['photos']) && count($data['photos']) == 1
-            & isset($data['photos']['photo']))
+        if (isset($data['photos']) && count($data['photos']) == 1 && isset($data['photos']['photo'])
+        ) {
             $data['photos'] = $data['photos']['photo'];
+        }
         parent::__construct($data);
     }
 
@@ -128,11 +129,13 @@ class ModelChild extends MarketModel
      */
     public function getIsNew()
     {
-        if ($this->isNew === null)
+        if ($this->isNew === null) {
             return null;
+        }
 
-        if ($this->isNew == 1)
+        if ($this->isNew == 1) {
             return true;
+        }
 
         return false;
     }
@@ -291,7 +294,6 @@ class ModelChild extends MarketModel
      *
      * @note Property available during /model/{model_id} request.
      * for list of children models in parent model.
-     *
      *
      * @return float|null
      */

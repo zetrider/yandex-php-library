@@ -3,7 +3,7 @@
  * Yandex PHP Library
  *
  * @copyright NIX Solutions Ltd.
- * @link https://github.com/nixsolutions/yandex-php-library
+ * @link      https://github.com/nixsolutions/yandex-php-library
  */
 
 /**
@@ -18,10 +18,10 @@ use Yandex\Market\Content\Models;
  * Class CategoryClient
  *
  * @category Yandex
- * @package MarketContent
+ * @package  MarketContent
  *
- * @author   Oleg Scherbakov <holdmann@yandex.ru>
- * @created  04.01.16 23:54
+ * @author  Oleg Scherbakov <holdmann@yandex.ru>
+ * @created 04.01.16 23:54
  */
 class CategoryClient extends ContentClient
 {
@@ -29,6 +29,7 @@ class CategoryClient extends ContentClient
      * Get Categories
      *
      * Returns categories list of Yandex.Market service according to params.
+     *
      * @see https://tech.yandex.ru/market/content-data/doc/dg/reference/category-docpage/
      *
      * @param array $params
@@ -50,9 +51,10 @@ class CategoryClient extends ContentClient
      * Get category information
      *
      * Returns category of Yandex.Market service according to params.
+     *
      * @see https://tech.yandex.ru/market/content-data/doc/dg/reference/category-id-docpage/
      *
-     * @param int $categoryId
+     * @param int   $categoryId
      * @param array $params
      *
      * @return Models\Category
@@ -72,9 +74,10 @@ class CategoryClient extends ContentClient
      * Get children categories
      *
      * Returns children categories list of Yandex.Market service according to params.
+     *
      * @see https://tech.yandex.ru/market/content-data/doc/dg/reference/category-id-children-docpage/
      *
-     * @param int $categoryId
+     * @param int   $categoryId
      * @param array $params
      *
      * @return Models\ResponseCategoryGetList
@@ -94,9 +97,10 @@ class CategoryClient extends ContentClient
      * Get models in category
      *
      * Returns models list represented in category of Yandex.Market service according to params.
+     *
      * @see https://tech.yandex.ru/market/content-data/doc/dg/reference/category-id-model-docpage/
      *
-     * @param int $categoryId
+     * @param int   $categoryId
      * @param array $params
      *
      * @return Models\ResponseCategoryGetModels
@@ -116,9 +120,10 @@ class CategoryClient extends ContentClient
      * Get filters in category
      *
      * Returns filters list of models represented in category of Yandex.Market service according to params.
+     *
      * @see https://tech.yandex.ru/market/content-data/doc/dg/reference/category-id-filters-docpage/
      *
-     * @param int $categoryId
+     * @param int   $categoryId
      * @param array $params
      *
      * @return Models\ResponseCategoryGetFilters

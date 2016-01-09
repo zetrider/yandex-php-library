@@ -75,9 +75,10 @@ class ModelSingle extends MarketModel
     {
         // fix photo inheritance
         // @todo: Check whether only one child can be inherit in "photos" property.
-        if (isset($data['photos']) && count($data['photos']) == 1
-            & isset($data['photos']['photo']))
+        if (isset($data['photos']) && count($data['photos']) == 1 && isset($data['photos']['photo'])
+        ) {
             $data['photos'] = $data['photos']['photo'];
+        }
         parent::__construct($data);
     }
 
@@ -128,11 +129,13 @@ class ModelSingle extends MarketModel
      */
     public function getIsNew()
     {
-        if ($this->isNew === null)
+        if ($this->isNew === null) {
             return null;
+        }
 
-        if ($this->isNew == 1)
+        if ($this->isNew == 1) {
             return true;
+        }
 
         return false;
     }

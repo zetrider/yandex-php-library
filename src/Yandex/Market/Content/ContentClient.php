@@ -3,7 +3,7 @@
  * Yandex PHP Library
  *
  * @copyright NIX Solutions Ltd.
- * @link https://github.com/nixsolutions/yandex-php-library
+ * @link      https://github.com/nixsolutions/yandex-php-library
  */
 
 /**
@@ -22,15 +22,14 @@ use Yandex\Common\Exception\UnauthorizedException;
 use Yandex\Market\Content\Exception\ContentRequestException;
 use Yandex\Market\Content\Models;
 
-
 /**
  * Class ContentClient
  *
  * @category Yandex
- * @package MarketContent
+ * @package  MarketContent
  *
- * @author   Oleg Scherbakov <holdmann@yandex.ru>
- * @created  27.12.15 19:50
+ * @author  Oleg Scherbakov <holdmann@yandex.ru>
+ * @created 27.12.15 19:50
  */
 class ContentClient extends AbstractServiceClient
 {
@@ -58,8 +57,8 @@ class ContentClient extends AbstractServiceClient
     /**
      * Get url to service resource with parameters
      *
-     * @param string $resource
-     * @see http://api.yandex.ru/market/partner/doc/dg/concepts/method-call.xml
+     * @param  string $resource
+     * @see    http://api.yandex.ru/market/partner/doc/dg/concepts/method-call.xml
      * @return string
      */
     public function getServiceUrl($resource = '')
@@ -166,9 +165,10 @@ class ContentClient extends AbstractServiceClient
 
         $this->limits = array();
 
-        foreach($headers as $header) {
-            if (in_array($header->getName(), $limitHeaders, true))
+        foreach ($headers as $header) {
+            if (in_array($header->getName(), $limitHeaders, true)) {
                 $this->limits[$header->getName()] = (int) $header->__toString();
+            }
 
         }
     }
@@ -190,8 +190,9 @@ class ContentClient extends AbstractServiceClient
      */
     public function getLimit($name)
     {
-        if (isset($this->limits[$name]))
+        if (isset($this->limits[$name])) {
             return $this->limits[$name];
+        }
 
         return false;
     }
@@ -199,7 +200,7 @@ class ContentClient extends AbstractServiceClient
     /**
      * Returns API service response.
      *
-     * @param string $resource
+     * @param  string $resource
      * @return array
      * @throws ContentRequestException
      * @throws ForbiddenException
@@ -220,23 +221,27 @@ class ContentClient extends AbstractServiceClient
      * but transform key=>value where key == value to "?key" param.
      *
      * @param array|object $queryData
-     * @param string $numericPrefix
-     * @param string $argSeparator
-     * @param int $encType
+     * @param string       $prefix
+     * @param string       $argSeparator
+     * @param int          $encType
      *
      * @return string $queryString
      */
-    protected function buildQueryString($queryData, $numericPrefix = '', $argSeparator = '&', $encType = PHP_QUERY_RFC3986)
+    protected function buildQueryString($queryData, $prefix = '', $argSeparator = '&', $encType = PHP_QUERY_RFC3986)
     {
-        foreach($queryData as $k=>&$v)
-            if (!is_scalar($v))
+        foreach ($queryData as $k => &$v) {
+            if (!is_scalar($v)) {
                 $v = implode(',', $v);
+            }
+        }
 
-        $queryString = http_build_query($queryData, $numericPrefix, $argSeparator, $encType);
+        $queryString = http_build_query($queryData, $prefix, $argSeparator, $encType);
 
-        foreach($queryData as $k=>$v)
-            if ($k==$v)
+        foreach ($queryData as $k => $v) {
+            if ($k==$v) {
                 $queryString = str_replace("$k=$v", $v, $queryString);
+            }
+        }
 
         return $queryString;
     }

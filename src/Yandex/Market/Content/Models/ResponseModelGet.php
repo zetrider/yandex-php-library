@@ -3,6 +3,7 @@
 namespace Yandex\Market\Content\Models;
 
 use Yandex\Common\Model;
+use Yandex\Market\Content\Models\Base\MarketModel;
 
 class ResponseModelGet extends Model
 {
@@ -17,11 +18,11 @@ class ResponseModelGet extends Model
      *
      * @param array $data
      */
-    function __construct($data=array())
+    public function __construct($data = array())
     {
-        foreach($this->mappingClasses as $propName=>&$mappingClassName) {
+        foreach ($this->mappingClasses as $propName => &$mappingClassName) {
             if ($mappingClassName == 'Yandex\Market\Content\Models\Base\MarketModel') {
-                $realMappingClassName = \Yandex\Market\Content\Models\Base\MarketModel::getInstanceClassName($data[$propName]);
+                $realMappingClassName = MarketModel::getInstanceClassName($data[$propName]);
                 $mappingClassName = $realMappingClassName;
             }
         }

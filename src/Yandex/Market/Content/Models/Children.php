@@ -15,8 +15,10 @@ class Children extends ObjectModel
     {
         // fix children inheritance
         if (isset($data['models'])
-            && count($data['models']) > 0)
+            && count($data['models']) > 0
+        ) {
             $data = $data['models'];
+        }
 
         parent::__construct($data);
     }

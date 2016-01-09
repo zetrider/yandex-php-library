@@ -12,11 +12,10 @@ use Yandex\Market\Content\Models\ModelInfo;
 /**
  * Class MarketModel
  *
+ * @package Yandex\Market\Content\Models\Base
  *
- * @package  Yandex\Market\Content\Models\Base
- *
- * @author   Oleg Scherbakov <holdmann@yandex.ru>
- * @created  03.01.16 04:23
+ * @author  Oleg Scherbakov <holdmann@yandex.ru>
+ * @created 03.01.16 04:23
  *
  *
  *
@@ -24,57 +23,56 @@ use Yandex\Market\Content\Models\ModelInfo;
     ----------------------------------Instance--------------------------------------
     |  | ModelSingle      | ModelParent     | ModelChildren     | ModelVisual
     --------------------------------------------------------------------------------
-    |  | offersCount	  | offersCount	    | offersCount       | offersCount
+    |  | offersCount      | offersCount        | offersCount       | offersCount
     --------------------------------------------------------------------------------
-    |  | rating           | rating	        | rating            | -
+    |  | rating           | rating            | rating            | -
     --------------------------------------------------------------------------------
     |  | reviewsCount     | reviewsCount    | reviewsCount      | -
     --------------------------------------------------------------------------------
-    |  | articlesCount	  | articlesCount	| articlesCount     | -
+    |  | articlesCount      | articlesCount    | articlesCount     | -
     --------------------------------------------------------------------------------
-    |  | isNew            | isNew	        | isNew             | -
+    |  | isNew            | isNew            | isNew             | -
     --------------------------------------------------------------------------------
-     P | vendorId         | vendorId	    | vendorId	        | vendorId
+     P | vendorId         | vendorId        | vendorId            | vendorId
     --------------------------------------------------------------------------------
-     R | gradeCount	      | gradeCount	    | gradeCount        | -
+     R | gradeCount          | gradeCount        | gradeCount        | -
     --------------------------------------------------------------------------------
-     O | categoryId       | categoryId	    | categoryId	    | categoryId
+     O | categoryId       | categoryId        | categoryId        | categoryId
     --------------------------------------------------------------------------------
-     P | id	              | id	            | id	            | id
+     P | id                  | id                | id                | id
     --------------------------------------------------------------------------------
-     E | photos	          | photos	        | photos	        | photos
+     E | photos              | photos            | photos            | photos
     --------------------------------------------------------------------------------
-     R | link	          | link	        | link	            | link
+     R | link              | link            | link                | link
     --------------------------------------------------------------------------------
-     T | isGroup	      | isGroup	        | isGroup           | -
+     T | isGroup          | isGroup            | isGroup           | -
     --------------------------------------------------------------------------------
-     I | vendor	          | vendor	        | vendor	        | vendorName
+     I | vendor              | vendor            | vendor            | vendorName
     --------------------------------------------------------------------------------
-     E | name	          | name	        | name	            | name
+     E | name              | name            | name                | name
     --------------------------------------------------------------------------------
-     S | prices	          | prices	        | prices	        | prices
+     S | prices              | prices            | prices            | prices
     --------------------------------------------------------------------------------
-    |  | description	  | description	    | description	    | description
+    |  | description      | description        | description        | description
     --------------------------------------------------------------------------------
-    |  | facts	          | facts	        | facts             | -
+    |  | facts              | facts            | facts             | -
     --------------------------------------------------------------------------------
-    |  | mainPhoto	      | mainPhoto	    | mainPhoto         | -
+    |  | mainPhoto          | mainPhoto        | mainPhoto         | -
     --------------------------------------------------------------------------------
-    |  | -                | children	    | parentModel       | -
+    |  | -                | children        | parentModel       | -
     --------------------------------------------------------------------------------
-    |  | -		          | -               | -                 | previewPhotos
+    |  | -                  | -               | -                 | previewPhotos
     --------------------------------------------------------------------------------
-    |  | -		          | -               | -                 | filters
+    |  | -                  | -               | -                 | filters
     --------------------------------------------------------------------------------
-    |  | -		          | -               | -                 | offers
- *
+    |  | -                  | -               | -                 | offers
  */
 class MarketModel extends Model
 {
     /**
      * Return instance of model according to array structure.
      *
-     * @param array $data
+     * @param  array $data
      * @return ModelChild|ModelParent|ModelSingle|ModelVisual|ModelInfo
      */
     public static function getInstance($data = array())
@@ -86,17 +84,21 @@ class MarketModel extends Model
 
     public static function getInstanceClassName($data = array())
     {
-        if (isset($data['children'])|| isset($data['modificationsCount']))
+        if (isset($data['children'])|| isset($data['modificationsCount'])) {
             return 'Yandex\Market\Content\Models\ModelParent';
+        }
 
-        if (isset($data['parentModel']))
+        if (isset($data['parentModel'])) {
             return 'Yandex\Market\Content\Models\ModelChild';
+        }
 
-        if (isset($data['offers']))
+        if (isset($data['offers'])) {
             return 'Yandex\Market\Content\Models\ModelVisual';
+        }
 
-        if (isset($data['offerCount']) || isset($data['type']))
+        if (isset($data['offerCount']) || isset($data['type'])) {
             return 'Yandex\Market\Content\Models\ModelInfo';
+        }
 
         return 'Yandex\Market\Content\Models\ModelSingle';
     }

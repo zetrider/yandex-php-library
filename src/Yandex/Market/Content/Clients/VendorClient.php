@@ -3,7 +3,7 @@
  * Yandex PHP Library
  *
  * @copyright NIX Solutions Ltd.
- * @link https://github.com/nixsolutions/yandex-php-library
+ * @link      https://github.com/nixsolutions/yandex-php-library
  */
 
 /**
@@ -18,10 +18,10 @@ use Yandex\Market\Content\Models;
  * Class VendorClient
  *
  * @category Yandex
- * @package MarketContent
+ * @package  MarketContent
  *
- * @author   Oleg Scherbakov <holdmann@yandex.ru>
- * @created  08.01.16 02:10
+ * @author  Oleg Scherbakov <holdmann@yandex.ru>
+ * @created 08.01.16 02:10
  */
 class VendorClient extends ContentClient
 {
@@ -29,6 +29,7 @@ class VendorClient extends ContentClient
      * Get Vendors
      *
      * Returns vindors list of Yandex.Market service according to params.
+     *
      * @see https://tech.yandex.ru/market/content-data/doc/dg/reference/category-docpage/
      *
      * @param array $params
@@ -50,6 +51,7 @@ class VendorClient extends ContentClient
      * Get vendor information
      *
      * Returns vendor of Yandex.Market service according to params.
+     *
      * @see https://tech.yandex.ru/market/content-data/doc/dg/reference/vendor-id-docpage/
      *
      * @param int $vendorId
@@ -70,6 +72,7 @@ class VendorClient extends ContentClient
      * Get vendor
      *
      * Returns vendor of Yandex.Market service matched specified params.
+     *
      * @see https://tech.yandex.ru/market/content-data/doc/dg/reference/vendor-match-docpage/
      *
      * @param array $params

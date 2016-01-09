@@ -3,7 +3,7 @@
  * Yandex PHP Library
  *
  * @copyright NIX Solutions Ltd.
- * @link https://github.com/nixsolutions/yandex-php-library
+ * @link      https://github.com/nixsolutions/yandex-php-library
  */
 
 /**
@@ -16,10 +16,10 @@ use \Yandex\Common\Exception\YandexException;
 /**
  * Class ContentException
  *
- * @package  Yandex\Market\Content\Exception
+ * @package Yandex\Market\Content\Exception
  *
- * @author   Oleg Scherbakov <holdmann@yandex.ru>
- * @created  27.12.15 18:45
+ * @author  Oleg Scherbakov <holdmann@yandex.ru>
+ * @created 27.12.15 18:45
  */
 class ContentException extends YandexException
 {

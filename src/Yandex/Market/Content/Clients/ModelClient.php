@@ -3,7 +3,7 @@
  * Yandex PHP Library
  *
  * @copyright NIX Solutions Ltd.
- * @link https://github.com/nixsolutions/yandex-php-library
+ * @link      https://github.com/nixsolutions/yandex-php-library
  */
 
 /**
@@ -18,10 +18,10 @@ use Yandex\Market\Content\Models;
  * Class ModelClient
  *
  * @category Yandex
- * @package MarketContent
+ * @package  MarketContent
  *
- * @author   Oleg Scherbakov <holdmann@yandex.ru>
- * @created  05.01.16 01:06
+ * @author  Oleg Scherbakov <holdmann@yandex.ru>
+ * @created 05.01.16 01:06
  */
 class ModelClient extends ContentClient
 {
@@ -29,9 +29,10 @@ class ModelClient extends ContentClient
      * Get model information
      *
      * Returns model of Yandex.Market service according to params.
+     *
      * @see https://tech.yandex.ru/market/content-data/doc/dg/reference/model-id-docpage/
      *
-     * @param int $modelId
+     * @param int   $modelId
      * @param array $params
      *
      * @return Models\ResponseModelGet
@@ -51,9 +52,10 @@ class ModelClient extends ContentClient
      * Get model short information
      *
      * Returns short model of Yandex.Market service according to params.
+     *
      * @see https://tech.yandex.ru/market/content-data/doc/dg/reference/model-id-info-docpage/
      *
-     * @param int $modelId
+     * @param int   $modelId
      * @param array $params
      *
      * @return Models\ResponseModelInfoGet
@@ -73,9 +75,10 @@ class ModelClient extends ContentClient
      * Get offers in model
      *
      * Returns offers list represented in model of Yandex.Market service according to params.
+     *
      * @see https://tech.yandex.ru/market/content-data/doc/dg/reference/model-id-offers-docpage/
      *
-     * @param int $modelId
+     * @param int   $modelId
      * @param array $params
      *
      * @return Models\ResponseModelOffersGet
@@ -95,9 +98,10 @@ class ModelClient extends ContentClient
      * Get outlets of model
      *
      * Returns outlets list where model of Yandex.Market service represented according to params.
+     *
      * @see https://tech.yandex.ru/market/content-data/doc/dg/reference/model-id-outlets-docpage/
      *
-     * @param int $modelId
+     * @param int   $modelId
      * @param array $params
      *
      * @return Models\ResponseModelOutletsGet
@@ -117,6 +121,7 @@ class ModelClient extends ContentClient
      * Get reviews of model
      *
      * Returns reviews list where model of Yandex.Market service represented.
+     *
      * @see https://tech.yandex.ru/market/content-data/doc/dg/reference/model-id-reviews-docpage/
      *
      * @param int $modelId
@@ -137,6 +142,7 @@ class ModelClient extends ContentClient
      * Get model(-s) by name and params
      *
      * Returns model(-s) of Yandex.Market service by name and params.
+     *
      * @see https://tech.yandex.ru/market/content-data/doc/dg/reference/model-match-docpage/
      *
      * @param array $params
@@ -158,9 +164,10 @@ class ModelClient extends ContentClient
      * Get opinions of model
      *
      * Returns opinions list of Yandex.Market service model.
+     *
      * @see https://tech.yandex.ru/market/content-data/doc/dg/reference/model-id-opinion-docpage/
      *
-     * @param int $modelId
+     * @param int   $modelId
      * @param array $params
      *
      * @return Models\ResponseModelOpinionsGet
