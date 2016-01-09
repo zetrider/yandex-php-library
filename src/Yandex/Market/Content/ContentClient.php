@@ -11,16 +11,17 @@
  */
 namespace Yandex\Market\Content;
 
+use GuzzleHttp\Client;
+use GuzzleHttp\ClientInterface;
+use Psr\Http\Message\UriInterface;
 use Yandex\Common\AbstractServiceClient;
+use GuzzleHttp\Psr7\Response;
+use GuzzleHttp\Exception\ClientException;
 use Yandex\Common\Exception\ForbiddenException;
 use Yandex\Common\Exception\UnauthorizedException;
 use Yandex\Market\Content\Exception\ContentRequestException;
 use Yandex\Market\Content\Models;
-use Guzzle\Http\Message\RequestInterface;
-use Guzzle\Http\Message\Request;
-use Guzzle\Http\Message\Response;
-use Guzzle\Service\Client;
-use Guzzle\Http\Exception\ClientErrorResponseException;
+
 
 /**
  * Class ContentClient
@@ -76,29 +77,54 @@ class ContentClient extends AbstractServiceClient
     }
 
     /**
+     * @return ClientInterface
+     */
+    protected function getClient()
+    {
+        if (is_null($this->client)) {
+            $defaultOptions = [
+                'base_uri' => $this->getServiceUrl(),
+                'headers' => [
+                    'Host' => $this->getServiceDomain(),
+                    'Accept' => '*/*',
+                    'Authorization' => $this->getAccessToken(),
+                ]
+            ];
+            if ($this->getProxy()) {
+                $defaultOptions['proxy'] = $this->getProxy();
+            }
+            if ($this->getDebug()) {
+                $defaultOptions['debug'] = $this->getDebug();
+            }
+            $this->client = new Client($defaultOptions);
+        }
+
+        return $this->client;
+    }
+
+    /**
      * Sends a request
      *
-     * @param RequestInterface $request
+     * @param string              $method  HTTP method
+     * @param string|UriInterface $uri     URI object or string.
+     * @param array               $options Request options to apply.
+     *
      * @return Response
+     *
      * @throws ForbiddenException
      * @throws UnauthorizedException
      * @throws ContentRequestException
      */
-    protected function sendRequest(RequestInterface $request)
+    protected function sendRequest($method, $uri, array $options = [])
     {
         try {
+            $response = $this->getClient()->request($method, $uri, $options);
+        } catch (ClientException $ex) {
+            $result = $ex->getResponse();
+            $code = $result->getStatusCode();
+            $message = $result->getReasonPhrase();
 
-            $request = $this->prepareRequest($request);
-            $response = $request->send();
-
-        } catch (ClientErrorResponseException $ex) {
-
-            $response = $request->getResponse();
-            $code = $response->getStatusCode();
-            $message = $response->getReasonPhrase();
-
-            $body = $response->getBody(true);
-
+            $body = $result->getBody();
             if ($body) {
                 $jsonBody = json_decode($body);
                 if ($jsonBody && isset($jsonBody->error) && isset($jsonBody->error->message)) {
@@ -115,7 +141,8 @@ class ContentClient extends AbstractServiceClient
             }
 
             throw new ContentRequestException(
-                'Service responded with error code: "' . $code . '" and message: "' . $message . '"'
+                'Service responded with error code: "' . $code . '" and message: "' . $message . '"',
+                $code
             );
         }
         // @note: Finally? php >= 5.5
@@ -127,7 +154,7 @@ class ContentClient extends AbstractServiceClient
     private function setLimits($headers)
     {
         // const as header name?
-        $limitHeaders = array(
+        $limitHeaders = [
             'X-RateLimit-Daily-Limit',
             'X-RateLimit-Daily-Remaining',
             'X-RateLimit-Global-Limit',
@@ -135,7 +162,7 @@ class ContentClient extends AbstractServiceClient
             'X-RateLimit-Method-Limit',
             'X-RateLimit-Method-Remaining',
             'X-RateLimit-Until'
-        );
+        ];
 
         $this->limits = array();
 
@@ -170,23 +197,6 @@ class ContentClient extends AbstractServiceClient
     }
 
     /**
-     * prepareRequest
-     *
-     * @param \Guzzle\Http\Message\RequestInterface $request
-     * @return RequestInterface
-     */
-    protected function prepareRequest(RequestInterface $request)
-    {
-        $request->setProtocolVersion($this->serviceProtocolVersion);
-
-        $request->setHeader('Host', $this->getServiceDomain());
-        $request->setHeader('Accept', '*/*');
-        $request->setHeader('Authorization', $this->getAccessToken());
-
-        return $request;
-    }
-
-    /**
      * Returns API service response.
      *
      * @param string $resource
@@ -197,10 +207,10 @@ class ContentClient extends AbstractServiceClient
      */
     protected function getServiceResponse($resource)
     {
-        $client = new Client($this->getServiceUrl($resource));
-        $request = $client->createRequest('GET');
+        $response = $this->sendRequest('GET', $this->getServiceUrl($resource));
+        $decodedResponseBody = $this->getDecodedBody($response->getBody());
 
-        return $this->sendRequest($request)->json();
+        return $decodedResponseBody;
     }
 
     /**
