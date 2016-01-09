@@ -4,10 +4,8 @@
  */
 namespace Yandex\Tests\Market;
 
-use Guzzle\Http\Message\Response;
-use Yandex\Market\Content\Models\DeliveryMethods;
-use Yandex\Market\Content\Models\ModelSingle;
-use Yandex\Market\Content\Models\SearchRequestParams;
+use GuzzleHttp\Psr7\Response;
+use GuzzleHttp\Psr7\Stream;
 use Yandex\Tests\TestCase;
 
 /**
@@ -27,15 +25,14 @@ class SearchClientTest extends TestCase
     {
         $json = file_get_contents(__DIR__ . '/' . $this->fixturesFolder . '/search.json');
         $jsonObj = json_decode($json);
-        $response = new Response(200);
-        $response->setBody($json);
+        $response = new Response(200, [], \GuzzleHttp\Psr7\stream_for($json));
 
-        $searchClientMock = $this->getMock('Yandex\Market\Content\Clients\SearchClient', array('sendRequest'));
+        $searchClientMock = $this->getMock('Yandex\Market\Content\Clients\SearchClient', ['sendRequest']);
         $searchClientMock->expects($this->any())
             ->method('sendRequest')
             ->will($this->returnValue($response));
 
-        $searchResponse = $searchClientMock->get(array('geo_id'=>44, 'text'=> 'Motul 8100 X-cess 5W-40'));
+        $searchResponse = $searchClientMock->get(['geo_id'=>44, 'text'=> 'Motul 8100 X-cess 5W-40']);
 
         $this->assertEquals(
             $jsonObj->searchResult->count,
@@ -575,15 +572,14 @@ class SearchClientTest extends TestCase
     {
         $json = file_get_contents(__DIR__ . '/' . $this->fixturesFolder . '/search-filter-category-models.json');
         $jsonObj = json_decode($json);
-        $response = new Response(200);
-        $response->setBody($json);
+        $response = new Response(200, [], \GuzzleHttp\Psr7\stream_for($json));
 
-        $searchClientMock = $this->getMock('Yandex\Market\Content\Clients\SearchClient', array('sendRequest'));
+        $searchClientMock = $this->getMock('Yandex\Market\Content\Clients\SearchClient', ['sendRequest']);
         $searchClientMock->expects($this->any())
             ->method('sendRequest')
             ->will($this->returnValue($response));
 
-        $searchFilterCategoryResponse = $searchClientMock->getFilterCategory(90478, array('geo_id'=>44, 'count'=>1));
+        $searchFilterCategoryResponse = $searchClientMock->getFilterCategory(90478, ['geo_id'=>44, 'count'=>1]);
 
         $this->assertEquals(
             $jsonObj->searchResult->count,
@@ -702,15 +698,14 @@ class SearchClientTest extends TestCase
         // Test offers result (non-guru category)
         $json = file_get_contents(__DIR__ . '/' . $this->fixturesFolder . '/search-filter-category-offers.json');
         $jsonObj = json_decode($json);
-        $response = new Response(200);
-        $response->setBody($json);
+        $response = new Response(200, [], \GuzzleHttp\Psr7\stream_for($json));
 
-        $searchClientMock = $this->getMock('Yandex\Market\Content\Clients\SearchClient', array('sendRequest'));
+        $searchClientMock = $this->getMock('Yandex\Market\Content\Clients\SearchClient', ['sendRequest']);
         $searchClientMock->expects($this->any())
             ->method('sendRequest')
             ->will($this->returnValue($response));
 
-        $searchFilterCategoryResponse = $searchClientMock->getFilterCategory(90478, array('geo_id'=>44, 'count'=>1));
+        $searchFilterCategoryResponse = $searchClientMock->getFilterCategory(90478, ['geo_id'=>44, 'count'=>1]);
 
         $this->assertEquals(
             $jsonObj->searchResult->count,

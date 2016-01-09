@@ -4,7 +4,8 @@
  */
 namespace Yandex\Tests\Market;
 
-use Guzzle\Http\Message\Response;
+use GuzzleHttp\Psr7\Response;
+use GuzzleHttp\Psr7\Stream;
 use Yandex\Tests\TestCase;
 
 /**
@@ -24,10 +25,9 @@ class VendorClientTest extends TestCase
     {
         $json = file_get_contents(__DIR__ . '/' . $this->fixturesFolder . '/vendor-list.json');
         $jsonObj = json_decode($json);
-        $response = new Response(200);
-        $response->setBody($json);
+        $response = new Response(200, [], \GuzzleHttp\Psr7\stream_for($json));
 
-        $vendorClientMock = $this->getMock('Yandex\Market\Content\Clients\VendorClient', array('sendRequest'));
+        $vendorClientMock = $this->getMock('Yandex\Market\Content\Clients\VendorClient', ['sendRequest']);
         $vendorClientMock->expects($this->any())
             ->method('sendRequest')
             ->will($this->returnValue($response));
@@ -254,16 +254,14 @@ class VendorClientTest extends TestCase
     {
         $json = file_get_contents(__DIR__ . '/' . $this->fixturesFolder . '/vendor.json');
         $jsonObj = json_decode($json);
-        $response = new Response(200);
-        $response->setBody($json);
+        $response = new Response(200, [], \GuzzleHttp\Psr7\stream_for($json));
 
-        $vendorClientMock = $this->getMock('Yandex\Market\Content\Clients\VendorClient', array('sendRequest'));
+        $vendorClientMock = $this->getMock('Yandex\Market\Content\Clients\VendorClient', ['sendRequest']);
         $vendorClientMock->expects($this->any())
             ->method('sendRequest')
             ->will($this->returnValue($response));
 
         $vendorResponse = $vendorClientMock->get(153043);
-
 
         /** @var Vendor $vendor */
         $vendor = $vendorResponse->getVendor();
@@ -445,15 +443,14 @@ class VendorClientTest extends TestCase
     {
         $json = file_get_contents(__DIR__ . '/' . $this->fixturesFolder . '/vendor-match.json');
         $jsonObj = json_decode($json);
-        $response = new Response(200);
-        $response->setBody($json);
+        $response = new Response(200, [], \GuzzleHttp\Psr7\stream_for($json));
 
-        $vendorClientMock = $this->getMock('Yandex\Market\Content\Clients\VendorClient', array('sendRequest'));
+        $vendorClientMock = $this->getMock('Yandex\Market\Content\Clients\VendorClient', ['sendRequest']);
         $vendorClientMock->expects($this->any())
             ->method('sendRequest')
             ->will($this->returnValue($response));
 
-        $vendorMatchResponse = $vendorClientMock->getMatch(array('name'=>'nike'));
+        $vendorMatchResponse = $vendorClientMock->getMatch(['name'=>'nike']);
 
         $this->assertEquals(
             $jsonObj->time,

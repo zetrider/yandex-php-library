@@ -4,7 +4,8 @@
  */
 namespace Yandex\Tests\Market;
 
-use Guzzle\Http\Message\Response;
+use GuzzleHttp\Psr7\Response;
+use GuzzleHttp\Psr7\Stream;
 use Yandex\Tests\TestCase;
 
 /**
@@ -24,15 +25,14 @@ class PopularClientTest extends TestCase
     {
         $json = file_get_contents(__DIR__ . '/' . $this->fixturesFolder . '/popular-models.json');
         $jsonObj = json_decode($json);
-        $response = new Response(200);
-        $response->setBody($json);
+        $response = new Response(200, [], \GuzzleHttp\Psr7\stream_for($json));
 
-        $categoryClientMock = $this->getMock('Yandex\Market\Content\Clients\PopularClient', array('sendRequest'));
-        $categoryClientMock->expects($this->any())
+        $popularClientMock = $this->getMock('Yandex\Market\Content\Clients\PopularClient', ['sendRequest']);
+        $popularClientMock->expects($this->any())
             ->method('sendRequest')
             ->will($this->returnValue($response));
 
-        $popularModels = $categoryClientMock->getModels(array('geo_id' => 44));
+        $popularModels = $popularClientMock->getModels(['geo_id' => 44]);
 
         $categories = $popularModels->getCategories();
 
@@ -149,15 +149,14 @@ class PopularClientTest extends TestCase
     {
         $json = file_get_contents(__DIR__ . '/' . $this->fixturesFolder . '/popular-category-models.json');
         $jsonObj = json_decode($json);
-        $response = new Response(200);
-        $response->setBody($json);
+        $response = new Response(200, [], \GuzzleHttp\Psr7\stream_for($json));
 
-        $categoryClientMock = $this->getMock('Yandex\Market\Content\Clients\PopularClient', array('sendRequest'));
-        $categoryClientMock->expects($this->any())
+        $popularClientMock = $this->getMock('Yandex\Market\Content\Clients\PopularClient', ['sendRequest']);
+        $popularClientMock->expects($this->any())
             ->method('sendRequest')
             ->will($this->returnValue($response));
 
-        $popularModels = $categoryClientMock->getCategoryModels(90402, array('geo_id' => 44));
+        $popularModels = $popularClientMock->getCategoryModels(90402, ['geo_id' => 44]);
 
         $categories = $popularModels->getCategories();
 

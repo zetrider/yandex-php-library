@@ -4,8 +4,8 @@
  */
 namespace Yandex\Tests\Market;
 
-use Guzzle\Http\Message\Response;
-use Yandex\Market\Content\Models\ModelOpinion;
+use GuzzleHttp\Psr7\Response;
+use GuzzleHttp\Psr7\Stream;
 use Yandex\Tests\TestCase;
 
 /**
@@ -25,15 +25,14 @@ class ModelClientTest extends TestCase
     {
         $json = file_get_contents(__DIR__ . '/' . $this->fixturesFolder . '/model-single.json');
         $jsonObj = json_decode($json);
-        $response = new Response(200);
-        $response->setBody($json);
+        $response = new Response(200, [], \GuzzleHttp\Psr7\stream_for($json));
 
-        $modelClientMock = $this->getMock('Yandex\Market\Content\Clients\ModelClient', array('sendRequest'));
+        $modelClientMock = $this->getMock('Yandex\Market\Content\Clients\ModelClient', ['sendRequest']);
         $modelClientMock->expects($this->any())
             ->method('sendRequest')
             ->will($this->returnValue($response));
 
-        $model = $modelClientMock->get(12796745, array('geo_id' => 213));
+        $model = $modelClientMock->get(12796745, ['geo_id' => 213]);
 
         $this->assertEquals(
             $jsonObj->model->id,
@@ -152,15 +151,14 @@ class ModelClientTest extends TestCase
 
         $json = file_get_contents(__DIR__ . '/' . $this->fixturesFolder . '/model-parent.json');
         $jsonObj = json_decode($json);
-        $response = new Response(200);
-        $response->setBody($json);
+        $response = new Response(200, [], \GuzzleHttp\Psr7\stream_for($json));
 
-        $modelClientMock = $this->getMock('Yandex\Market\Content\Clients\ModelClient', array('sendRequest'));
+        $modelClientMock = $this->getMock('Yandex\Market\Content\Clients\ModelClient', ['sendRequest']);
         $modelClientMock->expects($this->any())
             ->method('sendRequest')
             ->will($this->returnValue($response));
 
-        $model = $modelClientMock->get(10452984, array('geo_id' => 213));
+        $model = $modelClientMock->get(10452984, ['geo_id' => 213]);
 
         $this->assertEquals(
             $jsonObj->model->id,
@@ -367,15 +365,14 @@ class ModelClientTest extends TestCase
 
         $json = file_get_contents(__DIR__ . '/' . $this->fixturesFolder . '/model-child.json');
         $jsonObj = json_decode($json);
-        $response = new Response(200);
-        $response->setBody($json);
+        $response = new Response(200, [], \GuzzleHttp\Psr7\stream_for($json));
 
-        $modelClientMock = $this->getMock('Yandex\Market\Content\Clients\ModelClient', array('sendRequest'));
+        $modelClientMock = $this->getMock('Yandex\Market\Content\Clients\ModelClient', ['sendRequest']);
         $modelClientMock->expects($this->any())
             ->method('sendRequest')
             ->will($this->returnValue($response));
 
-        $model = $modelClientMock->get(10546667, array('geo_id' => 213));
+        $model = $modelClientMock->get(10546667, ['geo_id' => 213]);
 
         $this->assertEquals(
             $jsonObj->model->id,
@@ -499,18 +496,16 @@ class ModelClientTest extends TestCase
         );
 
         // visual model
-
         $json = file_get_contents(__DIR__ . '/' . $this->fixturesFolder . '/model-visual.json');
         $jsonObj = json_decode($json);
-        $response = new Response(200);
-        $response->setBody($json);
+        $response = new Response(200, [], \GuzzleHttp\Psr7\stream_for($json));
 
-        $modelClientMock = $this->getMock('Yandex\Market\Content\Clients\ModelClient', array('sendRequest'));
+        $modelClientMock = $this->getMock('Yandex\Market\Content\Clients\ModelClient', ['sendRequest']);
         $modelClientMock->expects($this->any())
             ->method('sendRequest')
             ->will($this->returnValue($response));
 
-        $model = $modelClientMock->get(1598996536, array('geo_id' => 213));
+        $model = $modelClientMock->get(1598996536, ['geo_id' => 213]);
 
         $this->assertEquals(
             $jsonObj->model->id,
@@ -796,18 +791,17 @@ class ModelClientTest extends TestCase
     {
         $json = file_get_contents(__DIR__ . '/' . $this->fixturesFolder . '/model-info.json');
         $jsonObj = json_decode($json);
-        $response = new Response(200);
-        $response->setBody($json);
+        $response = new Response(200, [], \GuzzleHttp\Psr7\stream_for($json));
 
-        $modelClientMock = $this->getMock('Yandex\Market\Content\Clients\ModelClient', array('sendRequest'));
+        $modelClientMock = $this->getMock('Yandex\Market\Content\Clients\ModelClient', ['sendRequest']);
         $modelClientMock->expects($this->any())
             ->method('sendRequest')
             ->will($this->returnValue($response));
 
-        $modelInfo = $modelClientMock->getInfo(7348501, array(
+        $modelInfo = $modelClientMock->getInfo(7348501, [
             'geo_id' => 44,
             'fields' => 'category,discounts,facts,media,photo,price,rating,offers,vendor'
-        ));
+        ]);
 
         $this->assertEquals(
             $jsonObj->time,
@@ -864,6 +858,7 @@ class ModelClientTest extends TestCase
             $jsonObj->model->price->avg,
             $prices->getAvg()
         );
+
         $this->assertEquals(
             $jsonObj->model->price->currencyCode,
             $prices->getCurrencyCode()
@@ -937,15 +932,14 @@ class ModelClientTest extends TestCase
     {
         $json = file_get_contents(__DIR__ . '/' . $this->fixturesFolder . '/model-offers.json');
         $jsonObj = json_decode($json);
-        $response = new Response(200);
-        $response->setBody($json);
+        $response = new Response(200, [], \GuzzleHttp\Psr7\stream_for($json));
 
-        $modelClientMock = $this->getMock('Yandex\Market\Content\Clients\ModelClient', array('sendRequest'));
+        $modelClientMock = $this->getMock('Yandex\Market\Content\Clients\ModelClient', ['sendRequest']);
         $modelClientMock->expects($this->any())
             ->method('sendRequest')
             ->will($this->returnValue($response));
 
-        $modelOffers = $modelClientMock->getOffers(12796745, array('geo_id' => 213));
+        $modelOffers = $modelClientMock->getOffers(12796745, ['geo_id' => 213]);
 
         $this->assertEquals(
             $jsonObj->offers->count,
@@ -1203,15 +1197,14 @@ class ModelClientTest extends TestCase
     {
         $json = file_get_contents(__DIR__ . '/' . $this->fixturesFolder . '/model-outlets.json');
         $jsonObj = json_decode($json);
-        $response = new Response(200);
-        $response->setBody($json);
+        $response = new Response(200, [], \GuzzleHttp\Psr7\stream_for($json));
 
-        $modelClientMock = $this->getMock('Yandex\Market\Content\Clients\ModelClient', array('sendRequest'));
+        $modelClientMock = $this->getMock('Yandex\Market\Content\Clients\ModelClient', ['sendRequest']);
         $modelClientMock->expects($this->any())
             ->method('sendRequest')
             ->will($this->returnValue($response));
 
-        $modelOutlets = $modelClientMock->getOutlets(5086952, array('geo_id' => 213));
+        $modelOutlets = $modelClientMock->getOutlets(5086952, ['geo_id' => 213]);
 
         $this->assertEquals(
             $jsonObj->outlets->count,
@@ -1476,15 +1469,14 @@ class ModelClientTest extends TestCase
     {
         $json = file_get_contents(__DIR__ . '/' . $this->fixturesFolder . '/model-reviews.json');
         $jsonObj = json_decode($json);
-        $response = new Response(200);
-        $response->setBody($json);
+        $response = new Response(200, [], \GuzzleHttp\Psr7\stream_for($json));
 
-        $modelClientMock = $this->getMock('Yandex\Market\Content\Clients\ModelClient', array('sendRequest'));
+        $modelClientMock = $this->getMock('Yandex\Market\Content\Clients\ModelClient', ['sendRequest']);
         $modelClientMock->expects($this->any())
             ->method('sendRequest')
             ->will($this->returnValue($response));
 
-        $modelReviews = $modelClientMock->getReviews(5086952, array());
+        $modelReviews = $modelClientMock->getReviews(5086952, []);
 
         $this->assertEquals(
             $jsonObj->modelReviews->count,
@@ -1539,20 +1531,19 @@ class ModelClientTest extends TestCase
     {
         $json = file_get_contents(__DIR__ . '/' . $this->fixturesFolder . '/model-match.json');
         $jsonObj = json_decode($json);
-        $response = new Response(200);
-        $response->setBody($json);
+        $response = new Response(200, [], \GuzzleHttp\Psr7\stream_for($json));
 
-        $modelClientMock = $this->getMock('Yandex\Market\Content\Clients\ModelClient', array('sendRequest'));
+        $modelClientMock = $this->getMock('Yandex\Market\Content\Clients\ModelClient', ['sendRequest']);
         $modelClientMock->expects($this->any())
             ->method('sendRequest')
             ->will($this->returnValue($response));
 
-        $matchedModels = $modelClientMock->getMatch(array(
+        $matchedModels = $modelClientMock->getMatch([
             'geo_id' => 213,
             'many' => 'many',
             'name' => 'Apple iPhone 5S 16Gb Apple iPhone 5S 32Gb',
             'fields' => 'category,discounts,facts,media,photo,price,rating,offers,vendor'
-        ));
+        ]);
 
         $this->assertEquals(
             $jsonObj->time,
@@ -1685,15 +1676,14 @@ class ModelClientTest extends TestCase
     {
         $json = file_get_contents(__DIR__ . '/' . $this->fixturesFolder . '/model-opinions.json');
         $jsonObj = json_decode($json);
-        $response = new Response(200);
-        $response->setBody($json);
+        $response = new Response(200, [], \GuzzleHttp\Psr7\stream_for($json));
 
-        $modelClientMock = $this->getMock('Yandex\Market\Content\Clients\ModelClient', array('sendRequest'));
+        $modelClientMock = $this->getMock('Yandex\Market\Content\Clients\ModelClient', ['sendRequest']);
         $modelClientMock->expects($this->any())
             ->method('sendRequest')
             ->will($this->returnValue($response));
 
-        $opinionsResponse = $modelClientMock->getOpinions(10498476, array('count' => 2));
+        $opinionsResponse = $modelClientMock->getOpinions(10498476, ['count' => 2]);
 
         $this->assertEquals(
             $jsonObj->modelOpinions->count,

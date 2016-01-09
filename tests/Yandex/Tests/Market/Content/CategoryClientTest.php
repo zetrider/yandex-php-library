@@ -4,7 +4,8 @@
  */
 namespace Yandex\Tests\Market;
 
-use Guzzle\Http\Message\Response;
+use GuzzleHttp\Psr7\Response;
+use GuzzleHttp\Psr7\Stream;
 use Yandex\Tests\TestCase;
 
 /**
@@ -24,15 +25,14 @@ class CategoryClientTest extends TestCase
     {
         $json = file_get_contents(__DIR__ . '/' . $this->fixturesFolder . '/category-list.json');
         $jsonObj = json_decode($json);
-        $response = new Response(200);
-        $response->setBody($json);
+        $response = new Response(200, [], \GuzzleHttp\Psr7\stream_for($json));
 
-        $categoryClientMock = $this->getMock('Yandex\Market\Content\Clients\CategoryClient', array('sendRequest'));
+        $categoryClientMock = $this->getMock('Yandex\Market\Content\Clients\CategoryClient', ['sendRequest']);
         $categoryClientMock->expects($this->any())
             ->method('sendRequest')
             ->will($this->returnValue($response));
 
-        $categories = $categoryClientMock->getList(array('geo_id' => 213, 'sort' => 'name'));
+        $categories = $categoryClientMock->getList(['geo_id' => 213, 'sort' => 'name']);
 
         $this->assertEquals(
             $jsonObj->categories->count,
@@ -134,15 +134,14 @@ class CategoryClientTest extends TestCase
     {
         $json = file_get_contents(__DIR__ . '/' . $this->fixturesFolder . '/category.json');
         $jsonObj = json_decode($json);
-        $response = new Response(200);
-        $response->setBody($json);
+        $response = new Response(200, [], \GuzzleHttp\Psr7\stream_for($json));
 
-        $categoryClientMock = $this->getMock('Yandex\Market\Content\Clients\CategoryClient', array('sendRequest'));
+        $categoryClientMock = $this->getMock('Yandex\Market\Content\Clients\CategoryClient', ['sendRequest']);
         $categoryClientMock->expects($this->any())
             ->method('sendRequest')
             ->will($this->returnValue($response));
 
-        $category = $categoryClientMock->get(90402, array('geo_id' => 213));
+        $category = $categoryClientMock->get(90402, ['geo_id' => 213]);
 
         $this->assertEquals(
             $jsonObj->category->id,
@@ -186,15 +185,14 @@ class CategoryClientTest extends TestCase
     {
         $json = file_get_contents(__DIR__ . '/' . $this->fixturesFolder . '/category-children.json');
         $jsonObj = json_decode($json);
-        $response = new Response(200);
-        $response->setBody($json);
+        $response = new Response(200, [], \GuzzleHttp\Psr7\stream_for($json));
 
-        $categoryClientMock = $this->getMock('Yandex\Market\Content\Clients\CategoryClient', array('sendRequest'));
+        $categoryClientMock = $this->getMock('Yandex\Market\Content\Clients\CategoryClient', ['sendRequest']);
         $categoryClientMock->expects($this->any())
             ->method('sendRequest')
             ->will($this->returnValue($response));
 
-        $childrenCategories = $categoryClientMock->getChildren(90402, array('geo_id' => 213, 'sort' => 'name'));
+        $childrenCategories = $categoryClientMock->getChildren(90402, ['geo_id' => 213, 'sort' => 'name']);
 
         $this->assertEquals(
             $jsonObj->categories->count,
@@ -298,15 +296,14 @@ class CategoryClientTest extends TestCase
     {
         $json = file_get_contents(__DIR__ . '/' . $this->fixturesFolder . '/category-models.json');
         $jsonObj = json_decode($json);
-        $response = new Response(200);
-        $response->setBody($json);
+        $response = new Response(200, [], \GuzzleHttp\Psr7\stream_for($json));
 
-        $categoryClientMock = $this->getMock('Yandex\Market\Content\Clients\CategoryClient', array('sendRequest'));
+        $categoryClientMock = $this->getMock('Yandex\Market\Content\Clients\CategoryClient', ['sendRequest']);
         $categoryClientMock->expects($this->any())
             ->method('sendRequest')
             ->will($this->returnValue($response));
 
-        $categoryModels = $categoryClientMock->getModels(7877999, array('geo_id' => 213, 'count' => 1));
+        $categoryModels = $categoryClientMock->getModels(7877999, ['geo_id' => 213, 'count' => 1]);
 
         $models = $categoryModels->getItems();
 
@@ -478,19 +475,18 @@ class CategoryClientTest extends TestCase
     {
         $json = file_get_contents(__DIR__ . '/' . $this->fixturesFolder . '/category-filters.json');
         $jsonObj = json_decode($json);
-        $response = new Response(200);
-        $response->setBody($json);
+        $response = new Response(200, [], \GuzzleHttp\Psr7\stream_for($json));
 
-        $categoryClientMock = $this->getMock('Yandex\Market\Content\Clients\CategoryClient', array('sendRequest'));
+        $categoryClientMock = $this->getMock('Yandex\Market\Content\Clients\CategoryClient', ['sendRequest']);
         $categoryClientMock->expects($this->any())
             ->method('sendRequest')
             ->will($this->returnValue($response));
 
-        $categoryFilters = $categoryClientMock->getFilters(90598, array(
+        $categoryFilters = $categoryClientMock->getFilters(90598, [
             'geo_id' => 213,
             'filter_set' => 'basic',
             'description' => 1
-        ));
+        ]);
 
         $filters = $categoryFilters->getFilters();
 

@@ -4,7 +4,8 @@
  */
 namespace Yandex\Tests\Market;
 
-use Guzzle\Http\Message\Response;
+use GuzzleHttp\Psr7\Response;
+use GuzzleHttp\Psr7\Stream;
 use Yandex\Tests\TestCase;
 
 /**
@@ -24,10 +25,9 @@ class GeoRegionClientTest extends TestCase
     {
         $json = file_get_contents(__DIR__ . '/' . $this->fixturesFolder . '/georegion-list.json');
         $jsonObj = json_decode($json);
-        $response = new Response(200);
-        $response->setBody($json);
+        $response = new Response(200, [], \GuzzleHttp\Psr7\stream_for($json));
 
-        $geoRegionClientMock = $this->getMock('Yandex\Market\Content\Clients\GeoRegionClient', array('sendRequest'));
+        $geoRegionClientMock = $this->getMock('Yandex\Market\Content\Clients\GeoRegionClient', ['sendRequest']);
         $geoRegionClientMock->expects($this->any())
             ->method('sendRequest')
             ->will($this->returnValue($response));
@@ -100,10 +100,9 @@ class GeoRegionClientTest extends TestCase
     {
         $json = file_get_contents(__DIR__ . '/' . $this->fixturesFolder . '/georegion.json');
         $jsonObj = json_decode($json);
-        $response = new Response(200);
-        $response->setBody($json);
+        $response = new Response(200, [], \GuzzleHttp\Psr7\stream_for($json));
 
-        $geoRegionClientMock = $this->getMock('Yandex\Market\Content\Clients\GeoRegionClient', array('sendRequest'));
+        $geoRegionClientMock = $this->getMock('Yandex\Market\Content\Clients\GeoRegionClient', ['sendRequest']);
         $geoRegionClientMock->expects($this->any())
             ->method('sendRequest')
             ->will($this->returnValue($response));
@@ -138,10 +137,9 @@ class GeoRegionClientTest extends TestCase
     {
         $json = file_get_contents(__DIR__ . '/' . $this->fixturesFolder . '/georegion-children.json');
         $jsonObj = json_decode($json);
-        $response = new Response(200);
-        $response->setBody($json);
+        $response = new Response(200, [], \GuzzleHttp\Psr7\stream_for($json));
 
-        $geoRegionClientMock = $this->getMock('Yandex\Market\Content\Clients\GeoRegionClient', array('sendRequest'));
+        $geoRegionClientMock = $this->getMock('Yandex\Market\Content\Clients\GeoRegionClient', ['sendRequest']);
         $geoRegionClientMock->expects($this->any())
             ->method('sendRequest')
             ->will($this->returnValue($response));
@@ -215,10 +213,9 @@ class GeoRegionClientTest extends TestCase
     {
         $json = file_get_contents(__DIR__ . '/' . $this->fixturesFolder . '/georegion-match.json');
         $jsonObj = json_decode($json);
-        $response = new Response(200);
-        $response->setBody($json);
+        $response = new Response(200, [], \GuzzleHttp\Psr7\stream_for($json));
 
-        $geoRegionClientMock = $this->getMock('Yandex\Market\Content\Clients\GeoRegionClient', array('sendRequest'));
+        $geoRegionClientMock = $this->getMock('Yandex\Market\Content\Clients\GeoRegionClient', ['sendRequest']);
         $geoRegionClientMock->expects($this->any())
             ->method('sendRequest')
             ->will($this->returnValue($response));
@@ -284,15 +281,14 @@ class GeoRegionClientTest extends TestCase
     {
         $json = file_get_contents(__DIR__ . '/' . $this->fixturesFolder . '/georegion-shops-summary.json');
         $jsonObj = json_decode($json);
-        $response = new Response(200);
-        $response->setBody($json);
+        $response = new Response(200, [], \GuzzleHttp\Psr7\stream_for($json));
 
-        $geoRegionClientMock = $this->getMock('Yandex\Market\Content\Clients\GeoRegionClient', array('sendRequest'));
+        $geoRegionClientMock = $this->getMock('Yandex\Market\Content\Clients\GeoRegionClient', ['sendRequest']);
         $geoRegionClientMock->expects($this->any())
             ->method('sendRequest')
             ->will($this->returnValue($response));
 
-        $geoRegionShopsSummary = $geoRegionClientMock->getShopsSummary(44, array('fields'=>'delivery_count,home_count,total_count'));
+        $geoRegionShopsSummary = $geoRegionClientMock->getShopsSummary(44, ['fields'=>'delivery_count,home_count,total_count']);
 
         $this->assertEquals(
             $jsonObj->homeCount,
