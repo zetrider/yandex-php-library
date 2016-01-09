@@ -23,6 +23,19 @@ class TestListener implements \PHPUnit_Framework_TestListener
      * @var integer
      */
     protected $timeSuite = 0;
+
+    /**
+     * @param \PHPUnit_Framework_Test $test
+     * @param \PHPUnit_Framework_Warning $e
+     * @param $time
+     * @return void
+     */
+    public function addWarning(\PHPUnit_Framework_Test $test, \PHPUnit_Framework_Warning $e, $time)
+    {
+        echo "\t[";
+        echo $this->colorize("warning", "blue");
+        echo "]-";
+    }
     
     /**
      * @param \PHPUnit_Framework_Test $test
