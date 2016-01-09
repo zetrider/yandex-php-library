@@ -18,7 +18,7 @@ use GuzzleHttp\Exception\ClientException;
 use Yandex\Common\Exception\ForbiddenException;
 use Yandex\Common\Exception\UnauthorizedException;
 use Yandex\Market\Partner\Exception\PartnerRequestException;
-use Yandex\Market\Models;
+use Yandex\Market\Partner\Models;
 
 /**
  * Class PartnerClient

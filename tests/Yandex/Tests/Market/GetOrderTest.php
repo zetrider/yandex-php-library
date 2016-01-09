@@ -2,12 +2,12 @@
 /**
  * @namespace
  */
-namespace Yandex\Tests\Market;
+namespace Yandex\Tests\Market\Partner;
 
 use GuzzleHttp\Psr7\Response;
 use GuzzleHttp\Psr7\Stream;
-use Yandex\Market\Models\Item;
-use Yandex\Market\Models\Order;
+use Yandex\Market\Partner\Models\Item;
+use Yandex\Market\Partner\Models\Order;
 use Yandex\Tests\TestCase;
 
 /**
