@@ -28,8 +28,8 @@ class CountersParams extends Model
     protected $mappingClasses = [];
 
     protected $propNameMap = [
-        'perPage' => 'per_page',
-        'searchString' => 'search_string'
+        'per_page' => 'perPage',
+        'search_string' => 'searchString'
     ];
 
     /**

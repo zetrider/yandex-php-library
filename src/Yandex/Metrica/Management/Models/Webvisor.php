@@ -18,9 +18,9 @@ class Webvisor extends Model
     protected $mappingClasses = [];
 
     protected $propNameMap = [
-        'archEnabled' => 'arch_enabled',
-        'archType' => 'arch_type',
-        'loadPlayerType' => 'load_player_type'
+        'arch_enabled' => 'archEnabled',
+        'arch_type' => 'archType',
+        'load_player_type' => 'loadPlayerType'
     ];
 
     /**

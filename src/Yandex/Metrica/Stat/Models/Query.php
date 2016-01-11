@@ -39,8 +39,8 @@ class Query extends Model
     protected $mappingClasses = [];
 
     protected $propNameMap = [
-        'autoGroupType' => 'auto_group_type',
-        'autoGroupSize' => 'auto_group_size'
+        'auto_group_type' => 'autoGroupType',
+        'auto_group_size' => 'autoGroupSize'
     ];
 
     /**

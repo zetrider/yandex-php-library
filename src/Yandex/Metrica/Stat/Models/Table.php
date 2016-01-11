@@ -37,11 +37,11 @@ class Table extends Model
     ];
 
     protected $propNameMap = [
-        'totalRows' => 'total_rows',
-        'sampleShare' => 'sample_share',
-        'sampleSize' => 'sample_size',
-        'sampleSpace' => 'sample_space',
-        'dataLag' => 'data_lag'
+        'total_rows' => 'totalRows',
+        'sample_share' => 'sampleShare',
+        'sample_size' => 'sampleSize',
+        'sample_space' => 'sampleSpace',
+        'data_lag' => 'dataLag'
     ];
 
     /**

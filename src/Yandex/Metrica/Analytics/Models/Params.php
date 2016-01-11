@@ -32,10 +32,10 @@ class Params extends Model
     protected $mappingClasses = [];
 
     protected $propNameMap = [
-        'endDate' => 'end-date',
-        'startDate' => 'start-date',
-        'maxResults' => 'max-results',
-        'startIndex' => 'start-index'
+        'end-date' => 'endDate',
+        'start-date' => 'startDate',
+        'max-results' => 'maxResults',
+        'start-index' => 'startIndex'
     ];
 
     /**

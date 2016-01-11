@@ -2,18 +2,18 @@
 /**
  * @namespace
  */
-namespace Yandex\Tests\Market;
+namespace Yandex\Tests\Market\Partner;
 
-use Yandex\Market\Models\CartResponse;
-use Yandex\Market\Models\DatesRange;
-use Yandex\Market\Models\DeliveryOption;
-use Yandex\Market\Models\DeliveryOptions;
-use Yandex\Market\Models\Item;
-use Yandex\Market\Models\Items;
-use Yandex\Market\Models\Outlet;
-use Yandex\Market\Models\Outlets;
-use Yandex\Market\Models\PostCartRequest;
-use Yandex\Market\Models\PostCartResponse;
+use Yandex\Market\Partner\Models\CartResponse;
+use Yandex\Market\Partner\Models\DatesRange;
+use Yandex\Market\Partner\Models\DeliveryOption;
+use Yandex\Market\Partner\Models\DeliveryOptions;
+use Yandex\Market\Partner\Models\Item;
+use Yandex\Market\Partner\Models\Items;
+use Yandex\Market\Partner\Models\Outlet;
+use Yandex\Market\Partner\Models\Outlets;
+use Yandex\Market\Partner\Models\PostCartRequest;
+use Yandex\Market\Partner\Models\PostCartResponse;
 use Yandex\Tests\TestCase;
 
 /**

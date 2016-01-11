@@ -14,8 +14,8 @@ class Account extends Model
     protected $mappingClasses = [];
 
     protected $propNameMap = [
-        'userLogin' => 'user_login',
-        'createdAt' => 'created_at'
+        'user_login' => 'userLogin',
+        'created_at' => 'createdAt'
     ];
 
     /**

@@ -39,11 +39,10 @@ class CounterItem extends Model
     ];
 
     protected $propNameMap = [
-        'ownerLogin' => 'owner_login',
-        'codeStatus' => 'code_status',
-        'codeOptions' => 'code_options',
-        'partnerId' => 'partner_id',
-        'mirrors' => 'mirrors'
+        'owner_login' => 'ownerLogin',
+        'code_status' => 'codeStatus',
+        'code_options' => 'codeOptions',
+        'partner_id' => 'partnerId'
     ];
 
     /**

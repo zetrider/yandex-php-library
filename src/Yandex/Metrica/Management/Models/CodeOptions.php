@@ -27,9 +27,9 @@ class CodeOptions extends Model
     ];
 
     protected $propNameMap = [
-        'trackHash' => 'track_hash',
-        'xmlSite' => 'xml_site',
-        'inOneLine' => 'in_one_line'
+        'track_hash' => 'trackHash',
+        'xml_site' => 'xmlSite',
+        'in_one_line' => 'inOneLine'
     ];
 
     /**
