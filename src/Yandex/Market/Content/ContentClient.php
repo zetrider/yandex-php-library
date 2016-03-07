@@ -169,7 +169,6 @@ class ContentClient extends AbstractServiceClient
             if (in_array($header->getName(), $limitHeaders, true)) {
                 $this->limits[$header->getName()] = (int) $header->__toString();
             }
-
         }
     }
 
