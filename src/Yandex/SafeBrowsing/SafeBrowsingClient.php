@@ -608,7 +608,6 @@ class SafeBrowsingClient extends AbstractServiceClient
                 'chunk_num' => $chunkNum,
                 'prefixes' => $prefixes
             ];
-
         } elseif ($type == 's') {
             $prefixes = [];
             while (strlen($chunkData) > 0) {
@@ -633,7 +632,6 @@ class SafeBrowsingClient extends AbstractServiceClient
                 'chunk_num' => $chunkNum,
                 'prefixes' => $prefixes
             ];
-
         } else {
             throw new SafeBrowsingException(
                 'ERROR: In chunkNum "' . $chunkNum . '" incorrect type "' . $type . '"'

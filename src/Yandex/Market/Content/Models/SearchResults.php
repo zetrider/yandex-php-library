@@ -24,7 +24,6 @@ class SearchResults extends ObjectModel
             if (isset($searchResult['offer'])) {
                 $this->collection[] = new Offer($searchResult['offer']);
             }
-
         } elseif (is_object($searchResult) && ($searchResult instanceof MarketModel || $searchResult instanceof Offer)
         ) {
             $this->collection[] = $searchResult;
