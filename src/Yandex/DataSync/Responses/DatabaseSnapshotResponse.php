@@ -56,13 +56,6 @@ class DatabaseSnapshotResponse extends Model
     protected $databaseId;
 
     /**
-     * Description of the database.
-     *
-     * @var string
-     */
-    protected $title;
-
-    /**
      * Number of the current revision.
      *
      * @var integer
@@ -191,21 +184,5 @@ class DatabaseSnapshotResponse extends Model
     public function setSize($size)
     {
         $this->size = $size;
-    }
-
-    /**
-     * @return string
-     */
-    public function getTitle()
-    {
-        return $this->title;
-    }
-
-    /**
-     * @param string $title
-     */
-    public function setTitle($title)
-    {
-        $this->title = $title;
     }
 }

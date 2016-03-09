@@ -147,7 +147,6 @@ class DatabaseSnapshotTest extends TestCase
     function testSetProperties()
     {
         $fixture = [
-            'title'        => 'test',
             'size'         => 0,
             'revision'     => 0,
             'recordsCount' => 0,
@@ -159,7 +158,6 @@ class DatabaseSnapshotTest extends TestCase
         $response1 = new DatabaseSnapshotResponse($fixture);
 
         $response2 = new DatabaseSnapshotResponse();
-        $response2->setTitle($fixture['title']);
         $response2->setSize($fixture['size']);
         $response2->setRevision($fixture['revision']);
         $response2->setRecordsCount($fixture['recordsCount']);
@@ -190,7 +188,6 @@ class DatabaseSnapshotTest extends TestCase
 
         $response = new DatabaseSnapshotResponse($fixture);
 
-        $this->assertEquals($response->getTitle(), $fixture['title']);
         $this->assertEquals($response->getRevision(), $fixture['revision']);
         $this->assertEquals($response->getRecordsCount(), $fixture['recordsCount']);
         $this->assertEquals($response->getModified(), $fixture['modified']);
