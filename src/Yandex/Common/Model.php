@@ -132,20 +132,27 @@ abstract class Model
                 if ($key === "mappingClasses" || $key === "propNameMap") {
                     continue;
                 }
-
                 $propNameMap = $key;
+                $obj         = $this;
+                if (is_object($data)) {
+                    $obj = $data;
+                }
 
-                if (!empty($this->propNameMap)
-                    && array_key_exists($key, $this->propNameMap)
-                ) {
-                    $propNameMap = $this->propNameMap[$key];
+                if (property_exists($obj, $propNameMap)) {
+                    $ourPropertyName = array_search($propNameMap, $obj->propNameMap);
+
+                    if ($ourPropertyName) {
+                        $propNameMap = $ourPropertyName;
+                    }
                 }
 
                 if (is_object($value) && method_exists($value, "getAll")) {
-                    $result[$propNameMap] = $this->toArrayRecursive($value->getAll());
-                } else {
-                    if ($value !== null) {
-                        $result[$propNameMap] = $this->toArrayRecursive($value);
+                    if (method_exists($obj, 'toArrayRecursive')) {
+                        $result[$propNameMap] = $obj->toArrayRecursive($value->getAll());
+                    }
+                } elseif ($value !== null) {
+                    if (method_exists($obj, 'toArrayRecursive')) {
+                        $result[$propNameMap] = $obj->toArrayRecursive($value);
                     }
                 }
             }

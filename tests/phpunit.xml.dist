@@ -13,6 +13,7 @@
             <directory>./Yandex/Tests/OAuth</directory>
             <directory>./Yandex/Tests/Disk</directory>
             <directory>./Yandex/Tests/Speller</directory>
+            <directory>./Yandex/Tests/DataSync</directory>
         </testsuite>
     </testsuites>
     <listeners>
