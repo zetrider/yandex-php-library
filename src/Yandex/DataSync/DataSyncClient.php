@@ -546,19 +546,25 @@ class DataSyncClient extends AbstractServiceClient
      */
     public function saveDelta($data, $revision = 0, $databaseId = null, $context = null, $fields = [])
     {
-        $options                         = [
+        $options             = [
             'headers' => [
                 'If-Match' => $revision,
             ],
             'json'    => $data
         ];
-        $response                        = $this->sendRequest(
+        $response            = $this->sendRequest(
             'POST',
             $this->getDatabaseDeltasUrl($databaseId, $context, $fields),
             $options
         );
-        $decodedResponseBody             = $this->getDecodedBody($response->getBody());
-        $decodedResponseBody['revision'] = $response->getHeader('ETag');
+        $decodedResponseBody = $this->getDecodedBody($response->getBody());
+        if ($response->getHeader('ETag')
+            && is_array($response->getHeader('ETag'))
+            && count($response->getHeader('ETag')) > 0
+        ) {
+            $decodedResponseBody['revision'] = $response->getHeader('ETag')[0];
+        }
+
         return $decodedResponseBody;
     }
 

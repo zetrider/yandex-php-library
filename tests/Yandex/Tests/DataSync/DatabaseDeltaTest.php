@@ -11,7 +11,6 @@
 namespace Yandex\Tests\DataSync;
 
 use GuzzleHttp\Psr7\Response;
-use GuzzleHttp\Psr7\Stream;
 use Yandex\DataSync\Models\Database;
 use Yandex\DataSync\Models\Database\Delta\Record;
 use Yandex\DataSync\Models\Database\Delta\RecordField;
@@ -39,7 +38,7 @@ class DatabaseDeltaTest extends TestCase
         $databaseId = 'test';
         $revision   = 2;
         $json       = file_get_contents(__DIR__ . '/' . $this->fixturesFolder . '/save-delta.json');
-        $response   = new Response(200, [], \GuzzleHttp\Psr7\stream_for($json));
+        $response   = new Response(200, ['ETag' => ($revision + 1)], \GuzzleHttp\Psr7\stream_for($json));
         /** @var DataSyncClient $dataSyncClientMock */
         $dataSyncClientMock = $this->getMock('Yandex\DataSync\DataSyncClient', ['sendRequest']);
         $dataSyncClientMock->expects($this->any())
@@ -98,6 +97,7 @@ class DatabaseDeltaTest extends TestCase
         $this->assertArrayHasKey('method', $result);
         $this->assertArrayHasKey('templated', $result);
         $this->assertArrayHasKey('revision', $result);
+        $this->assertEquals(($revision + 1), $result['revision']);
     }
 
     function testSaveDeltaFilteredResponse()

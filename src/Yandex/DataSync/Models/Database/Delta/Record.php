@@ -58,24 +58,6 @@ class Record extends Model
      */
     const CHANGE_TYPE_DELETE = 'delete';
 
-    //this change is only available for the field, which has a data type list ( DATA_TYPE_LIST ).
-    /**
-     * Add a new item to the list.
-     */
-    const CHANGE_TYPE_LIST_ITEM_INSERT = 'list_item_insert';
-    /**
-     * Set the value for the element at the specified index.
-     */
-    const CHANGE_TYPE_LIST_ITEM_SET = 'list_item_set';
-    /**
-     * Move element of the array.
-     */
-    const CHANGE_TYPE_LIST_ITEM_MOVE = 'list_item_move';
-    /**
-     * Delete a list item.
-     */
-    const CHANGE_TYPE_LIST_ITEM_DELETE = 'list_item_delete';
-
     /**
      * @var string
      */
