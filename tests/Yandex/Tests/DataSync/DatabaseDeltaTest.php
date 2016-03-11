@@ -91,7 +91,9 @@ class DatabaseDeltaTest extends TestCase
         $result = $dataSyncClientMock->saveDelta($delta->toArray(), $revision, $databaseId, $context);
 
         $this->assertEquals(
-            $dataSyncClientMock->getDatabaseDeltasUrl() . '?base_revision=' . ($revision + 1),
+            $dataSyncClientMock->getServiceScheme() . '://' . $dataSyncClientMock->getServiceDomain() . '/v1/data/'
+            . $dataSyncClientMock->getContext() . '/databases/' . $dataSyncClientMock->getDatabaseId()
+            . '/deltas?' . 'base_revision=' . ($revision + 1),
             $result['href']
         );
         $this->assertArrayHasKey('method', $result);
@@ -160,7 +162,9 @@ class DatabaseDeltaTest extends TestCase
         $result = $dataSyncClientMock->saveDelta($delta->toArray(), $revision, $databaseId, $context, $fields);
 
         $this->assertEquals(
-            $dataSyncClientMock->getDatabaseDeltasUrl() . '?base_revision=' . ($revision + 1),
+            $dataSyncClientMock->getServiceScheme() . '://' . $dataSyncClientMock->getServiceDomain() . '/v1/data/'
+            . $dataSyncClientMock->getContext() . '/databases/' . $dataSyncClientMock->getDatabaseId()
+            . '/deltas?' . 'base_revision=' . ($revision + 1),
             $result['href']
         );
         $this->assertArrayNotHasKey('method', $result);

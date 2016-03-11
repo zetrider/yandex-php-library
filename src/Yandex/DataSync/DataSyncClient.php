@@ -44,6 +44,16 @@ use Yandex\DataSync\Responses\DatabasesResponse;
 class DataSyncClient extends AbstractServiceClient
 {
     /**
+     * DB app context.
+     */
+    const CONTEXT_APP = 'app';
+
+    /**
+     * DB user context.
+     */
+    const CONTEXT_USER = 'user';
+
+    /**
      * Requested version of API
      *
      * @var string
@@ -58,16 +68,6 @@ class DataSyncClient extends AbstractServiceClient
     protected $serviceDomain = 'cloud-api.yandex.net';
 
     /**
-     * DB app context.
-     */
-    const CONTEXT_APP = 'app';
-
-    /**
-     * DB user context.
-     */
-    const CONTEXT_USER = 'user';
-
-    /**
      * @var string
      */
     private $context;
@@ -79,9 +79,14 @@ class DataSyncClient extends AbstractServiceClient
 
     /**
      * @return string
+     * @throws InvalidArgumentException
      */
     public function getDatabaseId()
     {
+        if (!$this->databaseId) {
+            throw new InvalidArgumentException('Empty database id');
+        }
+
         return $this->databaseId;
     }
 
@@ -95,9 +100,13 @@ class DataSyncClient extends AbstractServiceClient
 
     /**
      * @return string
+     * @throws InvalidArgumentException
      */
     public function getContext()
     {
+        if (!$this->context) {
+            throw new InvalidArgumentException('Empty context');
+        }
         return $this->context;
     }
 
@@ -142,32 +151,25 @@ class DataSyncClient extends AbstractServiceClient
      * @return string
      * @throws InvalidArgumentException
      */
-    public function getDatabasesUrl($context = null, $fields = [], $limit = null, $offset = null)
+    protected function getDatabasesUrl($context = null, $fields = [], $limit = null, $offset = null)
     {
         if ($context) {
             $this->setContext($context);
         }
 
-        if (!$this->context) {
-            throw new InvalidArgumentException('Empty context');
-        }
-
-        $params = '?';
+        $params = [];
         if ($limit) {
-            $params .= 'limit=' . $limit . '&';
+            $params['limit'] = $limit;
         }
-
         if ($offset) {
-            $params .= 'offset=' . $offset . '&';
+            $params['offset'] = $offset;
         }
-
         if ($fields) {
-            $params .= 'fields=' . implode(',', $fields) . '&';
+            $params['fields'] = implode(',', $fields);
         }
-        $params = rtrim($params, "&");
 
         return $this->serviceScheme . '://' . $this->serviceDomain . '/' . $this->version . '/data/'
-        . $this->context . '/databases/' . $params;
+        . $this->getContext() . '/databases/?' . http_build_query($params);
     }
 
     /**
@@ -178,7 +180,7 @@ class DataSyncClient extends AbstractServiceClient
      * @return string
      * @throws InvalidArgumentException
      */
-    public function getDatabaseUrl($databaseId = null, $context = null, $fields = [])
+    protected function getDatabaseUrl($databaseId = null, $context = null, $fields = [])
     {
         if ($context) {
             $this->setContext($context);
@@ -187,21 +189,13 @@ class DataSyncClient extends AbstractServiceClient
             $this->setDatabaseId($databaseId);
         }
 
-        if (!$this->context) {
-            throw new InvalidArgumentException('Empty context');
-        }
-
-        if (!$this->databaseId) {
-            throw new InvalidArgumentException('Empty database id');
-        }
-
-        $params = '';
+        $params = [];
         if ($fields) {
-            $params = '?fields=' . implode(',', $fields);
+            $params['fields'] = implode(',', $fields);
         }
 
         return $this->serviceScheme . '://' . $this->serviceDomain . '/' . $this->version . '/data/'
-        . $this->context . '/databases/' . $this->databaseId . '/' . $params;
+        . $this->getContext() . '/databases/' . $this->getDatabaseId() . '/?' . http_build_query($params);
     }
 
     /**
@@ -213,7 +207,7 @@ class DataSyncClient extends AbstractServiceClient
      * @return string
      * @throws InvalidArgumentException
      */
-    public function getDatabaseSnapshotUrl($databaseId = null, $context = null, $collectionId = null, $fields = [])
+    protected function getDatabaseSnapshotUrl($databaseId = null, $context = null, $collectionId = null, $fields = [])
     {
         if ($context) {
             $this->setContext($context);
@@ -221,26 +215,17 @@ class DataSyncClient extends AbstractServiceClient
         if ($databaseId) {
             $this->setDatabaseId($databaseId);
         }
-        if (!$this->context) {
-            throw new InvalidArgumentException('Empty context');
-        }
 
-        if (!$this->databaseId) {
-            throw new InvalidArgumentException('Empty database id');
-        }
-
-        $params = '?';
+        $params = [];
         if ($collectionId) {
-            $params .= 'collection_id=' . $collectionId . '&';
+            $params['collection_id'] = $collectionId;
         }
-
         if ($fields) {
-            $params .= 'fields=' . implode(',', $fields) . '&';
+            $params['fields'] = implode(',', $fields);
         }
-        $params = rtrim($params, "&");
 
         return $this->serviceScheme . '://' . $this->serviceDomain . '/' . $this->version . '/data/'
-        . $this->context . '/databases/' . $this->databaseId . '/snapshot/' . $params;
+        . $this->getContext() . '/databases/' . $this->getDatabaseId() . '/snapshot/?' . http_build_query($params);
     }
 
     /**
@@ -253,7 +238,7 @@ class DataSyncClient extends AbstractServiceClient
      * @return string
      * @throws InvalidArgumentException
      */
-    public function getDatabaseDeltasUrl(
+    protected function getDatabaseDeltasUrl(
         $databaseId = null,
         $context = null,
         $fields = [],
@@ -266,29 +251,19 @@ class DataSyncClient extends AbstractServiceClient
         if ($databaseId) {
             $this->setDatabaseId($databaseId);
         }
-        if (!$this->context) {
-            throw new InvalidArgumentException('Empty context');
-        }
-        if (!$this->databaseId) {
-            throw new InvalidArgumentException('Empty database id');
-        }
-        $params = '';
+        $params = [];
         if ($baseRevision !== null) {
-            $params .= 'base_revision=' . $baseRevision . '&';
+            $params['base_revision'] = $baseRevision;
         }
-        if ($limit > 0) {
-            $params .= 'limit=' . $limit . '&';
+        if ($limit) {
+            $params['limit'] = $limit;
         }
         if ($fields) {
-            $params .= 'fields=' . implode(',', $fields) . '&';
-        }
-        if ($params) {
-            $params = '/?' . $params;
-            $params = rtrim($params, "&");
+            $params['fields'] = implode(',', $fields);
         }
 
         return $this->serviceScheme . '://' . $this->serviceDomain . '/' . $this->version . '/data/'
-        . $this->context . '/databases/' . $this->databaseId . '/deltas' . $params;
+        . $this->getContext() . '/databases/' . $this->getDatabaseId() . '/deltas?' . http_build_query($params);
     }
 
     /**

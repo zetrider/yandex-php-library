@@ -35,8 +35,6 @@ class DataSyncClientTest extends TestCase
         $token          = 'TOKEN';
         $databaseId     = 'DATABASE_ID';
         $dataSyncClient = new DataSyncClient();
-        $this->assertEmpty($dataSyncClient->getContext());
-        $this->assertEmpty($dataSyncClient->getDatabaseId());
         $this->assertEmpty($dataSyncClient->getAccessToken());
 
         $dataSyncClient2 = new DataSyncClient($token, DataSyncClient::CONTEXT_USER, $databaseId);
@@ -53,60 +51,20 @@ class DataSyncClientTest extends TestCase
         new DataSyncClient($token, $context);
     }
 
-    function testGetDatabasesUrlException()
+    function testGetEmptyDatabasesIdException()
     {
         $token          = 'TOKEN';
         $dataSyncClient = new DataSyncClient($token);
-        $this->setExpectedException('Yandex\Common\Exception\InvalidArgumentException', 'Empty context');
-        $dataSyncClient->getDatabasesUrl();
-    }
-
-    function testGetDatabaseUrlEmptyContextException()
-    {
-        $token          = 'TOKEN';
-        $dataSyncClient = new DataSyncClient($token);
-        $this->setExpectedException('Yandex\Common\Exception\InvalidArgumentException', 'Empty context');
-        $dataSyncClient->getDatabaseUrl();
-    }
-
-    function testGetDatabaseUrlEmptyDatabaseIdException()
-    {
-        $token          = 'TOKEN';
-        $dataSyncClient = new DataSyncClient($token, DataSyncClient::CONTEXT_APP);
         $this->setExpectedException('Yandex\Common\Exception\InvalidArgumentException', 'Empty database id');
-        $dataSyncClient->getDatabaseUrl();
+        $dataSyncClient->getDatabaseId();
     }
 
-    function testGetDatabaseSnapshotUrlEmptyContextException()
+    function testGetEmptyContextException()
     {
         $token          = 'TOKEN';
         $dataSyncClient = new DataSyncClient($token);
         $this->setExpectedException('Yandex\Common\Exception\InvalidArgumentException', 'Empty context');
-        $dataSyncClient->getDatabaseSnapshotUrl();
-    }
-
-    function testGetDatabaseSnapshotUrlEmptyDatabaseIdException()
-    {
-        $token          = 'TOKEN';
-        $dataSyncClient = new DataSyncClient($token, DataSyncClient::CONTEXT_APP);
-        $this->setExpectedException('Yandex\Common\Exception\InvalidArgumentException', 'Empty database id');
-        $dataSyncClient->getDatabaseSnapshotUrl();
-    }
-
-    function testGetDatabaseDeltasUrlEmptyContextException()
-    {
-        $token          = 'TOKEN';
-        $dataSyncClient = new DataSyncClient($token);
-        $this->setExpectedException('Yandex\Common\Exception\InvalidArgumentException', 'Empty context');
-        $dataSyncClient->getDatabaseDeltasUrl();
-    }
-
-    function testGetDatabaseDeltasUrlEmptyDatabaseIdException()
-    {
-        $token          = 'TOKEN';
-        $dataSyncClient = new DataSyncClient($token, DataSyncClient::CONTEXT_APP);
-        $this->setExpectedException('Yandex\Common\Exception\InvalidArgumentException', 'Empty database id');
-        $dataSyncClient->getDatabaseDeltasUrl();
+        $dataSyncClient->getContext();
     }
 
     function testSendRequestInvalidArgumentException()
