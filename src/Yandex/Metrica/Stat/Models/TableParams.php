@@ -90,7 +90,7 @@ class TableParams extends Model
     /**
      * Retrieve the dimensions property
      *
-     * @return array|null
+     * @return string|null
      */
     public function getDimensions()
     {
@@ -100,7 +100,7 @@ class TableParams extends Model
     /**
      * Set the dimensions property
      *
-     * @param array $dimensions
+     * @param string $dimensions
      * @return $this
      */
     public function setDimensions($dimensions)
@@ -112,7 +112,7 @@ class TableParams extends Model
     /**
      * Retrieve the metrics property
      *
-     * @return array|null
+     * @return string|null
      */
     public function getMetrics()
     {
@@ -122,7 +122,7 @@ class TableParams extends Model
     /**
      * Set the metrics property
      *
-     * @param array $metrics
+     * @param string $metrics
      * @return $this
      */
     public function setMetrics($metrics)
@@ -134,7 +134,7 @@ class TableParams extends Model
     /**
      * Retrieve the sort property
      *
-     * @return array|null
+     * @return string|null
      */
     public function getSort()
     {
@@ -144,7 +144,7 @@ class TableParams extends Model
     /**
      * Set the sort property
      *
-     * @param array $sort
+     * @param string $sort
      * @return $this
      */
     public function setSort($sort)
