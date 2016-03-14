@@ -98,7 +98,7 @@ class ByTimeParams extends Model
     /**
      * Retrieve the dimensions property
      *
-     * @return array|null
+     * @return string|null
      */
     public function getDimensions()
     {
@@ -108,7 +108,7 @@ class ByTimeParams extends Model
     /**
      * Set the dimensions property
      *
-     * @param array $dimensions
+     * @param string $dimensions
      * @return $this
      */
     public function setDimensions($dimensions)
@@ -120,7 +120,7 @@ class ByTimeParams extends Model
     /**
      * Retrieve the metrics property
      *
-     * @return array|null
+     * @return string|null
      */
     public function getMetrics()
     {
@@ -130,7 +130,7 @@ class ByTimeParams extends Model
     /**
      * Set the metrics property
      *
-     * @param array $metrics
+     * @param string $metrics
      * @return $this
      */
     public function setMetrics($metrics)
