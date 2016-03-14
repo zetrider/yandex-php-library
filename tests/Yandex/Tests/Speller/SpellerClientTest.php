@@ -2,11 +2,15 @@
 
 namespace Yandex\Tests\Speller;
 
+use GuzzleHttp\Psr7\Response;
+use GuzzleHttp\Psr7\Request;
 use Yandex\Speller\SpellerClient;
 use Yandex\Tests\TestCase;
 
 class SpellerClientTest extends TestCase
 {
+    protected $fixturesFolder = 'fixtures';
+
     public function testCreate()
     {
         $this->getSpellerClient();
@@ -159,14 +163,25 @@ class SpellerClientTest extends TestCase
      * @param $text
      * @param $params
      * @param $expectedResult
+     * @param $fixtureFile
      *
      * @dataProvider dataCheckText
      */
-    public function testCheckText($text, $params, $expectedResult)
+    public function testCheckText($text, $params, $expectedResult, $fixtureFile)
     {
-        $spellerClient = $this->getSpellerClient();
+        $json                 = file_get_contents(__DIR__ . '/' . $this->fixturesFolder . '/' . $fixtureFile);
+        $response             = new Response(200, [], \GuzzleHttp\Psr7\stream_for($json));
+        $guzzleHttpClientMock = $this->getMock('GuzzleHttp\Client', ['request']);
+        $guzzleHttpClientMock->expects($this->any())
+            ->method('request')
+            ->will($this->returnValue($response));
+        /** @var SpellerClient $spellerClientMock */
+        $spellerClientMock = $this->getMock('Yandex\Speller\SpellerClient', ['getClient']);
+        $spellerClientMock->expects($this->any())
+            ->method('getClient')
+            ->will($this->returnValue($guzzleHttpClientMock));
 
-        $result = $spellerClient->checkText($text, $params);
+        $result = $spellerClientMock->checkText($text, $params);
 
         $this->assertEquals($expectedResult, $result);
     }
@@ -177,14 +192,16 @@ class SpellerClientTest extends TestCase
             'text without errors' => [
                 'text' => 'test',
                 'params' => [],
-                'expectedResult' => []
+                'expectedResult' => [],
+                'fixtureFile' => 'check-text-response-empty-array.json'
             ],
             'text without errors with callback' => [
                 'text' => 'test',
                 'params' => [
                     'callback' => 'callback'
                 ],
-                'expectedResult' => 'callback([])'
+                'expectedResult' => 'callback([])',
+                'fixtureFile' => 'check-text-empty-callback.json'
             ],
             'text with error in first word' => [
                 'text' => 'trest',
@@ -201,7 +218,8 @@ class SpellerClientTest extends TestCase
                             'trust'
                         ]
                     ]
-                ]
+                ],
+                'fixtureFile' => 'check-text-response2.json'
             ],
             'text with error in second word' => [
                 'text' => 'test trest',
@@ -219,7 +237,8 @@ class SpellerClientTest extends TestCase
                             'trust'
                         ]
                     ]
-                ]
+                ],
+                'fixtureFile' => 'check-text-response.json'
             ]
         ];
     }
@@ -228,14 +247,25 @@ class SpellerClientTest extends TestCase
      * @param $text
      * @param $params
      * @param $expectedResult
+     * @param $fixtureFile
      *
      * @dataProvider dataCheckTexts
      */
-    public function testCheckTexts($text, $params, $expectedResult)
+    public function testCheckTexts($text, $params, $expectedResult, $fixtureFile)
     {
-        $spellerClient = $this->getSpellerClient();
+        $json                 = file_get_contents(__DIR__ . '/' . $this->fixturesFolder . '/' . $fixtureFile);
+        $response             = new Response(200, [], \GuzzleHttp\Psr7\stream_for($json));
+        $guzzleHttpClientMock = $this->getMock('GuzzleHttp\Client', ['request']);
+        $guzzleHttpClientMock->expects($this->any())
+            ->method('request')
+            ->will($this->returnValue($response));
+        /** @var SpellerClient $spellerClientMock */
+        $spellerClientMock = $this->getMock('Yandex\Speller\SpellerClient', ['getClient']);
+        $spellerClientMock->expects($this->any())
+            ->method('getClient')
+            ->will($this->returnValue($guzzleHttpClientMock));
 
-        $result = $spellerClient->checkTexts($text, $params);
+        $result = $spellerClientMock->checkTexts($text, $params);
 
         $this->assertEquals($expectedResult, $result);
     }
@@ -249,7 +279,9 @@ class SpellerClientTest extends TestCase
                     'best'
                 ],
                 'params' => [],
-                'expectedResult' => [[],[]]
+                'expectedResult' => [[],[]],
+                'fixtureFile' => 'check-texts-response-empty-arrays.json'
+
             ],
             'texts without errors with callback' => [
                 'text' => [
@@ -259,7 +291,8 @@ class SpellerClientTest extends TestCase
                 'params' => [
                     'callback' => 'callback'
                 ],
-                'expectedResult' => 'callback([[],[]])'
+                'expectedResult' => 'callback([[],[]])',
+                'fixtureFile' => 'check-texts-response-empty-callback.json'
             ],
             'text with error in first word of first text' => [
                 'text' => [
@@ -282,7 +315,8 @@ class SpellerClientTest extends TestCase
                         ]
                     ],
                     []
-                ]
+                ],
+                'fixtureFile' => 'check-texts-response1.json'
             ],
             'text with errors in first word in both texts' => [
                 'text' => [
@@ -318,7 +352,8 @@ class SpellerClientTest extends TestCase
                             ]
                         ]
                     ]
-                ]
+                ],
+                'fixtureFile' => 'check-texts-response2.json'
             ]
         ];
     }
