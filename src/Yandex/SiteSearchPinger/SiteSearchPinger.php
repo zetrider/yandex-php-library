@@ -157,7 +157,7 @@ class SiteSearchPinger extends AbstractServiceClient
      * @throws Exception\SiteSearchPingerException
      * @throws Exception\InvalidUrlException
      * @throws \Yandex\Common\Exception\InvalidArgumentException
-     * @return boolean
+     * @return int
      */
     public function ping($urls, $publishDate = 0)
     {
@@ -177,7 +177,7 @@ class SiteSearchPinger extends AbstractServiceClient
                 }
                 throw new InvalidArgumentException($errorMessage);
             }
-            return false;
+            return 0;
         }
 
         if (!$xml = $this->getDecodedBody($response->getBody())) {
@@ -190,7 +190,7 @@ class SiteSearchPinger extends AbstractServiceClient
         // retrieve count of valid urls
         $addedCount = 0;
         if (isset($xml->added) && isset($xml->added['count'])) {
-            $addedCount = $xml->added['count'];
+            $addedCount = (int)$xml->added['count'];
         }
 
         // check invalid urls and fill errors stack

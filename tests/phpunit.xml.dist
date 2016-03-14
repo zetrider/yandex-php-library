@@ -14,6 +14,7 @@
             <directory>./Yandex/Tests/Disk</directory>
             <directory>./Yandex/Tests/Speller</directory>
             <directory>./Yandex/Tests/DataSync</directory>
+            <directory>./Yandex/Tests/SiteSearchPinger</directory>
         </testsuite>
     </testsuites>
     <listeners>
