@@ -78,6 +78,7 @@ $files = $disk->directoryContents();
 * [Yandex Metrica](https://github.com/nixsolutions/yandex-php-library/wiki/Yandex-Metrica)
 * [Yandex Dictionary](https://github.com/nixsolutions/yandex-php-library/wiki/Yandex-Dictionary)
 * [Yandex Speller](https://github.com/nixsolutions/yandex-php-library/wiki/Yandex-Speller)
+* [Yandex DataSync](https://github.com/nixsolutions/yandex-php-library/wiki/Yandex-DataSync)
 
 ## Лицензия
 
