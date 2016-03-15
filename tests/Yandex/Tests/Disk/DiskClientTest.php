@@ -5,43 +5,473 @@ namespace Yandex\Tests\OAuth;
 use Yandex\Disk\DiskClient;
 use Yandex\Tests\TestCase;
 use Yandex\Disk\Exception\DiskRequestException;
+use GuzzleHttp\Psr7\Response;
+use GuzzleHttp\Psr7\Request;
 
 class DiskClientTest extends TestCase
 {
-    public function testCreate()
-    {
-        $this->getDiskClient();
-    }
+    protected $fixturesFolder = 'fixtures';
 
     public function testGetClient()
     {
-        $diskClient = $this->getDiskClient();
-
-        $getClient = self::getNotAccessibleMethod($diskClient, 'getClient');
-
+        $diskClient   = new DiskClient('test');
+        $getClient    = self::getNotAccessibleMethod($diskClient, 'getClient');
         $guzzleClient = $getClient->invokeArgs($diskClient, []);
-
         $this->assertInstanceOf('\GuzzleHttp\ClientInterface', $guzzleClient);
+    }
+
+    public function testSetVersion()
+    {
+        $diskClient = new DiskClient('test');
+        $this->assertEquals('v1', $diskClient->getVersion());
+        $diskClient->setVersion('v2');
+        $this->assertEquals('v2', $diskClient->getVersion());
+    }
+
+    public function testGetRequestUrl()
+    {
+        $diskClient = new DiskClient('test');
+        $diskClient->getRequestUrl('');
+        $this->assertEquals(
+            $diskClient->getServiceUrl(),
+            $diskClient->getRequestUrl('') . '/' . $diskClient->getVersion()
+        );
     }
 
     public function testDiskRequestExceptionWithCode()
     {
-        $diskClient = $this->getDiskClient();
+        $response             = new Response(401, [], \GuzzleHttp\Psr7\stream_for(''));
+        $request              = new Request('MKCOL', '');
+        $exception            = new \GuzzleHttp\Exception\ClientException('error', $request, $response);
+        $guzzleHttpClientMock = $this->getMock('GuzzleHttp\Client', ['request']);
+        $guzzleHttpClientMock->expects($this->any())
+            ->method('request')
+            ->will($this->throwException($exception));
+        /** @var DiskClient $diskClientMock */
+        $diskClientMock = $this->getMock('Yandex\Disk\DiskClient', ['getClient']);
+        $diskClientMock->expects($this->any())
+            ->method('getClient')
+            ->will($this->returnValue($guzzleHttpClientMock));
 
         try {
-            $diskClient->createDirectory('/test');
+            $diskClientMock->createDirectory('/test');
             $this->fail('DiskRequestException has not been thrown');
         } catch (DiskRequestException $e) {
             $this->assertEquals(401, $e->getCode());
         }
     }
 
-    /**
-     * @param string $token
-     * @return DiskClient
-     */
-    private function getDiskClient($token = 'test')
+    public function testDirectoryContentsResponseNotFound()
     {
-        return new DiskClient($token);
+        $response             = new Response(404, [], \GuzzleHttp\Psr7\stream_for(''));
+        $request              = new Request('PROPFIND', '');
+        $exception            = new \GuzzleHttp\Exception\ClientException('error', $request, $response);
+        $guzzleHttpClientMock = $this->getMock('GuzzleHttp\Client', ['request']);
+        $guzzleHttpClientMock->expects($this->any())
+            ->method('request')
+            ->will($this->throwException($exception));
+        /** @var DiskClient $diskClientMock */
+        $diskClientMock = $this->getMock('Yandex\Disk\DiskClient', ['getClient']);
+        $diskClientMock->expects($this->any())
+            ->method('getClient')
+            ->will($this->returnValue($guzzleHttpClientMock));
+
+        $this->setExpectedException('Yandex\Disk\Exception\DiskRequestException');
+        $diskClientMock->directoryContents('');
+    }
+
+    public function testDirectoryContentsResponse()
+    {
+        $href                 = '/test/';
+        $xml                  = file_get_contents(__DIR__ . '/' . $this->fixturesFolder . '/directory-contents.xml');
+        $response             = new Response(200, [], \GuzzleHttp\Psr7\stream_for($xml));
+        $guzzleHttpClientMock = $this->getMock('GuzzleHttp\Client', ['request']);
+        $guzzleHttpClientMock->expects($this->any())
+            ->method('request')
+            ->will($this->returnValue($response));
+        /** @var DiskClient $diskClientMock */
+        $diskClientMock = $this->getMock('Yandex\Disk\DiskClient', ['getClient']);
+        $diskClientMock->expects($this->any())
+            ->method('getClient')
+            ->will($this->returnValue($guzzleHttpClientMock));
+
+        $result = $diskClientMock->directoryContents($href);
+
+        $this->assertEquals($href, $result[0]['href']);
+    }
+
+    public function testDiskSpaceInfoResponse()
+    {
+        $xml                  = file_get_contents(__DIR__ . '/' . $this->fixturesFolder . '/disk-space-info.xml');
+        $response             = new Response(200, [], \GuzzleHttp\Psr7\stream_for($xml));
+        $guzzleHttpClientMock = $this->getMock('GuzzleHttp\Client', ['request']);
+        $guzzleHttpClientMock->expects($this->any())
+            ->method('request')
+            ->will($this->returnValue($response));
+        /** @var DiskClient $diskClientMock */
+        $diskClientMock = $this->getMock('Yandex\Disk\DiskClient', ['getClient']);
+        $diskClientMock->expects($this->any())
+            ->method('getClient')
+            ->will($this->returnValue($guzzleHttpClientMock));
+
+        $result = $diskClientMock->diskSpaceInfo();
+        $this->assertArrayHasKey('usedBytes', $result);
+        $this->assertArrayHasKey('availableBytes', $result);
+    }
+
+    public function testSetPropertyResponse()
+    {
+        $path                 = '/test/';
+        $prop                 = 'myprop';
+        $value                = 'myvalue';
+        $xml                  = file_get_contents(__DIR__ . '/' . $this->fixturesFolder . '/set-property.xml');
+        $response             = new Response(200, [], \GuzzleHttp\Psr7\stream_for($xml));
+        $guzzleHttpClientMock = $this->getMock('GuzzleHttp\Client', ['request']);
+        $guzzleHttpClientMock->expects($this->any())
+            ->method('request')
+            ->will($this->returnValue($response));
+        /** @var DiskClient $diskClientMock */
+        $diskClientMock = $this->getMock('Yandex\Disk\DiskClient', ['getClient']);
+        $diskClientMock->expects($this->any())
+            ->method('getClient')
+            ->will($this->returnValue($guzzleHttpClientMock));
+
+        $result = $diskClientMock->setProperty($path, $prop, $value);
+        $this->assertTrue($result);
+    }
+
+    public function testSetPropertyIncorrectStatusResponse()
+    {
+        $path                 = '/test/';
+        $prop                 = 'myprop';
+        $value                = 'myvalue';
+        $xml                  = file_get_contents(
+            __DIR__ . '/' . $this->fixturesFolder . '/set-property-incorrect-status.xml'
+        );
+        $response             = new Response(200, [], \GuzzleHttp\Psr7\stream_for($xml));
+        $guzzleHttpClientMock = $this->getMock('GuzzleHttp\Client', ['request']);
+        $guzzleHttpClientMock->expects($this->any())
+            ->method('request')
+            ->will($this->returnValue($response));
+        /** @var DiskClient $diskClientMock */
+        $diskClientMock = $this->getMock('Yandex\Disk\DiskClient', ['getClient']);
+        $diskClientMock->expects($this->any())
+            ->method('getClient')
+            ->will($this->returnValue($guzzleHttpClientMock));
+
+        $result = $diskClientMock->setProperty($path, $prop, $value);
+        $this->assertFalse($result);
+    }
+
+    public function testSetEmptyProperty()
+    {
+        $path       = '/test/';
+        $prop       = '';
+        $value      = '';
+        $diskClient = new DiskClient();
+        $result     = $diskClient->setProperty($path, $prop, $value);
+        $this->assertFalse($result);
+    }
+
+    public function testGetEmptyProperty()
+    {
+        $path       = '/test/';
+        $prop       = '';
+        $diskClient = new DiskClient();
+        $result     = $diskClient->getProperty($path, $prop);
+        $this->assertFalse($result);
+    }
+
+    public function testGetPropertyResponse()
+    {
+        $path                 = '/test/';
+        $prop                 = 'myprop';
+        $value                = 'myvalue';
+        $xml                  = file_get_contents(__DIR__ . '/' . $this->fixturesFolder . '/get-property.xml');
+        $response             = new Response(200, [], \GuzzleHttp\Psr7\stream_for($xml));
+        $guzzleHttpClientMock = $this->getMock('GuzzleHttp\Client', ['request']);
+        $guzzleHttpClientMock->expects($this->any())
+            ->method('request')
+            ->will($this->returnValue($response));
+        /** @var DiskClient $diskClientMock */
+        $diskClientMock = $this->getMock('Yandex\Disk\DiskClient', ['getClient']);
+        $diskClientMock->expects($this->any())
+            ->method('getClient')
+            ->will($this->returnValue($guzzleHttpClientMock));
+
+        $result = $diskClientMock->getProperty($path, $prop);
+        $this->assertEquals($value, $result);
+    }
+
+    public function testGetPropertyIncorrectStatusResponse()
+    {
+        $path                 = '/test/';
+        $prop                 = 'myprop';
+        $value                = 'myvalue';
+        $xml                  = file_get_contents(
+            __DIR__ . '/' . $this->fixturesFolder . '/get-property-incorrect-status.xml'
+        );
+        $response             = new Response(200, [], \GuzzleHttp\Psr7\stream_for($xml));
+        $guzzleHttpClientMock = $this->getMock('GuzzleHttp\Client', ['request']);
+        $guzzleHttpClientMock->expects($this->any())
+            ->method('request')
+            ->will($this->returnValue($response));
+        /** @var DiskClient $diskClientMock */
+        $diskClientMock = $this->getMock('Yandex\Disk\DiskClient', ['getClient']);
+        $diskClientMock->expects($this->any())
+            ->method('getClient')
+            ->will($this->returnValue($guzzleHttpClientMock));
+
+        $result = $diskClientMock->getProperty($path, $prop);
+        $this->assertFalse($result);
+    }
+
+    public function testGetLoginResponse()
+    {
+        $login                = 'test.user';
+        $txt                  = file_get_contents(__DIR__ . '/' . $this->fixturesFolder . '/get-login.txt');
+        $response             = new Response(200, [], \GuzzleHttp\Psr7\stream_for($txt));
+        $guzzleHttpClientMock = $this->getMock('GuzzleHttp\Client', ['request']);
+        $guzzleHttpClientMock->expects($this->any())
+            ->method('request')
+            ->will($this->returnValue($response));
+        /** @var DiskClient $diskClientMock */
+        $diskClientMock = $this->getMock('Yandex\Disk\DiskClient', ['getClient']);
+        $diskClientMock->expects($this->any())
+            ->method('getClient')
+            ->will($this->returnValue($guzzleHttpClientMock));
+
+        $result = $diskClientMock->getLogin();
+        $this->assertEquals($login, $result);
+    }
+
+    public function testGetFileResponse()
+    {
+        $path                 = '/test/test.txt';
+        $content              = 'test';
+        $txt                  = file_get_contents(__DIR__ . '/' . $this->fixturesFolder . '/get-file.txt');
+        $response             = new Response(200, ['Server' => 'CLI'], \GuzzleHttp\Psr7\stream_for($txt));
+        $guzzleHttpClientMock = $this->getMock('GuzzleHttp\Client', ['request']);
+        $guzzleHttpClientMock->expects($this->any())
+            ->method('request')
+            ->will($this->returnValue($response));
+        /** @var DiskClient $diskClientMock */
+        $diskClientMock = $this->getMock('Yandex\Disk\DiskClient', ['getClient']);
+        $diskClientMock->expects($this->any())
+            ->method('getClient')
+            ->will($this->returnValue($guzzleHttpClientMock));
+
+        $result = $diskClientMock->getFile($path);
+        $this->assertArrayHasKey('body', $result);
+        $this->assertEquals($content, $result['body']->getContents());
+    }
+
+    public function testDownloadFileResponse()
+    {
+        $path                 = '/test/test.txt';
+        $destination          = '';
+        $name                 = 'test.txt';
+        $txt                  = file_get_contents(__DIR__ . '/' . $this->fixturesFolder . '/test.txt');
+        $response             = new Response(200, [], \GuzzleHttp\Psr7\stream_for($txt));
+        $guzzleHttpClientMock = $this->getMock('GuzzleHttp\Client', ['request']);
+        $guzzleHttpClientMock->expects($this->any())
+            ->method('request')
+            ->will($this->returnValue($response));
+        /** @var DiskClient $diskClientMock */
+        $diskClientMock = $this->getMock('Yandex\Disk\DiskClient', ['getClient']);
+        $diskClientMock->expects($this->any())
+            ->method('getClient')
+            ->will($this->returnValue($guzzleHttpClientMock));
+
+        $result = $diskClientMock->downloadFile($path, $destination, $name);
+        $this->assertEquals($name, $result);
+        $this->assertTrue(file_exists($result));
+        unlink($result);
+        $this->assertFalse(file_exists($result));
+    }
+
+    public function testDownloadFileWithEmptyNameResponse()
+    {
+        $path                 = '/test/test.txt';
+        $destination          = '';
+        $name                 = 'test.txt';
+        $txt                  = file_get_contents(__DIR__ . '/' . $this->fixturesFolder . '/test.txt');
+        $response             = new Response(
+            200,
+            ['Content-Disposition' => 'attachment; filename="test.txt"'],
+            \GuzzleHttp\Psr7\stream_for($txt)
+        );
+        $guzzleHttpClientMock = $this->getMock('GuzzleHttp\Client', ['request']);
+        $guzzleHttpClientMock->expects($this->any())
+            ->method('request')
+            ->will($this->returnValue($response));
+        /** @var DiskClient $diskClientMock */
+        $diskClientMock = $this->getMock('Yandex\Disk\DiskClient', ['getClient']);
+        $diskClientMock->expects($this->any())
+            ->method('getClient')
+            ->will($this->returnValue($guzzleHttpClientMock));
+
+        $result = $diskClientMock->downloadFile($path, $destination);
+        $this->assertEquals($name, $result);
+    }
+
+    public function testUploadFile()
+    {
+        $destinationPath      = '/test/test.txt';
+        $sourcePath           = __DIR__ . '/' . $this->fixturesFolder . '/test.txt';
+        $fixtureFileData      = [
+            'size' => filesize($sourcePath),
+            'path' => $sourcePath,
+            'name' => ''
+        ];
+        $guzzleHttpClientMock = $this->getMock('GuzzleHttp\Client', ['request']);
+        $guzzleHttpClientMock->expects($this->any())
+            ->method('request')
+            ->will($this->returnValue(true));
+        /** @var DiskClient $diskClientMock */
+        $diskClientMock = $this->getMock('Yandex\Disk\DiskClient', ['getClient']);
+        $diskClientMock->expects($this->any())
+            ->method('getClient')
+            ->will($this->returnValue($guzzleHttpClientMock));
+
+        $this->assertNull($diskClientMock->uploadFile($destinationPath, $fixtureFileData));
+    }
+
+    public function testGetImagePreview()
+    {
+        $path                 = '/test/elephant.png';
+        $size                 = 'M';
+        $response             = new Response(200, ['content-type' => 'mage/png'], \GuzzleHttp\Psr7\stream_for(''));
+        $guzzleHttpClientMock = $this->getMock('GuzzleHttp\Client', ['request']);
+        $guzzleHttpClientMock->expects($this->any())
+            ->method('request')
+            ->will($this->returnValue($response));
+        /** @var DiskClient $diskClientMock */
+        $diskClientMock = $this->getMock('Yandex\Disk\DiskClient', ['getClient']);
+        $diskClientMock->expects($this->any())
+            ->method('getClient')
+            ->will($this->returnValue($guzzleHttpClientMock));
+
+        $result = $diskClientMock->getImagePreview($path, $size);
+
+        $this->assertArrayHasKey('headers', $result);
+        $this->assertArrayHasKey('body', $result);
+    }
+
+    public function testCopy()
+    {
+        $sourcePath           = '/test/test.txt';
+        $destinationPath      = '/test/test2.txt';
+        $response             = new Response(200, [], \GuzzleHttp\Psr7\stream_for(''));
+        $guzzleHttpClientMock = $this->getMock('GuzzleHttp\Client', ['request']);
+        $guzzleHttpClientMock->expects($this->any())
+            ->method('request')
+            ->will($this->returnValue($response));
+        /** @var DiskClient $diskClientMock */
+        $diskClientMock = $this->getMock('Yandex\Disk\DiskClient', ['getClient']);
+        $diskClientMock->expects($this->any())
+            ->method('getClient')
+            ->will($this->returnValue($guzzleHttpClientMock));
+
+        $result = $diskClientMock->copy($sourcePath, $destinationPath);
+
+        $this->assertTrue($result);
+    }
+
+    public function testMove()
+    {
+        $sourcePath           = '/test/test.txt';
+        $destinationPath      = '/test/test2.txt';
+        $response             = new Response(200, [], \GuzzleHttp\Psr7\stream_for(''));
+        $guzzleHttpClientMock = $this->getMock('GuzzleHttp\Client', ['request']);
+        $guzzleHttpClientMock->expects($this->any())
+            ->method('request')
+            ->will($this->returnValue($response));
+        /** @var DiskClient $diskClientMock */
+        $diskClientMock = $this->getMock('Yandex\Disk\DiskClient', ['getClient']);
+        $diskClientMock->expects($this->any())
+            ->method('getClient')
+            ->will($this->returnValue($guzzleHttpClientMock));
+
+        $result = $diskClientMock->move($sourcePath, $destinationPath);
+
+        $this->assertTrue($result);
+    }
+
+    public function testDelete()
+    {
+        $path                 = '/test/test.txt';
+        $response             = new Response(200, [], \GuzzleHttp\Psr7\stream_for(''));
+        $guzzleHttpClientMock = $this->getMock('GuzzleHttp\Client', ['request']);
+        $guzzleHttpClientMock->expects($this->any())
+            ->method('request')
+            ->will($this->returnValue($response));
+        /** @var DiskClient $diskClientMock */
+        $diskClientMock = $this->getMock('Yandex\Disk\DiskClient', ['getClient']);
+        $diskClientMock->expects($this->any())
+            ->method('getClient')
+            ->will($this->returnValue($guzzleHttpClientMock));
+
+        $result = $diskClientMock->delete($path);
+
+        $this->assertTrue($result);
+    }
+
+    public function testStartPublishing()
+    {
+        $path                 = '/test/test.txt';
+        $link                 = 'https://yadi.sk/i/6dZVYPKCqCcYR';
+        $xml                  = file_get_contents(__DIR__ . '/' . $this->fixturesFolder . '/start-publishing.xml');
+        $response             = new Response(200, [], \GuzzleHttp\Psr7\stream_for($xml));
+        $guzzleHttpClientMock = $this->getMock('GuzzleHttp\Client', ['request']);
+        $guzzleHttpClientMock->expects($this->any())
+            ->method('request')
+            ->will($this->returnValue($response));
+        /** @var DiskClient $diskClientMock */
+        $diskClientMock = $this->getMock('Yandex\Disk\DiskClient', ['getClient']);
+        $diskClientMock->expects($this->any())
+            ->method('getClient')
+            ->will($this->returnValue($guzzleHttpClientMock));
+
+        $result = $diskClientMock->startPublishing($path);
+
+        $this->assertEquals($link, $result);
+    }
+
+    public function testStopPublishing()
+    {
+        $path                 = '/test/test.txt';
+        $guzzleHttpClientMock = $this->getMock('GuzzleHttp\Client', ['request']);
+        $guzzleHttpClientMock->expects($this->any())
+            ->method('request')
+            ->will($this->returnValue(true));
+        /** @var DiskClient $diskClientMock */
+        $diskClientMock = $this->getMock('Yandex\Disk\DiskClient', ['getClient']);
+        $diskClientMock->expects($this->any())
+            ->method('getClient')
+            ->will($this->returnValue($guzzleHttpClientMock));
+
+        $this->assertNull($diskClientMock->stopPublishing($path));
+    }
+
+    public function testCheckPublishing()
+    {
+        $path                 = '/test/test.txt';
+        $link                 = 'https://yadi.sk/i/6dZVYPKCqCcYR';
+        $xml                  = file_get_contents(__DIR__ . '/' . $this->fixturesFolder . '/check-publishing.xml');
+        $response             = new Response(200, [], \GuzzleHttp\Psr7\stream_for($xml));
+        $guzzleHttpClientMock = $this->getMock('GuzzleHttp\Client', ['request']);
+        $guzzleHttpClientMock->expects($this->any())
+            ->method('request')
+            ->will($this->returnValue($response));
+        /** @var DiskClient $diskClientMock */
+        $diskClientMock = $this->getMock('Yandex\Disk\DiskClient', ['getClient']);
+        $diskClientMock->expects($this->any())
+            ->method('getClient')
+            ->will($this->returnValue($guzzleHttpClientMock));
+
+        $result = $diskClientMock->checkPublishing($path);
+
+        $this->assertEquals($link, $result);
     }
 }
