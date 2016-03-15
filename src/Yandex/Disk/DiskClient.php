@@ -270,7 +270,7 @@ class DiskClient extends AbstractServiceClient
 
             $resultStatus = $decodedResponseBody->children('DAV:')->response->propstat->status;
             if (strpos($resultStatus, '200 OK')) {
-                return (string)$response->propstat->prop->children();
+                return (string)$decodedResponseBody->children('DAV:')->response->propstat->prop->children();
             }
         }
 
@@ -321,12 +321,14 @@ class DiskClient extends AbstractServiceClient
     public function downloadFile($path = '', $destination = '', $name = '')
     {
         $response = $this->sendRequest('GET', $path);
-
-        if ($name === '') {
+        if ($name === '' && $response->getHeader('Content-Disposition')
+            && is_array($response->getHeader('Content-Disposition'))
+            && count($response->getHeader('Content-Disposition')) > 0
+        ) {
             $matchResults = [];
             preg_match(
                 "/.*?filename=\"(.*?)\".*?/",
-                (string) $response->getHeader('Content-Disposition'),
+                $response->getHeader('Content-Disposition')[0],
                 $matchResults
             );
             $name = urldecode($matchResults[1]);
