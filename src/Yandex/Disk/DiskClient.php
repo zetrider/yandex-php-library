@@ -270,7 +270,7 @@ class DiskClient extends AbstractServiceClient
 
             $resultStatus = $decodedResponseBody->children('DAV:')->response->propstat->status;
             if (strpos($resultStatus, '200 OK')) {
-                return (string)$response->propstat->prop->children();
+                return (string)$decodedResponseBody->children('DAV:')->response->propstat->prop->children();
             }
         }
 
