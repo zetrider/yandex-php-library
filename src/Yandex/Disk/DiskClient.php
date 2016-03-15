@@ -321,7 +321,6 @@ class DiskClient extends AbstractServiceClient
     public function downloadFile($path = '', $destination = '', $name = '')
     {
         $response = $this->sendRequest('GET', $path);
-        file_put_contents('download-file.xml', $response->getBody());
         if ($name === '' && $response->getHeader('Content-Disposition')
             && is_array($response->getHeader('Content-Disposition'))
             && count($response->getHeader('Content-Disposition')) > 0
