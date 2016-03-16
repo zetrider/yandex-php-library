@@ -247,7 +247,7 @@ class SafeBrowsingClient extends AbstractServiceClient
     {
         $response = $this->sendRequest('GET', $this->getLookupUrl($url));
         if ($response->getStatusCode() === 200) {
-            return $response->getBody();
+            return $response->getBody()->getContents();
         }
         return false;
     }
@@ -259,7 +259,7 @@ class SafeBrowsingClient extends AbstractServiceClient
     public function checkAdult($url)
     {
         $response = $this->sendRequest('GET', $this->getCheckAdultUrl($url));
-        if ($response->getBody() === 'adult') {
+        if ($response->getBody()->getContents() === 'adult') {
             return true;
         }
         return false;
@@ -291,7 +291,7 @@ class SafeBrowsingClient extends AbstractServiceClient
 
     /**
      * @param string $url
-     * @return bool
+     * @return bool|array
      * @throws \Exception
      */
     public function searchUrl($url)
