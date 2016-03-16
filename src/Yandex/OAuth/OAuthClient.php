@@ -125,14 +125,13 @@ class OAuthClient extends AbstractServiceClient
      * @param bool   $exit  indicates whether to stop the PHP script immediately or not
      * @param string $type  a type of the authentication procedure
      * @param string $state optional string
+     * @return bool|void
      */
     public function authRedirect($exit = true, $type = self::CODE_AUTH_TYPE, $state = null)
     {
         header('Location: ' . $this->getAuthUrl($type, $state));
 
-        if ($exit) {
-            exit();
-        }
+        return $exit ? exit() : true;
     }
 
     /**
