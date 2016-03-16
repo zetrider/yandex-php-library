@@ -5,6 +5,7 @@ namespace Yandex\Tests\OAuth;
 use Yandex\OAuth\OAuthClient;
 use Yandex\Tests\TestCase;
 use GuzzleHttp\Psr7\Response;
+use GuzzleHttp\Psr7\Request;
 
 class OAuthClientTest extends TestCase
 {
@@ -47,13 +48,73 @@ class OAuthClientTest extends TestCase
     public function dataSetGetAccessToken()
     {
         return [
-            'empty access token' => [
-                'accessToken' => null,
+            'empty access token'     => [
+                'accessToken'         => null,
                 'expectedAccessToken' => null
             ],
             'not empty access token' => [
-                'accessToken' => 'test',
+                'accessToken'         => 'test',
                 'expectedAccessToken' => 'test'
+            ],
+        ];
+    }
+
+    /**
+     * @param $clientId
+     * @param $expectedClientId
+     *
+     * @dataProvider dataSetGetClientId
+     */
+    public function testSetGetClientId($clientId, $expectedClientId)
+    {
+        $oauthClient = $this->getOauthClient();
+        $oauthClient->setClientId($clientId);
+        $this->assertEquals($expectedClientId, $oauthClient->getClientId());
+    }
+
+    /**
+     * @return array
+     */
+    public function dataSetGetClientId()
+    {
+        return [
+            'empty client id'     => [
+                'clientId'         => null,
+                'expectedClientId' => null
+            ],
+            'not empty client id' => [
+                'clientId'         => 'test',
+                'expectedClientId' => 'test'
+            ],
+        ];
+    }
+
+    /**
+     * @param $clientSecret
+     * @param $expectedClientSecret
+     *
+     * @dataProvider dataSetGetClientSecret
+     */
+    public function testSetGetClientSecret($clientSecret, $expectedClientSecret)
+    {
+        $oauthClient = $this->getOauthClient();
+        $oauthClient->setClientSecret($clientSecret);
+        $this->assertEquals($expectedClientSecret, $oauthClient->getClientSecret());
+    }
+
+    /**
+     * @return array
+     */
+    public function dataSetGetClientSecret()
+    {
+        return [
+            'empty client secret'     => [
+                'clientSecret'         => null,
+                'expectedClientSecret' => null
+            ],
+            'not empty client secret' => [
+                'clientSecret'         => 'test',
+                'expectedClientSecret' => 'test'
             ],
         ];
     }
@@ -81,12 +142,12 @@ class OAuthClientTest extends TestCase
     public function dataSetGetServiceDomain()
     {
         return [
-            'empty service domain' => [
-                'serviceDomain' => null,
+            'empty service domain'     => [
+                'serviceDomain'         => null,
                 'expectedServiceDomain' => null
             ],
             'not empty service domain' => [
-                'serviceDomain' => 'test',
+                'serviceDomain'         => 'test',
                 'expectedServiceDomain' => 'test'
             ],
         ];
@@ -115,12 +176,12 @@ class OAuthClientTest extends TestCase
     public function dataSetGetServicePort()
     {
         return [
-            'empty service port' => [
-                'servicePort' => null,
+            'empty service port'     => [
+                'servicePort'         => null,
                 'expectedServicePort' => null
             ],
             'not empty service port' => [
-                'servicePort' => 'test',
+                'servicePort'         => 'test',
                 'expectedServicePort' => 'test'
             ],
         ];
@@ -162,12 +223,12 @@ class OAuthClientTest extends TestCase
     public function dataGetServiceUrl()
     {
         return [
-            'empty service resource' => [
-                'resource' => null,
+            'empty service resource'     => [
+                'resource'           => null,
                 'expectedServiceUrl' => 'https://oauth.yandex.ru/'
             ],
             'not empty service resource' => [
-                'resource' => 'test',
+                'resource'           => 'test',
                 'expectedServiceUrl' => 'https://oauth.yandex.ru/test'
             ],
         ];
@@ -179,21 +240,37 @@ class OAuthClientTest extends TestCase
     public function dataSetGetServiceScheme()
     {
         return [
-            'empty service scheme' => [
-                'serviceScheme' => null,
+            'empty service scheme'     => [
+                'serviceScheme'         => null,
                 'expectedServiceScheme' => null
             ],
             'not empty service scheme' => [
-                'serviceScheme' => 'test',
+                'serviceScheme'         => 'test',
                 'expectedServiceScheme' => 'test'
             ],
         ];
     }
 
+    public function testGetAuthUrl()
+    {
+        $oauthClient = $this->getOauthClient();
+        $url         = $oauthClient->getAuthUrl(OAuthClient::CODE_AUTH_TYPE, 'state');
+        $this->assertTrue(strpos($url, 'state') > 0);
+    }
+
+    /**
+     * @runInSeparateProcess
+     */
+    public function testAuthRedirect()
+    {
+        $oauthClient = $this->getOauthClient();
+        $this->assertTrue($oauthClient->authRedirect(false));
+    }
+
     public function testRequestAccessToken()
     {
-        $code = '33333333';
-        $clientId = 'client-id';
+        $code         = '33333333';
+        $clientId     = 'client-id';
         $clientSecret = 'client-secret';
 
         $response = new Response(
@@ -203,8 +280,8 @@ class OAuthClientTest extends TestCase
             ],
             json_encode([
                 "access_token" => "5fd980a5133b4887a8937fe07d3a0a60",
-                "token_type" => "bearer",
-                "expires_in" => 124234123534
+                "token_type"   => "bearer",
+                "expires_in"   => 124234123534
             ]),
             '1.1',
             'OK'
@@ -220,7 +297,7 @@ class OAuthClientTest extends TestCase
                 $this->equalTo('POST'),
                 $this->equalTo('/token'),
                 $this->equalTo([
-                    'auth' => [
+                    'auth'        => [
                         $clientId,
                         $clientSecret
                     ],
@@ -246,12 +323,114 @@ class OAuthClientTest extends TestCase
         $oauthClient->requestAccessToken($code);
     }
 
+    public function testRequestAuthRequestException()
+    {
+        $code                 = '33333333';
+        $json                 = '{"error_description": "Invalid code", "error": "bad_verification_code"}';
+        $response             = new Response(400, [], \GuzzleHttp\Psr7\stream_for($json));
+        $request              = new Request('POST', '');
+        $exception            = new \GuzzleHttp\Exception\ClientException('error', $request, $response);
+        $guzzleHttpClientMock = $this->getMock('GuzzleHttp\Client', ['request']);
+        $guzzleHttpClientMock->expects($this->any())
+            ->method('request')
+            ->will($this->throwException($exception));
+        /** @var OAuthClient $oauthClientMock */
+        $oauthClientMock = $this->getMock('Yandex\OAuth\OAuthClient', ['getClient']);
+        $oauthClientMock->expects($this->any())
+            ->method('getClient')
+            ->will($this->returnValue($guzzleHttpClientMock));
+
+        $this->setExpectedException('Yandex\OAuth\Exception\AuthRequestException');
+        $oauthClientMock->requestAccessToken($code);
+    }
+
+    public function testRequestEmptyResponseAndException()
+    {
+        $code                 = '33333333';
+        $response             = new Response(400, [], \GuzzleHttp\Psr7\stream_for(''));
+        $request              = new Request('POST', '');
+        $exception            = new \GuzzleHttp\Exception\ClientException('error', $request, $response);
+        $guzzleHttpClientMock = $this->getMock('GuzzleHttp\Client', ['request']);
+        $guzzleHttpClientMock->expects($this->any())
+            ->method('request')
+            ->will($this->throwException($exception));
+        /** @var OAuthClient $oauthClientMock */
+        $oauthClientMock = $this->getMock('Yandex\OAuth\OAuthClient', ['getClient']);
+        $oauthClientMock->expects($this->any())
+            ->method('getClient')
+            ->will($this->returnValue($guzzleHttpClientMock));
+
+        $this->setExpectedException('GuzzleHttp\Exception\ClientException');
+        $oauthClientMock->requestAccessToken($code);
+    }
+
+    public function testRequestEmptyResponseAuthResponseException()
+    {
+        $code                 = '33333333';
+        $response             = new Response(200, [], \GuzzleHttp\Psr7\stream_for(''));
+        $guzzleHttpClientMock = $this->getMock('GuzzleHttp\Client', ['request']);
+        $guzzleHttpClientMock->expects($this->any())
+            ->method('request')
+            ->will($this->returnValue($response));
+        /** @var OAuthClient $oauthClientMock */
+        $oauthClientMock = $this->getMock('Yandex\OAuth\OAuthClient', ['getClient']);
+        $oauthClientMock->expects($this->any())
+            ->method('getClient')
+            ->will($this->returnValue($guzzleHttpClientMock));
+
+        $this->setExpectedException('Yandex\OAuth\Exception\AuthResponseException');
+        $oauthClientMock->requestAccessToken($code);
+    }
+
+    public function testRequestAccessTokenResponseWithoutToken()
+    {
+        $code                 = '33333333';
+        $json                 = '{"error_description": "Invalid code", "error": "bad_verification_code"}';
+        $response             = new Response(400, [], \GuzzleHttp\Psr7\stream_for($json));
+        $guzzleHttpClientMock = $this->getMock('GuzzleHttp\Client', ['request']);
+        $guzzleHttpClientMock->expects($this->any())
+            ->method('request')
+            ->will($this->returnValue($response));
+        /** @var OAuthClient $oauthClientMock */
+        $oauthClientMock = $this->getMock('Yandex\OAuth\OAuthClient', ['getClient']);
+        $oauthClientMock->expects($this->any())
+            ->method('getClient')
+            ->will($this->returnValue($guzzleHttpClientMock));
+
+        $this->setExpectedException('Yandex\OAuth\Exception\AuthResponseException');
+        $oauthClientMock->requestAccessToken($code);
+    }
+
+    public function testRequestAccessTokenResponseInvalidJson()
+    {
+        $code               = '33333333';
+        $exception          = new \RuntimeException('error');
+        $guzzleResponseMock = $this->getMock('GuzzleHttp\Psr7\Response', ['getBody']);
+        $guzzleResponseMock->expects($this->any())
+            ->method('getBody')
+            ->will($this->throwException($exception));
+
+        $guzzleHttpClientMock = $this->getMock('GuzzleHttp\Client', ['request']);
+        $guzzleHttpClientMock->expects($this->any())
+            ->method('request')
+            ->will($this->returnValue($guzzleResponseMock));
+        /** @var OAuthClient $oauthClientMock */
+        $oauthClientMock = $this->getMock('Yandex\OAuth\OAuthClient', ['getClient']);
+        $oauthClientMock->expects($this->any())
+            ->method('getClient')
+            ->will($this->returnValue($guzzleHttpClientMock));
+
+        $this->setExpectedException('Yandex\OAuth\Exception\AuthResponseException');
+        $oauthClientMock->requestAccessToken($code);
+    }
+
     /**
-     * @param string $cleintId
+     * @param string $clientId
+     *
      * @return OAuthClient
      */
-    private function getOauthClient($cleintId = 'test')
+    private function getOauthClient($clientId = 'test')
     {
-        return new OAuthClient($cleintId);
+        return new OAuthClient($clientId);
     }
 }
