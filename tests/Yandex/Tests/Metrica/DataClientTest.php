@@ -217,7 +217,8 @@ class DataClientTest extends TestCase
             ->setMetrics(null);
         $client = new DataClient();
         $url = $client->getServiceUrl('bytime', $byTimeParams->toArray());
-        $expectedUrl = 'https://api-metrika.yandex.ru/stat/v1/data/bytime.json?oauth_token=&id=123&dimensions=dimension1%2Cdeimension2&sort=sort&limit=100&filters=a%3Cb';
+        $expectedUrl = 'https://api-metrika.yandex.ru/stat/v1/data/bytime.json?oauth_token=&id=' . $id . '&dimensions='
+              . urlencode(implode(',', $dimensions)) . '&sort=' . $sort . '&limit=' . $limit . '&filters=' . urlencode($filter);
         $this->assertEquals($expectedUrl, $url);
     }
 }
