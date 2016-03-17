@@ -374,7 +374,6 @@ class SafeBrowsingClientTest extends TestCase
 
     public function testPrepareDownloadsRequestException()
     {
-
         $safeBrowsing = new SafeBrowsingClient();
         $safeBrowsing->setMalwareShavars([]);
         $this->setExpectedException('Yandex\SafeBrowsing\SafeBrowsingException');
@@ -417,11 +416,8 @@ class SafeBrowsingClientTest extends TestCase
         $chunk                = file_get_contents(
             __DIR__ . '/' . $this->fixturesFolder . '/get-chunk-by-url-response.txt'
         );
-        $content              = '
-        i:ydx-malware-shavar
-        u:sba.cdn.yandex.net/chunks/ydx-malware-shavar/xJJgF5khajVvxztP-9mGe_FSTMR4LuwWoA_lDVC_6Tg=.chunk
-        u:sba.cdn.yandex.net/chunks/ydx-malware-shavar/ZDbvoCHHJtlDfJxE4WVABofGpujieyYcrvAjEb4CULE=.chunk';
-        $response             = new Response(200, [], \GuzzleHttp\Psr7\stream_for($content));
+        $chunksResponse       = file_get_contents(__DIR__ . '/' . $this->fixturesFolder . '/get-chunks-response.txt');
+        $response             = new Response(200, [], \GuzzleHttp\Psr7\stream_for($chunksResponse));
         $guzzleHttpClientMock = $this->getMock('GuzzleHttp\Client', ['request']);
         $guzzleHttpClientMock->expects($this->any())
             ->method('request')
@@ -442,11 +438,8 @@ class SafeBrowsingClientTest extends TestCase
     public function testParseChunkEmptyChunk()
     {
         $chunk                = '';
-        $content              = '
-        i:ydx-malware-shavar
-        u:sba.cdn.yandex.net/chunks/ydx-malware-shavar/xJJgF5khajVvxztP-9mGe_FSTMR4LuwWoA_lDVC_6Tg=.chunk
-        u:sba.cdn.yandex.net/chunks/ydx-malware-shavar/ZDbvoCHHJtlDfJxE4WVABofGpujieyYcrvAjEb4CULE=.chunk';
-        $response             = new Response(200, [], \GuzzleHttp\Psr7\stream_for($content));
+        $chunksResponse       = file_get_contents(__DIR__ . '/' . $this->fixturesFolder . '/get-chunks-response.txt');
+        $response             = new Response(200, [], \GuzzleHttp\Psr7\stream_for($chunksResponse));
         $guzzleHttpClientMock = $this->getMock('GuzzleHttp\Client', ['request']);
         $guzzleHttpClientMock->expects($this->any())
             ->method('request')
@@ -467,11 +460,8 @@ class SafeBrowsingClientTest extends TestCase
     public function testParseChunkIncorrectChunkLength()
     {
         $chunk                = 's:13314:4:';
-        $content              = '
-        i:ydx-malware-shavar
-        u:sba.cdn.yandex.net/chunks/ydx-malware-shavar/xJJgF5khajVvxztP-9mGe_FSTMR4LuwWoA_lDVC_6Tg=.chunk
-        u:sba.cdn.yandex.net/chunks/ydx-malware-shavar/ZDbvoCHHJtlDfJxE4WVABofGpujieyYcrvAjEb4CULE=.chunk';
-        $response             = new Response(200, [], \GuzzleHttp\Psr7\stream_for($content));
+        $chunksResponse       = file_get_contents(__DIR__ . '/' . $this->fixturesFolder . '/get-chunks-response.txt');
+        $response             = new Response(200, [], \GuzzleHttp\Psr7\stream_for($chunksResponse));
         $guzzleHttpClientMock = $this->getMock('GuzzleHttp\Client', ['request']);
         $guzzleHttpClientMock->expects($this->any())
             ->method('request')
@@ -493,11 +483,8 @@ class SafeBrowsingClientTest extends TestCase
     {
         $chunk                = '0:13314:4:39
         000';
-        $content              = '
-        i:ydx-malware-shavar
-        u:sba.cdn.yandex.net/chunks/ydx-malware-shavar/xJJgF5khajVvxztP-9mGe_FSTMR4LuwWoA_lDVC_6Tg=.chunk
-        u:sba.cdn.yandex.net/chunks/ydx-malware-shavar/ZDbvoCHHJtlDfJxE4WVABofGpujieyYcrvAjEb4CULE=.chunk';
-        $response             = new Response(200, [], \GuzzleHttp\Psr7\stream_for($content));
+        $chunksResponse       = file_get_contents(__DIR__ . '/' . $this->fixturesFolder . '/get-chunks-response.txt');
+        $response             = new Response(200, [], \GuzzleHttp\Psr7\stream_for($chunksResponse));
         $guzzleHttpClientMock = $this->getMock('GuzzleHttp\Client', ['request']);
         $guzzleHttpClientMock->expects($this->any())
             ->method('request')
@@ -519,10 +506,8 @@ class SafeBrowsingClientTest extends TestCase
     {
         $chunk                = 's:13314:4:39
 000';
-        $content              = '
-        i:ydx-malware-shavar
-        u:sba.cdn.yandex.net/chunks/ydx-malware-shavar/xJJgF5khajVvxztP-9mGe_FSTMR4LuwWoA_lDVC_6Tg=.chunk';
-        $response             = new Response(200, [], \GuzzleHttp\Psr7\stream_for($content));
+        $chunksResponse       = file_get_contents(__DIR__ . '/' . $this->fixturesFolder . '/get-chunks-response.txt');
+        $response             = new Response(200, [], \GuzzleHttp\Psr7\stream_for($chunksResponse));
         $guzzleHttpClientMock = $this->getMock('GuzzleHttp\Client', ['request']);
         $guzzleHttpClientMock->expects($this->any())
             ->method('request')
@@ -544,10 +529,8 @@ class SafeBrowsingClientTest extends TestCase
     {
         $chunk                = 'a:13314:4:39
 999999999999999999999999';
-        $content              = '
-        i:ydx-malware-shavar
-        u:sba.cdn.yandex.net/chunks/ydx-malware-shavar/xJJgF5khajVvxztP-9mGe_FSTMR4LuwWoA_lDVC_6Tg=.chunk';
-        $response             = new Response(200, [], \GuzzleHttp\Psr7\stream_for($content));
+        $chunksResponse       = file_get_contents(__DIR__ . '/' . $this->fixturesFolder . '/get-chunks-response.txt');
+        $response             = new Response(200, [], \GuzzleHttp\Psr7\stream_for($chunksResponse));
         $guzzleHttpClientMock = $this->getMock('GuzzleHttp\Client', ['request']);
         $guzzleHttpClientMock->expects($this->any())
             ->method('request')
@@ -567,10 +550,8 @@ class SafeBrowsingClientTest extends TestCase
 
     public function testGetMalwaresDataGetChunkByUrlNotFound()
     {
-        $content              = '
-        i:ydx-malware-shavar
-        u:sba.cdn.yandex.net/chunks/ydx-malware-shavar/xJJgF5khajVvxztP-9mGe_FSTMR4LuwWoA_lDVC_6Tg=.chunk';
-        $response             = new Response(404, [], \GuzzleHttp\Psr7\stream_for($content));
+        $chunksResponse       = file_get_contents(__DIR__ . '/' . $this->fixturesFolder . '/get-chunks-response.txt');
+        $response             = new Response(404, [], \GuzzleHttp\Psr7\stream_for($chunksResponse));
         $exception            = new \Yandex\Common\Exception\NotFoundException('error');
         $guzzleHttpClientMock = $this->getMock('GuzzleHttp\Client', ['request']);
         $guzzleHttpClientMock->expects($this->any())
