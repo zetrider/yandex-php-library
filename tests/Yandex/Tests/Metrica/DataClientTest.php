@@ -2,6 +2,7 @@
 
 namespace Yandex\Tests\Metrica;
 
+use Yandex\Metrica\Stat\DataClient;
 use Yandex\Tests\Metrica\Fixtures\Stat;
 use Yandex\Tests\TestCase;
 use Yandex\Metrica\Stat\Models;
@@ -198,5 +199,25 @@ class DataClientTest extends TestCase
         $this->assertEquals($fixtures["data_lag"], $table->getDataLag());
         $this->assertEquals($fixtures["totals"]["a"], $table->getTotals()->getA());
         $this->assertEquals($fixtures["totals"]["b"], $table->getTotals()->getB());
+    }
+
+    public function testGenerateRequest()
+    {
+        $id = 123;
+        $limit = 100;
+        $dimensions = ['dimension1', 'deimension2'];
+        $sort = 'sort';
+        $filter = 'a<b';
+        $byTimeParams = new Models\ByTimeParams();
+        $byTimeParams->setId($id)
+            ->setLimit($limit)
+            ->setDimensions($dimensions)
+            ->setSort($sort)
+            ->setFilters($filter)
+            ->setMetrics(null);
+        $client = new DataClient();
+        $url = $client->getServiceUrl('bytime', $byTimeParams->toArray());
+        $expectedUrl = 'https://api-metrika.yandex.ru/stat/v1/data/bytime.json?oauth_token=&id=123&dimensions=dimension1%2Cdeimension2&sort=sort&limit=100&filters=a%3Cb';
+        $this->assertEquals($expectedUrl, $url);
     }
 }
