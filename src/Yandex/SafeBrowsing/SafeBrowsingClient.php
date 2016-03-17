@@ -286,7 +286,7 @@ class SafeBrowsingClient extends AbstractServiceClient
                 'headers' => $headers
             ]
         );
-        return $response->getBody();
+        return $response->getBody()->getContents();
     }
 
     /**
@@ -592,14 +592,8 @@ class SafeBrowsingClient extends AbstractServiceClient
                 $prefixes[] = substr($chunkData, 0, 8);
                 $count = hexdec(substr($chunkData, 8, 2));
                 $chunkData = substr($chunkData, 10);
-                if ($count > 0) {
-                    for ($i = 0; $i < $count; $i++) {
-                        $chunkData = substr($chunkData, (($hashLen * 2)));
-                    }
-                } elseif ($count < 0) {
-                    throw new SafeBrowsingException(
-                        'ERROR: Incorrect count data "' . $count . '" in chunkNum "' . $chunkNum . '"'
-                    );
+                for ($i = 0; $i < $count; $i++) {
+                    $chunkData = substr($chunkData, (($hashLen * 2)));
                 }
             }
 
@@ -618,12 +612,8 @@ class SafeBrowsingClient extends AbstractServiceClient
                     for ($i = 0; $i < $count; $i++) {
                         $chunkData = substr($chunkData, (($hashLen * 2) + 8));
                     }
-                } elseif ($count == 0) {
-                    $chunkData = substr($chunkData, 8);
                 } else {
-                    throw new SafeBrowsingException(
-                        'ERROR: Incorrect count data "' . $count . '" in chunkNum "' . $chunkNum . '"'
-                    );
+                    $chunkData = substr($chunkData, 8);
                 }
             }
 
