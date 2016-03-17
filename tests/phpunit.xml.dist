@@ -16,6 +16,7 @@
             <directory>./Yandex/Tests/DataSync</directory>
             <directory>./Yandex/Tests/SiteSearchPinger</directory>
             <directory>./Yandex/Tests/SafeBrowsing</directory>
+            <directory>./Yandex/Tests/Dictionary</directory>
         </testsuite>
     </testsuites>
     <listeners>
