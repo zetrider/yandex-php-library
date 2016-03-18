@@ -38,7 +38,7 @@ class CountersClient extends ManagementClient
      * @see http://api.yandex.ru/metrika/doc/beta/management/counters/addcounter.xml
      *
      * @param Models\Counter $counter
-     * @return array
+     * @return Models\Counter
      */
     public function addCounter(Models\Counter $counter)
     {
@@ -56,7 +56,7 @@ class CountersClient extends ManagementClient
      *
      * @param int $id
      * @param Models\CounterParams $params
-     * @return array
+     * @return Models\Counter
      */
     public function getCounter($id, Models\CounterParams $params)
     {
@@ -74,7 +74,7 @@ class CountersClient extends ManagementClient
      *
      * @param int $id
      * @param Models\ExtendCounter $counter
-     * @return array
+     * @return Models\Counter
      */
     public function updateCounter($id, Models\ExtendCounter $counter)
     {

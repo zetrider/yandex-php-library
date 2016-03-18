@@ -12,13 +12,12 @@ namespace Yandex\Metrica\Management;
  */
 class DelegatesClient extends ManagementClient
 {
-
     /**
      * Get delegates
      *
      * @see http://api.yandex.ru/metrika/doc/beta/management/delegates/delegates.xml
      *
-     * @return array
+     * @return Models\Delegates
      */
     public function getDelegates()
     {
@@ -35,7 +34,7 @@ class DelegatesClient extends ManagementClient
      * @see http://api.yandex.ru/metrika/doc/beta/management/delegates/updatedelegates.xml
      *
      * @param Models\Delegates $delegates
-     * @return array
+     * @return Models\Delegates
      */
     public function updateDelegates(Models\Delegates $delegates)
     {
@@ -53,7 +52,7 @@ class DelegatesClient extends ManagementClient
      *
      * @param string $login
      * @param string $comment
-     * @return array
+     * @return Models\Delegates
      */
     public function addDelegates($login, $comment = '')
     {
@@ -67,7 +66,7 @@ class DelegatesClient extends ManagementClient
         ];
         $response = $this->sendPostRequest($resource, $params);
         $delegateResponse = new Models\AddDelegateResponse($response);
-        return $delegateResponse->getDelegate();
+        return $delegateResponse->getDelegates();
     }
 
 
