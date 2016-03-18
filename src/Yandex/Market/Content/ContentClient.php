@@ -165,9 +165,9 @@ class ContentClient extends AbstractServiceClient
 
         $this->limits = array();
 
-        foreach ($headers as $header) {
-            if (in_array($header->getName(), $limitHeaders, true)) {
-                $this->limits[$header->getName()] = (int) $header->__toString();
+        foreach ($headers as $key => $value) {
+            if (in_array($key, $limitHeaders, true)) {
+                $this->limits[$key] = (int) $value[0];
             }
         }
     }
