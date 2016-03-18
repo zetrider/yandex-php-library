@@ -32,4 +32,7 @@ class Operations
             "status" => "active"
         ]
     ];
+    public static $deleteResponseFixtures = [
+        'success' => true
+    ];
 }

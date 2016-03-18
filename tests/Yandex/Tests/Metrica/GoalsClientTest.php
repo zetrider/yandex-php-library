@@ -2,15 +2,18 @@
 
 namespace Yandex\Tests\Metrica;
 
+use Yandex\Metrica\Management\GoalsClient;
+use Yandex\Metrica\Management\Models\Goal;
 use Yandex\Tests\TestCase;
 use Yandex\Tests\Metrica\Fixtures\Goals;
+use GuzzleHttp\Psr7\Response;
 
 class GoalsClientTest extends TestCase
 {
     public function testGetGoals()
     {
         $fixtures = Goals::$goalsFixtures;
-
+        /** @var GoalsClient $mock */
         $mock = $this->getMock('Yandex\Metrica\Management\GoalsClient', ['sendGetRequest']);
         $mock->expects($this->any())
             ->method('sendGetRequest')
@@ -32,20 +35,18 @@ class GoalsClientTest extends TestCase
 
         $this->assertEquals($fixtures["goals"][1]["conditions"][0]["type"], $conditions->current()->getType());
         $this->assertEquals($fixtures["goals"][1]["conditions"][0]["url"], $conditions->current()->getUrl());
-
-
     }
 
     public function testGetGoal()
     {
         $fixtures = Goals::$goalFixtures;
-
+        /** @var GoalsClient $mock */
         $mock = $this->getMock('Yandex\Metrica\Management\GoalsClient', ['sendGetRequest']);
         $mock->expects($this->any())
             ->method('sendGetRequest')
             ->will($this->returnValue($fixtures));
 
-        $table = $mock->getGoal(2215573, 334423);
+        $table      = $mock->getGoal(2215573, 334423);
         $conditions = $table->getConditions();
 
         $this->assertEquals($fixtures["goal"]["id"], $table->getId());
@@ -55,5 +56,82 @@ class GoalsClientTest extends TestCase
         $this->assertEquals($fixtures["goal"]["class"], $table->getClass());
         $this->assertEquals($fixtures["goal"]["conditions"][0]["type"], $conditions->current()->getType());
         $this->assertEquals($fixtures["goal"]["conditions"][0]["url"], $conditions->current()->getUrl());
+    }
+
+    public function testAddGoal()
+    {
+        $fixtures             = Goals::$goalFixtures;
+        $token                = 'test';
+        $response             = new Response(200, [], \GuzzleHttp\Psr7\stream_for(json_encode($fixtures)));
+        $guzzleHttpClientMock = $this->getMock('GuzzleHttp\Client', ['request']);
+        $guzzleHttpClientMock->expects($this->any())
+            ->method('request')
+            ->will($this->returnValue($response));
+        /** @var GoalsClient $mock */
+        $mock = $this->getMock('Yandex\Metrica\Management\GoalsClient', ['getClient'], [$token]);
+        $mock->expects($this->any())
+            ->method('getClient')
+            ->will($this->returnValue($guzzleHttpClientMock));
+
+        $goal   = new Goal($fixtures);
+        $result = $mock->addGoal(1, $goal);
+        $this->assertTrue($result instanceof Goal);
+
+        $conditions = $result->getConditions();
+        $this->assertEquals($fixtures["goal"]["id"], $result->getId());
+        $this->assertEquals($fixtures["goal"]["name"], $result->getName());
+        $this->assertEquals($fixtures["goal"]["type"], $result->getType());
+        $this->assertEquals($fixtures["goal"]["flag"], $result->getFlag());
+        $this->assertEquals($fixtures["goal"]["class"], $result->getClass());
+        $this->assertEquals($fixtures["goal"]["conditions"][0]["type"], $conditions->current()->getType());
+        $this->assertEquals($fixtures["goal"]["conditions"][0]["url"], $conditions->current()->getUrl());
+    }
+
+    public function testUpdateGoal()
+    {
+        $fixtures             = Goals::$goalFixtures;
+        $token                = 'test';
+        $response             = new Response(200, [], \GuzzleHttp\Psr7\stream_for(json_encode($fixtures)));
+        $guzzleHttpClientMock = $this->getMock('GuzzleHttp\Client', ['request']);
+        $guzzleHttpClientMock->expects($this->any())
+            ->method('request')
+            ->will($this->returnValue($response));
+        /** @var GoalsClient $mock */
+        $mock = $this->getMock('Yandex\Metrica\Management\GoalsClient', ['getClient'], [$token]);
+        $mock->expects($this->any())
+            ->method('getClient')
+            ->will($this->returnValue($guzzleHttpClientMock));
+
+        $goal   = new Goal($fixtures);
+        $result = $mock->updateGoal(1, 2, $goal);
+        $this->assertTrue($result instanceof Goal);
+
+        $conditions = $result->getConditions();
+        $this->assertEquals($fixtures["goal"]["id"], $result->getId());
+        $this->assertEquals($fixtures["goal"]["name"], $result->getName());
+        $this->assertEquals($fixtures["goal"]["type"], $result->getType());
+        $this->assertEquals($fixtures["goal"]["flag"], $result->getFlag());
+        $this->assertEquals($fixtures["goal"]["class"], $result->getClass());
+        $this->assertEquals($fixtures["goal"]["conditions"][0]["type"], $conditions->current()->getType());
+        $this->assertEquals($fixtures["goal"]["conditions"][0]["url"], $conditions->current()->getUrl());
+    }
+
+    public function testDeleteGoal()
+    {
+        $fixtures             = Goals::$deleteResponseFixtures;
+        $token                = 'test';
+        $response             = new Response(200, [], \GuzzleHttp\Psr7\stream_for(json_encode($fixtures)));
+        $guzzleHttpClientMock = $this->getMock('GuzzleHttp\Client', ['request']);
+        $guzzleHttpClientMock->expects($this->any())
+            ->method('request')
+            ->will($this->returnValue($response));
+        /** @var GoalsClient $mock */
+        $mock = $this->getMock('Yandex\Metrica\Management\GoalsClient', ['getClient'], [$token]);
+        $mock->expects($this->any())
+            ->method('getClient')
+            ->will($this->returnValue($guzzleHttpClientMock));
+
+        $result = $mock->deleteGoal(1, 2);
+        $this->assertArrayHasKey('success', $result);
     }
 }

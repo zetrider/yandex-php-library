@@ -13,4 +13,7 @@ class Delegates
             ]
         ]
     ];
+    public static $delegateDeleteResponseFixtures = [
+        'success' => true
+    ];
 }

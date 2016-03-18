@@ -38,7 +38,7 @@ class GrantsClient extends ManagementClient
      *
      * @param int $counterId
      * @param Models\Grant $grant
-     * @return array
+     * @return Models\Grant
      */
     public function addGrant($counterId, Models\Grant $grant)
     {
@@ -57,7 +57,7 @@ class GrantsClient extends ManagementClient
      * @param int $counterId
      * @param string $userLogin
      * @param array $params
-     * @return array
+     * @return Models\Grant
      */
     public function getGrant($counterId, $userLogin, $params = [])
     {
@@ -76,7 +76,7 @@ class GrantsClient extends ManagementClient
      * @param int $counterId
      * @param string $userLogin
      * @param Models\Grant $grant
-     * @return array
+     * @return Models\Grant
      */
     public function updateGrant($counterId, $userLogin, Models\Grant $grant)
     {

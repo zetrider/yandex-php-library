@@ -52,7 +52,7 @@ class DataClientTest extends TestCase
             ->method('sendGetRequest')
             ->will($this->returnValue($fixtures));
 
-        $table = $mock->getDrillDown(new Models\TableParams);
+        $table = $mock->getDrillDown(new Models\TableParams, ['key' => 'value']);
 
         $this->assertEquals($fixtures["query"]["id"], $table->getQuery()->getId());
         $this->assertEquals($fixtures["query"]["preset"], $table->getQuery()->getPreset());

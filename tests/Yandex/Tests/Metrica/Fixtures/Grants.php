@@ -29,4 +29,7 @@ class Grants
             "comment" => ""
         ]
     ];
+    public static $deleteResponseFixtures = [
+        'success' => true
+    ];
 }

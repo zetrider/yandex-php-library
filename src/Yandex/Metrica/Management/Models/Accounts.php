@@ -15,6 +15,9 @@ class Accounts extends ObjectModel
 
     /**
      * Add item
+     * @param Account $account
+     *
+     * @return $this
      */
     public function add($account)
     {
@@ -29,6 +32,7 @@ class Accounts extends ObjectModel
 
     /**
      * Get items
+     * @return Account[]
      */
     public function getAll()
     {

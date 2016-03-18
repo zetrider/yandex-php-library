@@ -38,7 +38,7 @@ class OperationsClient extends ManagementClient
      *
      * @param int $counterId
      * @param Models\Operation $operation
-     * @return array
+     * @return Models\Operation
      */
     public function addOperation($counterId, Models\Operation $operation)
     {
@@ -57,7 +57,7 @@ class OperationsClient extends ManagementClient
      * @param int $id
      * @param int $counterId
      * @param array $params
-     * @return array
+     * @return Models\Operation
      */
     public function getOperation($id, $counterId, $params = [])
     {
@@ -76,7 +76,7 @@ class OperationsClient extends ManagementClient
      * @param int $id
      * @param int $counterId
      * @param Models\Operation $operation
-     * @return array
+     * @return Models\Operation
      */
     public function updateOperation($id, $counterId, Models\Operation $operation)
     {

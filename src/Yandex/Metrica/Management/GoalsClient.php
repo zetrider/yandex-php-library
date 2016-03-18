@@ -19,7 +19,7 @@ class GoalsClient extends ManagementClient
      * @see http://api.yandex.ru/metrika/doc/beta/management/goals/goals.xml
      *
      * @param int $counterId
-     * @return array
+     * @return Models\Goals
      */
     public function getGoals($counterId)
     {
@@ -37,7 +37,7 @@ class GoalsClient extends ManagementClient
      *
      * @param int $counterId
      * @param Models\Goal $goal
-     * @return array
+     * @return Models\Goal
      */
     public function addGoal($counterId, Models\Goal $goal)
     {
@@ -55,7 +55,7 @@ class GoalsClient extends ManagementClient
      *
      * @param int $id
      * @param int $counterId
-     * @return array
+     * @return Models\Goal
      */
     public function getGoal($id, $counterId)
     {
@@ -74,7 +74,7 @@ class GoalsClient extends ManagementClient
      * @param int $id
      * @param int $counterId
      * @param Models\Goal $goal
-     * @return array
+     * @return Models\Goal
      */
     public function updateGoal($id, $counterId, Models\Goal $goal)
     {
