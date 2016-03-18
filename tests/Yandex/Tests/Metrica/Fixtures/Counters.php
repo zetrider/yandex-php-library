@@ -77,6 +77,9 @@ class Counters
             ]
         ]
     ];
+    public static $counterDeleteResponseFixtures = [
+        'success' => true
+    ];
 
     public static $counterFixtures = [
         "counter" => [
