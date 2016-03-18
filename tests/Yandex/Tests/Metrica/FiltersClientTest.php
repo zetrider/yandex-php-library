@@ -2,8 +2,11 @@
 
 namespace Yandex\Tests\Metrica;
 
+use Yandex\Metrica\Management\FiltersClient;
+use Yandex\Metrica\Management\Models\Filter;
 use Yandex\Tests\TestCase;
 use Yandex\Tests\Metrica\Fixtures\Filters;
+use GuzzleHttp\Psr7\Response;
 
 class FiltersClientTest extends TestCase
 {
@@ -52,5 +55,82 @@ class FiltersClientTest extends TestCase
         $this->assertEquals($fixtures["filter"]["status"], $table->getStatus());
         $this->assertEquals($fixtures["filter"]["start_ip"], $table->getStartIp());
         $this->assertEquals($fixtures["filter"]["end_ip"], $table->getEndIp());
+    }
+
+    public function testAddFilter()
+    {
+        $fixtures             = Filters::$filterFixtures;
+        $token                = 'test';
+        $response             = new Response(200, [], \GuzzleHttp\Psr7\stream_for(json_encode($fixtures)));
+        $guzzleHttpClientMock = $this->getMock('GuzzleHttp\Client', ['request']);
+        $guzzleHttpClientMock->expects($this->any())
+            ->method('request')
+            ->will($this->returnValue($response));
+        /** @var FiltersClient $mock */
+        $mock = $this->getMock('Yandex\Metrica\Management\FiltersClient', ['getClient'], [$token]);
+        $mock->expects($this->any())
+            ->method('getClient')
+            ->will($this->returnValue($guzzleHttpClientMock));
+
+        $filter = new Filter($fixtures);
+        $result = $mock->addFilter(1, $filter);
+        $this->assertTrue($result instanceof Filter);
+
+        $this->assertEquals($fixtures["filter"]["id"], $result->getId());
+        $this->assertEquals($fixtures["filter"]["attr"], $result->getAttr());
+        $this->assertEquals($fixtures["filter"]["type"], $result->getType());
+        $this->assertEquals($fixtures["filter"]["value"], $result->getValue());
+        $this->assertEquals($fixtures["filter"]["action"], $result->getAction());
+        $this->assertEquals($fixtures["filter"]["status"], $result->getStatus());
+        $this->assertEquals($fixtures["filter"]["start_ip"], $result->getStartIp());
+        $this->assertEquals($fixtures["filter"]["end_ip"], $result->getEndIp());
+    }
+
+    public function testUpdateFilter()
+    {
+        $fixtures             = Filters::$filterFixtures;
+        $token                = 'test';
+        $response             = new Response(200, [], \GuzzleHttp\Psr7\stream_for(json_encode($fixtures)));
+        $guzzleHttpClientMock = $this->getMock('GuzzleHttp\Client', ['request']);
+        $guzzleHttpClientMock->expects($this->any())
+            ->method('request')
+            ->will($this->returnValue($response));
+        /** @var FiltersClient $mock */
+        $mock = $this->getMock('Yandex\Metrica\Management\FiltersClient', ['getClient'], [$token]);
+        $mock->expects($this->any())
+            ->method('getClient')
+            ->will($this->returnValue($guzzleHttpClientMock));
+
+        $filter = new Filter($fixtures);
+        $result = $mock->updateFilter(1, 2, $filter);
+        $this->assertTrue($result instanceof Filter);
+
+        $this->assertEquals($fixtures["filter"]["id"], $result->getId());
+        $this->assertEquals($fixtures["filter"]["attr"], $result->getAttr());
+        $this->assertEquals($fixtures["filter"]["type"], $result->getType());
+        $this->assertEquals($fixtures["filter"]["value"], $result->getValue());
+        $this->assertEquals($fixtures["filter"]["action"], $result->getAction());
+        $this->assertEquals($fixtures["filter"]["status"], $result->getStatus());
+        $this->assertEquals($fixtures["filter"]["start_ip"], $result->getStartIp());
+        $this->assertEquals($fixtures["filter"]["end_ip"], $result->getEndIp());
+    }
+
+    public function testDeleteFilter()
+    {
+        $fixtures             = Filters::$deleteResponseFixtures;
+        $token                = 'test';
+        $response             = new Response(200, [], \GuzzleHttp\Psr7\stream_for(json_encode($fixtures)));
+        $guzzleHttpClientMock = $this->getMock('GuzzleHttp\Client', ['request']);
+        $guzzleHttpClientMock->expects($this->any())
+            ->method('request')
+            ->will($this->returnValue($response));
+        /** @var FiltersClient $mock */
+        $mock = $this->getMock('Yandex\Metrica\Management\FiltersClient', ['getClient'], [$token]);
+        $mock->expects($this->any())
+            ->method('getClient')
+            ->will($this->returnValue($guzzleHttpClientMock));
+
+        $result = $mock->deleteFilter(1, 2);
+        $this->assertArrayHasKey('success', $result);
     }
 }

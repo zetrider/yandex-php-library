@@ -18,6 +18,7 @@ class QueryTest extends TestCase
             ->setDimensions($fixtures['query']['dimensions'])
             ->setMetrics($fixtures['query']['metrics'])
             ->setSort($fixtures['query']['sort'])
+            ->setFilters($fixtures['query']['filters'])
             ->setStartDate($fixtures['query']['start-date'])
             ->setEndDate($fixtures['query']['end-date'])
             ->setStartIndex($fixtures['query']['start-index'])
@@ -27,6 +28,7 @@ class QueryTest extends TestCase
         $this->assertEquals($fixtures["query"]["dimensions"], $query->getDimensions());
         $this->assertEquals($fixtures["query"]["metrics"], $query->getMetrics());
         $this->assertEquals($fixtures["query"]["sort"], $query->getSort());
+        $this->assertEquals($fixtures["query"]["filters"], $query->getFilters());
         $this->assertEquals($fixtures["query"]["start-date"], $query->getStartDate());
         $this->assertEquals($fixtures["query"]["end-date"], $query->getEndDate());
         $this->assertEquals($fixtures["query"]["start-index"], $query->getStartIndex());

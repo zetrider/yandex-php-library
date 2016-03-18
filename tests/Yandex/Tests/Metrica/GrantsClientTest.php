@@ -2,8 +2,11 @@
 
 namespace Yandex\Tests\Metrica;
 
+use Yandex\Metrica\Management\GrantsClient;
+use Yandex\Metrica\Management\Models\Grant;
 use Yandex\Tests\TestCase;
 use Yandex\Tests\Metrica\Fixtures\Grants;
+use GuzzleHttp\Psr7\Response;
 
 class GrantsClientTest extends TestCase
 {
@@ -43,5 +46,74 @@ class GrantsClientTest extends TestCase
         $this->assertEquals($fixtures["grant"]["perm"], $table->getPerm());
         $this->assertEquals($fixtures["grant"]["created_at"], $table->getCreatedAt());
         $this->assertEquals($fixtures["grant"]["comment"], $table->getComment());
+    }
+
+    public function testAddGrant()
+    {
+        $fixtures             = Grants::$grantFixtures;
+        $token                = 'test';
+        $response             = new Response(200, [], \GuzzleHttp\Psr7\stream_for(json_encode($fixtures)));
+        $guzzleHttpClientMock = $this->getMock('GuzzleHttp\Client', ['request']);
+        $guzzleHttpClientMock->expects($this->any())
+            ->method('request')
+            ->will($this->returnValue($response));
+        /** @var GrantsClient $mock */
+        $mock = $this->getMock('Yandex\Metrica\Management\GrantsClient', ['getClient'], [$token]);
+        $mock->expects($this->any())
+            ->method('getClient')
+            ->will($this->returnValue($guzzleHttpClientMock));
+
+        $grant  = new Grant($fixtures);
+        $result = $mock->addGrant(1, $grant);
+        $this->assertTrue($result instanceof Grant);
+
+        $this->assertEquals($fixtures["grant"]["user_login"], $result->getUserLogin());
+        $this->assertEquals($fixtures["grant"]["perm"], $result->getPerm());
+        $this->assertEquals($fixtures["grant"]["created_at"], $result->getCreatedAt());
+        $this->assertEquals($fixtures["grant"]["comment"], $result->getComment());
+    }
+
+    public function testUpdateGrant()
+    {
+        $fixtures             = Grants::$grantFixtures;
+        $token                = 'test';
+        $response             = new Response(200, [], \GuzzleHttp\Psr7\stream_for(json_encode($fixtures)));
+        $guzzleHttpClientMock = $this->getMock('GuzzleHttp\Client', ['request']);
+        $guzzleHttpClientMock->expects($this->any())
+            ->method('request')
+            ->will($this->returnValue($response));
+        /** @var GrantsClient $mock */
+        $mock = $this->getMock('Yandex\Metrica\Management\GrantsClient', ['getClient'], [$token]);
+        $mock->expects($this->any())
+            ->method('getClient')
+            ->will($this->returnValue($guzzleHttpClientMock));
+
+        $grant  = new Grant($fixtures);
+        $result = $mock->updateGrant(1, 2, $grant);
+        $this->assertTrue($result instanceof Grant);
+
+        $this->assertEquals($fixtures["grant"]["user_login"], $result->getUserLogin());
+        $this->assertEquals($fixtures["grant"]["perm"], $result->getPerm());
+        $this->assertEquals($fixtures["grant"]["created_at"], $result->getCreatedAt());
+        $this->assertEquals($fixtures["grant"]["comment"], $result->getComment());
+    }
+
+    public function testDeleteGrant()
+    {
+        $fixtures             = Grants::$deleteResponseFixtures;
+        $token                = 'test';
+        $response             = new Response(200, [], \GuzzleHttp\Psr7\stream_for(json_encode($fixtures)));
+        $guzzleHttpClientMock = $this->getMock('GuzzleHttp\Client', ['request']);
+        $guzzleHttpClientMock->expects($this->any())
+            ->method('request')
+            ->will($this->returnValue($response));
+        /** @var GrantsClient $mock */
+        $mock = $this->getMock('Yandex\Metrica\Management\GrantsClient', ['getClient'], [$token]);
+        $mock->expects($this->any())
+            ->method('getClient')
+            ->will($this->returnValue($guzzleHttpClientMock));
+
+        $result = $mock->deleteGrant(1, 2);
+        $this->assertArrayHasKey('success', $result);
     }
 }

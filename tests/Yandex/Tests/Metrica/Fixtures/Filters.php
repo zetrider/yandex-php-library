@@ -36,4 +36,7 @@ class Filters
             "end_ip" => "192.168.0.255"
         ]
     ];
+    public static $deleteResponseFixtures = [
+        'success' => true
+    ];
 }
