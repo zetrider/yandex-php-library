@@ -3,6 +3,7 @@
 namespace Yandex\Metrica\Stat\Models;
 
 use Yandex\Common\Model;
+use Yandex\Common\StringCollection;
 
 class TableParams extends Model
 {
@@ -11,10 +12,19 @@ class TableParams extends Model
 
     protected $preset = null;
 
+    /**
+     * @var null|StringCollection
+     */
     protected $dimensions = null;
 
+    /**
+     * @var null|StringCollection
+     */
     protected $metrics = null;
 
+    /**
+     * @var null|StringCollection
+     */
     protected $sort = null;
 
     protected $limit = null;
@@ -90,66 +100,66 @@ class TableParams extends Model
     /**
      * Retrieve the dimensions property
      *
-     * @return string|null
+     * @return string[]|null
      */
     public function getDimensions()
     {
-        return $this->dimensions;
+        return is_null($this->dimensions) ? null : $this->dimensions->asArray();
     }
 
     /**
      * Set the dimensions property
      *
-     * @param string $dimensions
+     * @param string|string[]|null $dimensions
      * @return $this
      */
     public function setDimensions($dimensions)
     {
-        $this->dimensions = $dimensions;
+        $this->dimensions = StringCollection::init($dimensions);
         return $this;
     }
 
     /**
      * Retrieve the metrics property
      *
-     * @return string|null
+     * @return string[]|null
      */
     public function getMetrics()
     {
-        return $this->metrics;
+        return is_null($this->metrics) ? null : $this->metrics->asArray();
     }
 
     /**
      * Set the metrics property
      *
-     * @param string $metrics
+     * @param string[]|string|null $metrics
      * @return $this
      */
     public function setMetrics($metrics)
     {
-        $this->metrics = $metrics;
+        $this->metrics = StringCollection::init($metrics);
         return $this;
     }
 
     /**
      * Retrieve the sort property
      *
-     * @return string|null
+     * @return string[]|null
      */
     public function getSort()
     {
-        return $this->sort;
+        return is_null($this->sort) ? null : $this->sort->asArray();
     }
 
     /**
      * Set the sort property
      *
-     * @param string $sort
+     * @param string|string[]|null $sort
      * @return $this
      */
     public function setSort($sort)
     {
-        $this->sort = $sort;
+        $this->sort = StringCollection::init($sort);
         return $this;
     }
 
