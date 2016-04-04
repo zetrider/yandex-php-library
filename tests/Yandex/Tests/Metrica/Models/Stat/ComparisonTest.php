@@ -30,11 +30,12 @@ class ComparisonTest extends TestCase
             ->setA($fixtures["data"][0]["metrics"]["a"])
             ->setB($fixtures["data"][0]["metrics"]["b"]);
 
+        $dimensions = new Models\Dimensions();
+        $dimensions->add($fixtures["query"]["dimensions"]);
         $items = new Models\ComparisonItems();
         $items
             ->setMetrics($metrics)
-            ->setDimensions(new Models\Dimensions([]))
-            ->setMetrics($metrics);
+            ->setDimensions($dimensions);
 
         $data = new Models\ComparisonData();
         $data->add($items);
@@ -70,6 +71,7 @@ class ComparisonTest extends TestCase
 
         $this->assertEquals($fixtures["data"][0]["metrics"]["a"], $getData[0]->getMetrics()->getA());
         $this->assertEquals($fixtures["data"][0]["metrics"]["b"], $getData[0]->getMetrics()->getB());
+        $this->assertEquals($fixtures["data"][0]["dimensions"], $getData[0]->getDimensions()->getAll()[0]->toArray());
 
         $this->assertEquals($fixtures["total_rows"], $comparison->getTotalRows());
         $this->assertEquals($fixtures["sampled"], $comparison->getSampled());
