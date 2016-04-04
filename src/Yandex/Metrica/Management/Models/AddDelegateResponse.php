@@ -2,39 +2,37 @@
 
 namespace Yandex\Metrica\Management\Models;
 
-use Yandex\Metrica\Management\Models\Delegate;
 use Yandex\Common\Model;
 
 class AddDelegateResponse extends Model
 {
-
-    protected $delegate = null;
+    protected $delegates = null;
 
     protected $mappingClasses = [
-        'delegate' => 'Yandex\Metrica\Management\Models\Delegate'
+        'delegates' => 'Yandex\Metrica\Management\Models\Delegates'
     ];
 
     protected $propNameMap = [];
 
     /**
-     * Retrieve the delegate property
+     * Retrieve the delegates property
      *
-     * @return Delegate|null
+     * @return Delegates|null
      */
-    public function getDelegate()
+    public function getDelegates()
     {
-        return $this->delegate;
+        return $this->delegates;
     }
 
     /**
-     * Set the delegate property
+     * Set the delegates property
      *
-     * @param Delegate $delegate
+     * @param Delegates $delegates
      * @return $this
      */
-    public function setDelegate($delegate)
+    public function setDelegates($delegates)
     {
-        $this->delegate = $delegate;
+        $this->delegates = $delegates;
         return $this;
     }
 }

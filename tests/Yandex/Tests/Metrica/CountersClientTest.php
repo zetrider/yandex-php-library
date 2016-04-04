@@ -2,9 +2,11 @@
 
 namespace Yandex\Tests\Metrica;
 
+use Yandex\Metrica\Management\CountersClient;
 use Yandex\Tests\Metrica\Fixtures\Counters;
 use Yandex\Tests\TestCase;
 use Yandex\Metrica\Management\Models;
+use GuzzleHttp\Psr7\Response;
 
 class CountersClientTest extends TestCase
 {
@@ -203,5 +205,92 @@ class CountersClientTest extends TestCase
         $this->assertEquals($fixtures["counter"]["max_goals"], $response->getMaxGoals());
         $this->assertEquals($fixtures["counter"]["max_detailed_goals"], $response->getMaxDetailedGoals());
         $this->assertEquals($fixtures["counter"]["max_retargeting_goals"], $response->getMaxRetargetingGoals());
+    }
+
+    public function testAddCounter()
+    {
+        $fixtures             = Counters::$counterFixtures;
+        $token                = 'test';
+        $response             = new Response(200, [], \GuzzleHttp\Psr7\stream_for(json_encode($fixtures)));
+        $guzzleHttpClientMock = $this->getMock('GuzzleHttp\Client', ['request']);
+        $guzzleHttpClientMock->expects($this->any())
+            ->method('request')
+            ->will($this->returnValue($response));
+        /** @var CountersClient $countersClientMock */
+        $countersClientMock = $this->getMock('Yandex\Metrica\Management\CountersClient', ['getClient'], [$token]);
+        $countersClientMock->expects($this->any())
+            ->method('getClient')
+            ->will($this->returnValue($guzzleHttpClientMock));
+
+        $counter = new Models\Counter($fixtures);
+        $result  = $countersClientMock->addCounter($counter);
+        $this->assertTrue($result instanceof Models\Counter);
+    }
+
+    public function testUpdateCounter()
+    {
+        $fixtures             = Counters::$counterFixtures;
+        $token                = 'test';
+        $response             = new Response(200, [], \GuzzleHttp\Psr7\stream_for(json_encode($fixtures)));
+        $guzzleHttpClientMock = $this->getMock('GuzzleHttp\Client', ['request']);
+        $guzzleHttpClientMock->expects($this->any())
+            ->method('request')
+            ->will($this->returnValue($response));
+        /** @var CountersClient $countersClientMock */
+        $countersClientMock = $this->getMock('Yandex\Metrica\Management\CountersClient', ['getClient'], [$token]);
+        $countersClientMock->expects($this->any())
+            ->method('getClient')
+            ->will($this->returnValue($guzzleHttpClientMock));
+
+        $counter = new Models\ExtendCounter($fixtures);
+        $result  = $countersClientMock->updateCounter(1, $counter);
+        $this->assertTrue($result instanceof Models\Counter);
+
+        $this->assertEquals($fixtures["counter"]["id"], $result->getId());
+        $this->assertEquals($fixtures["counter"]["owner_login"], $result->getOwnerLogin());
+        $this->assertEquals($fixtures["counter"]["code_status"], $result->getCodeStatus());
+        $this->assertEquals($fixtures["counter"]["name"], $result->getName());
+        $this->assertEquals($fixtures["counter"]["site"], $result->getSite());
+        $this->assertEquals($fixtures["counter"]["type"], $result->getType());
+        $this->assertEquals($fixtures["counter"]["favorite"], $result->getFavorite());
+        $this->assertEquals($fixtures["counter"]["permission"], $result->getPermission());
+    }
+
+    public function testDeleteCounter()
+    {
+        $fixtures             = Counters::$counterDeleteResponseFixtures;
+        $token                = 'test';
+        $response             = new Response(200, [], \GuzzleHttp\Psr7\stream_for(json_encode($fixtures)));
+        $guzzleHttpClientMock = $this->getMock('GuzzleHttp\Client', ['request']);
+        $guzzleHttpClientMock->expects($this->any())
+            ->method('request')
+            ->will($this->returnValue($response));
+        /** @var CountersClient $countersClientMock */
+        $countersClientMock = $this->getMock('Yandex\Metrica\Management\CountersClient', ['getClient'], [$token]);
+        $countersClientMock->expects($this->any())
+            ->method('getClient')
+            ->will($this->returnValue($guzzleHttpClientMock));
+
+        $result = $countersClientMock->deleteCounter(1);
+        $this->assertArrayHasKey('success', $result);
+    }
+
+    public function testUnDeleteCounter()
+    {
+        $fixtures             = Counters::$counterDeleteResponseFixtures;
+        $token                = 'test';
+        $response             = new Response(200, [], \GuzzleHttp\Psr7\stream_for(json_encode($fixtures)));
+        $guzzleHttpClientMock = $this->getMock('GuzzleHttp\Client', ['request']);
+        $guzzleHttpClientMock->expects($this->any())
+            ->method('request')
+            ->will($this->returnValue($response));
+        /** @var CountersClient $countersClientMock */
+        $countersClientMock = $this->getMock('Yandex\Metrica\Management\CountersClient', ['getClient'], [$token]);
+        $countersClientMock->expects($this->any())
+            ->method('getClient')
+            ->will($this->returnValue($guzzleHttpClientMock));
+
+        $result = $countersClientMock->undeleteCounter(1);
+        $this->assertArrayHasKey('success', $result);
     }
 }

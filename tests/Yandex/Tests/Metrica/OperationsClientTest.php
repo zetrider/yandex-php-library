@@ -2,8 +2,11 @@
 
 namespace Yandex\Tests\Metrica;
 
+use Yandex\Metrica\Management\Models\Operation;
+use Yandex\Metrica\Management\OperationsClient;
 use Yandex\Tests\TestCase;
 use Yandex\Tests\Metrica\Fixtures\Operations;
+use GuzzleHttp\Psr7\Response;
 
 class OperationsClientTest extends TestCase
 {
@@ -46,5 +49,76 @@ class OperationsClientTest extends TestCase
         $this->assertEquals($fixtures["operation"]["attr"], $table->getAttr());
         $this->assertEquals($fixtures["operation"]["value"], $table->getValue());
         $this->assertEquals($fixtures["operation"]["status"], $table->getStatus());
+    }
+
+    public function testAddOperation()
+    {
+        $fixtures             = Operations::$operationFixtures;
+        $token                = 'test';
+        $response             = new Response(200, [], \GuzzleHttp\Psr7\stream_for(json_encode($fixtures)));
+        $guzzleHttpClientMock = $this->getMock('GuzzleHttp\Client', ['request']);
+        $guzzleHttpClientMock->expects($this->any())
+            ->method('request')
+            ->will($this->returnValue($response));
+        /** @var OperationsClient $mock */
+        $mock = $this->getMock('Yandex\Metrica\Management\OperationsClient', ['getClient'], [$token]);
+        $mock->expects($this->any())
+            ->method('getClient')
+            ->will($this->returnValue($guzzleHttpClientMock));
+
+        $operation = new Operation($fixtures);
+        $result    = $mock->addOperation(1, $operation);
+        $this->assertTrue($result instanceof Operation);
+
+        $this->assertEquals($fixtures["operation"]["id"], $result->getId());
+        $this->assertEquals($fixtures["operation"]["action"], $result->getAction());
+        $this->assertEquals($fixtures["operation"]["attr"], $result->getAttr());
+        $this->assertEquals($fixtures["operation"]["value"], $result->getValue());
+        $this->assertEquals($fixtures["operation"]["status"], $result->getStatus());
+    }
+
+    public function testUpdateOperation()
+    {
+        $fixtures             = Operations::$operationFixtures;
+        $token                = 'test';
+        $response             = new Response(200, [], \GuzzleHttp\Psr7\stream_for(json_encode($fixtures)));
+        $guzzleHttpClientMock = $this->getMock('GuzzleHttp\Client', ['request']);
+        $guzzleHttpClientMock->expects($this->any())
+            ->method('request')
+            ->will($this->returnValue($response));
+        /** @var OperationsClient $mock */
+        $mock = $this->getMock('Yandex\Metrica\Management\OperationsClient', ['getClient'], [$token]);
+        $mock->expects($this->any())
+            ->method('getClient')
+            ->will($this->returnValue($guzzleHttpClientMock));
+
+        $operation = new Operation($fixtures);
+        $result    = $mock->updateOperation(1, 2, $operation);
+        $this->assertTrue($result instanceof Operation);
+
+        $this->assertEquals($fixtures["operation"]["id"], $result->getId());
+        $this->assertEquals($fixtures["operation"]["action"], $result->getAction());
+        $this->assertEquals($fixtures["operation"]["attr"], $result->getAttr());
+        $this->assertEquals($fixtures["operation"]["value"], $result->getValue());
+        $this->assertEquals($fixtures["operation"]["status"], $result->getStatus());
+    }
+
+    public function testDeleteCounterOperation()
+    {
+        $fixtures             = Operations::$deleteResponseFixtures;
+        $token                = 'test';
+        $response             = new Response(200, [], \GuzzleHttp\Psr7\stream_for(json_encode($fixtures)));
+        $guzzleHttpClientMock = $this->getMock('GuzzleHttp\Client', ['request']);
+        $guzzleHttpClientMock->expects($this->any())
+            ->method('request')
+            ->will($this->returnValue($response));
+        /** @var OperationsClient $mock */
+        $mock = $this->getMock('Yandex\Metrica\Management\OperationsClient', ['getClient'], [$token]);
+        $mock->expects($this->any())
+            ->method('getClient')
+            ->will($this->returnValue($guzzleHttpClientMock));
+
+        $result = $mock->deleteCounterOperation(1, 2);
+        $this->assertArrayHasKey('success', $result);
     }
 }

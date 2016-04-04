@@ -44,4 +44,7 @@ class Goals
             "class" => 1
         ]
     ];
+    public static $deleteResponseFixtures = [
+        'success' => true
+    ];
 }

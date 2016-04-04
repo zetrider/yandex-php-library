@@ -16,6 +16,7 @@ class Analytics
             "dimensions" => ["ga:country"],
             "metrics" => ["ga:pageviews"],
             "sort" => [],
+            "filters" => [],
             "start-date" => "2014-07-26",
             "end-date" => "2014-07-28",
             "start-index" => 1,
