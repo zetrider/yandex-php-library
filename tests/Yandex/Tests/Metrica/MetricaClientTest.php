@@ -78,6 +78,27 @@ class MetricaClientTest extends TestCase
         $accountsClientMock->getAccounts();
     }
 
+    function testSendRequestBadRequestException()
+    {
+        $fixtures             = Accounts::$badRequestFixtures;
+        $token                = 'test';
+        $response             = new Response(400, [], \GuzzleHttp\Psr7\stream_for(json_encode($fixtures)));
+        $request              = new Request('GET', '');
+        $exception            = new \GuzzleHttp\Exception\ClientException('error', $request, $response);
+        $guzzleHttpClientMock = $this->getMock('GuzzleHttp\Client', ['request']);
+        $guzzleHttpClientMock->expects($this->any())
+            ->method('request')
+            ->will($this->throwException($exception));
+        /** @var AccountsClient $accountsClientMock */
+        $accountsClientMock = $this->getMock('Yandex\Metrica\Management\AccountsClient', ['getClient'], [$token]);
+        $accountsClientMock->expects($this->any())
+            ->method('getClient')
+            ->will($this->returnValue($guzzleHttpClientMock));
+
+        $this->setExpectedException('Yandex\Metrica\Exception\BadRequestException');
+        $accountsClientMock->getAccounts();
+    }
+
     function testSendRequestTooManyRequestsException()
     {
         $token                = 'test';
