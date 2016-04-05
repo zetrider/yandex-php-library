@@ -23,7 +23,9 @@ class ComparisonTest extends TestCase
             ->setDate1A($fixtures["query"]["date1_a"])
             ->setDate2A($fixtures["query"]["date2_a"])
             ->setDate1B($fixtures["query"]["date1_b"])
-            ->setDate2B($fixtures["query"]["date2_b"]);
+            ->setDate2B($fixtures["query"]["date2_b"])
+            ->setFiltersA($fixtures["query"]["filters_a"])
+            ->setFiltersB($fixtures["query"]["filters_b"]);
 
         $metrics = new Models\ComparisonMetrics();
         $metrics
@@ -66,6 +68,8 @@ class ComparisonTest extends TestCase
         $this->assertEquals($fixtures["query"]["date2_a"], $comparison->getQuery()->getDate2A());
         $this->assertEquals($fixtures["query"]["date1_b"], $comparison->getQuery()->getDate1B());
         $this->assertEquals($fixtures["query"]["date2_b"], $comparison->getQuery()->getDate2B());
+        $this->assertEquals($fixtures["query"]["filters_a"], $comparison->getQuery()->getFiltersA());
+        $this->assertEquals($fixtures["query"]["filters_b"], $comparison->getQuery()->getFiltersB());
 
         $getData = $comparison->getData()->getAll();
 

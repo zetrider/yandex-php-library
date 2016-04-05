@@ -476,6 +476,70 @@ class Stat
         'top_keys'          => 7
     ];
 
+    public static $comparisonParamsFixtures = [
+        "id"                => 2138128,
+        "preset"            => "tech_platforms",
+        "dimensions"        => [
+            "ym:s:operatingSystemRoot",
+            "ym:s:operatingSystem"
+        ],
+        "metrics"           => [
+            "ym:s:visits",
+            "ym:s:pageviews",
+            "ym:s:bounceRate",
+            "ym:s:pageDepth",
+            "ym:s:avgVisitDurationSeconds"
+        ],
+        "sort"              => [
+            "-ym:s:visits"
+        ],
+        "limit"             => 100,
+        "offset"            => 1,
+        'filters'           => "ym:s:isMobile!='Yes'",
+        'filters_a'         => "ym:s:isMobile!='Yes'",
+        'filters_b'         => "ym:s:isMobile=='Yes'",
+        "date1_a"           => "2014-07-16",
+        "date2_a"           => "2014-07-22",
+        "date1_b"           => "2014-07-16",
+        "date2_b"           => "2014-07-22",
+        'accuracy'          => 'medium',
+        'callback'          => null,
+        'include_undefined' => true,
+        'lang'              => 'ru',
+        'pretty'            => true,
+        'parent_id'         => null
+    ];
+
+
+    public static $tableParamsFixtures = [
+        "id"                => 2138128,
+        "preset"            => "tech_platforms",
+        "dimensions"        => [
+            "ym:s:operatingSystemRoot",
+            "ym:s:operatingSystem"
+        ],
+        "metrics"           => [
+            "ym:s:visits",
+            "ym:s:pageviews",
+            "ym:s:bounceRate",
+            "ym:s:pageDepth",
+            "ym:s:avgVisitDurationSeconds"
+        ],
+        "sort"              => [
+            "-ym:s:visits"
+        ],
+        "limit"             => 100,
+        "offset"            => 1,
+        'filters'           => "ym:s:isMobile!='Yes'",
+        "date1"           => "2014-07-16",
+        "date2"           => "2014-07-22",
+        'accuracy'          => 'medium',
+        'callback'          => null,
+        'include_undefined' => true,
+        'lang'              => 'ru',
+        'pretty'            => true
+    ];
+
     public static $comparisonFixtures = [
         "query" => [
             "id" => 2138128,
@@ -489,7 +553,9 @@ class Stat
             "date1_a" => "2014-07-16",
             "date2_a" => "2014-07-22",
             "date1_b" => "2014-07-16",
-            "date2_b" => "2014-07-22"
+            "date2_b" => "2014-07-22",
+            'filters_a' => "ym:s:isMobile!='Yes'",
+            'filters_b' => "ym:s:isMobile=='Yes'"
         ],
         "data" => [
             0 => [
