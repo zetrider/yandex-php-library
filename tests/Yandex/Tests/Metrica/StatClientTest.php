@@ -33,4 +33,16 @@ class StatClientTest extends TestCase
         $this->assertTrue($client instanceof DataClient);
         $this->assertEquals($token, $client->getAccessToken());
     }
+
+    /**
+     * @covers StatClient::data
+     */
+    public function testMethodDataWithCustomClient()
+    {
+        $token      = 'test';
+        $statClient = new StatClient($token, $this->getMock('GuzzleHttp\Client'));
+        $client     = $statClient->data();
+        $this->assertTrue($client instanceof DataClient);
+        $this->assertEquals($token, $client->getAccessToken());
+    }
 }

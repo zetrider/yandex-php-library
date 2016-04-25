@@ -38,6 +38,13 @@ class MetricaClientTest extends TestCase
         $this->assertEquals($token, $metricaClient->getAccessToken());
     }
 
+    public function testConstructWithCustomGuzzleClient()
+    {
+        $token = 'test';
+        $metricaClient = new MetricaClient($token, $this->getMock('GuzzleHttp\Client'));
+        $this->assertEquals($token, $metricaClient->getAccessToken());
+    }
+
     function testSendRequestForbiddenException()
     {
         $token                = 'test';
