@@ -35,7 +35,7 @@ class StatClientTest extends TestCase
     }
 
     /**
-     * @covers StatClient::data
+     * @covers \Yandex\Metrica\Stat\StatClient::data
      */
     public function testMethodDataWithCustomClient()
     {
