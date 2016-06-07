@@ -11,6 +11,7 @@
  */
 namespace Yandex\Metrica;
 
+use GuzzleHttp\ClientInterface;
 use Yandex\Common\AbstractServiceClient;
 use Psr\Http\Message\UriInterface;
 use GuzzleHttp\Psr7\Response;
@@ -41,10 +42,14 @@ class MetricaClient extends AbstractServiceClient
 
     /**
      * @param string $token access token
+     * @param ClientInterface $client
      */
-    public function __construct($token = '')
+    public function __construct($token = '', ClientInterface $client = null)
     {
         $this->setAccessToken($token);
+        if (!is_null($client)) {
+            $this->setClient($client);
+        }
     }
 
     /**
