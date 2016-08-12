@@ -5,6 +5,7 @@
 namespace Yandex\Tests\Market\Partner;
 
 use GuzzleHttp\Psr7\Response;
+use GuzzleHttp\Psr7\Request;
 use GuzzleHttp\Psr7\Stream;
 use Yandex\Market\Partner\Models\Item;
 use Yandex\Market\Partner\Models\Order;
@@ -59,136 +60,92 @@ class PartnerClientTest extends TestCase
         /** @var \Yandex\Market\Partner\Models\Campaigns $campaignsResp */
         $campaignsResp = $marketPartnerMock->getOrders()->getAll();
 
-        $this->assertEquals($ordersJson->orders[0]->id, $campaignsResp[0]->getId());
-        $this->assertEquals($ordersJson->orders[0]->creationDate, $campaignsResp[0]->getcreationDate());
-        $this->assertEquals($ordersJson->orders[0]->currency, $campaignsResp[0]->getCurrency());
-        $this->assertEquals($ordersJson->orders[0]->fake, $campaignsResp[0]->getFake());
-        $this->assertEquals($ordersJson->orders[0]->itemsTotal, $campaignsResp[0]->getItemsTotal());
-        $this->assertEquals($ordersJson->orders[0]->paymentType, $campaignsResp[0]->getPaymentType());
-        $this->assertEquals($ordersJson->orders[0]->paymentMethod, $campaignsResp[0]->getPaymentMethod());
-        $this->assertEquals($ordersJson->orders[0]->status, $campaignsResp[0]->getStatus());
-        $this->assertEquals($ordersJson->orders[0]->total, $campaignsResp[0]->getTotal());
+        //order
+        $order0 = $ordersJson->orders[0];
+        $this->assertEquals($order0->id, $campaignsResp[0]->getId());
+        $this->assertEquals($order0->creationDate, $campaignsResp[0]->getcreationDate());
+        $this->assertEquals($order0->currency, $campaignsResp[0]->getCurrency());
+        $this->assertEquals($order0->fake, $campaignsResp[0]->getFake());
+        $this->assertEquals($order0->itemsTotal, $campaignsResp[0]->getItemsTotal());
+        $this->assertEquals($order0->paymentType, $campaignsResp[0]->getPaymentType());
+        $this->assertEquals($order0->paymentMethod, $campaignsResp[0]->getPaymentMethod());
+        $this->assertEquals($order0->status, $campaignsResp[0]->getStatus());
+        $this->assertEquals($order0->total, $campaignsResp[0]->getTotal());
 
         //buyer
-        $this->assertEquals($ordersJson->orders[0]->buyer->id, $campaignsResp[0]->getBuyer()->getId());
-        $this->assertEquals($ordersJson->orders[0]->buyer->lastName, $campaignsResp[0]->getBuyer()->getLastName());
-        $this->assertEquals($ordersJson->orders[0]->buyer->firstName, $campaignsResp[0]->getBuyer()->getFirstName());
-        $this->assertEquals($ordersJson->orders[0]->buyer->middleName, $campaignsResp[0]->getBuyer()->getMiddleName());
-        $this->assertEquals($ordersJson->orders[0]->buyer->phone, $campaignsResp[0]->getBuyer()->getPhone());
-        $this->assertEquals($ordersJson->orders[0]->buyer->email, $campaignsResp[0]->getBuyer()->getEmail());
+        $buyer = $ordersJson->orders[0]->buyer;
+        $this->assertEquals($buyer->id, $campaignsResp[0]->getBuyer()->getId());
+        $this->assertEquals($buyer->lastName, $campaignsResp[0]->getBuyer()->getLastName());
+        $this->assertEquals($buyer->firstName, $campaignsResp[0]->getBuyer()->getFirstName());
+        $this->assertEquals($buyer->middleName, $campaignsResp[0]->getBuyer()->getMiddleName());
+        $this->assertEquals($buyer->phone, $campaignsResp[0]->getBuyer()->getPhone());
+        $this->assertEquals($buyer->email, $campaignsResp[0]->getBuyer()->getEmail());
 
         //delivery
-        $this->assertEquals($ordersJson->orders[0]->delivery->type, $campaignsResp[0]->getDelivery()->getType());
-        $this->assertEquals($ordersJson->orders[0]->delivery->serviceName, $campaignsResp[0]->getDelivery()->getServiceName());
-        $this->assertEquals($ordersJson->orders[0]->delivery->price, $campaignsResp[0]->getDelivery()->getPrice());
+        $delivery = $ordersJson->orders[0]->delivery;
+        $this->assertEquals($delivery->type, $campaignsResp[0]->getDelivery()->getType());
+        $this->assertEquals($delivery->serviceName, $campaignsResp[0]->getDelivery()->getServiceName());
+        $this->assertEquals($delivery->price, $campaignsResp[0]->getDelivery()->getPrice());
 
         //delivery->address
-        $this->assertEquals(
-            $ordersJson->orders[0]->delivery->address->country,
-            $campaignsResp[0]->getDelivery()->getAddress()->getCountry()
-        );
-        $this->assertEquals(
-            $ordersJson->orders[0]->delivery->address->postcode,
-            $campaignsResp[0]->getDelivery()->getAddress()->getPostcode()
-        );
-        $this->assertEquals(
-            $ordersJson->orders[0]->delivery->address->city,
-            $campaignsResp[0]->getDelivery()->getAddress()->getCity()
-        );
-        $this->assertEquals(
-            $ordersJson->orders[0]->delivery->address->subway,
-            $campaignsResp[0]->getDelivery()->getAddress()->getSubway()
-        );
-        $this->assertEquals(
-            $ordersJson->orders[0]->delivery->address->street,
-            $campaignsResp[0]->getDelivery()->getAddress()->getStreet()
-        );
-        $this->assertEquals(
-            $ordersJson->orders[0]->delivery->address->house,
-            $campaignsResp[0]->getDelivery()->getAddress()->getHouse()
-        );
-        $this->assertEquals(
-            $ordersJson->orders[0]->delivery->address->entrance,
-            $campaignsResp[0]->getDelivery()->getAddress()->getEntrance()
-        );
-        $this->assertEquals(
-            $ordersJson->orders[0]->delivery->address->entryphone,
-            $campaignsResp[0]->getDelivery()->getAddress()->getEntryphone()
-        );
-        $this->assertEquals(
-            $ordersJson->orders[0]->delivery->address->floor,
-            $campaignsResp[0]->getDelivery()->getAddress()->getFloor()
-        );
-        $this->assertEquals(
-            $ordersJson->orders[0]->delivery->address->apartment,
-            $campaignsResp[0]->getDelivery()->getAddress()->getApartment()
-        );
-        $this->assertEquals(
-            $ordersJson->orders[0]->delivery->address->recipient,
-            $campaignsResp[0]->getDelivery()->getAddress()->getRecipient()
-        );
-        $this->assertEquals(
-            $ordersJson->orders[0]->delivery->address->phone,
-            $campaignsResp[0]->getDelivery()->getAddress()->getPhone()
-        );
+        $deliveryAddress = $ordersJson->orders[0]->delivery->address;
+        $this->assertEquals($deliveryAddress->country, $campaignsResp[0]->getDelivery()->getAddress()->getCountry());
+        $this->assertEquals($deliveryAddress->postcode,  $campaignsResp[0]->getDelivery()->getAddress()->getPostcode());
+        $this->assertEquals($deliveryAddress->city, $campaignsResp[0]->getDelivery()->getAddress()->getCity());
+        $this->assertEquals($deliveryAddress->subway, $campaignsResp[0]->getDelivery()->getAddress()->getSubway());
+        $this->assertEquals($deliveryAddress->street, $campaignsResp[0]->getDelivery()->getAddress()->getStreet());
+        $this->assertEquals($deliveryAddress->house, $campaignsResp[0]->getDelivery()->getAddress()->getHouse());
+        $this->assertEquals($deliveryAddress->entrance, $campaignsResp[0]->getDelivery()->getAddress()->getEntrance());
+        $this->assertEquals($deliveryAddress->entryphone, $campaignsResp[0]->getDelivery()->getAddress()->getEntryphone());
+        $this->assertEquals($deliveryAddress->floor, $campaignsResp[0]->getDelivery()->getAddress()->getFloor());
+        $this->assertEquals($deliveryAddress->apartment, $campaignsResp[0]->getDelivery()->getAddress()->getApartment());
+        $this->assertEquals($deliveryAddress->recipient, $campaignsResp[0]->getDelivery()->getAddress()->getRecipient());
+        $this->assertEquals($deliveryAddress->phone, $campaignsResp[0]->getDelivery()->getAddress()->getPhone());
 
         //delivery->dates
-        $this->assertEquals(
-            $ordersJson->orders[0]->delivery->dates->fromDate,
-            $campaignsResp[0]->getDelivery()->getDates()->getFromDate()
-        );
-        $this->assertEquals(
-            $ordersJson->orders[0]->delivery->dates->toDate,
-            $campaignsResp[0]->getDelivery()->getDates()->getToDate()
-        );
+        $deliveryDates = $ordersJson->orders[0]->delivery->dates;
+        $this->assertEquals($deliveryDates->fromDate, $campaignsResp[0]->getDelivery()->getDates()->getFromDate());
+        $this->assertEquals($deliveryDates->toDate, $campaignsResp[0]->getDelivery()->getDates()->getToDate());
 
         //delivery->region
+        $deliveryRegion = $ordersJson->orders[0]->delivery->region;
+        $this->assertEquals($deliveryRegion->id, $campaignsResp[0]->getDelivery()->getRegion()->getId());
+        $this->assertEquals($deliveryRegion->name, $campaignsResp[0]->getDelivery()->getRegion()->getName());
+        $this->assertEquals($deliveryRegion->type, $campaignsResp[0]->getDelivery()->getRegion()->getType());
         $this->assertEquals(
-            $ordersJson->orders[0]->delivery->region->id,
-            $campaignsResp[0]->getDelivery()->getRegion()->getId()
-        );
-        $this->assertEquals(
-            $ordersJson->orders[0]->delivery->region->name,
-            $campaignsResp[0]->getDelivery()->getRegion()->getName()
-        );
-        $this->assertEquals(
-            $ordersJson->orders[0]->delivery->region->type,
-            $campaignsResp[0]->getDelivery()->getRegion()->getType()
-        );
-        $this->assertEquals(
-            $ordersJson->orders[0]->delivery->region->parent->id,
+            $deliveryRegion->parent->id,
             $campaignsResp[0]->getDelivery()->getRegion()->getParent()->getId()
         );
         $this->assertEquals(
-            $ordersJson->orders[0]->delivery->region->parent->name,
+            $deliveryRegion->parent->name,
             $campaignsResp[0]->getDelivery()->getRegion()->getParent()->getName()
         );
         $this->assertEquals(
-            $ordersJson->orders[0]->delivery->region->parent->type,
+            $deliveryRegion->parent->type,
             $campaignsResp[0]->getDelivery()->getRegion()->getParent()->getType()
         );
         $this->assertEquals(
-            $ordersJson->orders[0]->delivery->region->parent->parent->id,
+            $deliveryRegion->parent->parent->id,
             $campaignsResp[0]->getDelivery()->getRegion()->getParent()->getParent()->getId()
         );
         $this->assertEquals(
-            $ordersJson->orders[0]->delivery->region->parent->parent->name,
+            $deliveryRegion->parent->parent->name,
             $campaignsResp[0]->getDelivery()->getRegion()->getParent()->getParent()->getName()
         );
         $this->assertEquals(
-            $ordersJson->orders[0]->delivery->region->parent->parent->type,
+            $deliveryRegion->parent->parent->type,
             $campaignsResp[0]->getDelivery()->getRegion()->getParent()->getParent()->getType()
         );
         $this->assertEquals(
-            $ordersJson->orders[0]->delivery->region->parent->parent->parent->id,
+            $deliveryRegion->parent->parent->parent->id,
             $campaignsResp[0]->getDelivery()->getRegion()->getParent()->getParent()->getParent()->getId()
         );
         $this->assertEquals(
-            $ordersJson->orders[0]->delivery->region->parent->parent->parent->name,
+            $deliveryRegion->parent->parent->parent->name,
             $campaignsResp[0]->getDelivery()->getRegion()->getParent()->getParent()->getParent()->getName()
         );
         $this->assertEquals(
-            $ordersJson->orders[0]->delivery->region->parent->parent->parent->type,
+            $deliveryRegion->parent->parent->parent->type,
             $campaignsResp[0]->getDelivery()->getRegion()->getParent()->getParent()->getParent()->getType()
         );
 
@@ -209,5 +166,146 @@ class PartnerClientTest extends TestCase
         $this->assertEquals($ordersJson->orders[0]->items[1]->offerName, $item1->getOfferName());
         $this->assertEquals($ordersJson->orders[0]->items[1]->price, $item1->getPrice());
         $this->assertEquals($ordersJson->orders[0]->items[1]->count, $item1->getCount());
+    }
+
+    public function testGetAccessToken()
+    {
+        $marketPartnerMock = $this->getMock(
+            'Yandex\Market\Partner\PartnerClient',
+            ['getClientId', 'getLogin'],
+            ['testAccessToken']
+        );
+
+        $marketPartnerMock->expects($this->any())
+            ->method('getClientId')
+            ->will($this->returnValue(111));
+        $marketPartnerMock->expects($this->any())
+            ->method('getLogin')
+            ->will($this->returnValue('testLogin'));
+
+        $this->assertEquals(
+            'oauth_token=testAccessToken, oauth_client_id=111, oauth_login=testLogin',
+            $marketPartnerMock->getAccessToken()
+        );
+    }
+
+    public function testGetPropertiesPartnerClient()
+    {
+        $marketPartnerMock = $this->getMock('Yandex\Market\Partner\PartnerClient', ['getAccessToken']);
+        $marketPartnerMock->expects($this->any())
+            ->method('getAccessToken')
+            ->will($this->returnValue('oauth_token=testAccessToken, oauth_client_id=222, oauth_login=testLogin2'));
+        $marketPartnerMock->setClientId(222);
+        $marketPartnerMock->setLogin('testLogin2');
+        $marketPartnerMock->setCampaignId(111);
+
+        $this->assertEquals(222, $marketPartnerMock->getClientId());
+        $this->assertEquals('testLogin2', $marketPartnerMock->getLogin());
+        $this->assertEquals(111, $marketPartnerMock->getCampaignId());
+    }
+
+    public function testUpdateDelivery()
+    {
+        $json = file_get_contents(__DIR__ . '/' . $this->fixturesFolder . '/get-order-for-update-delivery.json');
+        $jsonObj = json_decode($json);
+        $address = $jsonObj->order->delivery->address;
+
+        $response = new Response(200, [], \GuzzleHttp\Psr7\stream_for($json));
+        $marketPartnerMock = $this->getMock('Yandex\Market\Partner\PartnerClient', ['sendRequest']);
+        $marketPartnerMock->expects($this->any())
+            ->method('sendRequest')
+            ->will($this->returnValue($response));
+
+        $deliveryMock = $this->getMock('Yandex\Market\Partner\Models\Delivery', ['getAddress']);
+        $deliveryMock->expects($this->any())
+            ->method('getAddress')
+            ->will($this->returnValue($address));
+
+        $updateDeliveryResp = $marketPartnerMock->updateDelivery(12345, $deliveryMock);
+        
+        //delivery->address
+        $this->assertEquals($address->house, $updateDeliveryResp->getDelivery()->getAddress()->getHouse());
+        $this->assertEquals($address->entrance, $updateDeliveryResp->getDelivery()->getAddress()->getEntrance());
+        $this->assertEquals($address->entryphone, $updateDeliveryResp->getDelivery()->getAddress()->getEntryphone());
+        $this->assertEquals($address->floor, $updateDeliveryResp->getDelivery()->getAddress()->getFloor());
+        $this->assertEquals($address->apartment, $updateDeliveryResp->getDelivery()->getAddress()->getApartment());
+        $this->assertEquals($address->recipient, $updateDeliveryResp->getDelivery()->getAddress()->getRecipient());
+        $this->assertEquals($address->phone, $updateDeliveryResp->getDelivery()->getAddress()->getPhone());
+    }
+
+    public function testSetOrderStatus()
+    {
+        $json = file_get_contents(__DIR__ . '/' . $this->fixturesFolder . '/get-order-for-update-delivery.json');
+        $jsonObj = json_decode($json);
+        $orderId = $jsonObj->order->id;
+
+        $response = new Response(200, [], \GuzzleHttp\Psr7\stream_for($json));
+        $marketPartnerMock = $this->getMock('Yandex\Market\Partner\PartnerClient', ['sendRequest']);
+        $marketPartnerMock->expects($this->any())
+            ->method('sendRequest')
+            ->will($this->returnValue($response));
+
+        $orderStatusResp = $marketPartnerMock->setOrderStatus($orderId, 'CANCELLED', 'PROCESSING_EXPIRED');
+
+        $this->assertEquals('CANCELLED', $orderStatusResp->getStatus());
+        $this->assertEquals('PROCESSING_EXPIRED', $orderStatusResp->getSubStatus());
+    }
+
+    public  function testSendRequest()
+    {
+//        $partnerClient = new \Yandex\Market\Partner\PartnerClient();
+//        $response = $partnerClient->sendRequest('POST', $str);
+//        $marketPartnerMock = $this->getMock(
+//            'Yandex\Market\Partner\PartnerClient',
+//            ['getAccessToken', 'getClientId', 'getLogin']
+//        );
+//        $marketPartnerMock->expects($this->any())
+//            ->method('getAccessToken')
+//            ->will($this->returnValue('oauth_token=testAccessToken, oauth_client_id=333, oauth_login=testLogin3'));
+//        $marketPartnerMock->expects($this->any())->method('getClientId')->will($this->returnValue(333));
+//        $marketPartnerMock->expects($this->any())->method('getLogin')->will($this->returnValue('testLogin3'));
+//        $response = $marketPartnerMock->sendRequest('POST', $str);
+//        $response = $marketPartnerMock->getCampaigns();
+//        var_dump($response);die();
+
+//        $defaultOptions = [
+//            'base_uri' => 'https://api.partner.market.yandex.ru/v2/campaigns',
+//            'headers' => [
+//                'Authorization' => 'OAuth ' . 'testAccessToken',
+//                'Host' => 'api.partner.market.yandex.ru',
+//                'User-Agent' => 'yandex-php-library/0.2.0',
+//                'Accept' => '*/*'
+//            ]
+//        ];
+//
+//        $guzzleHttpClient = new \GuzzleHttp\Client($defaultOptions);
+//
+//        $AbstractServiceClient = $this->getMockForAbstractClass('Yandex\Common\AbstractServiceClient');
+//        $AbstractServiceClient->expects($this->any())
+//            ->method('getClient')
+//            ->will($this->returnValue($guzzleHttpClient));
+
+        $response  = new Response(400);
+        $request   = new Request('GET', '');
+        $exception = new \GuzzleHttp\Exception\ClientException('error', $request, $response);
+
+
+        $guzzleHttpClientMock = $this->getMock('GuzzleHttp\Client', ['request']);
+        $guzzleHttpClientMock->expects($this->any())
+            ->method('request')
+            ->will($this->throwException($exception));
+//        /** @var DataSyncClient $dataSyncClientMock */
+//        $dataSyncClientMock = $this->getMock('Yandex\DataSync\DataSyncClient', ['getClient']);
+//        $dataSyncClientMock->expects($this->any())
+//            ->method('getClient')
+//            ->will($this->returnValue($guzzleHttpClientMock));
+//        $this->setExpectedException('Yandex\Common\Exception\InvalidArgumentException');
+//        $dataSyncClientMock->getDatabase($databaseId, DataSyncClient::CONTEXT_USER);
+
+
+        $marketPartnerMock = $this->getMock('Yandex\Market\Partner\PartnerClient', ['getLogin']);
+        $marketPartnerMock->expects($this->any())->method('getLogin')->will($this->returnValue('testLogin3'));
+        $campaigns = $marketPartnerMock->getCampaigns();
+//        var_dump($campaigns);
     }
 }
