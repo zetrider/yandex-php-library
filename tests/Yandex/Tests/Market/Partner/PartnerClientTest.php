@@ -9,6 +9,7 @@ use GuzzleHttp\Psr7\Request;
 use GuzzleHttp\Psr7\Stream;
 use Yandex\Market\Partner\Models\Item;
 use Yandex\Market\Partner\Models\Order;
+use Yandex\Market\Partner\PartnerClient;
 use Yandex\Tests\TestCase;
 
 /**
@@ -233,79 +234,42 @@ class PartnerClientTest extends TestCase
         $this->assertEquals($address->phone, $updateDeliveryResp->getDelivery()->getAddress()->getPhone());
     }
 
-    public function testSetOrderStatus()
-    {
-        $json = file_get_contents(__DIR__ . '/' . $this->fixturesFolder . '/get-order-for-update-delivery.json');
-        $jsonObj = json_decode($json);
-        $orderId = $jsonObj->order->id;
-
-        $response = new Response(200, [], \GuzzleHttp\Psr7\stream_for($json));
-        $marketPartnerMock = $this->getMock('Yandex\Market\Partner\PartnerClient', ['sendRequest']);
-        $marketPartnerMock->expects($this->any())
-            ->method('sendRequest')
-            ->will($this->returnValue($response));
-
-        $orderStatusResp = $marketPartnerMock->setOrderStatus($orderId, 'CANCELLED', 'PROCESSING_EXPIRED');
-
-        $this->assertEquals('CANCELLED', $orderStatusResp->getStatus());
-        $this->assertEquals('PROCESSING_EXPIRED', $orderStatusResp->getSubStatus());
-    }
+//    public function testSetOrderStatus()
+//    {
+//        $json = file_get_contents(__DIR__ . '/' . $this->fixturesFolder . '/get-order-for-update-delivery.json');
+//        $jsonObj = json_decode($json);
+//        $orderId = $jsonObj->order->id;
+//
+//        $response = new Response(200, [], \GuzzleHttp\Psr7\stream_for($json));
+//        $marketPartnerMock = $this->getMock('Yandex\Market\Partner\PartnerClient', ['sendRequest']);
+//        $marketPartnerMock->expects($this->any())
+//            ->method('sendRequest')
+//            ->will($this->returnValue($response));
+//
+//        $orderStatusResp = $marketPartnerMock->setOrderStatus($orderId, 'CANCELLED', 'PROCESSING_EXPIRED');
+//
+//        $this->assertEquals('CANCELLED', $orderStatusResp->getStatus());
+//        $this->assertEquals('PROCESSING_EXPIRED', $orderStatusResp->getSubStatus());
+//    }
 
     public  function testSendRequest()
     {
-//        $partnerClient = new \Yandex\Market\Partner\PartnerClient();
-//        $response = $partnerClient->sendRequest('POST', $str);
-//        $marketPartnerMock = $this->getMock(
-//            'Yandex\Market\Partner\PartnerClient',
-//            ['getAccessToken', 'getClientId', 'getLogin']
-//        );
-//        $marketPartnerMock->expects($this->any())
-//            ->method('getAccessToken')
-//            ->will($this->returnValue('oauth_token=testAccessToken, oauth_client_id=333, oauth_login=testLogin3'));
-//        $marketPartnerMock->expects($this->any())->method('getClientId')->will($this->returnValue(333));
-//        $marketPartnerMock->expects($this->any())->method('getLogin')->will($this->returnValue('testLogin3'));
-//        $response = $marketPartnerMock->sendRequest('POST', $str);
-//        $response = $marketPartnerMock->getCampaigns();
-//        var_dump($response);die();
-
-//        $defaultOptions = [
-//            'base_uri' => 'https://api.partner.market.yandex.ru/v2/campaigns',
-//            'headers' => [
-//                'Authorization' => 'OAuth ' . 'testAccessToken',
-//                'Host' => 'api.partner.market.yandex.ru',
-//                'User-Agent' => 'yandex-php-library/0.2.0',
-//                'Accept' => '*/*'
-//            ]
-//        ];
-//
-//        $guzzleHttpClient = new \GuzzleHttp\Client($defaultOptions);
-//
-//        $AbstractServiceClient = $this->getMockForAbstractClass('Yandex\Common\AbstractServiceClient');
-//        $AbstractServiceClient->expects($this->any())
-//            ->method('getClient')
-//            ->will($this->returnValue($guzzleHttpClient));
-
-        $response  = new Response(400);
-        $request   = new Request('GET', '');
-        $exception = new \GuzzleHttp\Exception\ClientException('error', $request, $response);
-
+        $json = file_get_contents(__DIR__ . '/' . $this->fixturesFolder . '/get-order-for-update-delivery.json');
+        $response = new Response(200, [], \GuzzleHttp\Psr7\stream_for($json));
+        $jsonObj = json_decode($json);
+        $orderId = $jsonObj->order->id;
 
         $guzzleHttpClientMock = $this->getMock('GuzzleHttp\Client', ['request']);
         $guzzleHttpClientMock->expects($this->any())
             ->method('request')
-            ->will($this->throwException($exception));
-//        /** @var DataSyncClient $dataSyncClientMock */
-//        $dataSyncClientMock = $this->getMock('Yandex\DataSync\DataSyncClient', ['getClient']);
-//        $dataSyncClientMock->expects($this->any())
-//            ->method('getClient')
-//            ->will($this->returnValue($guzzleHttpClientMock));
-//        $this->setExpectedException('Yandex\Common\Exception\InvalidArgumentException');
-//        $dataSyncClientMock->getDatabase($databaseId, DataSyncClient::CONTEXT_USER);
+            ->will($this->returnValue($response));
 
+        $marketPartnerMock = $this->getMock('Yandex\Market\Partner\PartnerClient', ['getClient']);
+        $marketPartnerMock->expects($this->any())
+            ->method('getClient')
+            ->will($this->returnValue($guzzleHttpClientMock));
 
-        $marketPartnerMock = $this->getMock('Yandex\Market\Partner\PartnerClient', ['getLogin']);
-        $marketPartnerMock->expects($this->any())->method('getLogin')->will($this->returnValue('testLogin3'));
-        $campaigns = $marketPartnerMock->getCampaigns();
-//        var_dump($campaigns);
+        $response = $marketPartnerMock->getOrder($orderId);
+        $this->assertEquals($orderId, $response->getId());
     }
 }
