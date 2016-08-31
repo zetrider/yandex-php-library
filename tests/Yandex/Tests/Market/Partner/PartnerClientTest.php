@@ -234,23 +234,23 @@ class PartnerClientTest extends TestCase
         $this->assertEquals($address->phone, $updateDeliveryResp->getDelivery()->getAddress()->getPhone());
     }
 
-//    public function testSetOrderStatus()
-//    {
-//        $json = file_get_contents(__DIR__ . '/' . $this->fixturesFolder . '/get-order-for-update-delivery.json');
-//        $jsonObj = json_decode($json);
-//        $orderId = $jsonObj->order->id;
-//
-//        $response = new Response(200, [], \GuzzleHttp\Psr7\stream_for($json));
-//        $marketPartnerMock = $this->getMock('Yandex\Market\Partner\PartnerClient', ['sendRequest']);
-//        $marketPartnerMock->expects($this->any())
-//            ->method('sendRequest')
-//            ->will($this->returnValue($response));
-//
-//        $orderStatusResp = $marketPartnerMock->setOrderStatus($orderId, 'CANCELLED', 'PROCESSING_EXPIRED');
-//
-//        $this->assertEquals('CANCELLED', $orderStatusResp->getStatus());
-//        $this->assertEquals('PROCESSING_EXPIRED', $orderStatusResp->getSubStatus());
-//    }
+    public function testSetOrderStatus()
+    {
+        $json = file_get_contents(__DIR__ . '/' . $this->fixturesFolder . '/set-order-status-response.json');
+        $jsonObj = json_decode($json);
+        $orderId = $jsonObj->order->id;
+
+        $response = new Response(200, [], \GuzzleHttp\Psr7\stream_for($json));
+        $marketPartnerMock = $this->getMock('Yandex\Market\Partner\PartnerClient', ['sendRequest']);
+        $marketPartnerMock->expects($this->any())
+            ->method('sendRequest')
+            ->will($this->returnValue($response));
+
+        $orderStatusResp = $marketPartnerMock->setOrderStatus($orderId, 'CANCELLED', 'PROCESSING_EXPIRED');
+
+        $this->assertEquals('CANCELLED', $orderStatusResp->getStatus());
+        $this->assertEquals('PROCESSING_EXPIRED', $orderStatusResp->getSubStatus());
+    }
 
     public  function testSendRequest()
     {
@@ -271,5 +271,99 @@ class PartnerClientTest extends TestCase
 
         $response = $marketPartnerMock->getOrder($orderId);
         $this->assertEquals($orderId, $response->getId());
+    }
+
+    public function testSendRequestForbiddenException()
+    {
+        $json = file_get_contents(__DIR__ . '/' . $this->fixturesFolder . '/get-order-for-update-delivery.json');
+        $jsonObj = json_decode($json);
+        $orderId = $jsonObj->order->id;
+
+        $response             = new Response(403);
+        $request              = new Request('GET', '');
+        $exception            = new \GuzzleHttp\Exception\ClientException('error', $request, $response);
+        $guzzleHttpClientMock = $this->getMock('GuzzleHttp\Client', ['request']);
+        $guzzleHttpClientMock->expects($this->any())
+            ->method('request')
+            ->will($this->throwException($exception));
+
+        $marketPartnerMock = $this->getMock('Yandex\Market\Partner\PartnerClient', ['getClient']);
+        $marketPartnerMock->expects($this->any())
+            ->method('getClient')
+            ->will($this->returnValue($guzzleHttpClientMock));
+        $this->setExpectedException('Yandex\Common\Exception\ForbiddenException');
+
+        $marketPartnerMock->getOrder($orderId);
+    }
+
+    function testSendRequestUnauthorizedException()
+    {
+        $json = file_get_contents(__DIR__ . '/' . $this->fixturesFolder . '/get-order-for-update-delivery.json');
+        $jsonObj = json_decode($json);
+        $orderId = $jsonObj->order->id;
+
+        $response             = new Response(401);
+        $request              = new Request('GET', '');
+        $exception            = new \GuzzleHttp\Exception\ClientException('error', $request, $response);
+        $guzzleHttpClientMock = $this->getMock('GuzzleHttp\Client', ['request']);
+        $guzzleHttpClientMock->expects($this->any())
+            ->method('request')
+            ->will($this->throwException($exception));
+
+        $marketPartnerMock = $this->getMock('Yandex\Market\Partner\PartnerClient', ['getClient']);
+        $marketPartnerMock->expects($this->any())
+            ->method('getClient')
+            ->will($this->returnValue($guzzleHttpClientMock));
+        $this->setExpectedException('Yandex\Common\Exception\UnauthorizedException');
+
+        $marketPartnerMock->getOrder($orderId);
+    }
+
+    public function testSendRequestPartnerRequestException()
+    {
+        $json = file_get_contents(__DIR__ . '/' . $this->fixturesFolder . '/get-order-for-update-delivery.json');
+        $jsonObj = json_decode($json);
+        $orderId = $jsonObj->order->id;
+
+        $response             = new Response(402);
+        $request              = new Request('GET', '');
+        $exception            = new \GuzzleHttp\Exception\ClientException('error', $request, $response);
+        $guzzleHttpClientMock = $this->getMock('GuzzleHttp\Client', ['request']);
+        $guzzleHttpClientMock->expects($this->any())
+            ->method('request')
+            ->will($this->throwException($exception));
+
+        $marketPartnerMock = $this->getMock('Yandex\Market\Partner\PartnerClient', ['getClient']);
+        $marketPartnerMock->expects($this->any())
+            ->method('getClient')
+            ->will($this->returnValue($guzzleHttpClientMock));
+        $this->setExpectedException('Yandex\Market\Partner\Exception\PartnerRequestException');
+
+        $marketPartnerMock->getOrder($orderId);
+    }
+
+    public function testSendRequestUnauthorizedExceptionWithTestMessage()
+    {
+        $json = file_get_contents(__DIR__ . '/' . $this->fixturesFolder . '/get-order-for-update-delivery.json');
+        $jsonObj = json_decode($json);
+        $orderId = $jsonObj->order->id;
+
+        $jsonStr = '{"error": {"message": "testUnauthorizedExceptionMessage"}}';
+
+        $request              = new Request('GET', '');
+        $response             = new Response(401, [], $jsonStr);
+        $clientException      = new \GuzzleHttp\Exception\ClientException('', $request, $response);
+        $guzzleHttpClientMock = $this->getMock('GuzzleHttp\Client', ['request']);
+        $guzzleHttpClientMock->expects($this->any())
+            ->method('request')
+            ->will($this->throwException($clientException));
+
+        $marketPartnerMock = $this->getMock('Yandex\Market\Partner\PartnerClient', ['getClient']);
+        $marketPartnerMock->expects($this->any())
+            ->method('getClient')
+            ->will($this->returnValue($guzzleHttpClientMock));
+        $this->setExpectedException('Yandex\Common\Exception\UnauthorizedException', 'testUnauthorizedExceptionMessage');
+
+        $marketPartnerMock->getOrder($orderId);
     }
 }
