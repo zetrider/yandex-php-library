@@ -1,7 +1,7 @@
 Yandex PHP Library
 ==================
 
-Documentation for the  [Yandex PHP Library](https://github.com/NIXSolutionsLtd/yandex-php-library).
+Documentation for the  [Yandex PHP Library](https://github.com/nixsolutions/yandex-php-library).
 
 Building the documentation
 --------------------------
