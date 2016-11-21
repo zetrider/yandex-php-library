@@ -404,7 +404,9 @@ class PartnerClient extends AbstractServiceClient
             'PUT',
             $this->getServiceUrl($resource),
             [
-                'json' => $delivery->toArray()
+                'json' => [
+                    'delivery' => $delivery->toArray()
+                ]
 
             ]
         );
