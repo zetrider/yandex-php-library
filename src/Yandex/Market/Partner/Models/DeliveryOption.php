@@ -21,6 +21,8 @@ class DeliveryOption extends Model
 
     protected $outlets = null;
 
+    protected $paymentMethods = null;
+
     protected $mappingClasses = [
         'dates' => 'Yandex\Market\Partner\Models\DatesRange',
         'outlets' => 'Yandex\Market\Partner\Models\Outlets'
@@ -157,6 +159,28 @@ class DeliveryOption extends Model
     public function setOutlets($outlets)
     {
         $this->outlets = $outlets;
+        return $this;
+    }
+    
+    /**
+     * Retrieve the paymentMethods property
+     *
+     * @return array|null
+     */
+    public function getPaymentMethods()
+    {
+        return $this->paymentMethods;
+    }
+
+    /**
+     * Set the paymentMethods property
+     *
+     * @param array $paymentMethods
+     * @return $this
+     */
+    public function setPaymentMethods($paymentMethods)
+    {
+        $this->paymentMethods = $paymentMethods;
         return $this;
     }
 }
