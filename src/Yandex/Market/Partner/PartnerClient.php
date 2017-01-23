@@ -407,7 +407,6 @@ class PartnerClient extends AbstractServiceClient
                 'json' => [
                     'delivery' => $delivery->toArray()
                 ]
-
             ]
         );
 
