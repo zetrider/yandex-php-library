@@ -16,7 +16,7 @@ class TestListener implements \PHPUnit_Framework_TestListener
      * @var integer
      */
     protected $timeTest = 0;
-    
+
     /**
      * time of suite
      *
@@ -36,7 +36,7 @@ class TestListener implements \PHPUnit_Framework_TestListener
         echo $this->colorize("warning", "blue");
         echo "]-";
     }
-    
+
     /**
      * @param \PHPUnit_Framework_Test $test
      * @param \Exception $e
@@ -127,7 +127,7 @@ class TestListener implements \PHPUnit_Framework_TestListener
     public function endTest(\PHPUnit_Framework_Test $test, $time)
     {
         $time = sprintf('%0.3f sec', microtime(1) - $this->timeTest);
-        
+
         echo "\t\t" . $test->getCount() . '(Assertions)';
         echo $this->colorize("\t" . $time, 'green');
     }
