@@ -98,7 +98,7 @@ class PartnerClient extends AbstractServiceClient
     //почта
     const DELIVERY_TYPE_POST = 'POST';
 
-    const ORDER_DECLINE_REASON_OUT_OF_DATE= 'OUT_OF_DATE';
+    const ORDER_DECLINE_REASON_OUT_OF_DATE = 'OUT_OF_DATE';
 
     /**
      * Requested version of API
@@ -206,9 +206,9 @@ class PartnerClient extends AbstractServiceClient
     /**
      * Sends a request
      *
-     * @param string              $method  HTTP method
-     * @param string|UriInterface $uri     URI object or string.
-     * @param array               $options Request options to apply.
+     * @param string $method HTTP method
+     * @param string|UriInterface $uri URI object or string.
+     * @param array $options Request options to apply.
      *
      * @return Response
      *
@@ -277,6 +277,25 @@ class PartnerClient extends AbstractServiceClient
     public function getCampaigns()
     {
         $resource = 'campaigns.json';
+
+        $response = $this->sendRequest('GET', $this->getServiceUrl($resource));
+
+        $decodedResponseBody = $this->getDecodedBody($response->getBody());
+
+        $getCampaignsResponse = new Models\GetCampaignsResponse($decodedResponseBody);
+        return $getCampaignsResponse->getCampaigns();
+    }
+
+    /**
+     * Get User Campaigns by Login
+     *
+     * @link https://tech.yandex.ru/market/partner/doc/dg/reference/get-campaigns-by-login-docpage/
+     *
+     * @return Models\Campaigns
+     */
+    public function getCampaignsByLogin($login)
+    {
+        $resource = 'campaigns/by_login/' . $login . '.json';
 
         $response = $this->sendRequest('GET', $this->getServiceUrl($resource));
 
