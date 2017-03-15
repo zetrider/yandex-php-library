@@ -6,7 +6,6 @@
  * @created  07.02.14 14:00
  */
 ini_set('memory_limit', '256M');
-$settings = require_once '../settings.php';
 
 use Yandex\SafeBrowsing\SafeBrowsingClient;
 use Yandex\SafeBrowsing\SafeBrowsingException;
@@ -43,7 +42,7 @@ use Yandex\Common\Exception\YandexException;
         $key = $settings["safebrowsing"]["key"];
 
         $safeBrowsing = new SafeBrowsingClient($key);
-        $localDbFile = 'hosts_prefixes.json';
+        $localDbFile = 'hosts_prefixes_all.json';
 
         if (!is_file($localDbFile)) {
             exit('File "' . $localDbFile . '" not found');
@@ -147,7 +146,7 @@ use Yandex\Common\Exception\YandexException;
             <div class="alert alert-info">Кусков, в которых содержаться более не опасные
                 сайты: <?= $removedChunks ?></div>
             <?php
-            file_put_contents('hosts_prefixes.json', json_encode($localHashPrefixes));
+            file_put_contents('hosts_prefixes_all.json', json_encode($localHashPrefixes));
             ?>
             <div class="alert alert-success">Локальная БД обновлена успешно.</div>
             <div>
