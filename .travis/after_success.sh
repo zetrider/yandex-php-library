@@ -14,7 +14,7 @@ if [ "$TRAVIS_PHP_VERSION" != "7.0" ] && [ "$TRAVIS_PHP_VERSION" != "hhvm" ]; th
 
 fi
 
-if [ "$TRAVIS_REPO_SLUG" == "nixsolutions/yandex-php-library" ] && [ "$TRAVIS_PULL_REQUEST" == "false" ] && [ "$TRAVIS_PHP_VERSION" == "5.5" ]; then
+if [ "$TRAVIS_REPO_SLUG" == "nixsolutions/yandex-php-library" ] && [ "$TRAVIS_PULL_REQUEST" == "false" ] && [ "$TRAVIS_PHP_VERSION" == "5.6" ]; then
 
   composer update --no-dev
   php phar.php
