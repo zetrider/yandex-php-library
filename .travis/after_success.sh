@@ -16,7 +16,8 @@ fi
 
 if [ "$TRAVIS_REPO_SLUG" == "nixsolutions/yandex-php-library" ] && [ "$TRAVIS_PULL_REQUEST" == "false" ] && [ "$TRAVIS_PHP_VERSION" == "5.6" ]; then
 
-  composer update --no-dev
+  composer update --no-dev --no-autoloader
+  composer dump-autoload --no-dev
   php phar.php
 
 fi
