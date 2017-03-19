@@ -32,18 +32,6 @@ class Region extends Model
     }
 
     /**
-     * Set the id property
-     *
-     * @param int $id
-     * @return $this
-     */
-    public function setId($id)
-    {
-        $this->id = $id;
-        return $this;
-    }
-
-    /**
      * Retrieve the name property
      *
      * @return string|null
@@ -51,18 +39,6 @@ class Region extends Model
     public function getName()
     {
         return $this->name;
-    }
-
-    /**
-     * Set the name property
-     *
-     * @param string $name
-     * @return $this
-     */
-    public function setName($name)
-    {
-        $this->name = $name;
-        return $this;
     }
 
     /**
@@ -76,18 +52,6 @@ class Region extends Model
     }
 
     /**
-     * Set the type property
-     *
-     * @param string $type
-     * @return $this
-     */
-    public function setType($type)
-    {
-        $this->type = $type;
-        return $this;
-    }
-
-    /**
      * Retrieve the parent property
      *
      * @return Region|null
@@ -95,17 +59,5 @@ class Region extends Model
     public function getParent()
     {
         return $this->parent;
-    }
-
-    /**
-     * Set the parent property
-     *
-     * @param Region $parent
-     * @return $this
-     */
-    public function setParent($parent)
-    {
-        $this->parent = $parent;
-        return $this;
     }
 }

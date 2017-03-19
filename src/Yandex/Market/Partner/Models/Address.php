@@ -48,18 +48,6 @@ class Address extends Model
     }
 
     /**
-     * Set the country property
-     *
-     * @param string $country
-     * @return $this
-     */
-    public function setCountry($country)
-    {
-        $this->country = $country;
-        return $this;
-    }
-
-    /**
      * Retrieve the postcode property
      *
      * @return string|null
@@ -67,18 +55,6 @@ class Address extends Model
     public function getPostcode()
     {
         return $this->postcode;
-    }
-
-    /**
-     * Set the postcode property
-     *
-     * @param string $postcode
-     * @return $this
-     */
-    public function setPostcode($postcode)
-    {
-        $this->postcode = $postcode;
-        return $this;
     }
 
     /**
@@ -92,18 +68,6 @@ class Address extends Model
     }
 
     /**
-     * Set the city property
-     *
-     * @param string $city
-     * @return $this
-     */
-    public function setCity($city)
-    {
-        $this->city = $city;
-        return $this;
-    }
-
-    /**
      * Retrieve the subway property
      *
      * @return string|null
@@ -111,18 +75,6 @@ class Address extends Model
     public function getSubway()
     {
         return $this->subway;
-    }
-
-    /**
-     * Set the subway property
-     *
-     * @param string $subway
-     * @return $this
-     */
-    public function setSubway($subway)
-    {
-        $this->subway = $subway;
-        return $this;
     }
 
     /**
@@ -136,18 +88,6 @@ class Address extends Model
     }
 
     /**
-     * Set the street property
-     *
-     * @param string $street
-     * @return $this
-     */
-    public function setStreet($street)
-    {
-        $this->street = $street;
-        return $this;
-    }
-
-    /**
      * Retrieve the house property
      *
      * @return string|null
@@ -155,40 +95,6 @@ class Address extends Model
     public function getHouse()
     {
         return $this->house;
-    }
-
-    /**
-     * Set the house property
-     *
-     * @param string $house
-     * @return $this
-     */
-    public function setHouse($house)
-    {
-        $this->house = $house;
-        return $this;
-    }
-
-    /**
-     * Retrieve the block property
-     *
-     * @return string|null
-     */
-    public function getBlock()
-    {
-        return $this->block;
-    }
-
-    /**
-     * Set the block property
-     *
-     * @param string $block
-     * @return $this
-     */
-    public function setBlock($block)
-    {
-        $this->block = $block;
-        return $this;
     }
 
     /**
@@ -202,18 +108,6 @@ class Address extends Model
     }
 
     /**
-     * Set the entrance property
-     *
-     * @param string $entrance
-     * @return $this
-     */
-    public function setEntrance($entrance)
-    {
-        $this->entrance = $entrance;
-        return $this;
-    }
-
-    /**
      * Retrieve the entryphone property
      *
      * @return string|null
@@ -221,18 +115,6 @@ class Address extends Model
     public function getEntryphone()
     {
         return $this->entryphone;
-    }
-
-    /**
-     * Set the entryphone property
-     *
-     * @param string $entryphone
-     * @return $this
-     */
-    public function setEntryphone($entryphone)
-    {
-        $this->entryphone = $entryphone;
-        return $this;
     }
 
     /**
@@ -246,18 +128,6 @@ class Address extends Model
     }
 
     /**
-     * Set the floor property
-     *
-     * @param string $floor
-     * @return $this
-     */
-    public function setFloor($floor)
-    {
-        $this->floor = $floor;
-        return $this;
-    }
-
-    /**
      * Retrieve the apartment property
      *
      * @return string|null
@@ -265,18 +135,6 @@ class Address extends Model
     public function getApartment()
     {
         return $this->apartment;
-    }
-
-    /**
-     * Set the apartment property
-     *
-     * @param string $apartment
-     * @return $this
-     */
-    public function setApartment($apartment)
-    {
-        $this->apartment = $apartment;
-        return $this;
     }
 
     /**
@@ -290,18 +148,6 @@ class Address extends Model
     }
 
     /**
-     * Set the recipient property
-     *
-     * @param string $recipient
-     * @return $this
-     */
-    public function setRecipient($recipient)
-    {
-        $this->recipient = $recipient;
-        return $this;
-    }
-
-    /**
      * Retrieve the phone property
      *
      * @return string|null
@@ -309,17 +155,5 @@ class Address extends Model
     public function getPhone()
     {
         return $this->phone;
-    }
-
-    /**
-     * Set the phone property
-     *
-     * @param string $phone
-     * @return $this
-     */
-    public function setPhone($phone)
-    {
-        $this->phone = $phone;
-        return $this;
     }
 }

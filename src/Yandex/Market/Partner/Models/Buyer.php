@@ -34,18 +34,6 @@ class Buyer extends Model
     }
 
     /**
-     * Set the id property
-     *
-     * @param string $id
-     * @return $this
-     */
-    public function setId($id)
-    {
-        $this->id = $id;
-        return $this;
-    }
-
-    /**
      * Retrieve the lastName property
      *
      * @return string|null
@@ -53,18 +41,6 @@ class Buyer extends Model
     public function getLastName()
     {
         return $this->lastName;
-    }
-
-    /**
-     * Set the lastName property
-     *
-     * @param string $lastName
-     * @return $this
-     */
-    public function setLastName($lastName)
-    {
-        $this->lastName = $lastName;
-        return $this;
     }
 
     /**
@@ -78,18 +54,6 @@ class Buyer extends Model
     }
 
     /**
-     * Set the firstName property
-     *
-     * @param string $firstName
-     * @return $this
-     */
-    public function setFirstName($firstName)
-    {
-        $this->firstName = $firstName;
-        return $this;
-    }
-
-    /**
      * Retrieve the middleName property
      *
      * @return string|null
@@ -97,18 +61,6 @@ class Buyer extends Model
     public function getMiddleName()
     {
         return $this->middleName;
-    }
-
-    /**
-     * Set the middleName property
-     *
-     * @param string $middleName
-     * @return $this
-     */
-    public function setMiddleName($middleName)
-    {
-        $this->middleName = $middleName;
-        return $this;
     }
 
     /**
@@ -122,18 +74,6 @@ class Buyer extends Model
     }
 
     /**
-     * Set the phone property
-     *
-     * @param string $phone
-     * @return $this
-     */
-    public function setPhone($phone)
-    {
-        $this->phone = $phone;
-        return $this;
-    }
-
-    /**
      * Retrieve the email property
      *
      * @return string|null
@@ -141,17 +81,5 @@ class Buyer extends Model
     public function getEmail()
     {
         return $this->email;
-    }
-
-    /**
-     * Set the email property
-     *
-     * @param string $email
-     * @return $this
-     */
-    public function setEmail($email)
-    {
-        $this->email = $email;
-        return $this;
     }
 }

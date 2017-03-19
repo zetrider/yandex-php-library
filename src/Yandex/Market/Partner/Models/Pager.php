@@ -34,18 +34,6 @@ class Pager extends Model
     }
 
     /**
-     * Set the total property
-     *
-     * @param int $total
-     * @return $this
-     */
-    public function setTotal($total)
-    {
-        $this->total = $total;
-        return $this;
-    }
-
-    /**
      * Retrieve the from property
      *
      * @return int|null
@@ -53,18 +41,6 @@ class Pager extends Model
     public function getFrom()
     {
         return $this->from;
-    }
-
-    /**
-     * Set the from property
-     *
-     * @param int $from
-     * @return $this
-     */
-    public function setFrom($from)
-    {
-        $this->from = $from;
-        return $this;
     }
 
     /**
@@ -78,18 +54,6 @@ class Pager extends Model
     }
 
     /**
-     * Set the to property
-     *
-     * @param int $to
-     * @return $this
-     */
-    public function setTo($to)
-    {
-        $this->to = $to;
-        return $this;
-    }
-
-    /**
      * Retrieve the pageSize property
      *
      * @return int|null
@@ -97,18 +61,6 @@ class Pager extends Model
     public function getPageSize()
     {
         return $this->pageSize;
-    }
-
-    /**
-     * Set the pageSize property
-     *
-     * @param int $pageSize
-     * @return $this
-     */
-    public function setPageSize($pageSize)
-    {
-        $this->pageSize = $pageSize;
-        return $this;
     }
 
     /**
@@ -122,18 +74,6 @@ class Pager extends Model
     }
 
     /**
-     * Set the pagesCount property
-     *
-     * @param int $pagesCount
-     * @return $this
-     */
-    public function setPagesCount($pagesCount)
-    {
-        $this->pagesCount = $pagesCount;
-        return $this;
-    }
-
-    /**
      * Retrieve the currentPage property
      *
      * @return int|null
@@ -141,17 +81,5 @@ class Pager extends Model
     public function getCurrentPage()
     {
         return $this->currentPage;
-    }
-
-    /**
-     * Set the currentPage property
-     *
-     * @param int $currentPage
-     * @return $this
-     */
-    public function setCurrentPage($currentPage)
-    {
-        $this->currentPage = $currentPage;
-        return $this;
     }
 }

@@ -25,16 +25,4 @@ class GetCampaignsResponse extends Model
     {
         return $this->campaigns;
     }
-
-    /**
-     * Set the campaigns property
-     *
-     * @param Campaigns $campaigns
-     * @return $this
-     */
-    public function setCampaigns($campaigns)
-    {
-        $this->campaigns = $campaigns;
-        return $this;
-    }
 }

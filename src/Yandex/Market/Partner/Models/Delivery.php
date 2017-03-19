@@ -45,18 +45,6 @@ class Delivery extends Model
     }
 
     /**
-     * Set the id property
-     *
-     * @param string $id
-     * @return $this
-     */
-    public function setId($id)
-    {
-        $this->id = $id;
-        return $this;
-    }
-
-    /**
      * Retrieve the type property
      *
      * @return string|null
@@ -64,18 +52,6 @@ class Delivery extends Model
     public function getType()
     {
         return $this->type;
-    }
-
-    /**
-     * Set the type property
-     *
-     * @param string $type
-     * @return $this
-     */
-    public function setType($type)
-    {
-        $this->type = $type;
-        return $this;
     }
 
     /**
@@ -87,19 +63,6 @@ class Delivery extends Model
     {
         return $this->serviceName;
     }
-
-    /**
-     * Set the serviceName property
-     *
-     * @param string $serviceName
-     * @return $this
-     */
-    public function setServiceName($serviceName)
-    {
-        $this->serviceName = $serviceName;
-        return $this;
-    }
-
     /**
      * Retrieve the price property
      *
@@ -108,18 +71,6 @@ class Delivery extends Model
     public function getPrice()
     {
         return $this->price;
-    }
-
-    /**
-     * Set the price property
-     *
-     * @param int $price
-     * @return $this
-     */
-    public function setPrice($price)
-    {
-        $this->price = $price;
-        return $this;
     }
 
     /**
@@ -133,18 +84,6 @@ class Delivery extends Model
     }
 
     /**
-     * Set the outletId property
-     *
-     * @param int $outletId
-     * @return $this
-     */
-    public function setOutletId($outletId)
-    {
-        $this->outletId = $outletId;
-        return $this;
-    }
-
-    /**
      * Retrieve the region property
      *
      * @return Region|null
@@ -152,18 +91,6 @@ class Delivery extends Model
     public function getRegion()
     {
         return $this->region;
-    }
-
-    /**
-     * Set the region property
-     *
-     * @param Region $region
-     * @return $this
-     */
-    public function setRegion($region)
-    {
-        $this->region = $region;
-        return $this;
     }
 
     /**
@@ -177,18 +104,6 @@ class Delivery extends Model
     }
 
     /**
-     * Set the address property
-     *
-     * @param Address $address
-     * @return $this
-     */
-    public function setAddress($address)
-    {
-        $this->address = $address;
-        return $this;
-    }
-
-    /**
      * Retrieve the dates property
      *
      * @return DatesRange|null
@@ -196,17 +111,5 @@ class Delivery extends Model
     public function getDates()
     {
         return $this->dates;
-    }
-
-    /**
-     * Set the dates property
-     *
-     * @param DatesRange $dates
-     * @return $this
-     */
-    public function setDates($dates)
-    {
-        $this->dates = $dates;
-        return $this;
     }
 }

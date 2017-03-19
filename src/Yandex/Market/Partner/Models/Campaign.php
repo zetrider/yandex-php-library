@@ -30,18 +30,6 @@ class Campaign extends Model
     }
 
     /**
-     * Set the id property
-     *
-     * @param int $id
-     * @return $this
-     */
-    public function setId($id)
-    {
-        $this->id = $id;
-        return $this;
-    }
-
-    /**
      * Retrieve the domain property
      *
      * @return string|null
@@ -49,18 +37,6 @@ class Campaign extends Model
     public function getDomain()
     {
         return $this->domain;
-    }
-
-    /**
-     * Set the domain property
-     *
-     * @param string $domain
-     * @return $this
-     */
-    public function setDomain($domain)
-    {
-        $this->domain = $domain;
-        return $this;
     }
 
     /**
@@ -74,18 +50,6 @@ class Campaign extends Model
     }
 
     /**
-     * Set the state property
-     *
-     * @param int $state
-     * @return $this
-     */
-    public function setState($state)
-    {
-        $this->state = $state;
-        return $this;
-    }
-
-    /**
      * Retrieve the stateReasons property
      *
      * @return array|null
@@ -93,17 +57,5 @@ class Campaign extends Model
     public function getStateReasons()
     {
         return $this->stateReasons;
-    }
-
-    /**
-     * Set the stateReasons property
-     *
-     * @param array $stateReasons
-     * @return $this
-     */
-    public function setStateReasons($stateReasons)
-    {
-        $this->stateReasons = $stateReasons;
-        return $this;
     }
 }
