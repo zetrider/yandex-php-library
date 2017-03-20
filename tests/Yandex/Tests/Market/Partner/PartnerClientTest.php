@@ -245,6 +245,33 @@ class PartnerClientTest extends TestCase
         $this->assertEquals($address->phone, $updateDeliveryResp->getDelivery()->getAddress()->getPhone());
     }
 
+    public function testGetRegion()
+    {
+        $json = file_get_contents(__DIR__ . '/' . $this->fixturesFolder . '/get-region.json');
+        $jsonObj = json_decode($json);
+        $region = $jsonObj->region;
+
+        $response = new Response(200, [], \GuzzleHttp\Psr7\stream_for($json));
+        $marketPartnerMock = $this->getMockBuilder(PartnerClient::class)
+            ->setMethods(['sendRequest'])
+            ->getMock();
+        $marketPartnerMock->expects($this->any())
+            ->method('sendRequest')
+            ->will($this->returnValue($response));
+
+        /** @var \Yandex\Market\Partner\Models\Region */
+        $regionResp = $marketPartnerMock->getRegion();
+
+        $this->assertEquals($region->id, $regionResp->getId());
+        $this->assertEquals($region->name, $regionResp->getName());
+        $this->assertEquals($region->type, $regionResp->getType());
+
+        // parent
+        $this->assertEquals($region->parent->id, $regionResp->getParent()->getId());
+        $this->assertEquals($region->parent->name, $regionResp->getParent()->getName());
+        $this->assertEquals($region->parent->type, $regionResp->getParent()->getType());
+    }
+
     public function testSetOrderStatus()
     {
         $json = file_get_contents(__DIR__ . '/' . $this->fixturesFolder . '/set-order-status-response.json');

@@ -364,6 +364,25 @@ class PartnerClient extends AbstractServiceClient
         return $getOrderResponse->getOrder();
     }
 
+    /**
+     * Get Region
+     *
+     * @return Models\Region
+     *
+     * @link https://tech.yandex.ru/market/partner/doc/dg/reference/get-campaigns-id-region-docpage/
+     */
+    public function getRegion()
+    {
+        $resource = 'campaigns/' . $this->campaignId . '/region.json';
+
+        $response = $this->sendRequest('GET', $this->getServiceUrl($resource));
+
+        $decodedResponseBody = $this->getDecodedBody($response->getBody());
+
+        $getRegionResponse = new Models\GetRegionResponse($decodedResponseBody);
+        return $getRegionResponse->getRegion();
+    }
+
 
     /**
      * Send changed status to Yandex.Market
