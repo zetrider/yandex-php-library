@@ -176,6 +176,36 @@ class PartnerClientTest extends TestCase
         $this->assertEquals($ordersJson->orders[0]->items[1]->count, $item1->getCount());
     }
 
+    public function testGetStats()
+    {
+        $json = file_get_contents(__DIR__ . '/' . $this->fixturesFolder . '/get-stats.json');
+        $statsJson = json_decode($json);
+
+        $response = new Response(200, [], \GuzzleHttp\Psr7\stream_for($json));
+        $marketPartnerMock = $this->getMockBuilder(PartnerClient::class)
+            ->setMethods(['sendRequest'])
+            ->getMock();
+        $marketPartnerMock->expects($this->any())
+            ->method('sendRequest')
+            ->will($this->returnValue($response));
+
+        /** @var \Yandex\Market\Partner\Models\Stats $statsResp */
+        $statsResp = $marketPartnerMock->getStats('main', ['fromDate' => '06-02-2017', 'fields' => 'mobile,shows', 'toDate' => '08-02-2017'])->getAll();
+
+        $stat0 = $statsJson->mainStats[0];
+        $this->assertEquals($stat0->clicks, $statsResp[0]->getClicks());
+        $this->assertEquals($stat0->date, $statsResp[0]->getDate());
+        $this->assertEquals($stat0->placeGroup, $statsResp[0]->getPlaceGroup());
+        $this->assertEquals($stat0->shows, $statsResp[0]->getShows());
+        $this->assertEquals($stat0->spending, $statsResp[0]->getSpending());
+
+        $detailedStatsStatsResp0 = $statsResp[0]->getDetailedStats();
+        $this->assertEquals($stat0->detailedStats[0]->clicks, $detailedStatsStatsResp0[0]['clicks']);
+        $this->assertEquals($stat0->detailedStats[0]->shows, $detailedStatsStatsResp0[0]['shows']);
+        $this->assertEquals($stat0->detailedStats[0]->spending, $detailedStatsStatsResp0[0]['spending']);
+        $this->assertEquals($stat0->detailedStats[0]->type, $detailedStatsStatsResp0[0]['type']);
+    }
+
     public function testGetAccessToken()
     {
         $marketPartnerMock = $this->getMockBuilder(PartnerClient::class)

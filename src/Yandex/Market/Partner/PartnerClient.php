@@ -401,6 +401,25 @@ class PartnerClient extends AbstractServiceClient
         return $getRegionResponse->getRegion();
     }
 
+    /**
+     * @param $method [main | main-daily | main-weekly | main-monthly]
+     * @param array $params
+     * @return Models\Stats
+     *
+     * @link https://tech.yandex.ru/market/partner/doc/dg/reference/get-campaigns-id-stats-main-docpage/
+     */
+    public function getStats($method, $params = [])
+    {
+        $resource = 'campaigns/' . $this->campaignId . '/stats/' . $method . '.json';
+        $resource .= '?' . http_build_query($params);
+
+        $response = $this->sendRequest('GET', $this->getServiceUrl($resource));
+
+        $decodedResponseBody = $this->getDecodedBody($response->getBody());
+
+        $getStatsResponse = new Models\GetStatsResponse($decodedResponseBody);
+        return $getStatsResponse->getMainStats();
+    }
 
     /**
      * Send changed status to Yandex.Market
