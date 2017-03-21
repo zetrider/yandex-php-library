@@ -446,11 +446,29 @@ class PartnerClient extends AbstractServiceClient
         $response = $this->sendRequest('GET', $this->getServiceUrl($resource));
 
         $decodedResponseBody = $this->getDecodedBody($response->getBody());
-
         $getRegionResponse = new Models\GetRegionResponse($decodedResponseBody);
         return $getRegionResponse->getRegion();
     }
 
+    /**
+     * Get Campaign settings
+     *
+     * @retun Models\Settings
+     *
+     * @link https://tech.yandex.ru/market/partner/doc/dg/reference/get-campaigns-id-settings-docpage/
+     */
+    public function getSettings()
+    {
+        $resource = 'campaigns/' . $this->campaignId . '/settings.json';
+       
+        $response = $this->sendRequest('GET', $this->getServiceUrl($resource));
+
+        $decodedResponseBody = $this->getDecodedBody($response->getBody());
+       
+        $getSettingsResponse = new Models\GetSettingsResponse($decodedResponseBody);
+        return $getSettingsResponse->getSettings();
+    }
+  
     /**
      * @param $method [main | main-daily | main-weekly | main-monthly]
      * @param array $params

@@ -265,6 +265,32 @@ class PartnerClientTest extends TestCase
         $this->assertEquals(111, $marketPartnerMock->getCampaignId());
     }
 
+    public function testGetSettings()
+    {
+        $json = file_get_contents(__DIR__ . '/' . $this->fixturesFolder . '/get-settings.json');
+        $settingsJson = json_decode($json);
+        $settingsObj = $settingsJson->settings;
+  
+        $response = new Response(200, [], \GuzzleHttp\Psr7\stream_for($json));
+        $marketPartnerMock = $this->getMockBuilder(PartnerClient::class)
+            ->setMethods(['sendRequest'])
+            ->getMock();
+        $marketPartnerMock->expects($this->any())
+            ->method('sendRequest')
+            ->will($this->returnValue($response));
+
+        /** @var $settings \Yandex\Market\Partner\Models\Settings  */
+        $settings = $marketPartnerMock->getSettings();
+
+        $this->assertEquals($settingsObj->shopName, $settings->getShopName());
+        $this->assertEquals($settingsObj->countryRegion, $settings->getCountryRegion());
+        $this->assertEquals($settingsObj->isOnline, $settings->getIsOnline());
+        $this->assertEquals($settingsObj->showInContext, $settings->getShowInContext());
+        $this->assertEquals($settingsObj->showInSnippets, $settings->getShowInSnippets());
+        $this->assertEquals($settingsObj->showInPremium, $settings->getShowInPremium());
+        $this->assertEquals($settingsObj->useOpenStat, $settings->getUseOpenStat());
+    }
+  
     public function testGetOutlets()
     {
         $json = file_get_contents(__DIR__ . '/' . $this->fixturesFolder . '/get-outlets.json');
@@ -341,7 +367,6 @@ class PartnerClientTest extends TestCase
         $this->assertEquals($pagerObj->from, $pager->getFrom());
         $this->assertEquals($pagerObj->pageSize, $pager->getPageSize());
         $this->assertEquals($pagerObj->to, $pager->getTo());
-
     }
 
     public function testGetOutlet()
