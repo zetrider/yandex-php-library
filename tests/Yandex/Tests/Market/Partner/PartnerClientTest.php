@@ -11,6 +11,7 @@ use Yandex\Common\Exception\ForbiddenException;
 use Yandex\Common\Exception\UnauthorizedException;
 use Yandex\Market\Partner\Exception\PartnerRequestException;
 use Yandex\Market\Partner\Models\Delivery;
+use Yandex\Market\Partner\Models\DeliveryRule;
 use Yandex\Market\Partner\Models\Item;
 use Yandex\Market\Partner\PartnerClient;
 use Yandex\Tests\TestCase;
@@ -262,6 +263,117 @@ class PartnerClientTest extends TestCase
         $this->assertEquals(222, $marketPartnerMock->getClientId());
         $this->assertEquals('testLogin2', $marketPartnerMock->getLogin());
         $this->assertEquals(111, $marketPartnerMock->getCampaignId());
+    }
+
+    public function testGetOutlets()
+    {
+        $json = file_get_contents(__DIR__ . '/' . $this->fixturesFolder . '/get-outlets.json');
+        $outletsJson = json_decode($json);
+        $outletsObj = $outletsJson->outlets;
+
+        $response = new Response(200, [], \GuzzleHttp\Psr7\stream_for($json));
+        $marketPartnerMock = $this->getMockBuilder(PartnerClient::class)
+            ->setMethods(['sendRequest'])
+            ->getMock();
+        $marketPartnerMock->expects($this->any())
+            ->method('sendRequest')
+            ->will($this->returnValue($response));
+
+        /**
+         * @var $marketPartnerMock \Yandex\Market\Partner\PartnerClient
+         * @var $response \Yandex\Market\Partner\Models\GetOutletsResponse
+         * @var $outlets \Yandex\Market\Partner\Models\Outlets
+         * @var $firstOutlet \Yandex\Market\Partner\Models\Outlet
+         * @var $pager \Yandex\Market\Partner\Models\Pager
+         */
+        $response = $marketPartnerMock->getOutletsResponse();
+        $outlets = $response->getOutlets();
+        $pager = $response->getPager();
+        $allOutlets = $outlets->getAll();
+        $firstOutlet = array_shift($allOutlets);
+
+        $this->assertEquals(count($outletsObj), $outlets->count());
+
+        $this->assertEquals($outletsObj[0]->id, $firstOutlet->getId());
+        $this->assertEquals($outletsObj[0]->name, $firstOutlet->getName());
+        $this->assertEquals($outletsObj[0]->isBookNow, $firstOutlet->getIsBookNow());
+        $this->assertEquals($outletsObj[0]->isMain, $firstOutlet->getIsMain());
+        $this->assertEquals($outletsObj[0]->shopOutletId, $firstOutlet->getShopOutletId());
+        $this->assertEquals($outletsObj[0]->status, $firstOutlet->getStatus());
+        $this->assertEquals($outletsObj[0]->type, $firstOutlet->getType());
+        $this->assertEquals($outletsObj[0]->visibility, $firstOutlet->getVisibility());
+        $this->assertEquals($outletsObj[0]->workingTime, $firstOutlet->getWorkingTime());
+        $this->assertEquals($outletsObj[0]->emails, $firstOutlet->getEmails()->asArray());
+        $this->assertEquals($outletsObj[0]->phones, $firstOutlet->getPhones()->asArray());
+
+        $outletAddress = $firstOutlet->getAddress();
+        $this->assertEquals($outletsObj[0]->address->city, $outletAddress->getCity());
+        $this->assertEquals($outletsObj[0]->address->street, $outletAddress->getStreet());
+        $this->assertEquals($outletsObj[0]->address->number, $outletAddress->getNumber());
+        $this->assertEquals($outletsObj[0]->address->building, $outletAddress->getBuilding());
+        $this->assertEquals($outletsObj[0]->address->estate, $outletAddress->getEstate());
+        $this->assertEquals($outletsObj[0]->address->block, $outletAddress->getBlock());
+        $this->assertEquals($outletsObj[0]->address->km, $outletAddress->getKm());
+        $this->assertEquals($outletsObj[0]->address->additional, $outletAddress->getAdditional());
+
+        if($outletsObj[0]->status == 'FAILED')
+            $this->assertEquals($outletsObj[0]->reason, $firstOutlet->getReason());
+
+        /**
+         * @var $outletFirstDeliveryRule DeliveryRule
+         */
+        $outletDeliveryRules = $firstOutlet->getDeliveryRules()->getAll();
+        $outletFirstDeliveryRule = array_shift($outletDeliveryRules);
+        $this->assertEquals($outletsObj[0]->deliveryRules[0]->cost, $outletFirstDeliveryRule->getCost());
+        $this->assertEquals($outletsObj[0]->deliveryRules[0]->dateSwitchHour, $outletFirstDeliveryRule->getDateSwitchHour());
+        $this->assertEquals($outletsObj[0]->deliveryRules[0]->minDeliveryDays, $outletFirstDeliveryRule->getMinDeliveryDays());
+        $this->assertEquals($outletsObj[0]->deliveryRules[0]->maxDeliveryDays, $outletFirstDeliveryRule->getMaxDeliveryDays());
+        $this->assertEquals($outletsObj[0]->deliveryRules[0]->priceFrom, $outletFirstDeliveryRule->getPriceFrom());
+        $this->assertEquals($outletsObj[0]->deliveryRules[0]->priceTo, $outletFirstDeliveryRule->getPriceTo());
+        $this->assertEquals($outletsObj[0]->deliveryRules[0]->shipperHumanReadableId, $outletFirstDeliveryRule->getShipperHumanReadableId());
+        $this->assertEquals($outletsObj[0]->deliveryRules[0]->shipperId, $outletFirstDeliveryRule->getShipperId());
+        $this->assertEquals($outletsObj[0]->deliveryRules[0]->shipperName, $outletFirstDeliveryRule->getShipperName());
+        $this->assertEquals($outletsObj[0]->deliveryRules[0]->unspecifiedDeliveryInterval, $outletFirstDeliveryRule->getUnspecifiedDeliveryInterval());
+        $this->assertEquals($outletsObj[0]->deliveryRules[0]->workInHoliday, $outletFirstDeliveryRule->getWorkInHoliday());
+
+        $pagerObj = $outletsJson->pager;
+        $this->assertEquals($pagerObj->currentPage, $pager->getCurrentPage());
+        $this->assertEquals($pagerObj->from, $pager->getFrom());
+        $this->assertEquals($pagerObj->pageSize, $pager->getPageSize());
+        $this->assertEquals($pagerObj->to, $pager->getTo());
+
+    }
+
+    public function testGetOutlet()
+    {
+        $json = file_get_contents(__DIR__ . '/' . $this->fixturesFolder . '/get-outlet.json');
+        $outletJson = json_decode($json);
+        $outletObj = $outletJson->outlet;
+
+        $response = new Response(200, [], \GuzzleHttp\Psr7\stream_for($json));
+        $marketPartnerMock = $this->getMockBuilder(PartnerClient::class)
+            ->setMethods(['sendRequest'])
+            ->getMock();
+        $marketPartnerMock->expects($this->any())
+            ->method('sendRequest')
+            ->will($this->returnValue($response));
+
+        /**
+         * @var $marketPartnerMock \Yandex\Market\Partner\PartnerClient
+         */
+        $outlet = $marketPartnerMock->getOutlet(215634);
+
+        $this->assertEquals($outletObj->id, $outlet->getId());
+        $this->assertEquals($outletObj->name, $outlet->getName());
+        $this->assertEquals($outletObj->isBookNow, $outlet->getIsBookNow());
+        $this->assertEquals($outletObj->isMain, $outlet->getIsMain());
+        $this->assertEquals($outletObj->shopOutletId, $outlet->getShopOutletId());
+        $this->assertEquals($outletObj->status, $outlet->getStatus());
+        $this->assertEquals($outletObj->type, $outlet->getType());
+        $this->assertEquals($outletObj->visibility, $outlet->getVisibility());
+        $this->assertEquals($outletObj->workingTime, $outlet->getWorkingTime());
+        $this->assertEquals($outletObj->emails, $outlet->getEmails()->asArray());
+        $this->assertEquals($outletObj->phones, $outlet->getPhones()->asArray());
     }
 
     public function testUpdateDelivery()

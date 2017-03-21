@@ -303,7 +303,7 @@ class PartnerClient extends AbstractServiceClient
         $getCampaignsResponse = new Models\GetCampaignsResponse($decodedResponseBody);
         return $getCampaignsResponse->getCampaigns();
     }
-
+    
     /**
      * Get User Campaigns by Login
      *
@@ -321,6 +321,58 @@ class PartnerClient extends AbstractServiceClient
 
         $getCampaignsResponse = new Models\GetCampaignsResponse($decodedResponseBody);
         return $getCampaignsResponse->getCampaigns();
+    }
+
+    /**
+     * Get outlets by campaign id
+     * @param array $params ['page' => (int) 0-100, 'pageSize' => (int) 50]
+     *
+     * @link https://tech.yandex.ru/market/partner/doc/dg/reference/get-campaigns-id-outlets-docpage/
+     *
+     * @return Models\GetOrdersResponse
+     */
+    public function getOutletsResponse($params = [])
+    {
+        $resource = 'campaigns/' . $this->campaignId . '/outlets.json';
+        $resource .= '?' . http_build_query($params);
+
+        $response = $this->sendRequest('GET', $this->getServiceUrl($resource));
+
+        $decodedResponseBody = $this->getDecodedBody($response->getBody());
+
+        return new Models\GetOutletsResponse($decodedResponseBody);
+    }
+
+    /**
+     * Get only outlets data without pagination
+     *
+     * @param array $params
+     * @return null|Models\Outlets
+     */
+    public function getOutlets($params = [])
+    {
+        return $this->getOutletsResponse($params)->getOutlets();
+    }
+
+    /**
+     * Get outlet info
+     *
+     * @param $outletId
+     *
+     * @link https://tech.yandex.ru/market/partner/doc/dg/reference/get-campaigns-id-outlets-id-docpage/
+     *
+     * @return null|Models\Outlet
+     */
+    public function getOutlet($outletId)
+    {
+        $resource = 'campaigns/' . $this->campaignId . '/outlets/' . $outletId . '.json';
+
+        $response = $this->sendRequest('GET', $this->getServiceUrl($resource));
+
+        $decodedResponseBody = $this->getDecodedBody($response->getBody());
+
+        $getOrderResponse = new Models\GetOutletResponse($decodedResponseBody);
+        return $getOrderResponse->getOutlet();
     }
 
 
@@ -349,7 +401,6 @@ class PartnerClient extends AbstractServiceClient
         return new Models\GetOrdersResponse($decodedResponseBody);
     }
 
-
     /**
      * Get only orders data without pagination
      *
@@ -360,7 +411,6 @@ class PartnerClient extends AbstractServiceClient
     {
         return $this->getOrdersResponse($params)->getOrders();
     }
-
 
     /**
      * Get order info
