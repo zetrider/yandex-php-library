@@ -53,6 +53,25 @@ class PartnerClientTest extends TestCase
         }
     }
 
+    function testGetLoginsByCampaign()
+    {
+        $json = file_get_contents(__DIR__ . '/' . $this->fixturesFolder . '/get-logins.json');
+        $loginsJson = json_decode($json, true);
+
+        $response = new Response(200, [], \GuzzleHttp\Psr7\stream_for($json));
+        $marketPartnerMock = $this->getMockBuilder(PartnerClient::class)
+            ->setMethods(['sendRequest'])
+            ->getMock();
+        $marketPartnerMock->expects($this->any())
+            ->method('sendRequest')
+            ->will($this->returnValue($response));
+
+        /** @var \Yandex\common\StringCollection $loginsResp */
+        $loginsResp = $marketPartnerMock->getLoginsByCampaign();
+
+        $this->assertEquals($loginsJson['logins'], $loginsResp->asArray());
+    }
+
     function testGetOrders()
     {
         $json = file_get_contents(__DIR__ . '/' . $this->fixturesFolder . '/get-orders.json');

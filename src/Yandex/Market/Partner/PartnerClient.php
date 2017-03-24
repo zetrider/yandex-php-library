@@ -17,6 +17,7 @@ use GuzzleHttp\Psr7\Response;
 use GuzzleHttp\Exception\ClientException;
 use Yandex\Common\Exception\ForbiddenException;
 use Yandex\Common\Exception\UnauthorizedException;
+use Yandex\Common\StringCollection;
 use Yandex\Market\Partner\Exception\PartnerRequestException;
 use Yandex\Market\Partner\Models;
 
@@ -321,6 +322,24 @@ class PartnerClient extends AbstractServiceClient
 
         $getCampaignsResponse = new Models\GetCampaignsResponse($decodedResponseBody);
         return $getCampaignsResponse->getCampaigns();
+    }
+
+    /**
+     * Get logins by campaign id
+     *
+     * @link https://tech.yandex.ru/market/partner/doc/dg/reference/get-campaigns-id-logins-docpage/
+     *
+     * @return StringCollection
+     */
+    public function getLoginsByCampaign()
+    {
+        $resource = 'campaigns/' . $this->campaignId . '/logins.json';
+
+        $response = $this->sendRequest('GET', $this->getServiceUrl($resource));
+
+        $decodedResponseBody = $this->getDecodedBody($response->getBody());
+
+        return StringCollection::init($decodedResponseBody['logins']);
     }
 
     /**
