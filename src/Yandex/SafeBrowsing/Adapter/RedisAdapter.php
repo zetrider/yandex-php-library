@@ -167,7 +167,6 @@ class RedisAdapter
 
         foreach ($hashes as $hash) {
             if (!empty($hash['prefix']) && $this->getHashPrefix($hash['prefix'])) {
-                var_dump($this->getHashPrefix($hash['prefix']));exit;
                 return true;
             }
         }
