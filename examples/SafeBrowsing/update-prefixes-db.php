@@ -6,10 +6,12 @@
  * @created  07.02.14 14:00
  */
 ini_set('memory_limit', '256M');
+set_time_limit(300);
 
 use Yandex\SafeBrowsing\SafeBrowsingClient;
 use Yandex\SafeBrowsing\SafeBrowsingException;
 use Yandex\Common\Exception\YandexException;
+use Yandex\SafeBrowsing\Adapter\RedisAdapter;
 
 ?>
 <!doctype html>
@@ -35,21 +37,34 @@ use Yandex\Common\Exception\YandexException;
 
         $settings = require_once '../settings.php';
 
-        if (!isset($settings["safebrowsing"]["key"]) || !$settings["safebrowsing"]["key"]) {
+        if (empty($settings["safebrowsing"]["key"])) {
             throw new SafeBrowsingException('Empty Safe Browsing key');
+        }
+        if (empty($settings['safebrowsing']['redis_dsn'])) {
+            throw new SafeBrowsingException('Empty Safe Browsing Redis DSN');
         }
 
         $key = $settings["safebrowsing"]["key"];
-
-        $safeBrowsing = new SafeBrowsingClient($key);
-        $localDbFile = 'hosts_prefixes_all.json';
-
-        if (!is_file($localDbFile)) {
-            exit('File "' . $localDbFile . '" not found');
+        $redisDsn = $settings['safebrowsing']['redis_dsn'];
+        $redisOptions = [];
+        if (isset($settings['safebrowsing']['redis_database'])) {
+            $redisOptions['parameters']['database'] = $settings['safebrowsing']['redis_database'];
+        }
+        if (isset($settings['safebrowsing']['redis_password'])) {
+            $redisOptions['parameters']['password'] = $settings['safebrowsing']['redis_password'];
         }
 
-        $data = file_get_contents($localDbFile);
-        $localHashPrefixes = json_decode($data, true);
+        $safeBrowsing = new SafeBrowsingClient($key);
+        $redisAdapter = new RedisAdapter($redisDsn, $redisOptions);
+
+        $localShaVars = $redisAdapter->getShaVars();
+        $localChunkNums = [];
+
+        foreach ($localShaVars as $shaVar) {
+            $localChunkNums[$shaVar] = $redisAdapter->getChunkNums($shaVar);
+        }
+
+
 
         /**
          * Example:
@@ -67,11 +82,11 @@ use Yandex\Common\Exception\YandexException;
         //];
         $savedChunks = [];
 
-        foreach ($localHashPrefixes as $shavar => $shavarData) {
-
+        foreach ($localChunkNums as $shaVar => $chunkNums) {
             $minChunkNum = false;
             $maxChunkNum = false;
-            foreach ($shavarData as $chunkNum => $chunk) {
+
+            foreach ($chunkNums as $chunkNum) {
                 if (!$maxChunkNum && !$minChunkNum) {
                     $minChunkNum = $chunkNum;
                     $maxChunkNum = $chunkNum;
@@ -83,16 +98,13 @@ use Yandex\Common\Exception\YandexException;
             }
 
             if ($minChunkNum && $maxChunkNum) {
-                $savedChunks[$shavar]['added'] = [
+                $savedChunks[$shaVar]['added'] = [
                     'min' => $minChunkNum,
                     'max' => $maxChunkNum
                 ];
             }
         }
 
-        /**
-         * Using "downloads" request
-         */
         $malwaresData = $safeBrowsing->getMalwaresData($savedChunks);
 
         if (is_string($malwaresData) && $malwaresData === 'pleasereset') {
@@ -105,49 +117,47 @@ use Yandex\Common\Exception\YandexException;
             $newChunks = 0;
             $removedChunks = 0;
             if (is_array($malwaresData)) {
-                foreach ($malwaresData as $shavarName => $types) {
+                foreach ($malwaresData as $shaVar => $chunks) {
 
                     //Need add new malwares hash prefixes
-                    if (isset($types['added'])) {
-                        foreach ($types['added'] as $chunkNum => $chunkData) {
-                            if (!isset($localHashPrefixes[$shavarName][$chunkNum])) {
-                                $localHashPrefixes[$shavarName][$chunkNum] = $chunkData;
-                                $newChunks++;
-                            }
-                        }
-                    }
-
-                    //Need remove chunks
-                    if (isset($types['removed'])) {
-                        foreach ($types['removed'] as $chunkNum => $chunkData) {
-                            if (isset($localHashPrefixes[$shavarName][$chunkNum])) {
-                                unset($localHashPrefixes[$shavarName][$chunkNum]);
-                                $removedChunks++;
-                            }
-                        }
-                    }
-
-                    //Need remove chunks range
-                    if (isset($types['delete_added_ranges'])) {
-                        foreach ($types['delete_added_ranges'] as $range) {
-                            for ($i = $range['min']; $i <= $range['max']; $i++) {
-                                if (isset($localHashPrefixes[$shavarName][$i])) {
-                                    //Remove chunk
-                                    unset($localHashPrefixes[$shavarName][$i]);
+                    if (isset($chunks['added'])) {
+                        foreach ($chunks['added'] as $chunkNum => $hashPrefixes) {
+                            foreach ($hashPrefixes as $hashPrefix) {
+                                if (!$redisAdapter->getHashPrefix($hashPrefix)) {
+                                    $redisAdapter->saveHashPrefix($shaVar, $chunkNum, $hashPrefix);
+                                    $newChunks++;
                                 }
                             }
                         }
                     }
 
+                    //Need remove chunks
+                    if (isset($chunks['removed'])) {
+                        foreach ($chunks['removed'] as $chunkNum => $hashPrefixes) {
+                            foreach ($hashPrefixes as $hashPrefix) {
+                                if ($redisAdapter->getHashPrefix($hashPrefix)) {
+                                    $redisAdapter->removeHashPrefix($shaVar, $chunkNum, $hashPrefix);
+                                    $removedChunks++;
+                                }
+                            }
+                        }
+                    }
+
+                    //Need remove chunks range
+                    if (isset($chunks['delete_added_ranges'])) {
+                        foreach ($chunks['delete_added_ranges'] as $range) {
+                            for ($i = $range['min']; $i <= $range['max']; $i++) {
+                                $redisAdapter->removeChunkNum($shaVar, $chunkNum);
+                                $removedChunks++;
+                            }
+                        }
+                    }
                 }
             }
             ?>
             <div class="alert alert-info">Новых кусков: <?= $newChunks ?></div>
             <div class="alert alert-info">Кусков, в которых содержаться более не опасные
                 сайты: <?= $removedChunks ?></div>
-            <?php
-            file_put_contents('hosts_prefixes_all.json', json_encode($localHashPrefixes));
-            ?>
             <div class="alert alert-success">Локальная БД обновлена успешно.</div>
             <div>
                 Также можно посмотреть примеры:
