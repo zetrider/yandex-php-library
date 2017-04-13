@@ -5,10 +5,13 @@
  * @author   Alexander Khaylo <naxel@land.ru>
  * @created  07.02.14 14:00
  */
+ini_set('memory_limit', '256M');
+set_time_limit(300);
 
+use Yandex\Common\Exception\YandexException;
+use Yandex\SafeBrowsing\Adapter\RedisAdapter;
 use Yandex\SafeBrowsing\SafeBrowsingClient;
 use Yandex\SafeBrowsing\SafeBrowsingException;
-use Yandex\Common\Exception\YandexException;
 
 ?>
 <!doctype html>
@@ -16,7 +19,6 @@ use Yandex\Common\Exception\YandexException;
 <head>
     <meta charset="UTF-8">
     <title>Yandex PHP Library: Safe Browsing Demo</title>
-
     <link rel="stylesheet" href="//yandex.st/bootstrap/3.0.0/css/bootstrap.min.css">
     <link href="//netdna.bootstrapcdn.com/font-awesome/3.2.1/css/font-awesome.css" rel="stylesheet">
     <link rel="stylesheet" href="/examples/Disk/css/style.css">
@@ -32,59 +34,56 @@ use Yandex\Common\Exception\YandexException;
     <h3>Сохранение базы префиксов хешей вредоносных сайтов</h3>
     <?php
     try {
-
         $settings = require_once '../settings.php';
 
-        if (!isset($settings["safebrowsing"]["key"]) || !$settings["safebrowsing"]["key"]) {
+        if (empty($settings['safebrowsing']['key'])) {
             throw new SafeBrowsingException('Empty Safe Browsing key');
         }
+        if (empty($settings['safebrowsing']['redis_dsn'])) {
+            throw new SafeBrowsingException('Empty Safe Browsing Redis DSN');
+        }
 
-        $key = $settings["safebrowsing"]["key"];
+        $key = $settings['safebrowsing']['key'];
+        $redisDsn = $settings['safebrowsing']['redis_dsn'];
+
+        $redisOptions = [];
+        if (isset($settings['safebrowsing']['redis_database'])) {
+            $redisOptions['parameters']['database'] = $settings['safebrowsing']['redis_database'];
+        }
+        if (isset($settings['safebrowsing']['redis_password'])) {
+            $redisOptions['parameters']['password'] = $settings['safebrowsing']['redis_password'];
+        }
 
         $safeBrowsing = new SafeBrowsingClient($key);
+        $redisAdapter = new RedisAdapter($redisDsn, $redisOptions);
 
-        //Get all shavars from Yandex Safe Browsing
-        /**
-         * Using "list" request
-         */
-        $shavarsList = $safeBrowsing->getShavarsList();?>
+        $shaVarsList = $safeBrowsing->getShavarsList();?>
 
         <p>Списки опасных сайтов:</p>
         <ul>
             <?php
-            foreach ($shavarsList as $shavar) {
+            foreach ($shaVarsList as $shaVar) {
                 ?>
-                <li><?= $shavar ?></li>
+                <li><?= $shaVar ?></li>
             <?php } ?>
         </ul>
         <?php
-        $safeBrowsing->setMalwareShavars($shavarsList);
-
-        /**
-         * Using "downloads" request
-         */
+        $safeBrowsing->setMalwareShavars($shaVarsList);
         $malwaresData = $safeBrowsing->getMalwaresData();
-        $newPrefixes = [];
-        $removedPrefixes = [];
 
         if (is_array($malwaresData)) {
-            foreach ($malwaresData as $shavarName => $types) {
-
-                if (isset($types['added'])) {
-                    $newPrefixes[$shavarName] = $types['added'];
-                    file_put_contents('hosts_prefixes_' . $shavarName . '.json', json_encode($newPrefixes[$shavarName]));
-                }
-                if (isset($types['removed'])) {
-                    $removedPrefixes[$shavarName] = $types['removed'];
+            foreach ($malwaresData as $shaVar => $chunks) {
+                if (isset($chunks['added'])) {
+                    foreach ($chunks['added'] as $chunkNum => $hashPrefixes) {
+                        foreach ($hashPrefixes as $hashPrefix) {
+                            $redisAdapter->saveHashPrefix($shaVar, $chunkNum, $hashPrefix);
+                        }
+                    }
                 }
             }
         }
-
-        $localDbFile = 'hosts_prefixes_all.json';
-        file_put_contents($localDbFile, json_encode($newPrefixes));
-
         ?>
-        <div class="alert alert-success">Сохранены префиксы хешей в "<?= $localDbFile ?>"</div>
+        <div class="alert alert-success">Сохранены префиксы хешей в Redis</div>
         <div>
             Также можно посмотреть примеры:
             <ul>

@@ -6,53 +6,12 @@
  * @created  07.02.14 13:57
  */
 
+use Yandex\Common\Exception\YandexException;
+use Yandex\SafeBrowsing\Adapter\RedisAdapter;
 use Yandex\SafeBrowsing\SafeBrowsingClient;
 use Yandex\SafeBrowsing\SafeBrowsingException;
-use Yandex\Common\Exception\YandexException;
 
 ini_set('memory_limit', '256M');
-
-/**
- * @param string $url
- * @param string $key
- * @return bool|null
- */
-function localSearchUrl($url, $key)
-{
-    $safeBrowsing = new SafeBrowsingClient($key);
-
-    //Creating hashes by url
-    $hashes = $safeBrowsing->getHashesByUrl($url);
-    $localDbFile = 'hosts_prefixes_all.json';
-
-    if (!is_file($localDbFile)) {
-        exit('File "' . $localDbFile . '" not found');
-    }
-
-    $data = file_get_contents($localDbFile);
-    $localHashPrefixes = json_decode($data, true);
-
-    foreach ($hashes as $hash) {
-        foreach ($localHashPrefixes as $shavar) {
-            foreach ($shavar as $chunkNum => $chunk) {
-                foreach ($chunk as $hashPrefix) {
-                    if ($hash['prefix'] === $hashPrefix) {
-                        //Found prefix in local DB
-                        echo '<div class="alert alert-info">
-                        Префикс хеша найден в локальной БД. Ищем в списке опасных сайтов...
-                        </div>';
-                        //Check full hash
-                        if ($safeBrowsing->searchUrl($url)) {
-                            return true;
-                        }
-                    }
-                }
-            }
-        }
-    }
-    return false;
-}
-
 ?>
 <!doctype html>
 <html lang="en-US">
@@ -82,22 +41,32 @@ function localSearchUrl($url, $key)
 
         $settings = require_once '../settings.php';
 
-        if (!isset($settings["safebrowsing"]["key"]) || !$settings["safebrowsing"]["key"]) {
+        if (empty($settings['safebrowsing']['key'])) {
             throw new SafeBrowsingException('Empty Safe Browsing key');
+        }
+        if (empty($settings['safebrowsing']['redis_dsn'])) {
+            throw new SafeBrowsingException('Empty Safe Browsing Redis DSN');
         }
 
         if (isset($_GET['url']) && $_GET['url']) {
             $url = $_GET['url'];
 
-            $key = $settings["safebrowsing"]["key"];
+            $key = $settings['safebrowsing']['key'];
+            $redisDsn = $settings['safebrowsing']['redis_dsn'];
+            $redisOptions = [];
+            if (isset($settings['safebrowsing']['redis_database'])) {
+                $redisOptions['parameters']['database'] = $settings['safebrowsing']['redis_database'];
+            }
+            if (isset($settings['safebrowsing']['redis_password'])) {
+                $redisOptions['parameters']['password'] = $settings['safebrowsing']['redis_password'];
+            }
 
             $safeBrowsing = new SafeBrowsingClient($key);
+            $redisAdapter = new RedisAdapter($redisDsn, $redisOptions);
 
-            /**
-             * Using "gethash" request
-             */
-            //If exist local DB of prefixes
-            if (localSearchUrl($url, $key)) {
+            $hashes = $safeBrowsing->getHashesByUrl($url);
+
+            if ($redisAdapter->hasHashes($hashes)) {
                 ?>
                 <div class="alert alert-danger">Найден полный хеш для "<?= htmlentities($url) ?>" в списке опасных сайтов</div>
             <?php
