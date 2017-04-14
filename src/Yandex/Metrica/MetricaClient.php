@@ -13,7 +13,6 @@ namespace Yandex\Metrica;
 
 use GuzzleHttp\ClientInterface;
 use Yandex\Common\AbstractServiceClient;
-use Psr\Http\Message\UriInterface;
 use GuzzleHttp\Psr7\Response;
 use GuzzleHttp\Exception\ClientException;
 use Yandex\Common\Exception\ForbiddenException;
