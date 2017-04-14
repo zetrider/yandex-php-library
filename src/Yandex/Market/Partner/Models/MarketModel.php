@@ -81,7 +81,7 @@ abstract class MarketModel
     /**
      * Get array from object
      *
-     * @param array|object $data
+     * @param MarketModel $data
      * @return array
      */
     protected function toArrayRecursive($data)

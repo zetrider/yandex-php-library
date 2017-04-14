@@ -129,7 +129,7 @@ abstract class AbstractServiceClient extends AbstractPackage
     }
 
     /**
-     * @return mixed
+     * @return \DateTime
      */
     public function getExpiresIn()
     {
@@ -295,7 +295,7 @@ abstract class AbstractServiceClient extends AbstractPackage
      * Sends a request
      *
      * @param string              $method  HTTP method
-     * @param string|UriInterface $uri     URI object or string.
+     * @param string $uri     URI object or string.
      * @param array               $options Request options to apply.
      *
      * @throws Exception\MissedArgumentException

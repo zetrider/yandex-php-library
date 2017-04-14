@@ -207,7 +207,7 @@ class PartnerClient extends AbstractServiceClient
      * Sends a request
      *
      * @param string $method HTTP method
-     * @param string|UriInterface $uri URI object or string.
+     * @param string $uri URI object or string.
      * @param array $options Request options to apply.
      *
      * @return Response
@@ -329,7 +329,7 @@ class PartnerClient extends AbstractServiceClient
      *
      * @link https://tech.yandex.ru/market/partner/doc/dg/reference/get-campaigns-id-outlets-docpage/
      *
-     * @return Models\GetOrdersResponse
+     * @return Models\GetOutletsResponse
      */
     public function getOutletsResponse($params = [])
     {
