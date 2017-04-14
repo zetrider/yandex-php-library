@@ -13,7 +13,6 @@ namespace Yandex\Market\Content;
 
 use GuzzleHttp\Client;
 use GuzzleHttp\ClientInterface;
-use Psr\Http\Message\UriInterface;
 use Yandex\Common\AbstractServiceClient;
 use GuzzleHttp\Psr7\Response;
 use GuzzleHttp\Exception\ClientException;

@@ -13,7 +13,6 @@ namespace Yandex\Common;
 
 use GuzzleHttp\Client;
 use GuzzleHttp\ClientInterface;
-use Psr\Http\Message\UriInterface;
 use GuzzleHttp\Exception\ClientException;
 use GuzzleHttp\Psr7\Response;
 use Yandex\Common\Exception\MissedArgumentException;
