@@ -270,7 +270,7 @@ class DataSyncClient extends AbstractServiceClient
      * Sends a request
      *
      * @param string              $method  HTTP method
-     * @param UriInterface|string $uri     URI object or string.
+     * @param string $uri     URI object or string.
      * @param array               $options Request options to apply.
      *
      * @return Response|\Psr\Http\Message\ResponseInterface

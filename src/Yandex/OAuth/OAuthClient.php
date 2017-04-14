@@ -11,7 +11,6 @@
  */
 namespace Yandex\OAuth;
 
-use GuzzleHttp\Client;
 use GuzzleHttp\Exception\ClientException;
 use GuzzleHttp\Exception\RequestException;
 use Yandex\Common\AbstractServiceClient;
