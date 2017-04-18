@@ -25,16 +25,4 @@ class GetOrderResponse extends Model
     {
         return $this->order;
     }
-
-    /**
-     * Set the order property
-     *
-     * @param Order $order
-     * @return $this
-     */
-    public function setOrder($order)
-    {
-        $this->order = $order;
-        return $this;
-    }
 }

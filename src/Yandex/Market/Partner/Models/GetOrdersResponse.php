@@ -51,16 +51,4 @@ class GetOrdersResponse extends Model
     {
         return $this->orders;
     }
-
-    /**
-     * Set the orders property
-     *
-     * @param Orders $orders
-     * @return $this
-     */
-    public function setOrders($orders)
-    {
-        $this->orders = $orders;
-        return $this;
-    }
 }
