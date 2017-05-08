@@ -70,7 +70,8 @@ class RedisAdapter
      */
     public function addChunkNum($shaVar, $chunkNum)
     {
-        $this->client->sadd(sprintf('%s:%s:%s', self::KEY_SHA_VAR, $shaVar, self::KEY_CHUNK_NUMS), [$chunkNum]);
+        $key = $this->getChunkNumsKey($shaVar);
+        $this->client->sadd($key, [$chunkNum]);
     }
 
     /**
@@ -80,11 +81,11 @@ class RedisAdapter
      */
     public function addHashPrefix($shaVar, $chunkNum, $hashPrefix)
     {
-        $this->client->sadd(sprintf('%s:%s:%s', self::KEY_SHA_VAR, $shaVar, $chunkNum), [$hashPrefix]);
-        $this->client->set(sprintf('%s:%s', self::KEY_HASH_PREFIX, $hashPrefix), json_encode([
-            'sha_var' => $shaVar,
-            'chunk_num' => $chunkNum,
-        ]));
+        $chunkNumKey = $this->getChunkNumKey($shaVar, $chunkNum);
+        $hashPrefixKey = $this->getHashPrefixKey($hashPrefix);
+
+        $this->client->sadd($chunkNumKey, [$hashPrefix]);
+        $this->client->sadd($hashPrefixKey, [$chunkNumKey]);
     }
 
     /**
@@ -110,7 +111,9 @@ class RedisAdapter
      */
     public function getChunkNums($shaVar)
     {
-        return $this->client->smembers(sprintf('%s:%s:%s', self::KEY_SHA_VAR, $shaVar, self::KEY_CHUNK_NUMS));
+        $key = $key = $this->getChunkNumsKey($shaVar);
+
+        return $this->client->smembers($key);
     }
 
     /**
@@ -120,16 +123,20 @@ class RedisAdapter
      */
     public function getHashPrefixes($shaVar, $chunkNum)
     {
-        return $this->client->smembers(sprintf('%s:%s:%s', self::KEY_SHA_VAR, $shaVar, $chunkNum));
+        $key = $this->getChunkNumKey($shaVar, $chunkNum);
+
+        return $this->client->smembers($key);
     }
 
     /**
      * @param string $hashPrefix
-     * @return string|null
+     * @return array
      */
     public function getHashPrefix($hashPrefix)
     {
-        return $this->client->get(sprintf('%s:%s', self::KEY_HASH_PREFIX, $hashPrefix));
+        $key = $this->getHashPrefixKey($hashPrefix);
+
+        return $this->client->smembers($key);
     }
 
     /**
@@ -138,9 +145,21 @@ class RedisAdapter
      */
     public function removeChunkNum($shaVar, $chunkNum)
     {
-        $this->client->srem(sprintf('%s:%s:%s', self::KEY_SHA_VAR, $shaVar, self::KEY_CHUNK_NUMS), $chunkNum);
-        $this->client->del(sprintf('%s:%s:%s', self::KEY_SHA_VAR, $shaVar, $chunkNum));
-        //todo: Remove sha_var if its last chunk_num removed
+        $chunkNumsKey = $this->getChunkNumsKey($shaVar);
+        $chunkNumKey = $this->getChunkNumKey($shaVar, $chunkNum);
+
+        $hashPrefixes = $this->client->smembers($chunkNumKey);
+
+        foreach ($hashPrefixes as $hashPrefix) {
+            $this->removeHashPrefix($shaVar, $chunkNum, $hashPrefix);
+        }
+
+        $this->client->srem($chunkNumsKey, $chunkNum);
+        $this->client->del([$chunkNumKey]);
+
+        if (0 === $this->client->scard($chunkNumsKey)) {
+            $this->client->srem(self::KEY_SHA_VARS, $shaVar);
+        }
     }
 
     /**
@@ -150,9 +169,15 @@ class RedisAdapter
      */
     public function removeHashPrefix($shaVar, $chunkNum, $hashPrefix)
     {
-        $this->client->srem(sprintf('%s:%s:%s', self::KEY_SHA_VAR, $shaVar, $chunkNum), $hashPrefix);
-        $this->client->del(sprintf('%s:%s', self::KEY_HASH_PREFIX, $hashPrefix));
-        //todo: Remove chunk_num if its last hashPrefix removed
+        $chunkNumKey = $this->getChunkNumKey($shaVar, $chunkNum);
+        $hashPrefixKey = $this->getHashPrefixKey($hashPrefix);
+
+        $this->client->srem($chunkNumKey, $hashPrefix);
+        $this->client->srem($hashPrefixKey, $chunkNumKey);
+
+        if (0 === $this->client->scard($chunkNumKey)) {
+            $this->removeChunkNum($shaVar, $chunkNum);
+        }
     }
 
     /**
@@ -166,11 +191,64 @@ class RedisAdapter
         }
 
         foreach ($hashes as $hash) {
-            if (!empty($hash['prefix']) && $this->getHashPrefix($hash['prefix'])) {
+            $key = $this->getHashPrefixKey($hash['prefix']);
+
+            if (!empty($hash['prefix']) && $this->client->exists($key)) {
                 return true;
             }
         }
 
         return false;
+    }
+
+    /**
+     * @param array $hashes
+     * @return array
+     */
+    public function getShaVarsByHashes($hashes)
+    {
+        if (!is_array($hashes)) {
+            return [];
+        }
+
+        $shaVars = [];
+
+        foreach ($hashes as $hash) {
+            if (!empty($hash['prefix']) && $hashPrefixShaVars = $this->getHashPrefix($hash['prefix'])) {
+                foreach ($hashPrefixShaVars as $hashPrefixShaVar) {
+                    $shaVars[] = explode(':', $hashPrefixShaVar)[1];
+                }
+            }
+        }
+
+        return array_unique($shaVars);
+    }
+
+    /**
+     * @param string $shaVar
+     * @return string
+     */
+    private function getChunkNumsKey($shaVar)
+    {
+        return sprintf('%s:%s:%s', self::KEY_SHA_VAR, $shaVar, self::KEY_CHUNK_NUMS);
+    }
+
+    /**
+     * @param string $shaVar
+     * @param string $chunkNum
+     * @return string
+     */
+    private function getChunkNumKey($shaVar, $chunkNum)
+    {
+        return sprintf('%s:%s:%s', self::KEY_SHA_VAR, $shaVar, $chunkNum);
+    }
+
+    /**
+     * @param string $hashPrefix
+     * @return string
+     */
+    private function getHashPrefixKey($hashPrefix)
+    {
+        return sprintf('%s:%s', self::KEY_HASH_PREFIX, $hashPrefix);
     }
 }

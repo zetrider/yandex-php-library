@@ -66,9 +66,16 @@ ini_set('memory_limit', '256M');
 
             $hashes = $safeBrowsing->getHashesByUrl($url);
 
-            if ($redisAdapter->hasHashes($hashes)) {
+            if ($shaVars = $redisAdapter->getShaVarsByHashes($hashes)) {
                 ?>
-                <div class="alert alert-danger">Найден полный хеш для "<?= htmlentities($url) ?>" в списке опасных сайтов</div>
+                <div class="alert alert-danger">
+                    <p>Хеш для "<?= htmlentities($url) ?>" найден в списках:</p>
+                    <ul>
+                        <?php foreach ($shaVars as $shaVar) { ?>
+                            <li><?= $shaVar ?></li>
+                        <?php } ?>
+                    </ul>
+                </div>
             <?php
             } else {
                 ?>
