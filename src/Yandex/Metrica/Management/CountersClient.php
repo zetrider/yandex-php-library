@@ -20,7 +20,7 @@ class CountersClient extends ManagementClient
      * @see http://api.yandex.ru/metrika/doc/beta/management/counters/counters.xml
      *
      * @param Models\CountersParams $params
-     * @return array
+     * @return Models\GetCountersResponse
      */
     public function getCounters(Models\CountersParams $params)
     {
