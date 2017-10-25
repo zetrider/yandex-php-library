@@ -1,0 +1,9 @@
+{
+  "name": "Official PHP SDK for Yandex APIs",
+  "repository": "https://github.com/nixsolutions/yandex-php-library",
+  "demo": "",
+  "logo_background": "bg5",
+  "description": "Official Yandex PHP SDK that allows developers to integrate Yandex services like Yandex Disk, Yandex Market for Partner, Yandex Market Content, Yandex OAuth, Yandex Site Search Pinger, Yandex Safe Browsing, Yandex Metrica, Yandex Dictionary, Yandex Speller, Yandex DataSync",
+  "language": "php",
+  "technology": ["yandex", "php", "rest"]
+}
