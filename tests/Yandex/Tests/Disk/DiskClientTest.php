@@ -361,12 +361,20 @@ class DiskClientTest extends TestCase
             'path' => $sourcePath,
             'name' => ''
         ];
+        $headers              = [
+            'Yandex-Cloud-Request-ID'   => 'dav-bJ2C_4H2_B68-1-webdav5g',
+            'Server'                    => 'MochiWeb/1.0',
+            'Keep-Alive'                => '300',
+            'Date'                      => 'Wed, 01 Nov 2017 15:42:25 GMT',
+            'Content-Length'            => '11',
+        ];
+        $response = new Response(201, $headers, null, 1.1, 'Created');
         $guzzleHttpClientMock = $this->getMockBuilder(GuzzleHttpClient::class)
             ->setMethods(['request'])
             ->getMock();
         $guzzleHttpClientMock->expects($this->any())
             ->method('request')
-            ->will($this->returnValue(true));
+            ->will($this->returnValue($response));
         $diskClientMock = $this->getMockBuilder(DiskClient::class)
             ->setMethods(['getClient'])
             ->getMock();
@@ -374,7 +382,7 @@ class DiskClientTest extends TestCase
             ->method('getClient')
             ->will($this->returnValue($guzzleHttpClientMock));
 
-        $this->assertNull($diskClientMock->uploadFile($destinationPath, $fixtureFileData));
+        $this->assertEquals(201, $diskClientMock->uploadFile($destinationPath, $fixtureFileData)->getStatusCode());
     }
 
     public function testGetImagePreview()
