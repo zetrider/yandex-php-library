@@ -134,7 +134,7 @@ class DiskClient extends AbstractServiceClient
      *
      * @see https://tech.yandex.com/disk/doc/dg/reference/propfind_contains-request-docpage/
      */
-    public function directoryContents($path = '', $offset = null, $amount = null)
+    public function directoryContents($path = '/', $offset = null, $amount = null)
     {
         $response = $this->sendRequest(
             'PROPFIND',
@@ -345,7 +345,7 @@ class DiskClient extends AbstractServiceClient
      * @param string $path
      * @param array $file
      * @param array $extraHeaders
-     * @return void
+     * @return Response
      *
      * @see https://tech.yandex.com/disk/doc/dg/reference/put-docpage/
      */
@@ -363,7 +363,7 @@ class DiskClient extends AbstractServiceClient
             $headers['Sha256'] = hash_file('sha256', $file['path']);
             $headers = isset($extraHeaders) ? array_merge($headers, $extraHeaders) : $headers;
 
-            $this->sendRequest(
+            return $this->sendRequest(
                 'PUT',
                 $path . $file['name'],
                 [
