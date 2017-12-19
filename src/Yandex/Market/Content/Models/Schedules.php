@@ -13,12 +13,12 @@ class Schedules extends ObjectModel
      *
      * @return Schedules
      */
-    public function add($sсhedule)
+    public function add($schedule)
     {
-        if (is_array($sсhedule)) {
-            $this->collection[] = new Schedule($sсhedule);
-        } elseif (is_object($sсhedule) && $sсhedule instanceof Schedule) {
-            $this->collection[] = $sсhedule;
+        if (is_array($schedule)) {
+            $this->collection[] = new Schedule($schedule);
+        } elseif (is_object($schedule) && $schedule instanceof Schedule) {
+            $this->collection[] = $schedule;
         }
 
         return $this;
