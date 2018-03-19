@@ -164,7 +164,7 @@ class SafeBrowsingClientTest extends TestCase
 
         $safeBrowsingMock->setMalwareShavars(['ydx-no-shavar']);
         $result = $safeBrowsingMock->searchUrl($url);
-        $this->assertFalse($result)
+        $this->assertFalse($result);
     }
 
     public function testGetHashesByUrlIp()
