@@ -136,6 +136,14 @@ class SafeBrowsingClientTest extends TestCase
             ->method('getClient')
             ->will($this->returnValue($guzzleHttpClientMock));
 
+        $safeBrowsingMock->setMalwareShavars([
+            'ydx-malware-shavar',
+            'ydx-phish-shavar',
+            'goog-malware-shavar',
+            'goog-phish-shavar'
+            ]
+        );
+
         $result = $safeBrowsingMock->searchUrl($url);
         $this->assertArrayHasKey('host', $result);
         $this->assertArrayHasKey('prefix', $result);
