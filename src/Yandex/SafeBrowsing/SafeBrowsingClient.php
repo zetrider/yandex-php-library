@@ -297,7 +297,7 @@ class SafeBrowsingClient extends AbstractServiceClient
     {
         $hashes = $this->getHashesByUrl($url);
 
-        $currentMalwareShavars = $this->getMalwareShavars();
+        $clientMalwareShavars = $this->getMalwareShavars();
 
         foreach ($hashes as $hash) {
             $prefixPack = pack("H*", $hash['prefix']);
@@ -308,8 +308,8 @@ class SafeBrowsingClient extends AbstractServiceClient
 
             if ($result['code'] == 200 && !empty($result['data'])) {
                 $responseMalwareShavars = $this->getFullHashes($result['data']);
-                foreach ($malwareShavars as $shavarName => $fullHashes) {
-                    if (array_key_exists($shavarName, $currentMalwareShavars)) {
+                foreach ($responseMalwareShavars as $shavarName => $fullHashes) {
+                    if (array_key_exists($shavarName, $clientMalwareShavars)) {
                         foreach ($fullHashes as $fullHash) {
                             if ($fullHash === $hash['full']) {
                                 return $hash;
