@@ -309,7 +309,7 @@ class SafeBrowsingClient extends AbstractServiceClient
             if ($result['code'] == 200 && !empty($result['data'])) {
                 $responseMalwareShavars = $this->getFullHashes($result['data']);
                 foreach ($responseMalwareShavars as $shavarName => $fullHashes) {
-                    if (array_key_exists($shavarName, $clientMalwareShavars)) {
+                    if (in_array($shavarName, $clientMalwareShavars)) {
                         foreach ($fullHashes as $fullHash) {
                             if ($fullHash === $hash['full']) {
                                 return $hash;
