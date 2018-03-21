@@ -116,7 +116,7 @@ class SafeBrowsingClientTest extends TestCase
         $safeBrowsingMock->searchUrl($url);
     }
 
-    public function testSearchUrlFoundAndNotMatched()
+    public function testSearchUrlFoundAndMatched()
     {
         $content              = file_get_contents(
             __DIR__ . '/' . $this->fixturesFolder . '/search-url-found-response.txt'
@@ -140,6 +140,31 @@ class SafeBrowsingClientTest extends TestCase
         $this->assertArrayHasKey('host', $result);
         $this->assertArrayHasKey('prefix', $result);
         $this->assertArrayHasKey('full', $result);
+    }
+
+    public function testSearchUrlFoundAndNotMatched()
+    {
+        $content              = file_get_contents(
+            __DIR__ . '/' . $this->fixturesFolder . '/search-url-found-response.txt'
+        );
+        $url                  = 'www.wmconvirus.narod.ru';
+        $response             = new Response(200, [], \GuzzleHttp\Psr7\stream_for($content));
+        $guzzleHttpClientMock = $this->getMockBuilder(GuzzleHttpClient::class)
+            ->setMethods(['request'])
+            ->getMock();
+        $guzzleHttpClientMock->expects($this->any())
+            ->method('request')
+            ->will($this->returnValue($response));
+        $safeBrowsingMock = $this->getMockBuilder(SafeBrowsingClient::class)
+            ->setMethods(['getClient'])
+            ->getMock();
+        $safeBrowsingMock->expects($this->any())
+            ->method('getClient')
+            ->will($this->returnValue($guzzleHttpClientMock));
+
+        $safeBrowsingMock->setMalwareShavars(['ydx-no-shavar']);
+        $result = $safeBrowsingMock->searchUrl($url);
+        $this->assertFalse($result);
     }
 
     public function testGetHashesByUrlIp()
