@@ -302,7 +302,7 @@ class SafeBrowsingClient extends AbstractServiceClient
         foreach ($hashes as $hash) {
             $prefixPack = pack("H*", $hash['prefix']);
             $prefixSize = strlen($hash['prefix']) / 2;
-            $length = count($prefixPack) * $prefixSize;
+            $length = strlen($prefixPack) * $prefixSize;
             $bodyString = "$prefixSize:$length\n" . $prefixPack;
             $result = $this->checkHash($bodyString);
 
