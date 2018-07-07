@@ -269,7 +269,7 @@ class PartnerClientTest extends TestCase
         $this->assertEquals($balance->daysLeft, $balanceResp->getDaysLeft());
         $this->assertEquals($balance->recommendedPayment, $balanceResp->getRecommendedPayment());
     }
-    
+
     public function testGetPropertiesPartnerClient()
     {
         $marketPartnerMock = $this->getMockBuilder(PartnerClient::class)
@@ -292,7 +292,7 @@ class PartnerClientTest extends TestCase
         $json = file_get_contents(__DIR__ . '/' . $this->fixturesFolder . '/get-settings.json');
         $settingsJson = json_decode($json);
         $settingsObj = $settingsJson->settings;
-  
+
         $response = new Response(200, [], \GuzzleHttp\Psr7\stream_for($json));
         $marketPartnerMock = $this->getMockBuilder(PartnerClient::class)
             ->setMethods(['sendRequest'])
@@ -312,7 +312,7 @@ class PartnerClientTest extends TestCase
         $this->assertEquals($settingsObj->showInPremium, $settings->getShowInPremium());
         $this->assertEquals($settingsObj->useOpenStat, $settings->getUseOpenStat());
     }
-  
+
     public function testGetOutlets()
     {
         $json = file_get_contents(__DIR__ . '/' . $this->fixturesFolder . '/get-outlets.json');
@@ -643,8 +643,10 @@ class PartnerClientTest extends TestCase
         $fixture = file_get_contents(__DIR__ . '/' . $this->fixturesFolder . '/get-model.json');
         $fixtureJson = json_decode($fixture);
 
-        $response = new Response(200, [], \GuzzleHttp\Psr7\stream_for($fixture));
-        $marketPartnerMock = $this->getMock(PartnerClient::class, ['sendRequest']);
+        $response          = new Response(200, [], \GuzzleHttp\Psr7\stream_for($fixture));
+        $marketPartnerMock = $this->getMockBuilder(PartnerClient::class)
+                                  ->setMethods(['sendRequest'])
+                                  ->getMock();
         $marketPartnerMock->expects($this->any())
             ->method('sendRequest')
             ->will($this->returnValue($response));
@@ -665,8 +667,10 @@ class PartnerClientTest extends TestCase
         $fixture = file_get_contents(__DIR__ . '/' . $this->fixturesFolder . '/find-models.json');
         $fixtureJson = json_decode($fixture);
 
-        $response = new Response(200, [], \GuzzleHttp\Psr7\stream_for($fixture));
-        $marketPartnerMock = $this->getMock(PartnerClient::class, ['sendRequest']);
+        $response          = new Response(200, [], \GuzzleHttp\Psr7\stream_for($fixture));
+        $marketPartnerMock = $this->getMockBuilder(PartnerClient::class)
+                                  ->setMethods(['sendRequest'])
+                                  ->getMock();
         $marketPartnerMock->expects($this->any())
             ->method('sendRequest')
             ->will($this->returnValue($response));
@@ -690,8 +694,10 @@ class PartnerClientTest extends TestCase
         $fixture = file_get_contents(__DIR__ . '/' . $this->fixturesFolder . '/get-models.json');
         $fixtureJson = json_decode($fixture);
 
-        $response = new Response(200, [], \GuzzleHttp\Psr7\stream_for($fixture));
-        $marketPartnerMock = $this->getMock(PartnerClient::class, ['sendRequest']);
+        $response          = new Response(200, [], \GuzzleHttp\Psr7\stream_for($fixture));
+        $marketPartnerMock = $this->getMockBuilder(PartnerClient::class)
+                                  ->setMethods(['sendRequest'])
+                                  ->getMock();
         $marketPartnerMock->expects($this->any())
             ->method('sendRequest')
             ->will($this->returnValue($response));
@@ -714,8 +720,10 @@ class PartnerClientTest extends TestCase
         $fixture = file_get_contents(__DIR__ . '/' . $this->fixturesFolder . '/get-model-offers.json');
         $fixtureJson = json_decode($fixture);
 
-        $response = new Response(200, [], \GuzzleHttp\Psr7\stream_for($fixture));
-        $marketPartnerMock = $this->getMock(PartnerClient::class, ['sendRequest']);
+        $response          = new Response(200, [], \GuzzleHttp\Psr7\stream_for($fixture));
+        $marketPartnerMock = $this->getMockBuilder(PartnerClient::class)
+                                  ->setMethods(['sendRequest'])
+                                  ->getMock();
         $marketPartnerMock->expects($this->any())
             ->method('sendRequest')
             ->will($this->returnValue($response));
@@ -745,8 +753,10 @@ class PartnerClientTest extends TestCase
         $fixture = file_get_contents(__DIR__ . '/' . $this->fixturesFolder . '/get-model-offers.json');
         $fixtureJson = json_decode($fixture);
 
-        $response = new Response(200, [], \GuzzleHttp\Psr7\stream_for($fixture));
-        $marketPartnerMock = $this->getMock(PartnerClient::class, ['sendRequest']);
+        $response          = new Response(200, [], \GuzzleHttp\Psr7\stream_for($fixture));
+        $marketPartnerMock = $this->getMockBuilder(PartnerClient::class)
+                                  ->setMethods(['sendRequest'])
+                                  ->getMock();
         $marketPartnerMock->expects($this->any())
             ->method('sendRequest')
             ->will($this->returnValue($response));
