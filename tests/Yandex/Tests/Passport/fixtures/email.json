@@ -1,0 +1,14 @@
+{
+  "login": "vasya",
+  "old_social_login": "uid-mmzxrnry",
+  "default_email": "test@yandex.ru",
+  "id": "1000034426",
+  "emails": [
+    "test@yandex.ru",
+    "other-test@yandex.ru"
+  ],
+  "openid_identities": [
+    "http://openid.yandex.ru/vasya/",
+    "http://vasya.ya.ru/"
+  ]
+}

@@ -1,0 +1,11 @@
+{
+  "login": "vasya",
+  "old_social_login": "uid-mmzxrnry",
+  "id": "1000034426",
+  "is_avatar_empty": false,
+  "default_avatar_id": "131652443",
+  "openid_identities": [
+    "http://openid.yandex.ru/vasya/",
+    "http://vasya.ya.ru/"
+  ]
+}

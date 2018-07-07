@@ -1,0 +1,8 @@
+{
+  "login": "vasya",
+  "id": "1000034426",
+  "openid_identities": [
+    "http://openid.yandex.ru/vasya/",
+    "http://vasya.ya.ru/"
+  ]
+}
