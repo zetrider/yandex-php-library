@@ -2,7 +2,6 @@
 
 namespace Yandex\Passport;
 
-
 use Yandex\Common\Model;
 
 /**
@@ -190,6 +189,4 @@ class PassportModel extends Model
     {
         return $this->openid_identities;
     }
-
-
 }

@@ -73,7 +73,6 @@ class PassportClient extends AbstractServiceClient
             if ($code === 401) {
                 throw new UnauthorizedException($message);
             }
-
         }
 
         return $response;
