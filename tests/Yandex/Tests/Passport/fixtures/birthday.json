@@ -1,0 +1,10 @@
+{
+  "login": "vasya",
+  "old_social_login": "uid-mmzxrnry",
+  "birthday": "1987-03-12",
+  "id": "1000034426",
+  "openid_identities": [
+    "http://openid.yandex.ru/vasya/",
+    "http://vasya.ya.ru/"
+  ]
+}
