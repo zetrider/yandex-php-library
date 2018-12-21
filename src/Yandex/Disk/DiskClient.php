@@ -134,14 +134,14 @@ class DiskClient extends AbstractServiceClient
      *
      * @see https://tech.yandex.com/disk/doc/dg/reference/propfind_contains-request-docpage/
      */
-    public function directoryContents($path = '/', $offset = null, $amount = null)
+    public function directoryContents($path = '/', $offset = null, $amount = null, $depth = '1')
     {
         $response = $this->sendRequest(
             'PROPFIND',
             $path,
             [
                 'headers' => [
-                    'Depth' => '1'
+                    'Depth' => $depth
                 ],
                 'query' => [
                     'offset' => $offset,
