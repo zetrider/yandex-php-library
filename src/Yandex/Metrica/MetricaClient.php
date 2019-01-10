@@ -63,10 +63,10 @@ class MetricaClient extends AbstractServiceClient
     {
         $format = $resource === '' ? '' : '.json';
         $url = $this->serviceScheme . '://' . $this->serviceDomain . '/'
-            . $resource . $format . '?oauth_token=' . $this->getAccessToken();
+            . $resource . $format;
 
         if ($params) {
-            $url .= '&' . http_build_query($params);
+            $url .= '?' . http_build_query($params);
         }
 
         return $url;
@@ -145,6 +145,7 @@ class MetricaClient extends AbstractServiceClient
                 'headers' => [
                     'Accept' => 'application/x-yametrika+json',
                     'Content-Type' => 'application/x-yametrika+json',
+                    'Authorization' => 'OAuth ' . $this->getAccessToken(),
                 ]
             ]
         );
@@ -176,6 +177,7 @@ class MetricaClient extends AbstractServiceClient
                 'headers' => [
                     'Accept' => 'application/x-yametrika+json',
                     'Content-Type' => 'application/x-yametrika+json',
+                    'Authorization' => 'OAuth ' . $this->getAccessToken(),
                 ]
             ]
         );
@@ -210,6 +212,7 @@ class MetricaClient extends AbstractServiceClient
                 'headers' => [
                     'Accept' => 'application/x-yametrika+json',
                     'Content-Type' => 'application/x-yametrika+json',
+                    'Authorization' => 'OAuth ' . $this->getAccessToken(),
                 ],
                 'json' => $params
             ]
@@ -234,6 +237,7 @@ class MetricaClient extends AbstractServiceClient
                 'headers' => [
                     'Accept' => 'application/x-yametrika+json',
                     'Content-Type' => 'application/x-yametrika+json',
+                    'Authorization' => 'OAuth ' . $this->getAccessToken(),
                 ],
                 'json' => $params
             ]
@@ -257,6 +261,7 @@ class MetricaClient extends AbstractServiceClient
                 'headers' => [
                     'Accept' => 'application/x-yametrika+json',
                     'Content-Type' => 'application/x-yametrika+json',
+                    'Authorization' => 'OAuth ' . $this->getAccessToken(),
                 ]
             ]
         );
