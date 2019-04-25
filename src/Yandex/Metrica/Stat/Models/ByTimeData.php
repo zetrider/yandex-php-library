@@ -21,6 +21,8 @@ class ByTimeData extends Model
 
     protected $dataLag = null;
 
+    protected $timeIntervals = null;
+
     protected $query = null;
 
     protected $data = null;
@@ -37,7 +39,8 @@ class ByTimeData extends Model
         'sample_share' => 'sampleShare',
         'sample_size' => 'sampleSize',
         'sample_space' => 'sampleSpace',
-        'data_lag' => 'dataLag'
+        'data_lag' => 'dataLag',
+        'time_intervals' => 'timeIntervals'
     ];
 
     /**
@@ -169,6 +172,28 @@ class ByTimeData extends Model
     public function setDataLag($dataLag)
     {
         $this->dataLag = $dataLag;
+        return $this;
+    }
+
+    /**
+     * Retrieve the timeIntervals property
+     *
+     * @return array|null
+     */
+    public function getTimeIntervals()
+    {
+        return $this->timeIntervals;
+    }
+
+    /**
+     * Set the timeIntervals property
+     *
+     * @param array $timeIntervals
+     * @return $this
+     */
+    public function setTimeIntervals($timeIntervals)
+    {
+        $this->timeIntervals = $timeIntervals;
         return $this;
     }
 
